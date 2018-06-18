@@ -2,7 +2,7 @@
 
 Desc. """
 
-module RedCap
+module REDCap
 
 using JSON
 using HTTP
