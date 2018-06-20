@@ -9,23 +9,26 @@ end
 #@test 1 == 2
 
 
-function testImports(config::Config)
-	data = """[{"sex":"1","age":"39","address":"123 Fake St. Providence RI 02895",
-			"height":"172.96","dob":"1978-07-08","record_id":3,
-			"bmi":"26.7","comments":"","email":"JohnSmith78@gmail.com",
-			"first_name":"colby","demographics_complete":"2","telephone":"(401) 888-9956",
-			"weight":"80","last_name":"Smith","ethnicity":"2","race":"4"},{"sex":"1","age":"25","address":"335 Harrington Ave. Warwick RI 02888",
-			"height":"187.96","dob":"1992-12-14","record_id":4,"bmi":"28",
-			"comments":"self","email":"Cory_Cothrum@brown.edu","first_name":"mark",
-			"demographics_complete":"1","telephone":"(401) 338-8369",
-			"weight":"99","last_name":"Cothrum","ethnicity":"1","race":"4"}]"""
-	importRecords(config, data)
+function testImport(config::Config)
+	#print(importRecords(config))
+	print(importRecords(config, exportRecords(config; format="csv", returnFormat="csv"); format="csv"))
+	#print(importRecords(config; format="xml"))
+	
 end
 
 
-function testExports(config::Config)
-	record = exportRecords(config)
-	print(record)
+function testCrossImport(config::Config, config2::Config)
+	#print(importRecords(config))
+	print(importRecords(config2, exportRecords(config; format="csv", returnFormat="csv"); format="csv"))
+	#print(importRecords(config; format="xml"))
+	
+end
+
+
+function testExport(config::Config)
+	print(exportRecords(config))
+	print(exportRecords(config; format="csv", returnFormat="csv"))
+	print(exportRecords(config; format="xml", returnFormat="xml"))
 end
 
 function testExportFieldNames(config::Config)
@@ -38,12 +41,7 @@ function testExportFieldNames(config::Config)
 end
 
 function testImEx(config::Config)
-	record=exportRecords(config)
-	#record[1]["first_name"]="colby"; record[1]["record_id"]=3
-	#record[2]["first_name"]="mark"; record[2]["record_id"]=4
-	#record=[{"sex":"1","age":"39","address":"123 Fake St. Providence RI 02895","height":"172.96","dob":"1978-07-08","record_id":3,"bmi":"26.7","comments":"","email":"JohnSmith78@gmail.com","first_name":"colby","demographics_complete":"2","telephone":"(401) 888-9956","weight":"80","last_name":"Smith","ethnicity":"2","race":"4"},{"sex":"1","age":"25","address":"335 Harrington Ave. Warwick RI 02888","height":"187.96","dob":"1992-12-14","record_id":4,"bmi":"28","comments":"self","email":"Cory_Cothrum@brown.edu","first_name":"mark","demographics_complete":"1","telephone":"(401) 338-8369","weight":"99","last_name":"Cothrum","ethnicity":"1","race":"4"}]
-
-	importRecords(config, record)
+	importRecords(config, exportRecords(config))
 end
 
 function testExportArms(config::Config)
@@ -77,6 +75,7 @@ end
 
 function runTest(testNum; param1="", param2="", param3="")
 	APIconfig = Config("https://redcap.cis-dev.brown.edu/redcap/api/", "ADC4B222E6AC5116953F53F04960C712")
+	APIconfig2 = Config("https://redcap.cis-dev.brown.edu/redcap/api/", "AE97D783DD911DC78FA54EA1F6A6A2BD")
 	if testNum==1
 		testExport(APIconfig)
 
@@ -109,6 +108,9 @@ function runTest(testNum; param1="", param2="", param3="")
 
 	elseif testNum==11
 		testExportMetadata(APIconfig)
+
+	elseif testNum==12
+		testCrossImport(APIconfig, APIconfig2)
 
 	else
 
