@@ -43,13 +43,17 @@ function exportRecords(config::Config; format::String="json", dtype::String="fla
 	print("POSTing")
 	output = HTTP.post(config.url; body=fields)
 	print("POSTd")
-	#println(typeof(output.body))
-	#println(output)
-	#println(String(output.body))
-	records=JSON.parse(String(output.body))
-	#println(records[1])
-	#println(typeof(records[1]))
-	#println(records[2])
-	return records[1]
-	
+	println(format)
+	if format=="json"
+		return JSON.parse(String(output.body); dicttype=DataStructures.OrderedDict)
+	elseif format=="csv"
+		return CSV.read(IOBuffer(String(output.body)))
+		#return String(output.body)
+	elseif format=="odm"
+		#odm stuff =LOW PRI=
+	elseif format=="xml"
+		return parse_string(String(output.body))
+	else
+		print("Invalid format passed: must be json, csv, xml, or odm format")
+	end
 end

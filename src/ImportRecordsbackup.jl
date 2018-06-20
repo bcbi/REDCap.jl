@@ -7,7 +7,7 @@ function importRecords(config::Config, record::Any; format::String="json", dtype
 						overwriteBehavior::String="normal", forceNumber::Bool=false)
 	#Verify SSL before doing a thing
 	#how? 
-	
+	data=IOBuffer
 	println(format)
 	if format=="json"
 		println("Record is: ")
@@ -17,12 +17,10 @@ function importRecords(config::Config, record::Any; format::String="json", dtype
 		print("JSONed"); println(data); println(typeof(data))
 	elseif format=="csv"
 		#csv output- still to json though?
-		data=IOBuffer
 		CSV.write(data, record)
 	elseif format=="odm"
 		#odm stuff =LOW PRI=
 	elseif format=="xml"
-
 	else
 		print("Invalid format passed: must be json, csv, xml, or odm format")
 	end
