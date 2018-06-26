@@ -7,7 +7,7 @@ update basic attributes of given REDCap project.
 
 Parameters:
 config::Config - struct containing url and api-key
-infoData -
+infoData - data to be imported
 format::String - "json", "xml", "csv", or "odm". declares format of imported data
 
 Returns:
@@ -27,7 +27,7 @@ import metadata (i.e., Data Dictionary) into a project.
 
 Parameters:
 config::Config - struct containing url and api-key
-metaData -
+metaData - data to be imported
 format::String - "json", "xml", "csv", or "odm". declares format of imported data
 returnFormat::String - error message format
 
@@ -48,7 +48,7 @@ update/import new users into a project.
 
 Parameters:
 config::Config - struct containing url and api-key
-userData -
+userData - data to be imported
 format::String - "json", "xml", "csv", or "odm". declares format of imported data
 returnFormat::String - error message format
 
@@ -69,8 +69,8 @@ update/import Arms into a project.
 
 Parameters:
 config::Config - struct containing url and api-key
-armData -
-override::Int -
+armData - data to be imported
+override::Int - 0 (false) 1 (true) - overwrites existing arms
 format::String - "json", "xml", "csv", or "odm". declares format of imported data
 returnFormat::String - error message format
 
@@ -91,8 +91,8 @@ update/import Events into a project.
 
 Parameters:
 config::Config - struct containing url and api-key
-userData -
-override::Int -
+userData - data to be imported
+override::Int - 0 (false) 1 (true) - overwrites existing events
 format::String - "json", "xml", "csv", or "odm". declares format of imported data
 returnFormat::String - error message format
 
@@ -115,13 +115,13 @@ import a set of records for a project.
 
 Parameters:
 config::Config - struct containing url and api-key
-data::Any -
+data::Any - data to be imported
 format::String - "json", "xml", "csv", or "odm". declares format of imported data
-dtype::String -
-overwriteBehavior::String -
-forceNumber::Bool -
-dateFormat::String -
-returnContent::String -
+dtype::String - "flat" (one record per row) or "eav" (one data point per row)
+overwriteBehavior::String - flag to decide if blank values overwrite existing values or not
+forceNumber::Bool - force auto-numbering and overwrite given id number
+dateFormat::String - "YMD", "MDY", or "DMY"
+returnContent::String - "count" (number of successfully uploaded records), "ids" (list of record numbers imported), "auto-ids" (pair of assigned id and given id)
 returnFormat::String - error message format
 
 Returns:
@@ -139,7 +139,7 @@ end
 
 
 """
-	import_insrument_event_mappings(config::Config, instData, arms; format::String="json", returnFormat::String="json")
+	import_insrument_event_mappings(config::Config, instData; format::String="json", returnFormat::String="json")
 
 import Instrument-Event Mappings into a project 
 
@@ -147,8 +147,7 @@ NOTE: This only works for longitudinal projects.
 
 Parameters:
 config::Config - struct containing url and api-key
-instData -
-arms -
+instData - data to be imported
 format::String - "json", "xml", "csv", or "odm". declares format of imported data
 returnFormat::String - error message format
 
@@ -156,7 +155,7 @@ Returns:
 
 """
 
-function import_insrument_event_mappings(config::Config, instData, arms; format::String="json", returnFormat::String="json")
+function import_insrument_event_mappings(config::Config, instData; format::String="json", returnFormat::String="json")
 	output = api_pusher("import", "formEventMapping", config, instData=instData, arms=arms, format=format, returnFormat=returnFormat)
 	return output
 end
@@ -170,11 +169,11 @@ upload a document to specific record/field.
 
 Parameters:
 config::Config - struct containing url and api-key
-record::Int -
-field::String -
-event::String -
-repeat_instance::Int -
-file -
+record::Int - destination record id
+field::String - destination field
+event::String - destination event
+repeat_instance::Int - number of repeated instances (long project)
+file - file to be imported
 returnFormat::String - error message format
 
 Returns:
