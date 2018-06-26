@@ -4,6 +4,15 @@
 Pass the type of api call, the config struct, and any needed kwargs for that api call 
 API documentation found here:
 https://<your-redcap-site.com>/redcap/api/help/?content=exp_field_names
+
+Parameters:
+mode::String - "import", "export", or "delete"
+content::String - Passed by calling modules to indicate what data to access
+config::Config - struct containing url and api-key
+kwargs...: Any addtl. arguments passed by the calling module
+
+Returns:
+Formatted response body
 """
 
 function api_pusher(mode::String, content::String, config::Config; kwargs...)
@@ -99,6 +108,13 @@ end
 	poster(config::Config, body)
 
 Handles the POST duties for all modules.
+
+Parameters:
+config::Config - struct containing url and api-key
+body - request body data
+
+Returns:
+Anything the server returns; data or error messages.
 """
 
 function poster(config::Config, body)
@@ -110,12 +126,16 @@ end
 """
 	generate_next_record_id(config::Config) 
 
-returns next potential record ID for project.
+Parameters:
+config::Config - struct containing url and api-key
+
+Returns:
+The next available ID number for project
 """
 
 function generate_next_record_id(config::Config)
 	fields = Dict("token" => config.key, 
 				  "content" => "generateNextRecordName")
 	output = HTTP.post(config.url; body=fields)
-	return parse(Int, String(output.body)) #return as integer
+	return parse(Integer, String(output.body)) #return as integer
 end
