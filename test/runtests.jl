@@ -18,10 +18,9 @@ function test_new_record(config::Config, numRecords)
 	records = Array{Any}(numRecords)
 	for i in 1:numRecords
 		records[i] = record_generator(config, id)
-		println(i)
+		#println(i)
 		id+=1
 	end
-	println(JSON.json(records))
 	return records
 end
 
@@ -30,7 +29,7 @@ function test_new_record2(config::Config, numRecords)
 	records = Array{Dict}(numRecords)
 	for i in 1:numRecords
 		records[i] = record_generator(config, id; mode="other")
-		println(i)
+		#println(i)
 		id+=1
 	end
 	#println(records);
@@ -39,7 +38,7 @@ function test_new_record2(config::Config, numRecords)
 			#println("$k => $v")
 		end
 		#println()
-		println(JSON.json(record))
+		#println(JSON.json(record))
 	end
 	#println(JSON.json(records))
 end
@@ -127,12 +126,18 @@ end
 
 function test_import_method2(config::Config)
 	records = test_new_record(config, 10)
-	#println(records)
-	#println(import_records(config, records))
+	println(records); println(typeof(records))
+	println()
+	println(JSON.json(records)); println(typeof(JSON.json(records)))
+
+	println(import_records(config, records))
 	println(import_records(config, JSON.json(records)))
 end
 
-
+function test_user(config::Config)
+	user = export_user(config)
+	println(user); println(user[1])
+end
 
 
 function test_modules(testNum; param1="", param2="", param3="")
@@ -152,6 +157,10 @@ function test_modules(testNum; param1="", param2="", param3="")
 
 	elseif testNum==5
 		test_import_method2(APIconfig)
+
+	elseif testNum==6
+		test_user(APIconfig)
+	
 	else
 
 	end
