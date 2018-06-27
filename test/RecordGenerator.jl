@@ -1,9 +1,11 @@
-"""record_generator()
+"""
+RecordGenerator
 
 This is a compact little record generator; It simply does that.
 It is a birds nest of ternarys and rand indexing, yes. It works is not a valid defense...
 but it works. Can be expanded to include any kind of record type. Will work on making pretty sometime
-(ie moving everything out of the returns and so many nested ternarys) """
+(ie moving everything out of the returns and so many nested ternarys)
+"""
 
 #(I know the vars are not properly cased)
 const boyFirstNamePool = ["Michael", "John", "Evan", "Steven", "Peter", "Robert", "Paul", "Matthew", "Mark", "Luke",
@@ -57,8 +59,8 @@ end
 
 #Makes a weight/height for a human of a given gender.
 function body_generator(gender)
-	randWeight = rand(Int8)%(gender==1?120:100)
-	return ((gender==1 ? avgMaleWeight + (randWeight<-20 ? (-(rand(UInt8)%30)) : randWeight) : avgFemaleWeight + (randWeight < -20 ? (-(rand(Int8)%30)) : randWeight)), (gender==1? avgMaleHeight + (rand(Int8)%60) : avgFemaleHeight + (rand(Int8)%60)))
+	randWeight = mod(rand(Int8),(gender==1?120:100))
+	return ((gender==1 ? avgMaleWeight + (randWeight<-20 ? (-(mod(rand(UInt8),30))) : randWeight) : avgFemaleWeight + (randWeight < -20 ? (-(mod(rand(UInt8),30))) : randWeight)), (gender==1? avgMaleHeight + (mod(rand(Int8),60)) : avgFemaleHeight + (mod(rand(Int8),60))))
 end
 
 #Makes up an age, and spits back a semi-accurate dob.
@@ -130,15 +132,14 @@ function record_generator(config::Config, id; mode::String="demography")
 		(gender, fname, lname, (weight, height), race, ethnicity, (age, dob)) = human_generator()
 		bmi = div(weight, ((height/100)^2))
 		(telephone, address, email) = (phone_generator(), address_generator(), email_generator(uname_generator(fname, lname, dob[3:4])))
-		nHeight = string(round(height)); nWeight=string(round(weight))
 		return Dict("record_id" => id,
 				"sex" => string(gender),
 				"age" => string(age),
 				"dob" => dob,
 				"first_name" => fname,
 				"last_name" => lname,
-				"height" => nHeight,
-				"weight" => nWeight,
+				"height" => height,
+				"weight" => weight,
 				"bmi" => string(bmi),
 				"telephone" => telephone,
 				"ethnicity" => string(ethnicity),
@@ -147,7 +148,7 @@ function record_generator(config::Config, id; mode::String="demography")
 				"email" => email,
 				"comments" => "Randomly Generated - Demographics")
 
-	elseif mode=="other"
+	elseif mode=="socialdata"
 		#Return a basic demography form
 		(gender, fname, lname, (weight, height), race, ethnicity, (age, dob)) = human_generator()
 		uname = uname_generator(fname, lname, dob[3:4])
@@ -162,6 +163,13 @@ function record_generator(config::Config, id; mode::String="demography")
 					"ssn" => ssn,
 					"username"=> uname,
 					"comments" => "Randomly Generated - Mailing Data")
+
+	elseif mode=="other"
+
+
+
+	elseif mode=="garbage"
+
 
 	else
 
