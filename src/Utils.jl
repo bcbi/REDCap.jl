@@ -19,9 +19,13 @@ function api_pusher(mode::String, content::String, config::Config; kwargs...)
 	fields = Dict()
 	fields["token"] = config.key; fields["action"] = mode; fields["content"] = content
 	for arg in kwargs
-		fields[string(arg[1])] = arg[2]
+		if string(arg[1])=="dtype"
+			fields["type"]=arg[2]
+		else
+			fields[string(arg[1])] = arg[2]
+		end
 	end
-	println(fields)
+	#println(fields)
 	response = poster(config, fields)
 
 	output = String(response.body) 
@@ -168,7 +172,7 @@ the opposite of what was given in relation to json format
 function json_formatter(data, mode::String)
 	if mode=="import"
 		#must turn a dict into json
-		#println(JSON.json(data))
+		println(JSON.json(data)); println("Returned")
 		return JSON.json(data)
 	else
 		#must turn json into a dict
