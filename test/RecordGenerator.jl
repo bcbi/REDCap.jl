@@ -131,17 +131,14 @@ function record_generator(config::Config, id; mode::String="demography")
 		bmi = div(weight, ((height/100)^2))
 		(telephone, address, email) = (phone_generator(), address_generator(), email_generator(uname_generator(fname, lname, dob[3:4])))
 		nHeight = string(round(height)); nWeight=string(round(weight))
-		println(nHeight); println(nWeight)
-		println("Number:")
-		println(telephone)
 		return Dict("record_id" => id,
 				"sex" => string(gender),
 				"age" => string(age),
 				"dob" => dob,
 				"first_name" => fname,
 				"last_name" => lname,
-				"height" => nHeight[1],
-				"weight" => nWeight[1],
+				"height" => nHeight,
+				"weight" => nWeight,
 				"bmi" => string(bmi),
 				"telephone" => telephone,
 				"ethnicity" => string(ethnicity),

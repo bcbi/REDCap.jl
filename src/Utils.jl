@@ -139,3 +139,22 @@ function generate_next_record_id(config::Config)
 	output = HTTP.post(config.url; body=fields)
 	return parse(Integer, String(output.body)) #return as integer
 end
+
+
+"""
+	create_project(config::SuperConfig)
+
+Parameters:
+config::SuperConfig - struct containing url, api-key, and super-api-key
+
+Returns:
+idk
+"""
+
+function create_project(config::SuperConfig)
+	fields = Dict("token" => config.key,
+					"content" => "createProject",
+					"" => "")
+	output = HTTP.post(config.url; body=fields)
+	return String(output.body)
+end
