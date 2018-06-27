@@ -11,12 +11,15 @@ using LightXML
 using HTTP
 using Requests
 using DataStructures
+using DataFrames
 using CSV
 
 #include essentially splats the code into this doc and pretends its there
 include("Config.jl")
 include("Export.jl")
 include("Import.jl")
+include("Delete.jl")
+include("Utils.jl")
 
 include("../test/runtests.jl")
 

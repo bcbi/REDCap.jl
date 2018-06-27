@@ -15,7 +15,7 @@ Returns:
 """
 
 function import_project_information(config::Config, infoData; format::String="json")
-	output = api_pusher("import", "project_settings", config, infoData=infoData, format=format)
+	output = api_pusher("import", "project_settings", config, infoData=json_formatter(infoData, "import"), format=format)
 	return output
 end
 
@@ -36,7 +36,7 @@ Returns:
 """
 
 function import_metadata(config::Config, metaData; format::String="json", returnFormat::String="json")
-	output = api_pusher("import", "metadata", config, metaData=metaData, format=format, returnFormat=returnFormat)
+	output = api_pusher("import", "metadata", config, metaData=json_formatter(metaData, "import"), format=format, returnFormat=returnFormat)
 	return output
 end
 
@@ -57,7 +57,7 @@ Returns:
 """
 
 function import_user(config::Config, userData; format::String="json", returnFormat::String="json")
-	output = api_pusher("import", "user", config, userData=userData, format=format, returnFormat=returnFormat)
+	output = api_pusher("import", "user", config, userData=json_formatter(userData, "import"), format=format, returnFormat=returnFormat)
 	return output
 end
 
@@ -79,7 +79,7 @@ Returns:
 """
 
 function import_arms(config::Config, armData; override::Int=0, format::String="json", returnFormat::String="json")
-	output = api_pusher("import", "arm", config, armData=armData, override=override, format=format, returnFormat=returnFormat)
+	output = api_pusher("import", "arm", config, armData=json_formatter(armData, "import"), override=override, format=format, returnFormat=returnFormat)
 	return output
 end
 
@@ -101,7 +101,7 @@ Returns:
 """
 
 function import_events(config::Config, userData; override::Int=0, format::String="json", returnFormat::String="json")
-	output = api_pusher("import", "event", config, userData=userData, override=override, format=format, returnFormat=returnFormat)
+	output = api_pusher("import", "event", config, userData=json_formatter(userData, "import"), override=override, format=format, returnFormat=returnFormat)
 	return output
 end
 
@@ -131,7 +131,7 @@ Returns:
 function import_records(config::Config, data::Any; format::String="json", dtype::String="flat", 
 						overwriteBehavior::String="normal", forceNumber::Bool=false, dateFormat::String="YMD",
 						returnContent::String="count", returnFormat::String="json")
-	output = api_pusher("import", "record", config, data=data, format=format, dtype=dtype, 
+	output = api_pusher("import", "record", config, data=json_formatter(data, "import"), format=format, dtype=dtype, 
 							overwriteBehavior=overwriteBehavior, forceNumber=forceNumber, dateFormat=dateFormat,
 							returnContent=returnContent, returnFormat=returnFormat)
 	return output
@@ -156,7 +156,7 @@ Returns:
 """
 
 function import_insrument_event_mappings(config::Config, instData; format::String="json", returnFormat::String="json")
-	output = api_pusher("import", "formEventMapping", config, instData=instData, arms=arms, format=format, returnFormat=returnFormat)
+	output = api_pusher("import", "formEventMapping", config, instData=json_formatter(instData, "import"), arms=arms, format=format, returnFormat=returnFormat)
 	return output
 end
 
@@ -182,7 +182,7 @@ Returns:
 
 function import_file(config::Config, record::Int, field::String, event::String, repeat_instance::Int, file;
 					returnFormat::String="json")
-	output = api_pusher("import", "file", config, record=record, field=field, event=event, repeat_instance=repeat_instance, 
+	output = api_pusher("import", "file", config, record=json_formatter(record, "import"), field=field, event=event, repeat_instance=repeat_instance, 
 							file=file, returnFormat=returnFormat)
 	return output
 end
