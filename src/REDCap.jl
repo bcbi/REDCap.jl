@@ -22,6 +22,7 @@ include("Delete.jl")
 include("Utils.jl")
 
 include("../test/runtests.jl")
+include("../test/myTests.jl")
 
 #export to make them simply usable as toplevel funcs
 #export importRecord, Config, exportRecord, runTest

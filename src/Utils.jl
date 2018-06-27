@@ -21,6 +21,7 @@ function api_pusher(mode::String, content::String, config::Config; kwargs...)
 	for arg in kwargs
 		fields[string(arg[1])] = arg[2]
 	end
+	println(fields)
 	response = poster(config, fields)
 
 	output = String(response.body) 
@@ -70,7 +71,7 @@ Anything the server returns; data or error messages.
 
 function poster(config::Config, body)
 	println("POSTing")
-	return HTTP.post(config.url; body=body)
+	return HTTP.post(config.url; body=body, require_ssl_verification=true)
 end
 
 
@@ -127,6 +128,32 @@ function create_project(config::SuperConfig, data; format::String="json",
 end
 
 
+
+"""
+	formatter(data, format, mode::String)
+
+Parameters:
+data - the data to be formatted
+format - the target format
+mode::String - formatting for Import (data to server) or Export (data from server)
+
+Returns:
+the specified formatted/unformatted object
+"""
+
+function formatter(data, format, mode::String)
+	if format=="json"
+		json_formatter(data, mode)
+	elseif format=="csv"
+		csv_formatter(data, mode)
+	elseif format=="xml"
+		xml_formatter(data, mode)
+	else
+		odm_formatter(data, mode)
+	end
+end
+
+
 """
 	json_formatter(data, mode::String)
 
@@ -141,7 +168,7 @@ the opposite of what was given in relation to json format
 function json_formatter(data, mode::String)
 	if mode=="import"
 		#must turn a dict into json
-
+		#println(JSON.json(data))
 		return JSON.json(data)
 	else
 		#must turn json into a dict
@@ -202,12 +229,14 @@ the opposite of what was given in relation to xml format
 function xml_formatter(data, mode::String)
 	if mode=="import"
 		#must turn dict into xml
-		return data
+		xDoc = XMLDocument()
+		return xDoc = parse_string(string(data))
 	else
 		#must turn xml into dict
 		try
-			xDoc = XMLDocument()
-			return xDoc = parse_string(string(data))
+			#data is an xml
+			println(data); println(typeof(data))
+			return data
 		catch
 			return data
 		end
