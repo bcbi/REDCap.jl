@@ -30,9 +30,9 @@ function test_new_record2(config::Config, numRecords)
 	id = "x"
 	records = Array{Dict}(numRecords)
 	for i in 1:numRecords
-		records[i] = record_generator(config, id; mode="other")
+		records[i] = record_generator(config, id; mode="socialdata")
 		#println(i)
-		id+=1
+		#id+=1
 	end
 	#println(records);
 	for record in records
@@ -59,7 +59,7 @@ function test_export_method1(config::Config)
 	println(export_pdf(config))
 	println(export_project(config))
 	println(export_records(config))
-	println(export_survey_link(config, "1", "demographics", "1", "1"))
+	println(export_survey_link(config, 1, "demographics", "1", 1))
 	#println(export_survey_queue_link(config, "1"))
 	#println(export_survey_return_code(config, "1", "demographics", "1", "1"))
 	#println(export_instrument_event_mappings(config))
@@ -67,7 +67,7 @@ function test_export_method1(config::Config)
 	#println(export_file(config))
 	#println(export_reports(config))
 	=#
-	#=
+	
 	println("TEST 2 - XML")
 	println(export_field_names(config, format="xml"))
 	println(export_instruments(config, format="xml"))
@@ -80,15 +80,15 @@ function test_export_method1(config::Config)
 	println(export_pdf(config))
 	println(export_project(config))
 	println(export_records(config, format="xml"))
-	println(export_survey_link(config, "1", "demographics", "1", "1"))
+	println(export_survey_link(config, 1, "demographics", "1", 1))
 	#println(export_survey_queue_link(config, "1"))
 	#println(export_survey_return_code(config, "1", "demographics", "1", "1"))
 	#println(export_instrument_event_mappings(config))
 	println(export_survey_participant_list(config, "demographics", "1", format="xml", returnFormat="xml"))
 	#println(export_file(config))
 	#println(export_reports(config))
-	=#
-	#=
+	
+	#=	
 	println("TEST 3 - CSV")
 	println(export_field_names(config, format="csv"))
 	println(export_instruments(config, format="csv"))
@@ -101,7 +101,7 @@ function test_export_method1(config::Config)
 	println(export_pdf(config))
 	println(export_project(config))
 	println(export_records(config, format="csv"))
-	println(export_survey_link(config, "1", "demographics", "1", "1"))
+	println(export_survey_link(config, 1, "demographics", "1", 1))
 	#println(export_survey_queue_link(config, "1"))
 	#println(export_survey_return_code(config, "1", "demographics", "1", "1"))
 	#println(export_instrument_event_mappings(config))
@@ -113,13 +113,7 @@ end
 
 function test_import_method1(config::Config, config2::Config)
 	record = export_records(config)
-	println(record)
-	for i in record
-		for (k, v) in i
-			println("$k => $v")
-		    i[k]="x"
-		end
-	end
+	println("printing record:")
 	println(record)
 	println(import_records(config, record))
 	println(export_records(config))
@@ -130,15 +124,26 @@ function test_import_method2(config::Config)
 	records = test_new_record(config, 10)
 	println(records); println(typeof(records))
 	println()
-	println(JSON.json(records)); println(typeof(JSON.json(records)))
+	#println(JSON.json(records)); println(typeof(JSON.json(records)))
 
-	println(import_records(config, records))
-	println(import_records(config, JSON.json(records)))
+	println(import_records(config, records, format="csv"))
+	#println(import_records(config, JSON.json(records)))
+end
+
+function test_import_method3(config::Config)
+	record = export_records(config, format="csv")
+	println(record)
+	println(import_records(config, record, format="csv"))
 end
 
 function test_user(config::Config)
 	user = export_user(config)
 	println(user); println(user[1])
+end
+
+function test_eval()
+	println("This is evaluating, just like you told me to!")
+	return true
 end
 
 function test_modules(testNum; param1="", param2="", param3="")
@@ -238,9 +243,11 @@ function test_modules(testNum; param1="", param2="", param3="")
 			]
 
 		=#
+		return true
 
 	elseif testNum==2
 		test_new_record2(APIconfig, 5)
+		return true
 
 	elseif testNum==3
 		test_export_method1(APIconfig)
@@ -255,11 +262,19 @@ function test_modules(testNum; param1="", param2="", param3="")
 		test_user(APIconfig)
 	
 	elseif testNum==7
-	
+		test_eval()
+
 	elseif testNum==8
-	
+			modules = [:(run_test(7)),
+				   :(run_test(1)),
+				   :(run_test(7)),
+				   :(run_test(2)),]
+		passed = true
+		for i in modules
+			eval(i)
+		end
 	elseif testNum==9
-	
+		test_import_method3(APIconfig)
 	elseif testNum==10
 	
 	elseif testNum==11 #these tests go to 11...
@@ -273,3 +288,50 @@ function run_test(testNum)
 	#actually holds a massive for loop to run alltests, tell who failed
 	test_modules(testNum)
 end
+
+
+#=
+# -=: Test: Functionality :=- #
+@testset "Functionality" begin
+	#setup for any needed vars
+	config = SuperConfig("url", "key", "skey")
+	
+	#r = HTTP.get(config.url)
+	#@test r.status == 200
+
+	@test 1 == 1 #will fail if this throws an error- write tests for Bool vals
+
+	#=
+	#	TESTING:
+	# needs to be able to manipulate a project, and verify what comes back. Create project in users environment? Dedicated test env?
+	# Must: Create, Import, Export, make sure what you put in is what you got out, and delete everything properly.
+	# Create: make a project from scratch using stock settings- can just be a premade dict.
+	# Import: Make (and save) a bunch of generic constructions for fields, metadata, records, everything that can be imported- 
+	# 	After, lock the project/make it as 'out of development' and try to re-import everything that-
+	#	should be blocked once out of dev in REDCap.
+	# Export: grab everything from the project and verify it matches the generated data perfectly- 
+	#	also check any files and the pdf and xml of project.
+	# Delete: Delete everything from the project piece by piece, and finally the project-
+	# 	Verify everything, and try to export from it again.
+	# 
+	# 
+	=#
+	modules = [:(run_test(7)),
+			   :(run_test(1)),
+			   :(run_test(2)),]
+	passed = true
+	for i in modules
+		@test eval(i)==true
+	end
+
+
+
+
+
+
+
+
+
+
+end
+=#
