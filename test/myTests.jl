@@ -2,6 +2,7 @@ using REDCap
 using JSON
 include("../src/Utils.jl")
 include("RecordGenerator.jl")
+include("fieldCreation.jl")
 
 function test_new_record(config::Config, numRecords)
 	#id = generate_next_record_id(config)
@@ -57,7 +58,7 @@ function test_export_method1(config::Config)
 	#println(export_file(config))
 	#println(export_reports(config))
 	=#
-	
+	#=
 	println("TEST 2 - XML")
 	println(export_field_names(config, format="xml"))
 	println(export_instruments(config, format="xml"))
@@ -77,9 +78,10 @@ function test_export_method1(config::Config)
 	println(export_survey_participant_list(config, "demographics", "1", format="xml", returnFormat="xml"))
 	#println(export_file(config))
 	#println(export_reports(config))
+	=#
 	
-	#=	
 	println("TEST 3 - CSV")
+	#=
 	println(export_field_names(config, format="csv"))
 	println(export_instruments(config, format="csv"))
 	println(export_metadata(config, format="csv"))
@@ -91,6 +93,10 @@ function test_export_method1(config::Config)
 	println(export_pdf(config))
 	println(export_project(config))
 	println(export_records(config, format="csv"))
+	=#
+	println(export_records(config, format="csv"))
+	println(typeof(export_records(config, format="csv")))
+	println("Saving"); CSV.write("~/gitHub/REDCap.jl/csvout.txt", export_records(config, format="csv"))
 	println(export_survey_link(config, 1, "demographics", "1", 1))
 	#println(export_survey_queue_link(config, "1"))
 	#println(export_survey_return_code(config, "1", "demographics", "1", "1"))
@@ -98,7 +104,7 @@ function test_export_method1(config::Config)
 	println(export_survey_participant_list(config, "demographics", "1", format="csv", returnFormat="csv"))
 	#println(export_file(config))
 	#println(export_reports(config))
-	=#
+	
 end
 
 function test_import_method1(config::Config, config2::Config)
@@ -121,6 +127,7 @@ function test_import_method2(config::Config)
 end
 
 function test_import_method3(config::Config; format="json")
+	println("FORMAT = ", format)
 	record = export_records(config, format=format)
 	println(record); println(typeof(record));
 	println(import_records(config, record, format=format))
@@ -136,15 +143,15 @@ function test_eval()
 	return true
 end
 
+function test_delete(config::Config, recordNum)
+	delete_records(config, recordNum)
+end
+
 function test_modules(testNum; param1="", param2="", param3="")
 	APIconfig = Config("https://redcap.cis-dev.brown.edu/redcap/api/", "ADC4B222E6AC5116953F53F04960C712")
 	APIconfig2 = Config("https://redcap.cis-dev.brown.edu/redcap/api/", "AE97D783DD911DC78FA54EA1F6A6A2BD")
 	if testNum==1
-<<<<<<< HEAD
-		output = test_new_record(APIconfig, 50)
-=======
 		output = test_new_record(APIconfig, 5)
->>>>>>> 3bd792fc6e3e407dfbaac6cb50a89ba2f8984541
 		println(JSON.json(output))
 		# #Journal Entry 1
 		#= THIS IS WHAT IT WANTS, RIGHT HERE- The array of Dicts, outputted into a JSON builder. Thats it, right there.
@@ -265,12 +272,13 @@ function test_modules(testNum; param1="", param2="", param3="")
 				   :(run_test(2)),]
 		passed = true
 		for i in modules
+			#use carefully!
 			eval(i)
 		end
 	elseif testNum==9
-		test_import_method3(APIconfig, format=param1)
+		test_import_method3(APIconfig)
 	elseif testNum==10
-	
+		test_delete(APIconfig, ["20"])
 	elseif testNum==11 #these tests go to 11...
 	
 	else
@@ -278,11 +286,12 @@ function test_modules(testNum; param1="", param2="", param3="")
 	end
 end
 
-<<<<<<< HEAD
-function run_test(testNum; param1="x")
-=======
 function run_test(testNum, param1)
->>>>>>> 3bd792fc6e3e407dfbaac6cb50a89ba2f8984541
 	#actually holds a massive for loop to run alltests, tell who failed
 	test_modules(testNum, param1=param1)
+end
+
+function run_test(testNum)
+	#actually holds a massive for loop to run alltests, tell who failed
+	test_modules(testNum)
 end

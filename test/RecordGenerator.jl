@@ -59,7 +59,7 @@ end
 
 #Makes a weight/height for a human of a given gender.
 function body_generator(gender)
-	randWeight = mod(rand(Int8),(gender==1?120:100))
+	randWeight = mod(rand(Int8),(gender==1?100:80))
 	return ((gender==1 ? avgMaleWeight + (randWeight<-20 ? (-(mod(rand(UInt8),30))) : randWeight) : avgFemaleWeight + (randWeight < -20 ? (-(mod(rand(UInt8),30))) : randWeight)), (gender==1? avgMaleHeight + (mod(rand(Int8),60)) : avgFemaleHeight + (mod(rand(Int8),60))))
 end
 
