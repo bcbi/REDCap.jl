@@ -9,7 +9,7 @@ module REDCap
 using JSON
 using LightXML
 using HTTP
-using Requests
+#using Requests
 using DataStructures
 using DataFrames
 using CSV
