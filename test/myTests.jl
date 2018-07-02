@@ -140,7 +140,11 @@ function test_modules(testNum; param1="", param2="", param3="")
 	APIconfig = Config("https://redcap.cis-dev.brown.edu/redcap/api/", "ADC4B222E6AC5116953F53F04960C712")
 	APIconfig2 = Config("https://redcap.cis-dev.brown.edu/redcap/api/", "AE97D783DD911DC78FA54EA1F6A6A2BD")
 	if testNum==1
+<<<<<<< HEAD
+		output = test_new_record(APIconfig, 50)
+=======
 		output = test_new_record(APIconfig, 5)
+>>>>>>> 3bd792fc6e3e407dfbaac6cb50a89ba2f8984541
 		println(JSON.json(output))
 		# #Journal Entry 1
 		#= THIS IS WHAT IT WANTS, RIGHT HERE- The array of Dicts, outputted into a JSON builder. Thats it, right there.
@@ -274,7 +278,11 @@ function test_modules(testNum; param1="", param2="", param3="")
 	end
 end
 
+<<<<<<< HEAD
+function run_test(testNum; param1="x")
+=======
 function run_test(testNum, param1)
+>>>>>>> 3bd792fc6e3e407dfbaac6cb50a89ba2f8984541
 	#actually holds a massive for loop to run alltests, tell who failed
 	test_modules(testNum, param1=param1)
 end
