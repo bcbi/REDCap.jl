@@ -5,17 +5,27 @@ include("Utils.jl")
 
 update basic attributes of given REDCap project.
 
-Parameters:
-config::Config - struct containing url and api-key
-infoData - data to be imported
-format::String - "json", "xml", "csv", or "odm". declares format of imported data
+##Parameters:
+* `config` - struct containing url and api-key
+* `infoData` - data to be imported
+* `format` - "json", "xml", "csv", or "odm". declares format of imported data
 
-Returns:
+##Returns:
 number of successfully imported values
 """
 
+
 function import_project_information(config::Config, infoData; format::String="json")
-	output = api_pusher("import", "project_settings", config, infoData=formatter(infoData, format, "import"), format=format)
+	#handle validation and import validation - if not already passing formatted data, format - else leave alone and pass
+	#take the data as the file-location?
+	#loading from file - eg take csv file, open it, throw into a buffer(?), pass to import func. 
+	#rely on user to check if format works?
+	if isa(infoData, String)
+		output = api_pusher("import", "project_settings", config, infoData=import_from_file(infoData, format), format=format)
+	else
+		#load file from location, send as data (in format(?))
+		output = api_pusher("import", "project_settings", config, infoData=formatter(infoData, format, "import"), format=format)
+	end
 	return output
 end
 
@@ -187,4 +197,40 @@ function import_file(config::Config, record::Int, field::String, event::String, 
 	output = api_pusher("import", "file", config, record=formatter(record, format, "import"), field=field, event=event, repeat_instance=repeat_instance, 
 							file=file, returnFormat=returnFormat)
 	return output
+end
+
+
+"""
+	create_project(config::SuperConfig, format::String="json", data; 
+					returnFormat::String="json", odm="NULL")
+
+Parameters:
+config::SuperConfig - struct containing url and super-api-key
+format::String - "json", "xml", "csv", or "odm". declares format of imported data
+data - dict of attributes of project to create- only project_title and purpose are required (* for default)
+	-project_title: title
+	-purpose: must be numerical (0 - test, 1 - other, 2 - research, 3 - Qual+, 4 - OpSupport)
+	-purpose_other: if purpose 1- string of purpose
+	-project_notes: notes
+	-is_longitudinal: 0 - false*, 1 - true
+	-surveys_enabled: 0 - false*, 1 - true
+	-record_autonumbering_enabled: 0 - false, 1 - true*
+returnFormat::String - error message format
+odm - XML string containing metadata
+
+Returns:
+The standard api key
+"""
+
+function create_project(config::Config, data; format::String="json",
+						returnFormat::String="json", odm="NULL")
+	fields = Dict("token" => config.key,
+					"content" => "project",
+					"format" => format,
+					"data" => data,
+					"returnFormat" => returnFormat,
+					"odm" => odm)
+	#handle with poster to be more robust
+	response = poster(config, fields)
+	return String(response.body) 
 end

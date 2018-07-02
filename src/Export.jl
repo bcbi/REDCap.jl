@@ -1,13 +1,15 @@
 include("Utils.jl")
 
+#comment formatting w/ markdown
+#eg ##, *, backticks for code parentheticaling
 """
 	export_field_names(config::Config; format::String="json") 
 
-Parameters:
-config::Config - struct containing url and api-key
-format::String - "json", "xml", "csv", or "odm". decides format of returned data
+##Parameters:
+* `config` - struct containing url and api-key
+* `format` - "json", "xml", "csv", or "odm". decides format of returned data
 
-Returns:
+##Returns:
 formatted dict of export/import-specific version of field names 
 for all fields (or for one field, if desired) in project: 
 'original_field_name', 'choice_value', and 'export_field_name'
@@ -22,11 +24,11 @@ end
 """
 	export_instruments(config::Config; format::String="json") 
 
-Parameters:
-config::Config - struct containing url and api-key
-format::String - "json", "xml", "csv", or "odm". decides format of returned data
+##Parameters:
+* `config` - struct containing url and api-key
+* `format` - "json", "xml", "csv", or "odm". decides format of returned data
 
-Returns:
+##Returns:
 formatted dict for data collection instruments of project.
 """
 
@@ -39,16 +41,19 @@ end
 """
 	export_metadata(config::Config; format::String="json") 
 
-Parameters:
-config::Config - struct containing url and api-key
+##Parameters:
+* `config` - struct containing url and api-key
 format::String - "json", "xml", "csv", or "odm". decides format of returned data
 
-Returns:
+##Returns:
 formatted dict of the metadata for project.
 """
 
-function export_metadata(config::Config; format::String="json")
+function export_metadata(config::Config; format::String="json", fileLoc::String="x")
 	output = api_pusher("export", "metadata", config, format=format)
+	if fileLoc != "x"
+		export_to_file(fileLoc, format)
+	end
 	return output
 end
 
@@ -56,12 +61,12 @@ end
 """
 	export_project_information(config::Config; format::String="json", returnFormat::String="json") 
 
-Parameters:
-config::Config - struct containing url and api-key
-format::String - "json", "xml", "csv", or "odm". decides format of returned data
-returnFormat::String - error message format
+##Parameters:
+* `config` - struct containing url and api-key
+* `format` - "json", "xml", "csv", or "odm". decides format of returned data
+* `returnFormat` - error message format
 
-Returns:
+##Returns:
 formatted dict of the basic attributes of given REDCap project.
 """
 
@@ -74,12 +79,12 @@ end
 """
 	export_user(config::Config; format::String="json", returnFormat::String="json") 
 
-Parameters:
-config::Config - struct containing url and api-key
-format::String - "json", "xml", "csv", or "odm". decides format of returned data
-returnFormat::String - error message format
+##Parameters:
+* `config` - struct containing url and api-key
+* `format` - "json", "xml", "csv", or "odm". decides format of returned data
+* `returnFormat` - error message format
 
-Returns:
+##Returns:
 formatted dict of users for project.
 """
 
@@ -92,12 +97,12 @@ end
 """
 	export_version(config::Config; format::String="json", returnFormat::String="json") 
 
-Parameters:
-config::Config - struct containing url and api-key
-format::String - "json", "xml", "csv", or "odm". decides format of returned data
-returnFormat::String - error message format
+##Parameters:
+* `config` - struct containing url and api-key
+* `format` - "json", "xml", "csv", or "odm". decides format of returned data
+* `returnFormat` - error message format
 
-Returns:
+##Returns:
 The version number (eg 1.0.0)
 """
 
@@ -110,15 +115,15 @@ end
 """
 	export_arms(config::Config; arms, format::String="json", returnFormat::String="json") 
 
-NOTE: This only works for longitudinal projects.
+#NOTE: This only works for longitudinal projects.
 
-Parameters:
-config::Config - struct containing url and api-key
-arms - array of arm names to export
-format::String - "json", "xml", "csv", or "odm". decides format of returned data
-returnFormat::String - error message format
+##Parameters:
+* `config` - struct containing url and api-key
+* `arms` - array of arm names to export
+* `format` - "json", "xml", "csv", or "odm". decides format of returned data
+* `returnFormat` - error message format
 
-Returns:
+##Returns:
 formatted dict of Arms for project.
 """
 
@@ -131,15 +136,15 @@ end
 """
 	export_events(config::Config; arms=[], format::String="json", returnFormat::String="json") 
 
-NOTE: This only works for longitudinal projects.
+#NOTE: This only works for longitudinal projects.
 
-Parameters:
-config::Config - struct containing url and api-key
-arms - array of arm names to export
-format::String - "json", "xml", "csv", or "odm". decides format of returned data
-returnFormat::String - error message format
+##Parameters:
+* `config` - struct containing url and api-key
+* `arms` - array of arm names to export
+* `format` - "json", "xml", "csv", or "odm". decides format of returned data
+* `returnFormat` - error message format
 
-Returns:
+##Returns:
 formatted dict of events for project.
 """
 
@@ -152,18 +157,20 @@ end
 """
 	export_pdf(config::Config; record::Int=1, event::String="", instrument::String="", allRecords::Bool=false) 
 
-Parameters:
-config::Config - struct containing url and api-key
-record::Int - record ID to populate PDF
-event::String - event name to populate PDF
-instrument::String = name of instrument to populate PDF
-allRecord::Bool - flag to take all records or not
+##Parameters:
+* `config` - struct containing url and api-key
+* `record` - record ID to populate PDF
+* `event` - event name to populate PDF
+* `instrument` = name of instrument to populate PDF
+* `allRecord` - flag to take all records or not
 
-Returns:
+##Returns:
 PDF file for: 
-1) single data collection instrument (blank), 			2) all instruments (blank), 
-3) single instrument (with data from a single record), 	4) all instruments (with data from a single record), 
-5) all instruments (with data from ALL records)
+* 1) single data collection instrument (blank),
+* 2) all instruments (blank), 
+* 3) single instrument (with data from a single record),
+* 4) all instruments (with data from a single record), 
+* 5) all instruments (with data from ALL records)
 """
 
 function export_pdf(config::Config; record::Int=1, event::String="", instrument::String="", allRecords::Bool=false)
@@ -183,19 +190,19 @@ end
 					returnFormat::String="json", exportSurveyFields::Bool, exportDataAccessGroups::Bool, 
 					filterLogic::String, exportFiles::Bool) 
 
-Parameters:
-config::Config - struct containing url and api-key
-returnMetadata::Bool - flag to return metedata or not
-records - array of record names to include
-fields - array of field names to include
-events - array of event names to include
-returnFormat::String - error message format
-exportSurveyFields::Bool - flag to return survey fields or not
-exportDataAccessGroups::Bool - flag to return DAGroups or not
-filterLogic::String - allows collection of records that fulfill a criteria eg. "[age] > 65"
-exportFiles::Bool - flag to include files or not
+##Parameters:
+* `config` - struct containing url and api-key
+* `returnMetadata` - flag to return metedata or not
+* `records` - array of record names to include
+* `fields` - array of field names to include
+* `events` - array of event names to include
+* `returnFormat` - error message format
+* `exportSurveyFields` - flag to return survey fields or not
+* `exportDataAccessGroups` - flag to return DAGroups or not
+* `filterLogic` - allows collection of records that fulfill a criteria eg. "[age] > 65"
+* `exportFiles` - flag to include files or not
 
-Returns:
+##Returns:
 entire project as XML file.
 """
 
@@ -215,23 +222,23 @@ end
 					exportCheckboxLabel::Bool=false, returnFormat::String="json", exportSurveyField::Bool=false, 
 					exportDataAccessGroups::Bool=false, filterLogic::String)
 
-Parameters:
-config::Config - struct containing url and api-key
-format::String - "json", "xml", "csv", or "odm". decides format of returned data
-dtype::String - output mode: "flat" (output one record per row) or "eav" (one data point per row)
-records - array of record names to include
-fields - array of field names to include
-forms - array of form names to include
-events - array of event names to include
-rawOrLabel::String - "raw" or "label" - export raw coded values or labels for multiple choice fields
-rawOrLabelHeaders::String - same as above, for headers
-exportCheckboxLabel::Bool - checkbox behavior: export checkboxes as "checked/unchecked" or as "field-name/<blank>"
-returnFormat::String - error message format
-exportSurveyField::Bool - flag to return survey fields or not
-exportDataAccessGroups::Bool - flag to return DAGroups or not
-filterLogic::String - allows collection of records that fulfill a criteria eg. "[age] > 65"
+##Parameters:
+* `config` - struct containing url and api-key
+* `format` - "json", "xml", "csv", or "odm". decides format of returned data
+* `dtype` - output mode: "flat" (output one record per row) or "eav" (one data point per row)
+* `records` - array of record names to include
+* `fields` - array of field names to include
+* `forms` - array of form names to include
+* `events` - array of event names to include
+* `rawOrLabel` - "raw" or "label" - export raw coded values or labels for multiple choice fields
+* `rawOrLabelHeaders` - same as above, for headers
+* `exportCheckboxLabel` - checkbox behavior: export checkboxes as "checked/unchecked" or as "field-name/<blank>"
+* `returnFormat` - error message format
+* `exportSurveyField` - flag to return survey fields or not
+* `exportDataAccessGroups` - flag to return DAGroups or not
+* `filterLogic` - allows collection of records that fulfill a criteria eg. "[age] > 65"
 
-Returns:
+##Returns:
 formatted dict of set of records for a project.
 """
 
@@ -251,12 +258,12 @@ end
 """
 	export_survey_queue_link(config::Config, record; returnFormat::String="json") 
 
-Parameters:
-config::Config - struct containing url and api-key
-record - record id for link
-returnFormat::String - error message format
+##Parameters:
+* `config` - struct containing url and api-key
+* `record` - record id for link
+* `returnFormat` - error message format
 
-Returns:
+##Returns:
 unique Survey Queue link.
 """
 
@@ -269,12 +276,12 @@ end
 """
 	export_survey_return_code(config::Config, record; returnFormat::String="json") 
 
-Parameters:
-config::Config - struct containing url and api-key
-record - record id for link
-returnFormat::String - error message format
+##Parameters:
+* `config` - struct containing url and api-key
+* `record` - record id for link
+* `returnFormat` - error message format
 
-Returns:
+##Returns:
 unique Return Code in plain text format.
 """
 
@@ -290,13 +297,13 @@ end
 
 NOTE: This only works for longitudinal projects.
 
-Parameters:
-config::Config - struct containing url and api-key
-arms - array of arm names to export
-format::String - "json", "xml", "csv", or "odm". decides format of returned data
-returnFormat::String - error message format
+##Parameters:
+* `config` - struct containing url and api-key
+* `arms` - array of arm names to export
+* `format` - "json", "xml", "csv", or "odm". decides format of returned data
+* `returnFormat` - error message format
 
-Returns:
+##Returns:
 formatted dict of instrument-event mappings for project.
 """
 
@@ -309,14 +316,14 @@ end
 """
 	export_survey_participant_list(config::Config, instrument, event; format::String="json", returnFormat::String="json") 
 
-Parameters:
-config::Config - struct containing url and api-key
-instrument::String = name of instrument to export list of participants
-event::String - event name conatining instrument
-format::String - "json", "xml", "csv", or "odm". decides format of returned data
-returnFormat::String - error message format
+##Parameters:
+* `config` - struct containing url and api-key
+* `instrument` = name of instrument to export list of participants
+* `event` - event name conatining instrument
+* `format` - "json", "xml", "csv", or "odm". decides format of returned data
+* `returnFormat` - error message format
 
-Returns:
+##Returns:
 formatted dict of all participants for specific survey instrument.
 """
 
@@ -330,16 +337,16 @@ end
 	export_file(config::Config, record::Int, field::String, event::String, repeat_instance::Int; 
 				format::String="json", returnFormat::String="json") 
 
-Parameters:
-config::Config - struct containing url and api-key
-record::Int - record id containing file
-field::String - field containing file
-event::String - event containing file
-repeat_instance::Int - number of repeated instances (long project)
-format::String - "json", "xml", "csv", or "odm". decides format of returned data
-returnFormat::String - error message format
+##Parameters:
+* `config` - struct containing url and api-key
+* `record` - record id containing file
+* `field` - field containing file
+* `event` - event containing file
+* `repeat_instance` - number of repeated instances (long project)
+* `format` - "json", "xml", "csv", or "odm". decides format of returned data
+* `returnFormat` - error message format
 
-Returns:
+##Returns:
 document attached to individual record.
 """
 
@@ -355,16 +362,16 @@ end
 	export_reports(config::Config, report_id::Int; format::String="json", returnFormat::String="json",  
 						rawOrLabel::String="raw", rawOrLabelHeaders::String="raw", exportCheckboxLabel::Bool=false) 
 
-Parameters:
-config::Config - struct containing url and api-key
-report_id::Int - id of report to export
-format::String - "json", "xml", "csv", or "odm". decides format of returned data
-returnFormat::String - error message format
-rawOrLabel::String - "raw" or "label" - export raw coded values or labels for multiple choice fields
-rawOrLabelHeaders::String - same as above, for headers
-exportCheckboxLabel::Bool - checkbox behavior: export checkboxes as "checked/unchecked" or as "field-name/<blank>"
+##Parameters:
+* `config` - struct containing url and api-key
+* `report_id` - id of report to export
+* `format` - "json", "xml", "csv", or "odm". decides format of returned data
+* `returnFormat` - error message format
+* `rawOrLabel` - "raw" or "label" - export raw coded values or labels for multiple choice fields
+* `rawOrLabelHeaders` - same as above, for headers
+* `exportCheckboxLabel` - checkbox behavior: export checkboxes as "checked/unchecked" or as "field-name/<blank>"
 
-Returns:
+##Returns:
 formatted dict of report.
 """
 
@@ -379,15 +386,15 @@ end
 """ 
 	export_survey_link(config::Config, record::Int, instrument::String, event::String, repeat_instance::Int; returnFormat::String="json") 
 
-Parameters:
-config::Config - struct containing url and api-key
-record::Int - record id
-instrument::String = name of instrument linking to
-event::String - event name conatining instrument
-repeat_instance::Int - number of repeated instances (long project)
-returnFormat::String - error message format
+##Parameters:
+* `config` - struct containing url and api-key
+* `record` - record id
+* `instrument` = name of instrument linking to
+* `event` - event name conatining instrument
+* `repeat_instance` - number of repeated instances (long project)
+* `returnFormat` - error message format
 
-Returns:
+##Returns:
 unique survey link.
 """
 

@@ -9,10 +9,10 @@ module REDCap
 using JSON
 using LightXML
 using HTTP
-#using Requests
+using CSV
+
 using DataStructures
 using DataFrames
-using CSV
 
 #include essentially splats the code into this doc and pretends its there
 include("Config.jl")
@@ -21,11 +21,12 @@ include("Import.jl")
 include("Delete.jl")
 include("Utils.jl")
 
-include("../test/runtests.jl")
-include("../test/myTests.jl")
 
 #export to make them simply usable as toplevel funcs
-#export importRecord, Config, exportRecord, runTest
+#export importRecord, Config, exportRecord
+#cheat and include this
+include("../test/myTests.jl")
 export run_test
+#REMOVE ASAP
 
 end
