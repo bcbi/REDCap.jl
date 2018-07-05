@@ -7,3 +7,5 @@
 [![codecov.io](http://codecov.io/github/FLCN17/RedCap.jl/coverage.svg?branch=master)](http://codecov.io/github/FLCN17/RedCap.jl?branch=master)
 
 A Julia frontend for the REDCap API.
+
+##Example Usage:
