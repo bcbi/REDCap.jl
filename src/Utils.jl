@@ -5,22 +5,22 @@ Pass the type of api call, the config struct, and any needed kwargs for that api
 API documentation found here:
 https://<your-redcap-site.com>/redcap/api/help/?content=exp_field_names
 
-Parameters:
-mode::String - "import", "export", or "delete"
-content::String - Passed by calling modules to indicate what data to access
-config::Config - struct containing url and api-key
-kwargs...: Any addtl. arguments passed by the calling module
+##Parameters:
+* `mode` - "import", "export", or "delete"
+* `content` - Passed by calling modules to indicate what data to access
+* `config` - struct containing url and api-key
+* `kwargs...` - Any addtl. arguments passed by the calling module
 
-Returns:
+##Returns:
 Formatted response body
 """
 
-function api_pusher(mode::String, content::String, config::Config; kwargs...)
+function api_pusher(mode::String, content::String, config::Config; to_file::Bool=false, kwargs...)
 	#initialize dict with basic info and api calls
 	fields = Dict()
 	fields["token"] = config.key
-	fields["action"] = mode
-	fields["content"] = content
+	fields["action"] = mode #import, export, delete
+	fields["content"] = content #what to access
 
 	#validation here? Everyone passes through here...
 	#validate via kwarg? eg if match, check for value validation
@@ -28,15 +28,15 @@ function api_pusher(mode::String, content::String, config::Config; kwargs...)
 	#export validation?
 
 	#fill dict with passed kwargs
-	for arg in kwargs
+	for (k,v) in kwargs
 		#type is reserved in julia, quick-fix
-		if string(arg[1])=="dtype"
-			fields["type"]=arg[2]
+		if String(k)=="dtype"
+			fields["type"] = v
 		else
-			fields[string(arg[1])] = arg[2]
+			fields[String(k)] = v
 		end
 	end
-	
+	println(fields)
 	#POST request and get response
 	response = poster(config, fields)
 	println("POSTd")
@@ -45,11 +45,13 @@ function api_pusher(mode::String, content::String, config::Config; kwargs...)
 	#check if user wanted to save the file here -
 
 	#check for return format
-	if mode=="export" && haskey(fields, "format")
+	if mode=="export" && haskey(fields, "format") && to_file==false
 		return formatter(output, fields["format"], mode)
+	elseif mode=="import" && haskey(fields, "format")
+		#handle input feedback/errors
+		return formatter(output, fields["format"], "export") #treat returns from imports as exports
 	else
-		#handle input/delete number returns
-		return output
+		#delete
 	end
 	#horribly messy- make work gud
 	return output
@@ -61,11 +63,11 @@ end
 
 Handles the POST duties for all modules.
 
-Parameters:
-config::Config - struct containing url and api-key
-body - request body data
+##Parameters:
+* `config` - struct containing url and api-key
+* `body` - request body data
 
-Returns:
+##Returns:
 Anything the server returns; data or error messages.
 """
 
@@ -81,10 +83,10 @@ end
 """
 	generate_next_record_id(config::Config) 
 
-Parameters:
-config::Config - struct containing url and api-key
+##Parameters:
+* `config` - struct containing url and api-key
 
-Returns:
+##Returns:
 The next available ID number for project
 """
 
@@ -99,12 +101,12 @@ end
 """
 	formatter(data, format, mode::String)
 
-Parameters:
-data - the data to be formatted
-format - the target format
-mode::String - formatting for Import (data to server) or Export (data from server)
+##Parameters:
+* `data` - the data to be formatted
+* `format` - the target format
+* `mode` - formatting for Import (data to server) or Export (data from server)
 
-Returns:
+##Returns:
 the specified formatted/unformatted object
 """
 
@@ -127,17 +129,16 @@ end
 """
 	json_formatter(data, mode::String)
 
-Parameters:
-data - the data to be formatted
-mode::String - formatting for Import (data to server) or Export (data from server)
+##Parameters:
+* `data` - the data to be formatted
+* `mode` - formatting for Import (data to server) or Export (data from server)
 
-Returns:
+##Returns:
 the opposite of what was given in relation to json format
 """
 
 function json_formatter(data, mode::String)
 	if mode=="import"
-		test = [""]
 		#must turn a dict into json
 		#MASSIVE HEAT-SINK OF FAILURE - Next 4 functions
 		#=
@@ -163,11 +164,11 @@ end
 """
 	csv_formatter(data, mode::String)
 
-Parameters:
-data - the data to be formatted
-mode::String - formatting for Import (data to server) or Export (data from server)
+##Parameters:
+* `data` - the data to be formatted
+* `mode` - formatting for Import (data to server) or Export (data from server)
 
-Returns:
+##Returns:
 the opposite of what was given in relation to csv format
 """
 
@@ -199,11 +200,11 @@ end
 """
 	xml_formatter(data, mode::String)
 
-Parameters:
-data - the data to be formatted
-mode::String - formatting for Import (data to server) or Export (data from server)
+##Parameters:
+* `data` - the data to be formatted
+* `mode` - formatting for Import (data to server) or Export (data from server)
 
-Returns:
+##Returns:
 the opposite of what was given in relation to xml format
 """
 
@@ -256,42 +257,77 @@ end
 """
 	import_from_file(fileLoc::String, format::String)
 
-Desc.
+Called by importing functions to load data directly from a designated file
 
 ##Parameters:
-
+* `file_loc`: location of file
+* `format`: the target format
 
 ##Returns:
-
+The formatted data
 """
-function import_from_file(fileLoc::String, format::String)
-	if format=="json"
-		return #json
-	elseif format=="csv"
-		return CSV.read(fileLoc)
-	elseif format=="xml"
-		return #xml
-	elseif format=="odm"
-		return #odm
-	else
-		println("$format is an invalid format.\nValid formats: \"json\", \"csv\", \"xml\" or \"odm\"")
+function import_from_file(file_loc::String, format::String)
+	#take from file
+	#verify file exists
+	try
+		open(file_loc) do file
+			if format=="json"
+				return JSON.json(read(file))
+			elseif format=="csv"
+				output=CSV.read(file) #comes out a df- cant be sent as df...
+				return output
+			elseif format=="xml"
+				return parse_file(file) #xml
+			elseif format=="odm"
+				return #odm
+			else
+				println("$format is an invalid format.\nValid formats: \"json\", \"csv\", \"xml\" or \"odm\"")
+			end
+		end
+	catch
+		println("File could not be read:\n$file_loc")
 	end
 end
 
 
 """
+	export_to_file(fileLoc::String, format::String, data)
+
+Called by exporting functions to dump data into designated file
+
+##Parameters:
+* `file_loc`: location of file
+* `format`: the target format ###may not be needed!
+* `data`: the data to save to file
+
+##Returns:
+nothing/error
 """
 
-function export_to_file(fileLoc::String, format::String)
-	if format=="json"
-		#save to file - json
-	elseif format=="csv"
-		#save to file - csv
-	elseif format=="xml"
-		#save to file - xml
-	elseif format=="odm"
-		#save to file - odm
-	else
-		println("$format is an invalid format.\nValid formats: \"json\", \"csv\", \"xml\" or \"odm\"")
+function export_to_file(file_loc::String, format::String, data)
+	try
+		open(file_loc, "w") do file
+			if format=="json"
+				#save to file - json
+				writelm(file, data)
+			elseif format=="csv"
+				#save to file - csv
+				write(file, data)
+			elseif format=="xml"
+				#save to file - xml
+				write(file, data)
+			elseif format=="odm"
+				#save to file - odm
+			else
+				println("$format is an invalid format.\nValid formats: \"json\", \"csv\", \"xml\" or \"odm\"")
+			end
+		end
+	catch
+		println("File could not be read:\n$file_loc")
 	end
+end
+
+function import_file()
+	#handles file importing - non specific
+
 end

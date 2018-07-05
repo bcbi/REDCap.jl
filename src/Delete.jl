@@ -15,7 +15,7 @@ delete Arms from project.
 number of succesfully deleted arms
 """
 
-function delete_arms(config::Config, arms=[])
+function delete_arms(config::Config, arms::Array)
 	output = api_pusher("delete", "arm", config, arms=arms)
 	return output
 end
@@ -36,7 +36,7 @@ delete Events from project.
 number of successfully deleted events
 """
 
-function delete_events(config::Config, events=[])
+function delete_events(config::Config, events::Array)
 	output = api_pusher("delete", "event", config, events=events)
 	return output
 end
@@ -83,19 +83,12 @@ delete one or more records from project.
 number of records successfully deleted
 """
 
-function delete_records(config::Config, records; arm::Integer=0)
+function delete_records(config::Config, records::Array; arm::Integer=0)
 	#work on this - broken
-	if isa(records, Array)
-		if arm != 0
-			return output = api_pusher("delete", "record", config, records=records, arm=arm)
-		else
-			println("no ARM")
-			return output = api_pusher("delete", "record", config, records=records)
-			#=
-				ERROR: BoundsError
-			=#
-		end
+	if arm != 0
+		return output = api_pusher("delete", "record", config, records=records, arm=arm)
 	else
-		println("Records must be passed as an array!")
+		println("no ARM")
+		return output = api_pusher("delete", "record", config, records=records)
 	end
 end
