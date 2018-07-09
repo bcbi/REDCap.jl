@@ -28,6 +28,8 @@ const REDCap_URL = get(ENV, "REDCAP_URL", "")
 	#	also check any files and the pdf and xml of project.
 	# Delete: Delete everything from the project piece by piece, and finally the project-
 	# 	Verify everything, and try to export from it again.
+	#
+	# Have a file that contains ~40 example records, and all testing data needed? Not include generators? Space vs. complexity
 	# 
 	=#
 	
@@ -53,7 +55,11 @@ const REDCap_URL = get(ENV, "REDCAP_URL", "")
 
 
 
-	#Exporting
+	#Exporting - verify that data exported is accurate and in there(?)
+	#Call functions in more varietyies of ways - show off options - export to file, verifiy file is there and can 
+	#be grabbed, modified, and re-imported
+
+	#get out of a lump function- make like 4-5 meaningful calls
 	function test_export_method1(config::Config)
 		#=
 		println("TEST 1 - Press X to JSON")
@@ -124,5 +130,11 @@ const REDCap_URL = get(ENV, "REDCAP_URL", "")
 		#println(export_reports(config))
 		
 	end
+
+	#testing for importing and record verifiyng
+
+
+
+	#test deletion and project closure
 
 end

@@ -1,3 +1,4 @@
+##MOVE TO runtests.jl
 using REDCap
 using JSON
 include("../src/Utils.jl")
