@@ -88,7 +88,7 @@ function delete_records(config::Config, records::Array; arm::Integer=0)
 	if arm != 0
 		return output = api_pusher("delete", "record", config, records=records, arm=arm)
 	else
-		println("no ARM")
+		#println("no ARM")
 		return output = api_pusher("delete", "record", config, records=records)
 	end
 end

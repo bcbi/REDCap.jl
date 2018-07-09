@@ -15,16 +15,7 @@ number of successfully imported values
 """
 
 function import_project_information(config::Config, data; format::String="json")
-	#handle validation and import validation - if not already passing formatted data, format - else leave alone and pass
-	#take the data as the file-location?
-	#loading from file - eg take csv file, open it, throw into a buffer(?), pass to import func. 
-	#rely on user to check if format works?
-	if isfile(data)
-		infoData = import_from_file(data, format)
-	else
-		infoData = formatter(data, format, "import")
-	end
-	output = api_pusher("import", "project_settings", config, infoData = infoData, format=format)
+	output = api_pusher("import", "project_settings", config, infoData = import_file_checker(data, format), format=format)
 	return output
 end
 
@@ -45,12 +36,7 @@ number of successfully imported fields
 """
 
 function import_metadata(config::Config, data; format::String="json", returnFormat::String="json")
-	if isfile(data)
-		metaData = import_from_file(data, format)
-	else
-		metaData = formatter(data, format, "import")
-	end
-	output = api_pusher("import", "metadata", config, metaData = metaData, format=format, returnFormat=returnFormat)
+	output = api_pusher("import", "metadata", config, metaData = import_file_checker(data, format), format=format, returnFormat=returnFormat)
 	return output
 end
 
@@ -71,12 +57,7 @@ number of successfully imported users
 """
 
 function import_user(config::Config, data; format::String="json", returnFormat::String="json")
-	if isequal(typeof(data), String) && ispath(data)
-		userData = import_from_file(data, format)
-	else
-		userData = formatter(data, format, "import")
-	end
-	output = api_pusher("import", "user", config, userData = userData, format=format, returnFormat=returnFormat)
+	output = api_pusher("import", "user", config, userData = import_file_checker(data, format), format=format, returnFormat=returnFormat)
 	return output
 end
 
@@ -136,12 +117,7 @@ number of successfully imported arms
 """
 
 function import_arms(config::Config, data; override::Int=0, format::String="json", returnFormat::String="json")
-	if isfile(data)
-		armData = import_from_file(data, format)
-	else
-		armData = formatter(data, format, "import")
-	end
-	output = api_pusher("import", "arm", config, armData = armData, override=override, format=format, returnFormat=returnFormat)
+	output = api_pusher("import", "arm", config, armData = import_file_checker(data, format), override=override, format=format, returnFormat=returnFormat)
 	return output
 end
 
@@ -163,12 +139,7 @@ number of successfully imported events
 """
 
 function import_events(config::Config, data; override::Int=0, format::String="json", returnFormat::String="json")
-	if isfile(data)
-		userData = import_from_file(data, format)
-	else
-		userData = formatter(data, format, "import")
-	end
-	output = api_pusher("import", "event", config, userData = userData, override=override, format=format, returnFormat=returnFormat)
+	output = api_pusher("import", "event", config, userData = import_file_checker(data, format), override=override, format=format, returnFormat=returnFormat)
 	return output
 end
 
@@ -200,12 +171,7 @@ specified by returnContent
 function import_records(config::Config, recordData; format::String="json", dtype::String="flat", 
 						overwriteBehavior::String="normal", forceNumber::Bool=false, dateFormat::String="YMD",
 						returnContent::String="count", returnFormat::String="json")
-	if isfile(data)
-		recordData = import_from_file(data, format)
-	else
-		recordData = formatter(data, format, "import")
-	end
-	output = api_pusher("import", "record", config, data = recordData, format=format, dtype=dtype, 
+	output = api_pusher("import", "record", config, data = import_file_checker(data, format), format=format, dtype=dtype, 
 							overwriteBehavior=overwriteBehavior, forceNumber=forceNumber, dateFormat=dateFormat,
 							returnContent=returnContent, returnFormat=returnFormat)
 	return output
@@ -230,12 +196,7 @@ number of successfully imported inst-event mappings
 """
 
 function import_insrument_event_mappings(config::Config, data; format::String="json", returnFormat::String="json")
-	if isfile(data)
-		instData = import_from_file(data, format)
-	else
-		instData = formatter(data, format, "import")
-	end
-	output = api_pusher("import", "formEventMapping", config, instData = instData, arms=arms, format=format, returnFormat=returnFormat)
+	output = api_pusher("import", "formEventMapping", config, instData = import_file_checker(data, format), arms=arms, format=format, returnFormat=returnFormat)
 	return output
 end
 
