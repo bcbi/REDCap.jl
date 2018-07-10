@@ -3,7 +3,7 @@ include("Utils.jl")
 """ 
 	delete_arms(config::Config, arms=[]) 
 
-delete Arms from project.
+Delete Arms from project.
 
 #NOTE: This only works for longitudinal projects. 
 
@@ -14,7 +14,7 @@ delete Arms from project.
 ##Returns:
 number of succesfully deleted arms
 """
-
+###BROKEN(?)###
 function delete_arms(config::Config, arms::Array)
 	output = api_pusher("delete", "arm", config, arms=arms)
 	return output
@@ -24,7 +24,7 @@ end
 """ 
 	delete_events(config::Config, events=[]) 
 
-delete Events from project.
+Delete Events from project.
 
 #NOTE: This only works for longitudinal projects. 
 
@@ -35,7 +35,7 @@ delete Events from project.
 ##Returns:
 number of successfully deleted events
 """
-
+###BROKEN(?)###
 function delete_events(config::Config, events::Array)
 	output = api_pusher("delete", "event", config, events=events)
 	return output
@@ -46,7 +46,7 @@ end
 	delete_file(config::Config, record::Int, field::String, event::String, repeat_instance::Int; 
 				returnFormat::String="json") 
 
-delete document attached to record.
+Delete document attached to record.
 
 ##Parameters:
 * `config` - struct containing url and api-key
@@ -72,7 +72,7 @@ end
 """
 	delete_records(config::Config, records=[]; arm::Int=0)
 
-delete one or more records from project.
+Delete one or more records from project.
 
 ##Parameters:
 * `config` - struct containing the url and api-key
@@ -82,7 +82,7 @@ delete one or more records from project.
 ##Returns:
 number of records successfully deleted
 """
-
+###BROKEN### - wants an array of record names, even if you give it an array of record names
 function delete_records(config::Config, records::Array; arm::Integer=0)
 	#work on this - broken
 	if arm != 0

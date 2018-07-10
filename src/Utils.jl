@@ -18,7 +18,7 @@ https://<your-redcap-site.com>/redcap/api/help/?content=exp_field_names
 Formatted response body
 """
 
-function api_pusher(mode::String, content::String, config::Config; to_file::Bool=false, kwargs...)
+function api_pusher(mode::String, content::String, config::Config; file_loc::String="", kwargs...)
 	#initialize dict with basic info and api calls
 	fields = Dict()
 	fields["token"] = config.key
@@ -31,13 +31,13 @@ function api_pusher(mode::String, content::String, config::Config; to_file::Bool
 	#validate via kwarg? eg if match, check for value validation
 	#import validation?
 	#export validation?
-
 	#fill dict with passed kwargs - function?
+	#println(kwargs)
 	for (k,v) in kwargs
 		#type is reserved in julia, quick-fix
 		if isequal(String(k), "dtype")
 			fields["type"] = v
-		elseif isequal(String(v), "df")
+		elseif isequal(get(fields, "format",""), "df")
 			fields["format"] = "csv" #Pass as the closest thing
 		else
 			fields[String(k)] = v
@@ -47,13 +47,20 @@ function api_pusher(mode::String, content::String, config::Config; to_file::Bool
 	#POST request and get response
 	response = poster(config, fields)
 	output = String(response.body) 
-	
+	#println(file_loc)
 	#check if user wanted to save the file here -
-
+	to_file = (length(file_loc)>1?true:false)
 	#check for return format
-	if mode=="export" && haskey(fields, "format") && to_file==false #handle this differently? to_file is weird...
-		return formatter(output, fields["format"], mode)
-	elseif mode=="import" && haskey(fields, "format") && to_file==false
+	if mode=="export" && haskey(fields, "format") 
+		if to_file==false
+			println("outputting")
+			return formatter(output, fields["format"], mode)
+		else
+			#exporting to file
+			println("to file")
+			export_to_file(file_loc, fields["format"], output)
+		end
+	elseif mode=="import" && haskey(fields, "format")
 		#handle input feedback/errors
 		return formatter(output, fields["format"], "export") #treat returns from imports as exports
 	else
@@ -115,11 +122,11 @@ end
 * `mode` - formatting for Import (data to server) or Export (data from server)
 
 ##Returns:
-the specified formatted/unformatted object
+The specified formatted/unformatted object
 """
 
 function formatter(data, format, mode::String) #flag to save to file?
-	println(typeof(data))
+	#println(typeof(data))
 	if format=="json"
 		json_formatter(data, mode)
 	elseif format=="csv"
@@ -137,6 +144,8 @@ function formatter(data, format, mode::String) #flag to save to file?
 end
 
 
+		#MASSIVE HEAT-SINK OF FAILURE#
+
 """
 	json_formatter(data, mode::String)
 
@@ -145,13 +154,12 @@ end
 * `mode` - formatting for Import (data to server) or Export (data from server)
 
 ##Returns:
-the opposite of what was given in relation to json format
+The opposite of what was given in relation to json format
 """
-
+###BROKEN###
 function json_formatter(data, mode::String)
 	if mode=="import"
-		#must turn a dict into json
-		#MASSIVE HEAT-SINK OF FAILURE - Next 4 functions
+		#must turn a dict/data structure into json - allegedly simple
 		#=
 		println(typeof(JSON.json(data))); println("Returned")
 		test[1]=JSON.json(data)
@@ -159,12 +167,14 @@ function json_formatter(data, mode::String)
 		return test[1]
 		=#
 		return JSON.json(data) #Different method of JSON.? JSON.print?
+		#print(JSON.print(data, 1))
+		#return JSON.print(data, 1)
 	else
 		#must turn json into a dict
 		try
 			return JSON.parse(data) 
 		catch
-			println("Catch")
+			println("Catch - data cannot be json formatted")
 			return data #for things that arent dicts
 		end
 
@@ -180,9 +190,9 @@ end
 * `mode` - formatting for Import (data to server) or Export (data from server)
 
 ##Returns:
-the opposite of what was given in relation to csv format
+The opposite of what was given in relation to csv format
 """
-
+###BROKEN###
 function csv_formatter(data, mode::String)
 	if mode=="import"
 		#must turn dict into csv
@@ -197,11 +207,12 @@ function csv_formatter(data, mode::String)
 		#must turn csv into dict/df
 		try
 			#bad, broken
+			println("tryin to dict")
 			formattedData = Dict()
 			CSV.read(IOBuffer(String(data)), formattedData)
 			return formattedData
 		catch
-			println("Catch")
+			println("Catch - data cannot be csv formatted")
 			return data
 		end
 	end
@@ -216,9 +227,9 @@ end
 * `mode` - formatting for Import (data to server) or Export (data from server)
 
 ##Returns:
-the opposite of what was given in relation to xml format
+The opposite of what was given in relation to xml format
 """
-
+###BROKEN###
 function xml_formatter(data, mode::String)
 	if mode=="import"
 		#must turn dict into xml
@@ -232,7 +243,7 @@ function xml_formatter(data, mode::String)
 			#println(data); #println(typeof(data))
 			return data
 		catch
-			println("Catch")
+			println("Catch - data cannot be xml formatted")
 			return data
 		end
 	end
@@ -247,9 +258,9 @@ end
 * `mode` - formatting for Import (data to server) or Export (data from server)
 
 ##Returns:
-the opposite of what was given in relation to odm format
+The opposite of what was given in relation to odm format
 """
-
+###BROKEN###
 function odm_formatter(data, mode::String)
 	if mode=="import"
 		#must turn dict into odm
@@ -257,9 +268,9 @@ function odm_formatter(data, mode::String)
 	else
 		#must turn odm into a dict
 		try
-			1==2
+			return data
 		catch
-			println("Catch")
+			println("Catch - data cannot be odm formatted")
 			return data
 		end
 	end
@@ -274,19 +285,19 @@ end
 * `mode` - formatting for Import (data to server) or Export (data from server)
 
 ##Returns:
-the opposite of what was given in relation to df format
+The opposite of what was given in relation to df format
 """
-
+###BROKEN###
 function df_formatter(data, mode::String)
 	if mode=="import"
 		#must turn dict into a dataframe
-		return data
+		return 
 	else
 		#must turn dataframe into a dict
 		try
-			1==2
+			return 
 		catch
-			println("Catch")
+			println("Catch - data cannot be df formatted")
 			return data
 		end
 	end
@@ -296,7 +307,7 @@ end
 """
 	import_from_file(fileLoc::String, format::String)
 
-Called by importing functions to load data directly from a designated file
+Called by importing functions to load already formatted data directly from a designated file
 
 ##Parameters:
 * `file_loc`: location of file
@@ -305,18 +316,20 @@ Called by importing functions to load data directly from a designated file
 ##Returns:
 The formatted data
 """
+###(half)BROKEN###
 function import_from_file(file_loc::String, format::String)
 	#take from file
 	#verify file exists
-	try
+	#try
 		open(file_loc) do file
 			if format=="json"
-				return JSON.json(read(file))
+				return String(read(file))
 			elseif format=="csv"
 				output=CSV.read(file) #comes out a df- cant be sent as df...
+				println(typeof(output))
 				return output
 			elseif format=="xml"
-				return parse_file(file) #xml
+				return string(parse_file(file_loc)) #xml
 			elseif format=="odm"
 				return #odm
 			elseif format=="df"
@@ -326,9 +339,9 @@ function import_from_file(file_loc::String, format::String)
 				println("$format is an invalid format.\nValid formats: \"json\", \"csv\", \"xml\", \"odm\", or \"df\"")
 			end
 		end
-	catch
-		println("File could not be read:\n$file_loc")
-	end
+	#catch
+	#	println("File could not be read:\n$file_loc")
+	#end
 end
 
 
@@ -351,7 +364,7 @@ function import_file_checker(data, format::String)
 	#take the data as the file-location?
 	#loading from file - eg take csv file, open it, throw into a buffer(?), pass to import func. 
 	#rely on user to check if format works?
-	if isa(data, String) && ispath(data)
+	if length(data)<255 && isa(data, String) && ispath(data)
 		return import_from_file(data, format)
 	else
 		return formatter(data, format, "import")
@@ -370,15 +383,16 @@ Called by exporting functions to dump data into designated file
 * `data`: the data to save to file
 
 ##Returns:
-nothing/error
+Nothing/error
 """
 
 function export_to_file(file_loc::String, format::String, data)
 	try
 		open(file_loc, "w") do file
 			if format=="json"
-				#save to file - json - is there a more JSONy way to do this?
-				writelm(file, data)
+				#save to file - json - is there a more JSONy way to do this?- there is! JSON.print~!
+				#JSON.print(file, JSON.parse(data), 1)
+				write(file, data)
 			elseif format=="csv"
 				#save to file - csv
 				write(file, data)
@@ -396,9 +410,4 @@ function export_to_file(file_loc::String, format::String, data)
 	catch
 		println("File could not be read:\n$file_loc")
 	end
-end
-
-function import_file()
-	#handles file importing - non specific
-	#grab a file, return as data object?
 end

@@ -1,19 +1,19 @@
 include("Utils.jl")
 
 """
-	import_project_information(config::Config, infoData; format::String="json")
+	import_project_information(config::Config, data; format::String="json")
 
-update basic attributes of given REDCap project.
+Update basic attributes of given REDCap project.
 
 ##Parameters:
 * `config` - struct containing url and api-key
-* `infoData` - data to be imported - pass as a file location to import from disk
+* `data` - data to be imported - pass as a file location to import from disk
 * `format` - "json", "xml", "csv", or "odm". declares format of imported data
 
 ##Returns:
-number of successfully imported values
+Number of successfully imported values
 """
-
+###BROKEN###
 function import_project_information(config::Config, data; format::String="json")
 	output = api_pusher("import", "project_settings", config, infoData = import_file_checker(data, format), format=format)
 	return output
@@ -21,20 +21,20 @@ end
 
 
 """
-	import_metadata(config::Config, metaData; format::String="json", returnFormat::String="json")
+	import_metadata(config::Config, data; format::String="json", returnFormat::String="json")
 
-import metadata (i.e., Data Dictionary) into a project.
+Import metadata (i.e., Data Dictionary) into a project.
 
 ##Parameters:
 * `config` - struct containing url and api-key
-* `metaData` - data to be imported - pass as a file location to import from disk
+* `data` - data to be imported - pass as a file location to import from disk
 * `format` - "json", "xml", "csv", or "odm". declares format of imported data
 * `returnFormat` - error message format
 
 ##Returns:
-number of successfully imported fields
+Number of successfully imported fields
 """
-
+###BROKEN###
 function import_metadata(config::Config, data; format::String="json", returnFormat::String="json")
 	output = api_pusher("import", "metadata", config, metaData = import_file_checker(data, format), format=format, returnFormat=returnFormat)
 	return output
@@ -42,20 +42,20 @@ end
 
 
 """
-	import_user(config::Config, userData; format::String="json", returnFormat::String="json")
+	import_user(config::Config, data; format::String="json", returnFormat::String="json")
 
-update/import new users into a project.
+Update/import new users into a project.
 
 ##Parameters:
 * `config` - struct containing url and api-key
-* `userData` - data to be imported - pass as a file location to import from disk
+* `data` - data to be imported - pass as a file location to import from disk
 * `format` - "json", "xml", "csv", or "odm". declares format of imported data
 * `returnFormat` - error message format
 
 ##Returns:
-number of successfully imported users
+Number of successfully imported users
 """
-
+###BROKEN###
 function import_user(config::Config, data; format::String="json", returnFormat::String="json")
 	output = api_pusher("import", "user", config, userData = import_file_checker(data, format), format=format, returnFormat=returnFormat)
 	return output
@@ -96,26 +96,25 @@ Any[
 					Pair{String,Any}("manage_survey_participants", "1"),
 					Pair{String,Any}("lastname", ""))
 	]
-
-
 =#
 
-"""
-	import_arms(config::Config, armData; override::Int=0, format::String="json", returnFormat::String="json")
 
-update/import Arms into a project.
+"""
+	import_arms(config::Config, data; override::Int=0, format::String="json", returnFormat::String="json")
+
+Update/import Arms into a project.
 
 ##Parameters:
 * `config` - struct containing url and api-key
-* `armData` - data to be imported - pass as a file location to import from disk
+* `data` - data to be imported - pass as a file location to import from disk
 * `override` - 0 (false) 1 (true) - overwrites existing arms
 * `format` - "json", "xml", "csv", or "odm". declares format of imported data
 * `returnFormat` - error message format
 
 ##Returns:
-number of successfully imported arms
+Number of successfully imported arms
 """
-
+###BROKEN###
 function import_arms(config::Config, data; override::Int=0, format::String="json", returnFormat::String="json")
 	output = api_pusher("import", "arm", config, armData = import_file_checker(data, format), override=override, format=format, returnFormat=returnFormat)
 	return output
@@ -123,21 +122,21 @@ end
 
 
 """
-	import_events(config::Config, userData; override::Int=0, format::String="json", returnFormat::String="json")
+	import_events(config::Config, data; override::Int=0, format::String="json", returnFormat::String="json")
 
-update/import Events into a project.
+Update/import Events into a project.
 
 ##Parameters:
 * `config` - struct containing url and api-key
-* `userData` - data to be imported - pass as a file location to import from disk
+* `data` - data to be imported - pass as a file location to import from disk
 * `override` - 0 (false) 1 (true) - overwrites existing events
 * `format` - "json", "xml", "csv", or "odm". declares format of imported data
 * `returnFormat` - error message format
 
 ##Returns:
-number of successfully imported events
+Number of successfully imported events
 """
-
+###BROKEN###
 function import_events(config::Config, data; override::Int=0, format::String="json", returnFormat::String="json")
 	output = api_pusher("import", "event", config, userData = import_file_checker(data, format), override=override, format=format, returnFormat=returnFormat)
 	return output
@@ -149,7 +148,7 @@ end
 						overwriteBehavior::String="normal", forceNumber::Bool=false, dateFormat::String="YMD",
 						returnContent::String="count", returnFormat::String="json")
 
-import a set of records for a project.
+Import a set of records for a project.
 
 ##Parameters:
 * `config` - struct containing url and api-key
@@ -165,13 +164,13 @@ import a set of records for a project.
 * `returnFormat` - error message format
 
 ##Returns:
-specified by returnContent
+Specified by returnContent
 """
-
+###BROKEN###
 function import_records(config::Config, recordData; format::String="json", dtype::String="flat", 
 						overwriteBehavior::String="normal", forceNumber::Bool=false, dateFormat::String="YMD",
 						returnContent::String="count", returnFormat::String="json")
-	output = api_pusher("import", "record", config, data = import_file_checker(data, format), format=format, dtype=dtype, 
+	output = api_pusher("import", "record", config, data = import_file_checker(recordData, format), format=format, dtype=dtype, 
 							overwriteBehavior=overwriteBehavior, forceNumber=forceNumber, dateFormat=dateFormat,
 							returnContent=returnContent, returnFormat=returnFormat)
 	return output
@@ -179,9 +178,9 @@ end
 
 
 """
-	import_insrument_event_mappings(config::Config, instData; format::String="json", returnFormat::String="json")
+	import_insrument_event_mappings(config::Config, data; format::String="json", returnFormat::String="json")
 
-import Instrument-Event Mappings into a project 
+Import Instrument-Event Mappings into a project 
 
 #NOTE: This only works for longitudinal projects.
 
@@ -192,9 +191,9 @@ import Instrument-Event Mappings into a project
 * `returnFormat` - error message format
 
 ##Returns:
-number of successfully imported inst-event mappings
+Number of successfully imported inst-event mappings
 """
-
+###BROKEN###
 function import_insrument_event_mappings(config::Config, data; format::String="json", returnFormat::String="json")
 	output = api_pusher("import", "formEventMapping", config, instData = import_file_checker(data, format), arms=arms, format=format, returnFormat=returnFormat)
 	return output
@@ -205,26 +204,26 @@ end
 	import_file(config::Config, record::String, field::String, event::String, repeat_instance::Int, file;
 					returnFormat::String="json")
 
-upload a document to specific record/field.
+Upload a document to specific record to the designated uploading field.
 
 ##Parameters:
 * `config` - struct containing url and api-key
 * `record` - destination record id
-* `field` - destination field
+* `field` - destination file upload field
 * `event` - destination event
 * `repeat_instance` - number of repeated instances (long project)
 * `file` - file to be imported
 * `returnFormat` - error message format
 
 ##Returns:
-nothing
+Nothing/errors
 """
 
 function import_file(config::Config, record::String, field::String, event::String, repeat_instance::Int, file::String;
 					returnFormat::String="json")
 	#load file up into memory?
 	output = api_pusher("import", "file", config, record=record, field=field, event=event, repeat_instance=repeat_instance, 
-							file=import_file(file), returnFormat=returnFormat)
+							file=open(file), returnFormat=returnFormat)
 	return output
 end
 
@@ -249,9 +248,9 @@ end
 * `odm` - XML string containing metadata
 
 ##Returns:
-The standard config
+The standard config, with same url and API-key to access project
 """
-
+###BROKEN(?)###
 function create_project(config::Config, project_title::String, purpose::Integer; format::String="json",
 						returnFormat::String="json", odm="NULL", purpose_other::String="", project_notes::String="", 
 						is_longitudinal::Integer=0, surveys_enabled::Integer=0, record_autonumbering_enabled::Integer=1)
