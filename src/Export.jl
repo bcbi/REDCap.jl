@@ -45,7 +45,7 @@ end
 
 ##Parameters:
 * `config` - struct containing url and api-key
-format::String - "json", "xml", "csv", or "odm". decides format of returned data
+* `format` - "json", "xml", "csv", or "odm". decides format of returned data
 * `file_loc` - location to export to
 
 ##Returns:
@@ -166,7 +166,7 @@ end
 * `config` - struct containing url and api-key
 * `record` - record ID to populate PDF
 * `event` - event name to populate PDF
-* `instrument` = name of instrument to populate PDF
+* `instrument` - name of instrument to populate PDF
 * `allRecord` - flag to take all records or not
 * `file_loc` - location to export to
 
@@ -189,7 +189,7 @@ function export_pdf(config::Config, file_loc::String; record::String="", event::
 	try
 		write(file_loc, output)
 	catch
-		error("Bad filepath given; must be valid filepath.")
+		error("File could not be read:\n$file_loc")
 	end
 end
 
@@ -285,7 +285,8 @@ end
 
 
 """
-	export_survey_return_code(config::Config, record::String, instrument::String, event::String, repeat_instance::Integer; returnFormat::String="json") 
+	export_survey_return_code(config::Config, record::String, instrument::String, event::String, 
+								repeat_instance::Integer; returnFormat::String="json") 
 
 ##Parameters:
 * `config` - struct containing url and api-key
@@ -299,7 +300,8 @@ end
 Unique Return Code in plain text format.
 """
 
-function export_survey_return_code(config::Config, record::String, instrument::String, event::String, repeat_instance::Integer; returnFormat::String="json")
+function export_survey_return_code(config::Config, record::String, instrument::String, event::String, 
+									repeat_instance::Integer; returnFormat::String="json")
 	output = api_pusher("export", "surveyReturnCode", config, record=record, instrument=instrument, event=event, 
 							repeat_instance=repeat_instance, returnFormat=returnFormat)
 	return output
@@ -307,7 +309,8 @@ end
 
 
 """
-	export_instrument_event_mappings(config::Config, arms=[]; format::String="json", returnFormat::String="json", file_loc::String="") 
+	export_instrument_event_mappings(config::Config, arms=[]; format::String="json", returnFormat::String="json", 
+										file_loc::String="") 
 
 #NOTE: This only works for longitudinal projects.
 
@@ -329,7 +332,8 @@ end
 
 
 """
-	export_survey_participant_list(config::Config, instrument::String, event::String; format::String="json", returnFormat::String="json", file_loc::String="") 
+	export_survey_participant_list(config::Config, instrument::String, event::String; format::String="json", 
+									returnFormat::String="json", file_loc::String="") 
 
 ##Parameters:
 * `config` - struct containing url and api-key
@@ -403,7 +407,8 @@ end
 
 
 """ 
-	export_survey_link(config::Config, record::Int, instrument::String, event::String, repeat_instance::Int; returnFormat::String="json") 
+	export_survey_link(config::Config, record::Int, instrument::String, event::String, repeat_instance::Int; 
+						returnFormat::String="json") 
 
 ##Parameters:
 * `config` - struct containing url and api-key

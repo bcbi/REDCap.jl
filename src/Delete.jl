@@ -14,7 +14,7 @@ Delete Arms from project.
 ##Returns:
 number of succesfully deleted arms
 """
-###BROKEN(?)###
+###BROKEN### - see HTTP's array handling in escapeuri()
 function delete_arms(config::Config, arms::Array)
 	output = api_pusher("delete", "arm", config, arms=arms)
 	return output
@@ -35,7 +35,7 @@ Delete Events from project.
 ##Returns:
 number of successfully deleted events
 """
-###BROKEN(?)###
+###BROKEN### - see HTTP's array handling in escapeuri()
 function delete_events(config::Config, events::Array)
 	output = api_pusher("delete", "event", config, events=events)
 	return output
@@ -43,8 +43,8 @@ end
 
 
 """
-	delete_file(config::Config, record::Int, field::String, event::String, repeat_instance::Int; 
-				returnFormat::String="json") 
+	delete_file(config::Config, record::Int, field::String, event::String, 
+					repeat_instance::Int; returnFormat::String="json") 
 
 Delete document attached to record.
 
@@ -60,10 +60,10 @@ Delete document attached to record.
 nothing/error
 """
 
-function delete_file(config::Config, record::String, field::String, event::String, repeat_instance::Integer; 
-					returnFormat::String="json")
-	output = api_pusher("delete", "file", config, record=record, field=field, event=event, repeat_instance=repeat_instance, 
-							returnFormat=returnFormat)
+function delete_file(config::Config, record::String, field::String, event::String, 
+						repeat_instance::Integer; returnFormat::String="json")
+	output = api_pusher("delete", "file", config, record=record, field=field, event=event, 
+							repeat_instance=repeat_instance, returnFormat=returnFormat)
 	return output
 end
 
@@ -82,7 +82,7 @@ Delete one or more records from project.
 ##Returns:
 number of records successfully deleted
 """
-###BROKEN### - wants an array of record names, even if you give it an array of record names
+###BROKEN### - see HTTP's array handling in escapeuri()
 function delete_records(config::Config, records::Array; arm::Integer=0)
 	#work on this - broken
 	if arm != 0

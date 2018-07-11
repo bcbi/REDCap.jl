@@ -1,5 +1,5 @@
 #handling ssl- place up top as a global var, create a function that calls and modifies it? 
-##Poster just look at that to decide how to act?
+#have poster just look at that to decide how to act?
 
 """
 	api_pusher(mode::String, content::String, config::Config; kwargs...)
@@ -43,14 +43,15 @@ function api_pusher(mode::String, content::String, config::Config; file_loc::Str
 			fields[String(k)] = v
 		end
 	end
-	#println(fields)
+	println(fields)
+
 	#POST request and get response
 	response = poster(config, fields)
-	output = String(response.body) 
-	#println(file_loc)
+	output = String(response.body)
+
 	#check if user wanted to save the file here -
-	to_file = (length(file_loc)>1?true:false)
-	#check for return format
+	to_file = (length(file_loc)>1 ? true : false)
+	#check for return format 
 	if mode=="export" && haskey(fields, "format") 
 		if to_file==false
 			println("outputting")
@@ -58,13 +59,14 @@ function api_pusher(mode::String, content::String, config::Config; file_loc::Str
 		else
 			#exporting to file
 			println("to file")
-			export_to_file(file_loc, fields["format"], output)
+			export_to_file(file_loc, output)
 		end
 	elseif mode=="import" && haskey(fields, "format")
 		#handle input feedback/errors
 		return formatter(output, fields["format"], "export") #treat returns from imports as exports
 	else
-		#delete
+		#delete - this is a simple little report of how many things you deleted if anything -
+		#doesnt even take a format, so treat 'im like a JSON, or whatever is easier, and format it out simple like
 	end
 	#horribly messy- make work gud
 	return output
@@ -88,12 +90,19 @@ function poster(config::Config, body)
 	println("POSTing")
 	response = HTTP.post(config.url; body=body, require_ssl_verification=true)
 	println("POSTd")
-	return response
+	#or is this an apropo place for a try/catch?
+	if response.status>=400
+		#Error - handle it
+		println(response.status)
+
+	else
+		return response
+	end
 	#handle errors way more robustly- check for "error" field? here or back at api_pusher?
 end
 
 
-#MOVE OUT? Can be considered a Utility, is required by importing if you do not specifiy record id and need it.
+#MOVE OUT? Can be considered a Utility, is required by importing if you do not specify record id and need it.
 #Make get_next_record_id and place in export? It's basically an export function.
 """
 	generate_next_record_id(config::Config) 
@@ -138,13 +147,14 @@ function formatter(data, format, mode::String) #flag to save to file?
 	elseif format=="df"
 		#special dataframe case- handles dataframe objects specifically, separate from CSV (but totally used with CSV, neat right?)
 		#Note: df is not a REDCap type, will pass an error or the default (JSON)
+		df_formatter(data, mode)
 	else
-		println("$format is an invalid format.\nValid formats: \"json\", \"csv\", \"xml\", \"odm\", or \"df\"")
+		error("$format is an invalid format.\nValid formats: \"json\", \"csv\", \"xml\", \"odm\", or \"df\"")
 	end
 end
 
 
-		#MASSIVE HEAT-SINK OF FAILURE#
+
 
 """
 	json_formatter(data, mode::String)
@@ -156,7 +166,7 @@ end
 ##Returns:
 The opposite of what was given in relation to json format
 """
-###BROKEN###
+
 function json_formatter(data, mode::String)
 	if mode=="import"
 		#must turn a dict/data structure into json - allegedly simple
@@ -167,7 +177,7 @@ function json_formatter(data, mode::String)
 		return test[1]
 		=#
 		return JSON.json(data) #Different method of JSON.? JSON.print?
-		#print(JSON.print(data, 1))
+		#print(JSON.print(data, 1)) #Nope, print()s just for looks
 		#return JSON.print(data, 1)
 	else
 		#must turn json into a dict
@@ -180,6 +190,8 @@ function json_formatter(data, mode::String)
 
 	end
 end
+
+		#MASSIVE HEAT-SINK OF FAILURE#
 
 
 """
@@ -287,7 +299,7 @@ end
 ##Returns:
 The opposite of what was given in relation to df format
 """
-###BROKEN###
+###REAL REAL REAL /REAL/ /REAL/ BROKEN yEAH###
 function df_formatter(data, mode::String)
 	if mode=="import"
 		#must turn dict into a dataframe
@@ -320,7 +332,7 @@ The formatted data
 function import_from_file(file_loc::String, format::String)
 	#take from file
 	#verify file exists
-	#try
+	try
 		open(file_loc) do file
 			if format=="json"
 				return String(read(file))
@@ -336,12 +348,12 @@ function import_from_file(file_loc::String, format::String)
 				#handle the elusive last format- df. NOTE- df is not a supported format, and will probably pass to REDCap as
 				#	an error, or bounce back default format (JSON), so play around with how to pass it to the API
 			else
-				println("$format is an invalid format.\nValid formats: \"json\", \"csv\", \"xml\", \"odm\", or \"df\"")
+				error("$format is an invalid format.\nValid formats: \"json\", \"csv\", \"xml\", \"odm\", or \"df\"")
 			end
 		end
-	#catch
-	#	println("File could not be read:\n$file_loc")
-	#end
+	catch
+		error("File could not be read:\n$file_loc")
+	end
 end
 
 
@@ -364,7 +376,7 @@ function import_file_checker(data, format::String)
 	#take the data as the file-location?
 	#loading from file - eg take csv file, open it, throw into a buffer(?), pass to import func. 
 	#rely on user to check if format works?
-	if length(data)<255 && isa(data, String) && ispath(data)
+	if length(data)<256 && isa(data, String) && ispath(data)
 		return import_from_file(data, format)
 	else
 		return formatter(data, format, "import")
@@ -378,36 +390,19 @@ end
 Called by exporting functions to dump data into designated file
 
 ##Parameters:
-* `file_loc`: location of file
-* `format`: the target format ###may not be needed!
+* `file_loc`: location of file - pass with proper extensions
 * `data`: the data to save to file
 
 ##Returns:
 Nothing/error
 """
 
-function export_to_file(file_loc::String, format::String, data)
+function export_to_file(file_loc::String, data)
 	try
 		open(file_loc, "w") do file
-			if format=="json"
-				#save to file - json - is there a more JSONy way to do this?- there is! JSON.print~!
-				#JSON.print(file, JSON.parse(data), 1)
-				write(file, data)
-			elseif format=="csv"
-				#save to file - csv
-				write(file, data)
-			elseif format=="xml"
-				#save to file - xml
-				write(file, data)
-			elseif format=="odm"
-				#save to file - odm
-			elseif format=="df"
-				#you must know the drill. 
-			else
-				println("$format is an invalid format.\nValid formats: \"json\", \"csv\", \"xml\", \"odm\", or \"df\"")
-			end
+			write(file, data)
 		end
 	catch
-		println("File could not be read:\n$file_loc")
+		error("File could not be read:\n$file_loc")
 	end
 end

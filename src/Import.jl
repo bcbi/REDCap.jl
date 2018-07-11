@@ -53,7 +53,7 @@ Update/import new users into a project.
 * `returnFormat` - error message format
 
 ##Returns:
-Number of successfully imported users
+Dict of users
 """
 ###BROKEN###
 function import_user(config::Config, data; format::String="json", returnFormat::String="json")
@@ -155,7 +155,7 @@ Import a set of records for a project.
 * `recordData` - data to be imported - pass as a file location to import from disk
 * `format` - "json", "xml", "csv", or "odm". declares format of imported data
 * `dtype` - "flat" (one record per row) or "eav" (one data point per row)
-* `overwriteBehavior` - flag to decide if blank values overwrite existing values or not
+* `overwriteBehavior` - "normal" - will not overwrite, "overwrite" - will
 * `forceNumber` - force auto-numbering and overwrite given id number
 * `dateFormat` - "YMD", "MDY", or "DMY"
 * `returnContent` - "count" (number of successfully uploaded records), 
@@ -166,7 +166,7 @@ Import a set of records for a project.
 ##Returns:
 Specified by returnContent
 """
-###BROKEN###
+###(half)BROKEN###
 function import_records(config::Config, recordData; format::String="json", dtype::String="flat", 
 						overwriteBehavior::String="normal", forceNumber::Bool=false, dateFormat::String="YMD",
 						returnContent::String="count", returnFormat::String="json")
@@ -221,7 +221,7 @@ Nothing/errors
 
 function import_file(config::Config, record::String, field::String, event::String, repeat_instance::Int, file::String;
 					returnFormat::String="json")
-	#load file up into memory?
+	#check that its a file and throw, or rely on the fact it'll error quickly?
 	output = api_pusher("import", "file", config, record=record, field=field, event=event, repeat_instance=repeat_instance, 
 							file=open(file), returnFormat=returnFormat)
 	return output
@@ -267,5 +267,5 @@ function create_project(config::Config, project_title::String, purpose::Integer;
 					"returnFormat" => returnFormat,
 					"odm" => odm)
 	response = poster(config, fields)
-	return Config(config.url, String(response.body))
+	return Config(config.url, String(response.body)) #TEST THIS - make sure it doesnt give out some kind of werid Dict
 end
