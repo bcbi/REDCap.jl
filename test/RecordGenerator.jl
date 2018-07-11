@@ -84,9 +84,13 @@ end
 
 #Makes up a phone number
 function phone_generator()
-	return (rand(Int8)<0?"401":(rand(Int8)<0?"508":"617"))*
-				string((rand(UInt8)%9)+1)*string(rand(UInt8)%10)*string(rand(UInt8)%10)*
-				string((rand(UInt8)%9)+1)*string(rand(UInt8)%10)*string(rand(UInt8)%10)*string(rand(UInt8)%10)
+	number=""
+	while length(number)!=10
+		number = (rand(Int8)<0?"401":(rand(Int8)<0?"508":"617"))*
+					string((rand(UInt8)%9)+1)*string(rand(UInt8)%10)*string(rand(UInt8)%10)*
+					string((rand(UInt8)%9)+1)*string(rand(UInt8)%10)*string(rand(UInt8)%10)*string(rand(UInt8)%10)
+	end
+	return number
 end
 
 #Makes up an address based on a chosen state.
@@ -132,14 +136,14 @@ function record_generator(config::Config, id; mode::String="demography")
 		(gender, fname, lname, (weight, height), race, ethnicity, (age, dob)) = human_generator()
 		bmi = div(weight, ((height/100)^2))
 		(telephone, address, email) = (phone_generator(), address_generator(), email_generator(uname_generator(fname, lname, dob[3:4])))
-		return Dict("record_id" => id,
+		return Dict("record_id" => string(id),
 				"sex" => string(gender),
 				"age" => string(age),
 				"dob" => dob,
 				"first_name" => fname,
 				"last_name" => lname,
-				"height" => height,
-				"weight" => weight,
+				"height" => 80,
+				"weight" => 80,
 				"bmi" => string(bmi),
 				"telephone" => telephone,
 				"ethnicity" => string(ethnicity),

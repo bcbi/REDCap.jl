@@ -26,7 +26,6 @@ function generate_project_information()
 		"display_today_now_button":"1",
 		"has_repeating_instruments_or_events":0
 		}
-
 	=#
 
 end
