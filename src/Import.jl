@@ -257,15 +257,16 @@ function create_project(config::Config, project_title::String, purpose::Integer;
 	fields = Dict("token" => config.key,
 					"content" => "project",
 					"format" => format,
-					"data" =>  Dict("project_title" => project_title,
-									"purpose" => purpose,
-									"purpose_other" => purpose_other,
-									"project_notes" => project_notes,
-									"is_longitudinal" => is_longitudinal,
-									"surveys_enabled" => surveys_enabled,
-									"record_autonumbering_enabled" => record_autonumbering_enabled),
+					"data" =>  JSON.json(Dict("project_title" => project_title,
+												"purpose" => purpose,
+												"purpose_other" => purpose_other,
+												"project_notes" => project_notes,
+												"is_longitudinal" => is_longitudinal,
+												"surveys_enabled" => surveys_enabled,
+												"record_autonumbering_enabled" => record_autonumbering_enabled)),
 					"returnFormat" => returnFormat,
 					"odm" => odm)
+	println("HERE")
 	response = poster(config, fields)
 	return Config(config.url, String(response.body)) #TEST THIS - make sure it doesnt give out some kind of werid Dict
 end

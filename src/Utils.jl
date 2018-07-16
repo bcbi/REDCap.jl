@@ -4,7 +4,9 @@
 """
 	api_pusher(mode::String, content::String, config::Config; kwargs...)
 
-Pass the type of api call, the config struct, and any needed kwargs for that api call 
+Pass the type of api call, the config struct, and any needed kwargs for that api call.
+Handles creation of the Dict of fields to pass to REDCap, and file IO/formatting. 
+
 API documentation found here:
 https://<your-redcap-site.com>/redcap/api/help/?content=exp_field_names
 
@@ -12,6 +14,7 @@ https://<your-redcap-site.com>/redcap/api/help/?content=exp_field_names
 * `mode` - "import", "export", or "delete"
 * `content` - Passed by calling modules to indicate what data to access
 * `config` - struct containing url and api-key
+* `file_loc`: location of file
 * `kwargs...` - Any addtl. arguments passed by the calling module
 
 ##Returns:
@@ -34,16 +37,32 @@ function api_pusher(mode::String, content::String, config::Config; file_loc::Str
 	#fill dict with passed kwargs - function?
 	#println(kwargs)
 	for (k,v) in kwargs
-		#type is reserved in julia, quick-fix
-		if isequal(String(k), "dtype")
+		if isequal(String(k), "format")
+			println(v)
+			format = v
+			if isequal(v, "df")
+				#Pass as the closest thing to api, but handle internally as df
+				fields["format"]="csv"
+			else
+				fields["format"]=v
+			end
+		elseif isequal(String(k), "dtype") #type is reserved in julia, quick-fix
 			fields["type"] = v
-		elseif isequal(get(fields, "format",""), "df")
-			fields["format"] = "csv" #Pass as the closest thing
+		#elseif isequal(String(k), "data")
+		#	data = IOBuffer()
+		#	write(data, v)
+		#	println("HERE")
+		#	println(data)
+		#	fields["data"] = data
 		else
 			fields[String(k)] = v
 		end
 	end
-	println(fields)
+	#println("Fields:")
+	#println(fields)
+	#for (k,v) in fields
+	#	print(HTTP.escapeuri(v))
+	#end
 
 	#POST request and get response
 	response = poster(config, fields)
@@ -67,6 +86,7 @@ function api_pusher(mode::String, content::String, config::Config; file_loc::Str
 	else
 		#delete - this is a simple little report of how many things you deleted if anything -
 		#doesnt even take a format, so treat 'im like a JSON, or whatever is easier, and format it out simple like
+		#low priority
 	end
 	#horribly messy- make work gud
 	return output
@@ -76,7 +96,7 @@ end
 """
 	poster(config::Config, body)
 
-Handles the POST duties for all modules.
+Handles the POST duties for all modules. Also does basic Status checking and SSL verification.
 
 ##Parameters:
 * `config` - struct containing url and api-key
@@ -88,22 +108,25 @@ Anything the server returns; data or error messages.
 
 function poster(config::Config, body)
 	println("POSTing")
-	response = HTTP.post(config.url; body=body, require_ssl_verification=true)
+	response = HTTP.post(config.url; body=body, require_ssl_verification=true, verbose=3)
+	#NEW WAY
+	#HTTP.open("POST", config.url) do io
+	#	write(io, JSON.json(body))
+	#	startread(io)
+	#end
 	println("POSTd")
 	#or is this an apropo place for a try/catch?
 	if response.status>=400
-		#Error - handle it
+		#Error - handle errors way more robustly- check for "error" field? here or back at api_pusher?
+		#an error is an error is an error, so it throws no matter what...
 		println(response.status)
 
 	else
 		return response
 	end
-	#handle errors way more robustly- check for "error" field? here or back at api_pusher?
 end
 
 
-#MOVE OUT? Can be considered a Utility, is required by importing if you do not specify record id and need it.
-#Make get_next_record_id and place in export? It's basically an export function.
 """
 	generate_next_record_id(config::Config) 
 
@@ -125,6 +148,8 @@ end
 """
 	formatter(data, format, mode::String)
 
+Takes data and sends out to the proper formating function.
+
 ##Parameters:
 * `data` - the data to be formatted
 * `format` - the target format
@@ -145,8 +170,7 @@ function formatter(data, format, mode::String) #flag to save to file?
 	elseif format=="odm"
 		odm_formatter(data, mode)
 	elseif format=="df"
-		#special dataframe case- handles dataframe objects specifically, separate from CSV (but totally used with CSV, neat right?)
-		#Note: df is not a REDCap type, will pass an error or the default (JSON)
+		#Special solution
 		df_formatter(data, mode)
 	else
 		error("$format is an invalid format.\nValid formats: \"json\", \"csv\", \"xml\", \"odm\", or \"df\"")
@@ -218,11 +242,8 @@ function csv_formatter(data, mode::String)
 	else
 		#must turn csv into dict/df
 		try
-			#bad, broken
-			println("tryin to dict")
-			formattedData = Dict()
-			CSV.read(IOBuffer(String(data)), formattedData)
-			return formattedData
+			println(data)
+			return df_formatter(data, mode)
 		catch
 			println("Catch - data cannot be csv formatted")
 			return data
@@ -253,7 +274,7 @@ function xml_formatter(data, mode::String)
 		try
 			#data is an xml
 			#println(data); #println(typeof(data))
-			return data
+			return df_formatter(data, mode)
 		catch
 			println("Catch - data cannot be xml formatted")
 			return data
@@ -294,24 +315,31 @@ end
 
 ##Parameters:
 * `data` - the data to be formatted
-* `mode` - formatting for Import (data to server) or Export (data from server)
 
 ##Returns:
-The opposite of what was given in relation to df format
+A JSON of the given data to send to the API
 """
-###REAL REAL REAL /REAL/ /REAL/ BROKEN yEAH###
+### ###
 function df_formatter(data, mode::String)
-	if mode=="import"
-		#must turn dict into a dataframe
-		return 
-	else
-		#must turn dataframe into a dict
-		try
-			return 
-		catch
-			println("Catch - data cannot be df formatted")
-			return data
+	try
+		#must turn dataframe into a dict to send to api
+		#DF => Dict
+		targetArray=[]
+		for row in DataFrames.eachrow(data)
+			rowDict=Dict()
+			for item in row
+				rowDict[item[1]]=item[2]
+			end
+			push!(targetArray,rowDict)
 		end
+		if mode=="import"
+			return JSON.json(targetArray)
+		else
+			return targetArray
+		end
+	catch
+		println("Catch - data cannot be df formatted")
+		return data
 	end
 end
 
@@ -336,17 +364,14 @@ function import_from_file(file_loc::String, format::String)
 		open(file_loc) do file
 			if format=="json"
 				return String(read(file))
-			elseif format=="csv"
+			elseif format=="csv" || format=="df"
 				output=CSV.read(file) #comes out a df- cant be sent as df...
 				println(typeof(output))
-				return output
+				return df_formatter(output)
 			elseif format=="xml"
 				return string(parse_file(file_loc)) #xml
 			elseif format=="odm"
 				return #odm
-			elseif format=="df"
-				#handle the elusive last format- df. NOTE- df is not a supported format, and will probably pass to REDCap as
-				#	an error, or bounce back default format (JSON), so play around with how to pass it to the API
 			else
 				error("$format is an invalid format.\nValid formats: \"json\", \"csv\", \"xml\", \"odm\", or \"df\"")
 			end
@@ -376,7 +401,7 @@ function import_file_checker(data, format::String)
 	#take the data as the file-location?
 	#loading from file - eg take csv file, open it, throw into a buffer(?), pass to import func. 
 	#rely on user to check if format works?
-	if length(data)<256 && isa(data, String) && ispath(data)
+	if length(data)<70 && isa(data, String) && ispath(data)
 		return import_from_file(data, format)
 	else
 		return formatter(data, format, "import")
@@ -387,7 +412,7 @@ end
 """
 	export_to_file(fileLoc::String, format::String, data)
 
-Called by exporting functions to dump data into designated file
+Called by exporting functions to dump data into designated file, or yell at you for a bad path.
 
 ##Parameters:
 * `file_loc`: location of file - pass with proper extensions
