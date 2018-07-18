@@ -16,10 +16,10 @@ using DataStructures
 using DataFrames
 
 include("Config.jl")
+include("Utils.jl")
 include("Export.jl")
 include("Import.jl")
 include("Delete.jl")
-include("Utils.jl")
 
 export export_field_names
 export export_instruments

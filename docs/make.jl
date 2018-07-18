@@ -1,3 +1,3 @@
-using Documenter, RedCap
+using Documenter, REDCap
 
 makedocs()

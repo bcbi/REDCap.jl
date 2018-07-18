@@ -30,7 +30,7 @@ function Form(d::Dict)
     return Form(data, 1, boundary)
 end
 =#
-
+using LibCURL
 """
 	api_pusher(mode::String, content::String, config::Config; kwargs...)
 
@@ -94,7 +94,7 @@ function api_pusher(mode::String, content::String, config::Config; file_loc::Str
 	#end
 
 	#POST request and get response
-	response = poster(config, fields)
+	response = libposter(config, fields)
 	output = String(response.body)
 
 	#check if user wanted to save the file here -
@@ -155,6 +155,67 @@ function poster(config::Config, body)
 	end
 end
 
+##RAW URI: exportrawfalsejsonfalsejson2,3recordrawfalse110CE385B1BFAE2CE01DAF99112CAB9Fflat
+
+function curl_write_cb(curlbuf::Ptr{Void}, s::Csize_t, n::Csize_t, p_ctxt::Ptr{Void})
+    sz = s * n
+    data = Array{UInt8}(sz)
+    
+    ccall(:memcpy, Ptr{Void}, (Ptr{Void}, Ptr{Void}, UInt64), data, curlbuf, sz)
+    println("recd: ", String(data))
+    
+    sz::Csize_t
+end
+
+function libposter(config::Config, body)
+	println("POSTing")
+	#Build out a URI for every item inside the body, but make sure it gets strung/not mangled
+	#Specials: Arrays, must format as 1,2,3 etc.
+	output=""
+	for (k, v) in body
+		if isa(v, Array)
+			i = length(v)
+			for item in v
+				if i>1
+					output *= String(item)
+					output *= ","
+					i-=1
+				else
+					output *= String(item)
+				end
+			end
+		else
+			output *= string(v)
+		end
+	end
+	println(output)
+	curl = curl_easy_init()
+
+	c_curl_write_cb = cfunction(curl_write_cb, Csize_t, (Ptr{Void}, Csize_t, Csize_t, Ptr{Void}))
+
+    curl_easy_setopt(curl, CURLOPT_POSTFIELDS, output)
+    curl_easy_setopt(curl, CURLOPT_URL, config.url)
+    curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, c_curl_write_cb)
+ 
+    response = curl_easy_perform(curl)
+	println("curl url exec response : ", response)
+
+	# retrieve HTTP code
+	http_code = Array{Clong}(1)
+	curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, http_code)
+	println("httpcode : ", http_code)
+
+	println("POSTd")
+	#or is this an apropo place for a try/catch?
+	#if response.status>=400
+		#Error - handle errors way more robustly- check for "error" field? here or back at api_pusher?
+		#an error is an error is an error, so it throws no matter what...
+	#	println(response.status)
+
+	#else
+	#	return response
+	#end
+end
 
 """
 	generate_next_record_id(config::Config) 
@@ -294,8 +355,7 @@ function xml_formatter(data, mode::String)
 		#must turn xml into dict
 		try
 			#data is an xml
-			#println(data); #println(typeof(data))
-			return df_formatter(data, mode)
+			
 		catch
 			println("Catch - data cannot be xml formatted")
 			return data
@@ -360,13 +420,8 @@ A JSON of the given data to send to the API
 """
 ###BROKEN###
 function df_formatter(data, mode::String)
-	target = df_formatter(data)
 	try
-		if mode=="import"
-			return target
-		else
-			return target
-		end
+		return df_formatter(data)
 	catch
 		println("Catch - data cannot be df formatted")
 		return data
