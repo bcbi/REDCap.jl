@@ -218,7 +218,6 @@ function libposter(config::Config, body)
 	#	return response
 	#end
 	curl_easy_cleanup(curl)
-	println(response)
 	return response
 end
 
