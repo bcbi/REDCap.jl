@@ -1,0 +1,113 @@
+julia> delete_records(config, ["2","3"])
+
+Dict{Any,Any}(Pair{Any,Any}("records", String["2", "3"]),Pair{Any,Any}("token", "ADC4B222E6AC5116953F53F04960C712"),Pair{Any,Any}("content", "record"),Pair{Any,Any}("action", "delete"))
+POSTing
+What it is given:
+String["2", "3"]
+What it gives:
+["2", "3"]
+What it is given:
+ADC4B222E6AC5116953F53F04960C712
+What it gives:
+ADC4B222E6AC5116953F53F04960C712
+What it is given:
+record
+What it gives:
+record
+What it is given:
+delete
+What it gives:
+delete
+ERROR: HTTP.ExceptionRequest.StatusError(503, HTTP.Messages.Response:
+"""
+HTTP/1.1 503 Service Unavailable
+Date: Wed, 11 Jul 2018 18:47:20 GMT
+Server: Apache/2.4.6 (Red Hat Enterprise Linux)
+X-Powered-By: PHP/5.4.16
+Expires: 0
+cache-control: no-store, no-cache, must-revalidate
+Pragma: no-cache
+Access-Control-Allow-Origin: *
+REDCap-Random-Text: Rewfyy7J3SW
+Content-Length: 186
+Connection: close
+Content-Type: text/xml; charset=utf-8
+
+<?xml version="1.0" encoding="UTF-8" ?><hash><error>Incorrect format for 'records' parameter. It must be passed as an array, even if it only contains a single record name.</error></hash>""")
+
+
+
+julia> delete_records(config, [2,3])
+Dict{Any,Any}(Pair{Any,Any}("records", [2, 3]),Pair{Any,Any}("token", "ADC4B222E6AC5116953F53F04960C712"),Pair{Any,Any}("content", "record"),Pair{Any,Any}("action", "delete"))
+POSTing
+What it is given:
+[2, 3]
+What it gives:
+
+What it is given:
+ADC4B222E6AC5116953F53F04960C712
+What it gives:
+ADC4B222E6AC5116953F53F04960C712
+What it is given:
+record
+What it gives:
+record
+What it is given:
+delete
+What it gives:
+delete
+ERROR: HTTP.ExceptionRequest.StatusError(503, HTTP.Messages.Response:
+"""
+HTTP/1.1 503 Service Unavailable
+Date: Wed, 11 Jul 2018 18:48:23 GMT
+Server: Apache/2.4.6 (Red Hat Enterprise Linux)
+X-Powered-By: PHP/5.4.16
+Expires: 0
+cache-control: no-store, no-cache, must-revalidate
+Pragma: no-cache
+Access-Control-Allow-Origin: *
+REDCap-Random-Text: Vwac52B5xX7WCNe
+Content-Length: 187
+Connection: close
+Content-Type: text/xml; charset=utf-8
+
+<?xml version="1.0" encoding="UTF-8" ?><hash><error>The 'records' parameter is an empty array. The parameter must be an array containing one or more record names to delete.</error></hash>""")
+
+
+
+julia> delete_records(config, [2,3])
+WARNING: Method definition escapeuri(Array{T, N} where N where T) in module URIs at /home/cory/gitHub/HTTP/src/URIs.jl:343 overwritten at /home/cory/gitHub/HTTP/src/URIs.jl:343.
+Dict{Any,Any}(Pair{Any,Any}("records", [2, 3]),Pair{Any,Any}("token", "ADC4B222E6AC5116953F53F04960C712"),Pair{Any,Any}("content", "record"),Pair{Any,Any}("action", "delete"))
+POSTing
+What it is given:
+[2, 3]
+What it gives:
+[2, 3]
+What it is given:
+ADC4B222E6AC5116953F53F04960C712
+What it gives:
+ADC4B222E6AC5116953F53F04960C712
+What it is given:
+record
+What it gives:
+record
+What it is given:
+delete
+What it gives:
+delete
+ERROR: HTTP.ExceptionRequest.StatusError(503, HTTP.Messages.Response:
+"""
+HTTP/1.1 503 Service Unavailable
+Date: Wed, 11 Jul 2018 18:48:42 GMT
+Server: Apache/2.4.6 (Red Hat Enterprise Linux)
+X-Powered-By: PHP/5.4.16
+Expires: 0
+cache-control: no-store, no-cache, must-revalidate
+Pragma: no-cache
+Access-Control-Allow-Origin: *
+REDCap-Random-Text: 8SsjoqzbIjb3y5Wt6aeer
+Content-Length: 186
+Connection: close
+Content-Type: text/xml; charset=utf-8
+
+<?xml version="1.0" encoding="UTF-8" ?><hash><error>Incorrect format for 'records' parameter. It must be passed as an array, even if it only contains a single record name.</error></hash>""")

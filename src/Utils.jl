@@ -1,6 +1,36 @@
 #handling ssl- place up top as a global var, create a function that calls and modifies it? 
 #have poster just look at that to decide how to act?
 
+#=
+###HTTP CODE###
+function Form(d::Dict)
+    boundary = compat_string(rand(UInt128), base=16)
+    data = IO[]
+    io = IOBuffer()
+    len = length(d)
+    for (i, (k, v)) in enumerate(d)
+        write(io, (i == 1 ? "" : "\r\n") * "--" * boundary * "\r\n")
+        write(io, "Content-Disposition: form-data; name=\"$k\"")
+        if isa(v, IO)
+            writemultipartheader(io, v)
+            seekstart(io)
+            push!(data, io)
+            push!(data, v)
+            io = IOBuffer()
+        else
+            write(io, "\r\n\r\n")
+            write(io, escapeuri(v))
+            println("What it is given:\n$v\nWhat it gives:")
+            println(escapeuri(v))
+        end
+        i == len && write(io, "\r\n--" * boundary * "--" * "\r\n")
+    end
+    seekstart(io)
+    push!(data, io)
+    return Form(data, 1, boundary)
+end
+=#
+
 """
 	api_pusher(mode::String, content::String, config::Config; kwargs...)
 
@@ -51,7 +81,6 @@ function api_pusher(mode::String, content::String, config::Config; file_loc::Str
 		#elseif isequal(String(k), "data")
 		#	data = IOBuffer()
 		#	write(data, v)
-		#	println("HERE")
 		#	println(data)
 		#	fields["data"] = data
 		else
@@ -193,16 +222,8 @@ The opposite of what was given in relation to json format
 
 function json_formatter(data, mode::String)
 	if mode=="import"
-		#must turn a dict/data structure into json - allegedly simple
-		#=
-		println(typeof(JSON.json(data))); println("Returned")
-		test[1]=JSON.json(data)
-		println(typeof(test)); println(typeof(test[1])); println(test[1])
-		return test[1]
-		=#
-		return JSON.json(data) #Different method of JSON.? JSON.print?
-		#print(JSON.print(data, 1)) #Nope, print()s just for looks
-		#return JSON.print(data, 1)
+		#must turn a dict/data structure into json
+		return JSON.json(data)
 	else
 		#must turn json into a dict
 		try
@@ -234,7 +255,7 @@ function csv_formatter(data, mode::String)
 		#must turn dict into csv
 		try
 			formattedData = IOBuffer()
-			return CSV.write(formattedData, data)
+			return CSV.write(formattedData, data, missingstring=" ")
 		catch
 			println("Catch")
 			return data
@@ -311,6 +332,24 @@ end
 
 
 """
+	df_scrubber(data)
+
+Tries to remove missing values from a df but cant actually.....
+"""
+function df_scrubber(data)
+	for row in 1:size(data)[1]
+		for col in 1:size(data)[2]
+			println(typeof(data[row, col]))
+	    	if isequal(typeof(data[row,col]), Missings.Missing)
+	        	data[row,col]=" "
+	        end
+	    end
+	end
+	return data
+end
+
+
+"""
 	df_formatter(data, mode::String)
 
 ##Parameters:
@@ -319,27 +358,61 @@ end
 ##Returns:
 A JSON of the given data to send to the API
 """
-### ###
+###BROKEN###
 function df_formatter(data, mode::String)
+	target = df_formatter(data)
 	try
-		#must turn dataframe into a dict to send to api
-		#DF => Dict
-		targetArray=[]
-		for row in DataFrames.eachrow(data)
-			rowDict=Dict()
-			for item in row
-				rowDict[item[1]]=item[2]
-			end
-			push!(targetArray,rowDict)
-		end
 		if mode=="import"
-			return JSON.json(targetArray)
+			return target
 		else
-			return targetArray
+			return target
 		end
 	catch
 		println("Catch - data cannot be df formatted")
 		return data
+	end
+end
+
+"""
+	df_formatter(data::Union{DataFrame, Dict})
+
+Takes a DF/Dict, turns it into a Dict/DF
+
+Parameters:
+* `data` - data to be formatted
+
+Returns:
+The opposite of the diven format.
+"""
+function df_formatter(data::Union{DataFrame, Array})
+	if isequal(typeof(data), DataFrame)
+		#DF => Dict
+		#data = df_scrubber(data)
+		chartDict=[]
+		for row in DataFrames.eachrow(data)
+			rowDict=Dict()
+			for item in row
+				rowDict[String(item[1])]=string(item[2])
+			end
+			push!(chartDict,rowDict)
+		end
+		return chartDict
+	else
+		chartDF=DataFrames.DataFrame(String, length(data), length(data[1]))
+		keylist=[]
+		for key in keys(data[1])
+			push!(keylist,key)
+		end
+		rename!(chartDF, f=>t for (f,t)=zip(names(chartDF), Symbol.(keylist)))
+		i=1
+		for row in data
+			println(row)
+			for (k, v) in row
+				chartDF[i:i, k] = v
+			end
+			i+=1
+		end
+		return df_scrubber(chartDF)
 	end
 end
 
@@ -360,25 +433,27 @@ The formatted data
 function import_from_file(file_loc::String, format::String)
 	#take from file
 	#verify file exists
-	try
+	#try
 		open(file_loc) do file
+			#Leave separate now just in case, but plan to simplify this
 			if format=="json"
 				return String(read(file))
 			elseif format=="csv" || format=="df"
-				output=CSV.read(file) #comes out a df- cant be sent as df...
-				println(typeof(output))
-				return df_formatter(output)
+				#output=String(read(file)) #comes out a df- cant be sent as df...
+				#println(typeof(output))
+				return String(read(file))
 			elseif format=="xml"
-				return string(parse_file(file_loc)) #xml
+				 #xml
+				 return String(read(file))
 			elseif format=="odm"
 				return #odm
 			else
 				error("$format is an invalid format.\nValid formats: \"json\", \"csv\", \"xml\", \"odm\", or \"df\"")
 			end
 		end
-	catch
-		error("File could not be read:\n$file_loc")
-	end
+	#catch
+	#	error("File could not be read:\n$file_loc")
+	#end
 end
 
 

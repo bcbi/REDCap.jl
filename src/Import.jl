@@ -61,43 +61,6 @@ function import_user(config::Config, data; format::String="json", returnFormat::
 	return output
 end
 
-#=
-Any[
-	Dict{String,Any}(Pair{String,Any}("design", "1"),
-					Pair{String,Any}("api_export", "1"),
-					Pair{String,Any}("user_rights", "1"),
-					Pair{String,Any}("data_access_groups", "1"),
-					Pair{String,Any}("data_comparison_tool", "1"),
-					Pair{String,Any}("username", "cory_cothrum@brown.edu"),
-					Pair{String,Any}("data_access_group_id", ""),
-					Pair{String,Any}("data_export", "1"),
-					Pair{String,Any}("record_create", "1"),
-					Pair{String,Any}("reports", "1"),
-					Pair{String,Any}("data_import_tool", "1"),
-					Pair{String,Any}("file_repository", "1"),
-					Pair{String,Any}("mobile_app_download_data", "1"),
-					Pair{String,Any}("mobile_app", "1"),
-					Pair{String,Any}("email", "cory_cothrum@brown.edu"),
-					Pair{String,Any}("data_quality_create", "1"),
-					Pair{String,Any}("record_delete", "1"),
-					Pair{String,Any}("calendar", "1"),
-					Pair{String,Any}("lock_records_all_forms", "0"),
-					Pair{String,Any}("firstname", ""),
-					Pair{String,Any}("expiration", ""),
-					Pair{String,Any}("data_access_group", ""),
-					Pair{String,Any}("forms", Dict{String,Any}(Pair{String,Any}("demographics", "1"))),
-					Pair{String,Any}("api_import", "1"),
-					Pair{String,Any}("stats_and_charts", "1"),
-					Pair{String,Any}("record_rename", "1"),
-					Pair{String,Any}("lock_records_customization", "1"),
-					Pair{String,Any}("logging", "1"),
-					Pair{String,Any}("lock_records", "0"),
-					Pair{String,Any}("data_quality_execute", "1"),
-					Pair{String,Any}("manage_survey_participants", "1"),
-					Pair{String,Any}("lastname", ""))
-	]
-=#
-
 
 """
 	import_arms(config::Config, data; override::Int=0, format::String="json", returnFormat::String="json")
@@ -252,21 +215,20 @@ The standard config, with same url and API-key to access project
 """
 ###BROKEN(?)###
 function create_project(config::Config, project_title::String, purpose::Integer; format::String="json",
-						returnFormat::String="json", odm="NULL", purpose_other::String="", project_notes::String="", 
+						returnFormat::String="json", odm="", purpose_other::String="", project_notes::String="", 
 						is_longitudinal::Integer=0, surveys_enabled::Integer=0, record_autonumbering_enabled::Integer=1)
 	fields = Dict("token" => config.key,
 					"content" => "project",
 					"format" => format,
-					"data" =>  JSON.json(Dict("project_title" => project_title,
+					"data" =>  JSON.json([Dict("project_title" => project_title,
 												"purpose" => purpose,
 												"purpose_other" => purpose_other,
 												"project_notes" => project_notes,
 												"is_longitudinal" => is_longitudinal,
 												"surveys_enabled" => surveys_enabled,
-												"record_autonumbering_enabled" => record_autonumbering_enabled)),
+												"record_autonumbering_enabled" => record_autonumbering_enabled)]),
 					"returnFormat" => returnFormat,
 					"odm" => odm)
-	println("HERE")
 	response = poster(config, fields)
 	return Config(config.url, String(response.body)) #TEST THIS - make sure it doesnt give out some kind of werid Dict
 end
