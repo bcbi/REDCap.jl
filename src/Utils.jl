@@ -1,36 +1,6 @@
 #handling ssl- place up top as a global var, create a function that calls and modifies it? 
 #have poster just look at that to decide how to act?
 
-#=
-###HTTP CODE###
-function Form(d::Dict)
-    boundary = compat_string(rand(UInt128), base=16)
-    data = IO[]
-    io = IOBuffer()
-    len = length(d)
-    for (i, (k, v)) in enumerate(d)
-        write(io, (i == 1 ? "" : "\r\n") * "--" * boundary * "\r\n")
-        write(io, "Content-Disposition: form-data; name=\"$k\"")
-        if isa(v, IO)
-            writemultipartheader(io, v)
-            seekstart(io)
-            push!(data, io)
-            push!(data, v)
-            io = IOBuffer()
-        else
-            write(io, "\r\n\r\n")
-            write(io, escapeuri(v))
-            println("What it is given:\n$v\nWhat it gives:")
-            println(escapeuri(v))
-        end
-        i == len && write(io, "\r\n--" * boundary * "--" * "\r\n")
-    end
-    seekstart(io)
-    push!(data, io)
-    return Form(data, 1, boundary)
-end
-=#
-
 """
 	api_pusher(mode::String, content::String, config::Config; kwargs...)
 
@@ -140,7 +110,7 @@ function poster(config::Config, body)
 	response = HTTP.post(config.url; body=body, require_ssl_verification=true, verbose=3)
 	#NEW WAY
 	#HTTP.open("POST", config.url) do io
-	#	write(io, JSON.json(body))
+	#	write(io, JSON.json(body)) #nope, hides the API key inside an io
 	#	startread(io)
 	#end
 	println("POSTd")
@@ -362,11 +332,7 @@ A JSON of the given data to send to the API
 function df_formatter(data, mode::String)
 	target = df_formatter(data)
 	try
-		if mode=="import"
-			return target
-		else
-			return target
-		end
+		return target
 	catch
 		println("Catch - data cannot be df formatted")
 		return data
