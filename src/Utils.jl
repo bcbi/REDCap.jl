@@ -159,6 +159,7 @@ end
 
 function curl_write_cb(curlbuf::Ptr{Void}, s::Csize_t, n::Csize_t, p_ctxt::Ptr{Void})
     sz = s * n
+
     data = Array{UInt8}(sz)
     
     ccall(:memcpy, Ptr{Void}, (Ptr{Void}, Ptr{Void}, UInt64), data, curlbuf, sz)
@@ -172,6 +173,7 @@ function libposter(config::Config, body)
 	#Build out a URI for every item inside the body, but make sure it gets strung/not mangled
 	#Specials: Arrays, must format as 1,2,3 etc.
 	output=""
+	#URI builder
 	for (k, v) in body
 		if isa(v, Array)
 			i = length(v)
@@ -215,6 +217,9 @@ function libposter(config::Config, body)
 	#else
 	#	return response
 	#end
+	curl_easy_cleanup(curl)
+	println(response)
+	return response
 end
 
 """
