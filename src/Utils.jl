@@ -264,8 +264,7 @@ function xml_formatter(data, mode::String)
 		#must turn xml into dict
 		try
 			#data is an xml
-			#println(data); #println(typeof(data))
-			return df_formatter(data, mode)
+			
 		catch
 			println("Catch - data cannot be xml formatted")
 			return data
