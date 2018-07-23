@@ -1,0 +1,31 @@
+#encoding
+
+"%5B%7B%22sex%22%3A%221%22%2C%22age%22%3A%2226%22%2C%22address%22%3A%22115%20Kim%20Rd.%20Providence%20RI%2002810%22%2C%22height%22%3A80%2C%22dob%22%3A%221991-09-14%22%2C%22record_id%22%3A%2223%22%2C%22bmi%22%3A%2222.0%22%2C%22comments%22%3A%22Randomly%20Generated%20-%20Demographics%22%2C%22email%22%3A%22MCook185%40msn.com%22%2C%22first_name%22%3A%22Mark%22%2C%22telephone%22%3A%224018888888%22%2C%22weight%22%3A80%2C%22ethnicity%22%3A%222%22%2C%22last_name%22%3A%22Cook%22%2C%22race%22%3A%223%22%7D%5D\r\n"
+
+vs
+
+"[{\"sex\":\"1\",\"age\":\"26\",\"address\":\"115 Kim Rd. Providence RI 02810\",\"height\":80,\"dob\":\"1991-09-14\",\"record_id\":\"23\",\"bmi\":\"22.0\",\"comments\":\"Randomly Generated - Demographics\",\"email\":\"MCook185@msn.com\",\"first_name\":\"Mark\",\"telephone\":\"4018888888\",\"weight\":80,\"ethnicity\":\"2\",\"last_name\":\"Cook\",\"race\":\"3\"}]\r\n"
+
+[ = %5B
+] = %5D
+{ = %7B
+} = %7D
+" = %22
+  = %20
+% = %25
+, = %2C
+: = %3A
+; = %3B
+/ = %2F
+@ = %40
+
+
+Response: - worked (passed above JSON), but it is supposedly still %encoding this shit...
+
+julia> import_records(config, recordlist)
+json
+POSTing
+POSTd
+Response(200 OK, 14 headers, 12 bytes in body)
+Dict{String,Any} with 1 entry:
+  "count" => 1

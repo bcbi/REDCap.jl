@@ -1,6 +1,7 @@
 #handling ssl- place up top as a global var, create a function that calls and modifies it? 
 #have poster just look at that to decide how to act?
 
+using LibCURL
 #=
 ###HTTP CODE###
 function Form(d::Dict)
@@ -30,7 +31,7 @@ function Form(d::Dict)
     return Form(data, 1, boundary)
 end
 =#
-using LibCURL
+
 """
 	api_pusher(mode::String, content::String, config::Config; kwargs...)
 
@@ -79,10 +80,13 @@ function api_pusher(mode::String, content::String, config::Config; file_loc::Str
 		elseif isequal(String(k), "dtype") #type is reserved in julia, quick-fix
 			fields["type"] = v
 		#elseif isequal(String(k), "data")
-		#	data = IOBuffer()
-		#	write(data, v)
-		#	println(data)
-		#	fields["data"] = data
+		#	println("DING")
+		#	println(v)
+		#	io = IOBuffer()
+		#	write(io, v)
+		#	println("DATA:")
+		#	println(io)
+		#	fields["data"] = io
 		else
 			fields[String(k)] = v
 		end
@@ -94,7 +98,7 @@ function api_pusher(mode::String, content::String, config::Config; file_loc::Str
 	#end
 
 	#POST request and get response
-	response = libposter(config, fields)
+	response = poster(config, fields)
 	output = String(response.body)
 
 	#check if user wanted to save the file here -
@@ -155,9 +159,17 @@ function poster(config::Config, body)
 	end
 end
 
+
+
+
+"""
+DEV - support for libCURL/Requests
+"""
+
 ##RAW URI: exportrawfalsejsonfalsejson2,3recordrawfalse110CE385B1BFAE2CE01DAF99112CAB9Fflat
 
 function curl_write_cb(curlbuf::Ptr{Void}, s::Csize_t, n::Csize_t, p_ctxt::Ptr{Void})
+    println("Writing")
     sz = s * n
 
     data = Array{UInt8}(sz)
@@ -168,37 +180,75 @@ function curl_write_cb(curlbuf::Ptr{Void}, s::Csize_t, n::Csize_t, p_ctxt::Ptr{V
     sz::Csize_t
 end
 
+#=
+ CURL *easy = curl_easy_init();
+ curl_mime *mime;
+ curl_mimepart *part;
+ 
+ /* Build an HTTP form with a single field named "data", */
+ mime = curl_mime_init(easy);
+ part = curl_mime_addpart(mime);
+ curl_mime_data(part, "This is the field data", CURL_ZERO_TERMINATED);
+ curl_mime_name(part, "data");
+ 
+ /* Post and send it. */
+ curl_easy_setopt(easy, CURLOPT_MIMEPOST, mime);
+ curl_easy_setopt(easy, CURLOPT_URL, "http://example.com");
+ curl_easy_perform(easy);
+ 
+ /* Clean-up. */
+ curl_easy_cleanup(easy);
+ curl_mime_free(mime);
+
+=#
+
+
+
+
 function libposter(config::Config, body)
 	println("POSTing")
 	#Build out a URI for every item inside the body, but make sure it gets strung/not mangled
 	#Specials: Arrays, must format as 1,2,3 etc.
 	output=""
+	mime = curl_mime_init(curl)
+	part = curl_mime_addpart(mime)
 	#URI builder
+	output=""
 	for (k, v) in body
 		if isa(v, Array)
 			i = length(v)
 			for item in v
 				if i>1
-					output *= String(item)
-					output *= ","
+					output*=String(item)
+					output*=","
 					i-=1
 				else
-					output *= String(item)
+					output*=String(item)
 				end
 			end
 		else
-			output *= string(v)
+			#output*=string(k)
+			#output*="="
+			output*=string(v)
+			curl_mime_data(part, string(v), CURL_ZERO_TERMINATED);
+ 			curl_mime_name(part, string(k));
 		end
+
 	end
-	println(output)
+	#println(output)
 	curl = curl_easy_init()
+	#encodedoutput = curl_easy_escape(curl, output, length(output))
+	#println(encodedoutput)
+	#c_curl_write_cb = cfunction(curl_write_cb, Csize_t, (Ptr{Void}, Csize_t, Csize_t, Ptr{Void}))
 
-	c_curl_write_cb = cfunction(curl_write_cb, Csize_t, (Ptr{Void}, Csize_t, Csize_t, Ptr{Void}))
-
-    curl_easy_setopt(curl, CURLOPT_POSTFIELDS, output)
+	curl_easy_setopt(curl, CURLOPT_MIMEPOST, mime);
+	#curl_easy_setopt(curl, CURLOPT_POST, 1)
+    #curl_easy_setopt(curl, CURLOPT_POSTFIELDS, encodedoutput)
     curl_easy_setopt(curl, CURLOPT_URL, config.url)
     curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, c_curl_write_cb)
- 
+    curl_easy_setopt(curl, CURLOPT_VERBOSE, 1);
+
+ 	
     response = curl_easy_perform(curl)
 	println("curl url exec response : ", response)
 
@@ -221,6 +271,31 @@ function libposter(config::Config, body)
 	return response
 end
 
+
+function reqposter(config::Config, body)
+	println("POSTing")
+	response = Requests.post(config.url; data=body)
+	#NEW WAY
+	#HTTP.open("POST", config.url) do io
+	#	write(io, JSON.json(body))
+	#	startread(io)
+	#end
+	println("POSTd")
+
+	println(response)
+	#or is this an apropo place for a try/catch?
+	#if response.status>=400
+		#Error - handle errors way more robustly- check for "error" field? here or back at api_pusher?
+		#an error is an error is an error, so it throws no matter what...
+	#	println(response.status)
+
+	#else
+		return response
+	#end
+end
+
+
+
 """
 	generate_next_record_id(config::Config) 
 
@@ -235,7 +310,7 @@ function generate_next_record_id(config::Config)
 	fields = Dict("token" => config.key, 
 				  "content" => "generateNextRecordName")
 	output = poster(config, fields)
-	return parse(Integer, String(output.body)) #return as integer
+	return parse(Int8, String(output.body)) #return as integer
 end
 
 
@@ -326,7 +401,7 @@ function csv_formatter(data, mode::String)
 			return data
 		end
 	else
-		#must turn csv into dict/df
+		#must turn recieved csv into dict
 		try
 			println(data)
 			return df_formatter(data, mode)
@@ -564,4 +639,31 @@ function export_to_file(file_loc::String, data)
 	catch
 		error("File could not be read:\n$file_loc")
 	end
+end
+
+
+"""
+	array_to_string(a::Array)
+
+turns an array into a string so I can lie to REDCap and pretend they were uri escaped nicenice
+*Don't pass this anything weird.
+
+#Params:
+* `a` - array to 'encode'
+
+#Returns:
+A string of all items in the list with commas in between them.
+"""
+
+function array_to_string(a::Array)
+	output = ""
+	i = length(a)
+	for item in a
+		output*=String(item)
+		if i > 1
+			output*=","
+		end
+		i-=1
+	end
+	return output
 end
