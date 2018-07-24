@@ -15,7 +15,7 @@ Number of successfully imported values
 """
 ###BROKEN###
 function import_project_information(config::Config, data; format::String="json")
-	output = api_pusher("import", "project_settings", config, infoData = import_file_checker(data, format), format=format)
+	output = api_pusher("import", "project_settings", config, data = import_file_checker(data, format), format=format)
 	return output
 end
 
@@ -36,7 +36,7 @@ Number of successfully imported fields
 """
 ###BROKEN###
 function import_metadata(config::Config, data; format::String="json", returnFormat::String="json")
-	output = api_pusher("import", "metadata", config, metaData = import_file_checker(data, format), format=format, returnFormat=returnFormat)
+	output = api_pusher("import", "metadata", config, data = import_file_checker(data, format), format=format, returnFormat=returnFormat)
 	return output
 end
 
@@ -55,9 +55,8 @@ Update/import new users into a project.
 ##Returns:
 Dict of users
 """
-###BROKEN###
 function import_user(config::Config, data; format::String="json", returnFormat::String="json")
-	output = api_pusher("import", "user", config, userData = import_file_checker(data, format), format=format, returnFormat=returnFormat)
+	output = api_pusher("import", "user", config, data = import_file_checker(data, format), format=format, returnFormat=returnFormat)
 	return output
 end
 
@@ -79,7 +78,7 @@ Number of successfully imported arms
 """
 ###BROKEN###
 function import_arms(config::Config, data; override::Int=0, format::String="json", returnFormat::String="json")
-	output = api_pusher("import", "arm", config, armData = import_file_checker(data, format), override=override, format=format, returnFormat=returnFormat)
+	output = api_pusher("import", "arm", config, data = import_file_checker(data, format), override=override, format=format, returnFormat=returnFormat)
 	return output
 end
 
@@ -101,7 +100,7 @@ Number of successfully imported events
 """
 ###BROKEN###
 function import_events(config::Config, data; override::Int=0, format::String="json", returnFormat::String="json")
-	output = api_pusher("import", "event", config, userData = import_file_checker(data, format), override=override, format=format, returnFormat=returnFormat)
+	output = api_pusher("import", "event", config, data = import_file_checker(data, format), override=override, format=format, returnFormat=returnFormat)
 	return output
 end
 
@@ -115,7 +114,7 @@ Import a set of records for a project.
 
 ##Parameters:
 * `config` - struct containing url and api-key
-* `recordData` - data to be imported - pass as a file location to import from disk
+* `recordData` - array of record data to be imported - pass as a file location to import from disk
 * `format` - "json", "xml", "csv", or "odm". declares format of imported data
 * `dtype` - "flat" (one record per row) or "eav" (one data point per row)
 * `overwriteBehavior` - "normal" - will not overwrite, "overwrite" - will
@@ -129,8 +128,7 @@ Import a set of records for a project.
 ##Returns:
 Specified by returnContent
 """
-###(half)BROKEN###
-function import_records(config::Config, recordData; format::String="json", dtype::String="flat", 
+function import_records(config::Config, recordData::Union{Array, String}; format::String="json", dtype::String="flat", 
 						overwriteBehavior::String="normal", forceNumber::Bool=false, dateFormat::String="YMD",
 						returnContent::String="count", returnFormat::String="json")
 	output = api_pusher("import", "record", config, data = import_file_checker(recordData, format), format=format, dtype=dtype, 
@@ -158,7 +156,7 @@ Number of successfully imported inst-event mappings
 """
 ###BROKEN###
 function import_insrument_event_mappings(config::Config, data; format::String="json", returnFormat::String="json")
-	output = api_pusher("import", "formEventMapping", config, instData = import_file_checker(data, format), arms=arms, format=format, returnFormat=returnFormat)
+	output = api_pusher("import", "formEventMapping", config, data = import_file_checker(data, format), format=format, returnFormat=returnFormat)
 	return output
 end
 
@@ -181,7 +179,6 @@ Upload a document to specific record to the designated uploading field.
 ##Returns:
 Nothing/errors
 """
-
 function import_file(config::Config, record::String, field::String, event::String, repeat_instance::Int, file::String;
 					returnFormat::String="json")
 	#check that its a file and throw, or rely on the fact it'll error quickly?
@@ -213,7 +210,6 @@ end
 ##Returns:
 The standard config, with same url and API-key to access project
 """
-###BROKEN(?)###
 function create_project(config::Config, project_title::String, purpose::Integer; format::String="json",
 						returnFormat::String="json", odm="", purpose_other::String="", project_notes::String="", 
 						is_longitudinal::Integer=0, surveys_enabled::Integer=0, record_autonumbering_enabled::Integer=1)

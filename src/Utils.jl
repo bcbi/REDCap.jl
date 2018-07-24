@@ -1,36 +1,8 @@
 #handling ssl- place up top as a global var, create a function that calls and modifies it? 
 #have poster just look at that to decide how to act?
 
-#=
-###HTTP CODE###
-function Form(d::Dict)
-    boundary = compat_string(rand(UInt128), base=16)
-    data = IO[]
-    io = IOBuffer()
-    len = length(d)
-    for (i, (k, v)) in enumerate(d)
-        write(io, (i == 1 ? "" : "\r\n") * "--" * boundary * "\r\n")
-        write(io, "Content-Disposition: form-data; name=\"$k\"")
-        if isa(v, IO)
-            writemultipartheader(io, v)
-            seekstart(io)
-            push!(data, io)
-            push!(data, v)
-            io = IOBuffer()
-        else
-            write(io, "\r\n\r\n")
-            write(io, escapeuri(v))
-            println("What it is given:\n$v\nWhat it gives:")
-            println(escapeuri(v))
-        end
-        i == len && write(io, "\r\n--" * boundary * "--" * "\r\n")
-    end
-    seekstart(io)
-    push!(data, io)
-    return Form(data, 1, boundary)
-end
-=#
-using LibCURL
+valid_formats = ("json","csv","xml","df","odm") #redcap accepted formats (also df)
+
 """
 	api_pusher(mode::String, content::String, config::Config; kwargs...)
 
@@ -56,7 +28,7 @@ function api_pusher(mode::String, content::String, config::Config; file_loc::Str
 	fields = Dict()
 	fields["token"] = config.key
 	fields["action"] = mode #import, export, delete
-	fields["content"] = content #what to access
+	fields["content"] = content #what API function to access
 
 	#validation here? Everyone passes through here...
 	#not the file vs data validation happening at the base of all imports; thats too specific due to passing keywords
@@ -64,12 +36,11 @@ function api_pusher(mode::String, content::String, config::Config; file_loc::Str
 	#validate via kwarg? eg if match, check for value validation
 	#import validation?
 	#export validation?
-	#fill dict with passed kwargs - function?
-	#println(kwargs)
+
 	for (k,v) in kwargs
 		if isequal(String(k), "format")
 			println(v)
-			format = v
+			format=v
 			if isequal(v, "df")
 				#Pass as the closest thing to api, but handle internally as df
 				fields["format"]="csv"
@@ -77,48 +48,41 @@ function api_pusher(mode::String, content::String, config::Config; file_loc::Str
 				fields["format"]=v
 			end
 		elseif isequal(String(k), "dtype") #type is reserved in julia, quick-fix
-			fields["type"] = v
-		#elseif isequal(String(k), "data")
-		#	data = IOBuffer()
-		#	write(data, v)
-		#	println(data)
-		#	fields["data"] = data
+			fields["type"]=v
+		elseif isequal(mode, "import") && isequal(String(k), "data") #check if its one of those oddly named import fields
+			println("DING")
+			fields[String(k)]=IOBuffer(v)
+		elseif isa(v, Array)
+			for (i, item) in enumerate(v)
+			    fields["$(String(k))[$(i-1)]"]=String(item)
+			end
 		else
-			fields[String(k)] = v
+			fields[String(k)]=v
 		end
 	end
-	#println("Fields:")
-	#println(fields)
-	#for (k,v) in fields
-	#	print(HTTP.escapeuri(v))
-	#end
 
 	#POST request and get response
-	response = libposter(config, fields)
-	output = String(response.body)
+	response = poster(config, fields)
 
-	#check if user wanted to save the file here -
+	#check if user wanted to save the file here - set flag
 	to_file = (length(file_loc)>1 ? true : false)
 	#check for return format 
 	if mode=="export" && haskey(fields, "format") 
 		if to_file==false
-			println("outputting")
-			return formatter(output, fields["format"], mode)
+			#println("outputting")
+			return formatter(response, fields["format"], mode)
 		else
 			#exporting to file
-			println("to file")
-			export_to_file(file_loc, output)
+			#println("to file")
+			export_to_file(file_loc, response)
 		end
 	elseif mode=="import" && haskey(fields, "format")
 		#handle input feedback/errors
-		return formatter(output, fields["format"], "export") #treat returns from imports as exports
+		return formatter(response, fields["format"], "export") #treat returns from imports as exports
 	else
 		#delete - this is a simple little report of how many things you deleted if anything -
-		#doesnt even take a format, so treat 'im like a JSON, or whatever is easier, and format it out simple like
-		#low priority
+		return response
 	end
-	#horribly messy- make work gud
-	return output
 end
 
 
@@ -138,88 +102,18 @@ Anything the server returns; data or error messages.
 function poster(config::Config, body)
 	println("POSTing")
 	response = HTTP.post(config.url; body=body, require_ssl_verification=true, verbose=3)
-	#NEW WAY
-	#HTTP.open("POST", config.url) do io
-	#	write(io, JSON.json(body))
-	#	startread(io)
-	#end
 	println("POSTd")
 	#or is this an apropo place for a try/catch?
-	if response.status>=400
+	if response.status != 200
 		#Error - handle errors way more robustly- check for "error" field? here or back at api_pusher?
 		#an error is an error is an error, so it throws no matter what...
 		println(response.status)
 
 	else
-		return response
+		return String(response.body)
 	end
 end
 
-##RAW URI: exportrawfalsejsonfalsejson2,3recordrawfalse110CE385B1BFAE2CE01DAF99112CAB9Fflat
-
-function curl_write_cb(curlbuf::Ptr{Void}, s::Csize_t, n::Csize_t, p_ctxt::Ptr{Void})
-    sz = s * n
-
-    data = Array{UInt8}(sz)
-    
-    ccall(:memcpy, Ptr{Void}, (Ptr{Void}, Ptr{Void}, UInt64), data, curlbuf, sz)
-    println("recd: ", String(data))
-    
-    sz::Csize_t
-end
-
-function libposter(config::Config, body)
-	println("POSTing")
-	#Build out a URI for every item inside the body, but make sure it gets strung/not mangled
-	#Specials: Arrays, must format as 1,2,3 etc.
-	output=""
-	#URI builder
-	for (k, v) in body
-		if isa(v, Array)
-			i = length(v)
-			for item in v
-				if i>1
-					output *= String(item)
-					output *= ","
-					i-=1
-				else
-					output *= String(item)
-				end
-			end
-		else
-			output *= string(v)
-		end
-	end
-	println(output)
-	curl = curl_easy_init()
-
-	c_curl_write_cb = cfunction(curl_write_cb, Csize_t, (Ptr{Void}, Csize_t, Csize_t, Ptr{Void}))
-
-    curl_easy_setopt(curl, CURLOPT_POSTFIELDS, output)
-    curl_easy_setopt(curl, CURLOPT_URL, config.url)
-    curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, c_curl_write_cb)
- 
-    response = curl_easy_perform(curl)
-	println("curl url exec response : ", response)
-
-	# retrieve HTTP code
-	http_code = Array{Clong}(1)
-	curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, http_code)
-	println("httpcode : ", http_code)
-
-	println("POSTd")
-	#or is this an apropo place for a try/catch?
-	#if response.status>=400
-		#Error - handle errors way more robustly- check for "error" field? here or back at api_pusher?
-		#an error is an error is an error, so it throws no matter what...
-	#	println(response.status)
-
-	#else
-	#	return response
-	#end
-	curl_easy_cleanup(curl)
-	return response
-end
 
 """
 	generate_next_record_id(config::Config) 
@@ -235,7 +129,7 @@ function generate_next_record_id(config::Config)
 	fields = Dict("token" => config.key, 
 				  "content" => "generateNextRecordName")
 	output = poster(config, fields)
-	return parse(Integer, String(output.body)) #return as integer
+	return parse(Int8, String(output.body)) #return as integer
 end
 
 
@@ -272,8 +166,6 @@ function formatter(data, format, mode::String) #flag to save to file?
 end
 
 
-
-
 """
 	json_formatter(data, mode::String)
 
@@ -287,21 +179,17 @@ The opposite of what was given in relation to json format
 
 function json_formatter(data, mode::String)
 	if mode=="import"
-		#must turn a dict/data structure into json
 		return JSON.json(data)
 	else
-		#must turn json into a dict
 		try
 			return JSON.parse(data) 
 		catch
 			println("Catch - data cannot be json formatted")
-			return data #for things that arent dicts
+			return data #for things that arent dicts - a surprising amount of REDCap's output
 		end
 
 	end
 end
-
-		#MASSIVE HEAT-SINK OF FAILURE#
 
 
 """
@@ -314,7 +202,6 @@ end
 ##Returns:
 The opposite of what was given in relation to csv format
 """
-###BROKEN###
 function csv_formatter(data, mode::String)
 	if mode=="import"
 		#must turn dict into csv
@@ -326,7 +213,7 @@ function csv_formatter(data, mode::String)
 			return data
 		end
 	else
-		#must turn csv into dict/df
+		#must turn recieved csv into dict
 		try
 			println(data)
 			return df_formatter(data, mode)
@@ -348,7 +235,7 @@ end
 ##Returns:
 The opposite of what was given in relation to xml format
 """
-###BROKEN###
+###BROKEN(?)###
 function xml_formatter(data, mode::String)
 	if mode=="import"
 		#must turn dict into xml
@@ -356,10 +243,18 @@ function xml_formatter(data, mode::String)
 		xDoc = XMLDocument()
 		return xDoc = parse_string(string(data))
 	else
-		#must turn xml into dict
+		#must turn xml into dict-array
+		output=[]
 		try
 			#data is an xml
-			
+			for record in collect(child_elements(root(data)))
+				data = Dict()
+				for item in child_elements(record)
+					data[name(item)]=content(item)
+				end
+				push!(output, data)
+			end
+			return data
 		catch
 			println("Catch - data cannot be xml formatted")
 			return data
@@ -371,6 +266,7 @@ end
 """
 	odm_formatter(data, mode::String)
 
+May just be XML in disguise
 ##Parameters:
 * `data` - the data to be formatted
 * `mode` - formatting for Import (data to server) or Export (data from server)
@@ -400,6 +296,7 @@ end
 
 Tries to remove missing values from a df but cant actually.....
 """
+###BROKEN###
 function df_scrubber(data)
 	for row in 1:size(data)[1]
 		for col in 1:size(data)[2]
@@ -488,31 +385,21 @@ Called by importing functions to load already formatted data directly from a des
 ##Returns:
 The formatted data
 """
-###(half)BROKEN###
 function import_from_file(file_loc::String, format::String)
 	#take from file
 	#verify file exists
-	#try
+	try
 		open(file_loc) do file
 			#Leave separate now just in case, but plan to simplify this
-			if format=="json"
+			if format ∈ valid_formats
 				return String(read(file))
-			elseif format=="csv" || format=="df"
-				#output=String(read(file)) #comes out a df- cant be sent as df...
-				#println(typeof(output))
-				return String(read(file))
-			elseif format=="xml"
-				 #xml
-				 return String(read(file))
-			elseif format=="odm"
-				return #odm
 			else
 				error("$format is an invalid format.\nValid formats: \"json\", \"csv\", \"xml\", \"odm\", or \"df\"")
 			end
 		end
-	#catch
-	#	error("File could not be read:\n$file_loc")
-	#end
+	catch
+		error("File could not be read:\n$file_loc")
+	end
 end
 
 
@@ -529,12 +416,7 @@ If a path, calls a loading function; if data, calls a formatter.
 ##Returns:
 The retreived/formatted data
 """
-
 function import_file_checker(data, format::String)
-	#handle validation and import validation - if not already passing formatted data, format - else leave alone and pass
-	#take the data as the file-location?
-	#loading from file - eg take csv file, open it, throw into a buffer(?), pass to import func. 
-	#rely on user to check if format works?
 	if length(data)<70 && isa(data, String) && ispath(data)
 		return import_from_file(data, format)
 	else
@@ -555,7 +437,6 @@ Called by exporting functions to dump data into designated file, or yell at you 
 ##Returns:
 Nothing/error
 """
-
 function export_to_file(file_loc::String, data)
 	try
 		open(file_loc, "w") do file
@@ -564,4 +445,30 @@ function export_to_file(file_loc::String, data)
 	catch
 		error("File could not be read:\n$file_loc")
 	end
+end
+
+
+"""
+	array_to_string(a::Array)
+
+turns an array into a string so I can lie to REDCap and pretend they were uri escaped nicenice
+*Don't pass this anything weird.
+
+#Params:
+* `a` - array to 'encode'
+
+#Returns:
+A string of all items in the list with commas in between them.
+"""
+function array_to_string(a::Array)
+	output = ""
+	i = length(a)
+	for item in a
+		output*=String(item)
+		if i > 1
+			output*=","
+		end
+		i-=1
+	end
+	return output
 end

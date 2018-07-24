@@ -60,7 +60,7 @@ const REDCap_URL = get(ENV, "REDCAP_URL", "")
 	#be grabbed, modified, and re-imported
 
 	#get out of a lump function- make like 4-5 meaningful calls
-	function test_export_method1(config::Config)
+	function test_export_methods(config::Config)
 		#=
 		println("TEST 1 - Press X to JSON")
 		println(export_field_names(config))

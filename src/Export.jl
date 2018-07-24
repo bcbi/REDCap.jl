@@ -324,9 +324,9 @@ end
 ##Returns:
 Formatted dict of instrument-event mappings for project.
 """
-
+##BROKEN
 function export_instrument_event_mappings(config::Config, arms::Array=[]; format::String="json", returnFormat::String="json", file_loc::String="")
-	output = api_pusher("export", "surveyReturnCode", config, record=record, returnFormat=returnFormat, file_loc=file_loc)
+	output = api_pusher("export", "formEventMapping", config, arms=arms, returnFormat=returnFormat, file_loc=file_loc)
 	return output
 end
 
