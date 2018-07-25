@@ -12,11 +12,11 @@
 A Julia frontend for the REDCap API. REDCap.jl supports both importing and exporting records, as well as deletion from the REDCap Database. It also includes functions for surveys and report generation. 
 
 
-## Getting Started
+## Getting Started *
 
 (These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.)
 
-### Prerequisites
+### Prerequisites *
 
 (What things you need to install the software and how to install them
 Give a list with links and how to install using code snippets.)
@@ -27,7 +27,7 @@ npm install
 conda install ...
 ```
 
-### Installing
+### Installing *
 
 (A step by step on how to install the package.
 
@@ -46,26 +46,23 @@ until finished
 End with an example of getting some data out of the system or using it for a little demo)
 
 
-## Tests
+## Tests *
 
 Explain how to run the automated tests for this system
 
 
-## Deployment
+## Deployment *
 
 Add additional notes about how to deploy this on a local machine and in a cloud provider.
 
 
-## Contributing
+## Contributing *
 
 Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
 
 ## Release History
-- 0.4
-  - CHANGES:  
-
-- 0.3
-  - CHANGES:
+- 0.1
+	
 
 
 ## Authors

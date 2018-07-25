@@ -1,13 +1,30 @@
-```@meta
-CurrentModule = REDCap
-```
+
+
+
+<a id='REDCap-1'></a>
+
 # REDCap
-```@contents
-```
+
+    - [Exporting](export.md#Exporting-1)
+    - [Importing](import.md#Importing-1)
+- [REDCap](index.md#REDCap-1)
+    - [Overview](index.md#Overview-1)
+    - [Usage](index.md#Usage-1)
+    - [Index](index.md#Index-1)
+- [Other Functionality](utils.md#Other-Functionality-1)
+    - [Config](utils.md#Config-1)
+    - [Project Creation](utils.md#Project-Creation-1)
+
+
+<a id='Overview-1'></a>
 
 ## Overview
 
+
 A Julia frontend for the REDCap API. REDCap.jl supports both importing and exporting records, as well as deletion from the REDCap Database. It also includes functions for surveys and report generation. 
+
+
+<a id='Usage-1'></a>
 
 ## Usage
 
@@ -62,9 +79,27 @@ import_project_information(config, final_proj_info)
 export_pdf(config, "/<path>/export.pdf", allRecords=true)
 ```
 
-```@docs
+<a id='REDCap.export_field_names-Tuple{REDCap.Config}' href='#REDCap.export_field_names-Tuple{REDCap.Config}'>#</a>
+**`REDCap.export_field_names`** &mdash; *Method*.
+
+
+
+```
 export_field_names(config::Config; format::String="json", file_loc::String="")
 ```
+
+##Parameters:
+
+  * `config` - struct containing url and api-key
+  * `format` - "json", "xml", "csv", or "odm". decides format of returned data
+  * `file_loc` - location to export to
+
+##Returns: Formatted dict of export/import-specific version of field names  for all fields (or for one field, if desired) in project:  'original_field_name', 'choice_value', and 'export_field_name'
+
+
+<a id='Index-1'></a>
+
 ## Index
-```@index
-```
+
+- [`REDCap.export_field_names`](index.md#REDCap.export_field_names-Tuple{REDCap.Config})
+
