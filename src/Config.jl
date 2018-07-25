@@ -8,7 +8,6 @@ Struct to hold api url and key/superkey.
 * `url` - the url of the REDCap instance
 * `key` - either the standard or super API key
 """
-
 struct Config
 	url::String
 	key::String
