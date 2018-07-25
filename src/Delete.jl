@@ -5,13 +5,13 @@ include("Utils.jl")
 
 Delete Arms from project.
 
-#NOTE: This only works for longitudinal projects. 
+#### NOTE: This only works for longitudinal projects. 
 
-##Parameters:
+#### Parameters:
 * `config` - struct containing url and api-key
 * `arms` - array of arm names to delete
 
-##Returns:
+#### Returns:
 number of succesfully deleted arms
 """
 ###BROKEN### - see HTTP's array handling in escapeuri()
@@ -26,13 +26,13 @@ end
 
 Delete Events from project.
 
-#NOTE: This only works for longitudinal projects. 
+#### NOTE: This only works for longitudinal projects. 
 
-##Parameters:
+#### Parameters:
 * `config` - struct containing url and api-key
 * `events` - array of event names to delete
 
-##Returns:
+#### Returns:
 number of successfully deleted events
 """
 ###BROKEN### - see HTTP's array handling in escapeuri()
@@ -48,7 +48,7 @@ end
 
 Delete document attached to record.
 
-##Parameters:
+#### Parameters:
 * `config` - struct containing url and api-key
 * `record` - name of record containing file
 * `field` - name of field containing file
@@ -56,7 +56,7 @@ Delete document attached to record.
 * `repeat_instance` - number of repeated instances (long project)
 * `returnFormat` - error message format
 
-##Returns:
+#### Returns:
 nothing/error
 """
 function delete_file(config::Config, record::String, field::String, event::String, 
@@ -73,12 +73,12 @@ end
 
 Delete one or more records from project.
 
-##Parameters:
+#### Parameters:
 * `config` - struct containing the url and api-key
 * `records` - array of record names to delete
 * `arm` - number of arm containing records
 
-##Returns:
+#### Returns:
 number of records successfully deleted
 """
 function delete_records(config::Config, records::Array; arm::Integer=0)

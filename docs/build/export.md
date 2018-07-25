@@ -58,6 +58,9 @@ export_records(config, file_loc="/src/output.csv", format="csv")
 ```
 
 
+Because REDCap is medical in nature, some information may be identifing information. Luckily this is handled on REDCaps end using the User Rights. Data tagged as identifying will not be exported in the request.
+
+
 <a id='Project-Data-1'></a>
 
 ## Project Data
@@ -76,5 +79,6 @@ A `.pdf` of the entire project is available through `export_pdf()`, as well as t
 
 ## Functions
 
+- [`REDCap.delete_records`](utils.md#REDCap.delete_records-Tuple{REDCap.Config,Array})
 - [`REDCap.export_records`](export.md#REDCap.export_records-Tuple{REDCap.Config})
 

@@ -1,4 +1,6 @@
 
+
+
 <a id='Importing-1'></a>
 
 # Importing
@@ -12,7 +14,7 @@ Importing into a REDCap database is simple. The data to be imported must be pres
 ## Records
 
 
-EX Record:
+Record:
 
 
 ```bash
@@ -85,9 +87,6 @@ Some import functions (Metadata) are only available for projects marked in devel
 The project information and settings can be changed using this function by importing a dict with some/all of the desired settings.
 
 
-EX:
-
-
 ```bash
 Dict{String,Any} with 23 entries:
   "secondary_unique_field"              => ""
@@ -123,9 +122,6 @@ Dict{String,Any} with 23 entries:
 
 
 Users may be imported in the same way as above. User permissions are set/modified in this way.
-
-
-EX:
 
 
 ```bash
@@ -172,4 +168,39 @@ Dict{String,Any} with 32 entries:
 
 
 A specified file upload field is required to import a file. Any attempts to upload a file in another field will result in error.
+
+
+<a id='Metadata-1'></a>
+
+## Metadata
+
+
+A projects metadata can be modified before it leaves development status using the `import_metadata()` function
+
+
+An example of field data:
+
+
+```bash
+Dict{String,Any} with 18 entries:
+  "required_field"                             => ""
+  "section_header"                             => "Contact Information"
+  "matrix_ranking"                             => ""
+  "select_choices_or_calculations"             => ""
+  "field_type"                                 => "text"
+  "field_note"                                 => ""
+  "form_name"                                  => "demographics"
+  "matrix_group_name"                          => ""
+  "field_label"                                => "First Name"
+  "custom_alignment"                           => ""
+  "question_number"                            => ""
+  "text_validation_max"                        => ""
+  "text_validation_type_or_show_slider_number" => ""
+  "branching_logic"                            => ""
+  "field_annotation"                           => ""
+  "identifier"                                 => "y"
+  "text_validation_min"                        => ""
+  "field_name"                                 => "first_name"
+
+```
 

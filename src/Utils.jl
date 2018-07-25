@@ -10,14 +10,14 @@ Handles creation of the Dict of fields to pass to REDCap, and file IO/formatting
 API documentation found here:
 https://<your-redcap-site.com>/redcap/api/help/?content=exp_field_names
 
-##Parameters:
+#### Parameters:
 * `mode` - "import", "export", or "delete"
 * `content` - Passed by calling modules to indicate what data to access
 * `config` - struct containing url and api-key
 * `file_loc`: location of file
 * `kwargs...` - Any addtl. arguments passed by the calling module
 
-##Returns:
+#### Returns:
 Formatted response body
 """
 function api_pusher(mode::String, content::String, config::Config; file_loc::String="", kwargs...)
@@ -81,11 +81,11 @@ end
 
 Handles the POST duties for all modules. Also does basic Status checking and SSL verification.
 
-##Parameters:
+#### Parameters:
 * `config` - struct containing url and api-key
 * `body` - request body data
 
-##Returns:
+#### Returns:
 Anything the server returns; data or error messages.
 """
 function poster(config::Config, body)
@@ -105,10 +105,10 @@ end
 """
 	generate_next_record_id(config::Config) 
 
-##Parameters:
+#### Parameters:
 * `config` - struct containing url and api-key
 
-##Returns:
+#### Returns:
 The next available ID number for project
 """
 
@@ -124,12 +124,12 @@ end
 
 Takes data and sends out to the proper formating function.
 
-##Parameters:
+#### Parameters:
 * `data` - the data to be formatted
 * `format` - the target format
 * `mode` - formatting for Import (data to server) or Export (data from server)
 
-##Returns:
+#### Returns:
 The specified formatted/unformatted object
 """
 
@@ -155,11 +155,11 @@ end
 """
 	json_formatter(data, mode::String)
 
-##Parameters:
+#### Parameters:
 * `data` - the data to be formatted
 * `mode` - formatting for Import (data to server) or Export (data from server)
 
-##Returns:
+#### Returns:
 The opposite of what was given in relation to json format
 """
 
@@ -180,11 +180,11 @@ end
 """
 	csv_formatter(data, mode::String)
 
-##Parameters:
+#### Parameters:
 * `data` - the data to be formatted
 * `mode` - formatting for Import (data to server) or Export (data from server)
 
-##Returns:
+#### Returns:
 The opposite of what was given in relation to csv format
 """
 ###BROKEN(?)###
@@ -213,11 +213,11 @@ end
 """
 	xml_formatter(data, mode::String)
 
-##Parameters:
+#### Parameters:
 * `data` - the data to be formatted
 * `mode` - formatting for Import (data to server) or Export (data from server)
 
-##Returns:
+#### Returns:
 The opposite of what was given in relation to xml format
 """
 ###BROKEN(?)###
@@ -251,11 +251,11 @@ end
 	odm_formatter(data, mode::String)
 
 May just be XML in disguise
-##Parameters:
+#### Parameters:
 * `data` - the data to be formatted
 * `mode` - formatting for Import (data to server) or Export (data from server)
 
-##Returns:
+#### Returns:
 The opposite of what was given in relation to odm format
 """
 ###BROKEN###
@@ -280,10 +280,10 @@ end
 
 Takes a DF/Dict, turns it into a Dict/DF
 
-Parameters:
+#### Parameters:
 * `data` - data to be formatted
 
-Returns:
+#### Returns:
 The opposite of the diven format.
 """
 function df_formatter(data::Union{DataFrame, Array})
@@ -328,11 +328,11 @@ end
 
 Called by importing functions to load already formatted data directly from a designated file
 
-##Parameters:
+#### Parameters:
 * `file_loc`: location of file
 * `format`: the target format
 
-##Returns:
+#### Returns:
 The formatted data
 """
 function import_from_file(file_loc::String, format::String)
@@ -357,11 +357,11 @@ end
 Checks if the passed data is a valid path to a file, or data in itself. 
 If a path, calls a loading function; if data, calls a formatter.
 
-##Parametes:
+#### Parametes:
 * `data` - The data to check
 * `format` - the format to pass along
 
-##Returns:
+#### Returns:
 The retreived/formatted data
 """
 function import_file_checker(data, format::String)
@@ -378,11 +378,11 @@ end
 
 Called by exporting functions to dump data into designated file, or yell at you for a bad path.
 
-##Parameters:
+#### Parameters:
 * `file_loc`: location of file - pass with proper extensions
 * `data`: the data to save to file
 
-##Returns:
+#### Returns:
 Nothing/error
 """
 function export_to_file(file_loc::String, data)

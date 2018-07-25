@@ -6,12 +6,12 @@ include("Utils.jl")
 Update basic attributes of given REDCap project.
 NOTE: Only for projects in development
 
-##Parameters:
+#### Parameters:
 * `config` - struct containing url and api-key
 * `data` - data to be imported - pass as a file location to import from disk
 * `format` - "json", "xml", "csv", or "odm". declares format of imported data
 
-##Returns:
+#### Returns:
 Number of successfully imported values
 """
 function import_project_information(config::Config, data; format::String="json")
@@ -26,13 +26,13 @@ end
 Import metadata (i.e., Data Dictionary) into a project.
 NOTE: Only for projects in development
 
-##Parameters:
+#### Parameters:
 * `config` - struct containing url and api-key
 * `data` - data to be imported - pass as a file location to import from disk
 * `format` - "json", "xml", "csv", or "odm". declares format of imported data
 * `returnFormat` - error message format
 
-##Returns:
+#### Returns:
 Number of successfully imported fields
 """
 ###BROKEN###
@@ -40,20 +40,58 @@ function import_metadata(config::Config, data; format::String="json", returnForm
 	output = api_pusher("import", "metadata", config, data = import_file_checker(data, format), format=format, returnFormat=returnFormat)
 	return output
 end
+#=
+newmeta = Dict("required_field"=>"",
+  "section_header"=>"",
+  "matrix_ranking"=>"",
+  "select_choices_or_calculations"=>"",
+  "field_type"=>"file",
+  "field_note"=>"",
+  "form_name"=>"demographics",
+  "matrix_group_name"=>"",
+  "field_label"=>"File Upload",
+  "custom_alignment"=>"",
+  "question_number"=>"",
+  "text_validation_max"=>"",
+  "text_validation_type_or_show_slider_number"=>"",
+  "branching_logic"=>"",
+  "field_annotation"=>"",
+  "identifier"=>"",
+  "text_validation_min"=>"",
+  "field_name"=>"file_upload")
 
+push!(meta, newmeta)
+
+ERROR: HTTP.ExceptionRequest.StatusError(400, HTTP.Messages.Response:
+"""
+HTTP/1.1 400 Bad Request
+Date: Wed, 25 Jul 2018 18:12:00 GMT
+Server: Apache/2.4.6 (Red Hat Enterprise Linux)
+X-Powered-By: PHP/5.4.16
+Expires: 0
+cache-control: no-store, no-cache, must-revalidate
+Pragma: no-cache
+Access-Control-Allow-Origin: *
+REDCap-Random-Text: VxGV9VFPeaU9yzkMsFXFKUQuhMYCygnBXEgejwoi2wXnX
+Content-Length: 343
+Connection: close
+Content-Type: application/json; charset=utf-8
+
+{"error":"Each row MUST have a variable\/field name, but the following cells have a field name missing: A2.\nEach row MUST have a form name, but the following cells have a form name missing: B2.\nA field validation type is required in order to have a minimum or maximum validation value. The following cells are missing a validation type: I2"}""")
+=#
 
 """
 	import_user(config::Config, data; format::String="json", returnFormat::String="json")
 
 Update/import new users into a project.
 
-##Parameters:
+#### Parameters:
 * `config` - struct containing url and api-key
 * `data` - data to be imported - pass as a file location to import from disk
 * `format` - "json", "xml", "csv", or "odm". declares format of imported data
 * `returnFormat` - error message format
 
-##Returns:
+#### Returns:
 Number of succesfully added/modified users.
 """
 function import_users(config::Config, data; format::String="json", returnFormat::String="json")
@@ -67,14 +105,14 @@ end
 
 Update/import Arms into a project.
 
-##Parameters:
+#### Parameters:
 * `config` - struct containing url and api-key
 * `data` - data to be imported - pass as a file location to import from disk
 * `override` - 0 (false) 1 (true) - overwrites existing arms
 * `format` - "json", "xml", "csv", or "odm". declares format of imported data
 * `returnFormat` - error message format
 
-##Returns:
+#### Returns:
 Number of successfully imported arms
 """
 ###BROKEN###
@@ -89,14 +127,14 @@ end
 
 Update/import Events into a project.
 
-##Parameters:
+#### Parameters:
 * `config` - struct containing url and api-key
 * `data` - data to be imported - pass as a file location to import from disk
 * `override` - 0 (false) 1 (true) - overwrites existing events
 * `format` - "json", "xml", "csv", or "odm". declares format of imported data
 * `returnFormat` - error message format
 
-##Returns:
+#### Returns:
 Number of successfully imported events
 """
 ###BROKEN###
@@ -113,7 +151,7 @@ end
 
 Import a set of records for a project.
 
-##Parameters:
+#### Parameters:
 * `config` - struct containing url and api-key
 * `recordData` - array of record data to be imported - pass as a file location to import from disk
 * `format` - "json", "xml", "csv", or "odm". declares format of imported data
@@ -126,7 +164,7 @@ Import a set of records for a project.
 						"auto-ids" (pair of assigned id and given id)
 * `returnFormat` - error message format
 
-##Returns:
+#### Returns:
 Specified by returnContent
 """
 function import_records(config::Config, data; format::String="json", dtype::String="flat", 
@@ -144,15 +182,15 @@ end
 
 Import Instrument-Event Mappings into a project 
 
-#NOTE: This only works for longitudinal projects.
+#### NOTE: This only works for longitudinal projects.
 
-##Parameters:
+#### Parameters:
 * `config` - struct containing url and api-key
 * `data` - data to be imported - pass as a file location to import from disk
 * `format` - "json", "xml", "csv", or "odm". declares format of imported data
 * `returnFormat` - error message format
 
-##Returns:
+#### Returns:
 Number of successfully imported inst-event mappings
 """
 ###BROKEN###
@@ -168,7 +206,7 @@ end
 
 Upload a document to specific record to the designated uploading field.
 
-##Parameters:
+#### Parameters:
 * `config` - struct containing url and api-key
 * `record` - destination record id
 * `field` - destination file upload field
@@ -177,7 +215,7 @@ Upload a document to specific record to the designated uploading field.
 * `file` - file to be imported
 * `returnFormat` - error message format
 
-##Returns:
+#### Returns:
 Nothing/errors
 """
 function import_file(config::Config, record::String, field::String, event::String, repeat_instance::Int, file::String;
@@ -194,7 +232,7 @@ end
 						is_longitudinal::Integer=0, surveys_enabled::Integer=0, record_autonumbering_enabled::Integer=1)
 
 Creates a project with the given parameters
-##Parameters:
+#### Parameters:
 * `config` - struct containing url and super-api-key
 * `format` - "json", "xml", "csv", or "odm". declares format of imported data
 * `data` - attributes of project to create- only project_title and purpose are required (* for default)
@@ -208,7 +246,7 @@ Creates a project with the given parameters
 * `returnFormat` - error message format
 * `odm` - XML string containing metadata
 
-##Returns:
+#### Returns:
 The standard config, with same url and API-key to access project
 """
 function create_project(config::Config, project_title::String, purpose::Integer; format::String="json",
@@ -227,5 +265,5 @@ function create_project(config::Config, project_title::String, purpose::Integer;
 					"returnFormat" => returnFormat,
 					"odm" => odm)
 	response = poster(config, fields)
-	return Config(config.url, String(response.body)) #TEST THIS - make sure it doesnt give out some kind of werid Dict
+	return Config(config.url, String(response.body))
 end

@@ -23,6 +23,9 @@ export_records(config, records=["1","2"], fields=["record_id", "firstname"], fil
 export_records(config, file_loc="/src/output.csv", format="csv")
 ```
 
+Because REDCap is medical in nature, some information may be identifing information. Luckily this is handled on REDCaps end using the User Rights. Data tagged as identifying will not be exported in the request.
+
+
 ## Project Data
 
 Project information, field names, metadata, events/arms, and users are all available for export. As above, the can be written directly to a file.

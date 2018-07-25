@@ -1,3 +1,6 @@
+```@meta
+CurrentModule = REDCap
+```
 # Other Functionality
 
 ## Config
@@ -8,6 +11,7 @@ config = REDCap.Config("<url>", "<32-digit_API_key>")
 ```
 This object is then passed to all API calling functions. 
 
+
 ## Project Creation
 
 Projects can be created by first constructing a superConfig object, and initializing a project with desired settings. The function returns the config object for that project.
@@ -16,4 +20,11 @@ Projects can be created by first constructing a superConfig object, and initiali
 superconfig = REDCap.Config("<url>", "<64-digit_superAPI_key>")
 
 config = create_project(superconfig, "<New Project Name>", 0) #0 indicates a test project
+```
+
+
+## Deletion
+
+```@docs
+delete_records(config::Config, records::Array; arm::Integer=0)
 ```

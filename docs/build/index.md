@@ -5,6 +5,9 @@
 
 # REDCap
 
+- [REDCap](index.md#REDCap-1)
+    - [Overview](index.md#Overview-1)
+    - [Usage](index.md#Usage-1)
 - [Exporting](export.md#Exporting-1)
     - [Records](export.md#Records-1)
     - [Project Data](export.md#Project-Data-1)
@@ -14,12 +17,11 @@
     - [Project Information](import.md#Project-Information-1)
     - [Users](import.md#Users-1)
     - [Files](import.md#Files-1)
-- [REDCap](index.md#REDCap-1)
-    - [Overview](index.md#Overview-1)
-    - [Usage](index.md#Usage-1)
+    - [Metadata](import.md#Metadata-1)
 - [Other Functionality](utils.md#Other-Functionality-1)
     - [Config](utils.md#Config-1)
     - [Project Creation](utils.md#Project-Creation-1)
+    - [Deletion](utils.md#Deletion-1)
 
 
 <a id='Overview-1'></a>
@@ -30,9 +32,15 @@
 A Julia frontend for the REDCap API. REDCap.jl supports both importing and exporting records, as well as deletion from the REDCap Database. It also includes functions for surveys and report generation. 
 
 
+Available under the MIT license.
+
+
 <a id='Usage-1'></a>
 
 ## Usage
+
+
+A basic project can be created and accessed like so:
 
 
 ```julia
@@ -46,30 +54,30 @@ config = create_project(super_config, "Test Project", 1; purpose_other="Testing 
 
 #Importing- NOTE: Records may be incomplete. Only provided fields will be updated
 record=[Dict("sex"=>"0",
-			  "age"=>"56",
-			  "address"=>"168 Anderson Blvd. Quincy MA 01227",
-			  "height"=>"80",
-			  "dob"=>"1962-04-08",
-			  "record_id"=>"1",
-			  "bmi"=>"125",
-			  "comments"=>"Randomly Generated - Demographics",
-			  "email"=>"ALin@aol.com",
-			  "first_name"=>"Alexia",
-			  "demographics_complete"=>"0",
-			  "telephone"=>"(617) 882-6049",
-			  "weight"=>"80",
-			  "last_name"=>"Lin",
-			  "ethnicity"=>"1",
-			  "race"=>"1")]
+	  "age"=>"56",
+	  "address"=>"168 Anderson Blvd. Quincy MA 01227",
+	  "height"=>"80",
+	  "dob"=>"1962-04-08",
+	  "record_id"=>"1",
+	  "bmi"=>"125",
+	  "comments"=>"Randomly Generated - Demographics",
+	  "email"=>"ALin@aol.com",
+	  "first_name"=>"Alexia",
+	  "demographics_complete"=>"0",
+	  "telephone"=>"(617) 882-6049",
+	  "weight"=>"80",
+	  "last_name"=>"Lin",
+	  "ethnicity"=>"1",
+	  "race"=>"1")]
 
 import_records(config, record)
 
 #create new user with basic import/export permissions
 user=[Dict("username" => "john_smith@email.com",
-				 "email" => "john_smith@email.com",
-				 "lastname" => "Smith",
-				 "api_export"=>"1",
-				 "api_import"=>"1")]
+		 "email" => "john_smith@email.com",
+		 "lastname" => "Smith",
+		 "api_export"=>"1",
+		 "api_import"=>"1")]
 
 import_users(config, user)
 
