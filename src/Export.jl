@@ -1,7 +1,5 @@
 include("Utils.jl")
 
-#comment formatting w/ markdown
-#eg ##, *, backticks for code parentheticaling
 """
 	export_field_names(config::Config; format::String="json", file_loc::String="") 
 
@@ -92,19 +90,18 @@ end
 
 
 """
-	export_version(config::Config; format::String="json", returnFormat::String="json", file_loc::String="") 
+	export_version(config::Config; returnFormat::String="json", file_loc::String="") 
 
 ##Parameters:
 * `config` - struct containing url and api-key
-* `format` - "json", "xml", "csv", or "odm". decides format of returned data
 * `returnFormat` - error message format
 * `file_loc` - location to export to
 
 ##Returns:
 The version number (eg 1.0.0) as a string
 """
-function export_version(config::Config; format::String="json", returnFormat::String="json", file_loc::String="")
-	output = api_pusher("export", "version", config, format=format, returnFormat=returnFormat)
+function export_version(config::Config; returnFormat::String="json", file_loc::String="")
+	output = api_pusher("export", "version", config, format="json", returnFormat=returnFormat)
 	return output
 end
 
@@ -125,7 +122,7 @@ end
 Formatted dict of Arms for project.
 """
 function export_arms(config::Config; arms::Array=[], format::String="json", returnFormat::String="json", file_loc::String="")
-	output = api_pusher("export", "arm", config, format=format, returnFormat=returnFormat, arms=array_to_string(arms), file_loc=file_loc)
+	output = api_pusher("export", "arm", config, format=format, returnFormat=returnFormat, arms=arms, file_loc=file_loc)
 	return output
 end
 
@@ -146,7 +143,7 @@ end
 Formatted dict of events for project.
 """
 function export_events(config::Config; arms::Array=[], format::String="json", returnFormat::String="json", file_loc::String="")
-	output = api_pusher("export", "event", config, format=format, returnFormat=returnFormat, arms=array_to_string(arms), file_loc=file_loc)
+	output = api_pusher("export", "event", config, format=format, returnFormat=returnFormat, arms=arms, file_loc=file_loc)
 	return output
 end
 
@@ -209,8 +206,8 @@ Entire project as XML file.
 function export_project(config::Config; returnMetadata::Bool=false, records::Array=[], fields::Array=[], events::Array=[], 
 						returnFormat::String="json", exportSurveyFields::Bool=false, exportDataAccessGroups::Bool=false, 
 						filterLogic::String="", exportFiles::Bool=false, file_loc::String="")
-	output = api_pusher("export", "project_xml", config, returnMetadata=returnMetadata, records=array_to_string(records), fields=array_to_string(fields),
-							events=array_to_string(events), returnFormat=returnFormat, exportSurveyFields=exportSurveyFields, 
+	output = api_pusher("export", "project_xml", config, returnMetadata=returnMetadata, records=records, fields=fields,
+							events=events, returnFormat=returnFormat, exportSurveyFields=exportSurveyFields, 
 							exportDataAccessGroups=exportDataAccessGroups, filterLogic=filterLogic, exportFiles=exportFiles)
 	return output
 end
@@ -246,8 +243,8 @@ function export_records(config::Config; format::String="json", dtype::String="fl
 					records::Array=[], fields::Array=[], forms::Array=[], events::Array=[], rawOrLabel::String="raw", rawOrLabelHeaders::String="raw", 
 					exportCheckboxLabel::Bool=false, returnFormat::String="json", exportSurveyField::Bool=false, 
 					exportDataAccessGroups::Bool=false, filterLogic::String="", file_loc::String="")
-	output = api_pusher("export", "record", config, format=format, dtype=dtype, records=array_to_string(records), fields=array_to_string(fields), forms=array_to_string(forms),
-							events=array_to_string(events), rawOrLabel=rawOrLabel, rawOrLabelHeaders=rawOrLabelHeaders, exportCheckboxLabel=exportCheckboxLabel,
+	output = api_pusher("export", "record", config, format=format, dtype=dtype, records=records, fields=fields, forms=forms,
+							events=events, rawOrLabel=rawOrLabel, rawOrLabelHeaders=rawOrLabelHeaders, exportCheckboxLabel=exportCheckboxLabel,
 							exportSurveyField=exportSurveyField, exportDataAccessGroups=exportDataAccessGroups, filterLogic=filterLogic,
 							returnFormat=returnFormat, file_loc=file_loc)
 	return output
@@ -311,15 +308,9 @@ end
 ##Returns:
 Formatted dict of instrument-event mappings for project.
 """
-<<<<<<< HEAD
 ###BROKEN###
 function export_instrument_event_mappings(config::Config, arms::Array=[]; format::String="json", returnFormat::String="json", file_loc::String="")
 	output = api_pusher("export", "formEventMapping", config, arms=arms, returnFormat=returnFormat, file_loc=file_loc)
-=======
-##BROKEN
-function export_instrument_event_mappings(config::Config, arms::Array=[]; format::String="json", returnFormat::String="json", file_loc::String="")
-	output = api_pusher("export", "formEventMapping", config, arms=array_to_string(arms), returnFormat=returnFormat, file_loc=file_loc)
->>>>>>> d539066f5adac360f33eb83f6d52cb72e05930b4
 	return output
 end
 

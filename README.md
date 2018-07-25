@@ -6,70 +6,68 @@
 
 [![codecov.io](http://codecov.io/github/FLCN17/RedCap.jl/coverage.svg?branch=master)](http://codecov.io/github/FLCN17/RedCap.jl?branch=master)
 
-A Julia frontend for the REDCap API.
 
-Progress:
-======----
+## Overview
 
-### Documentation:
-
-Put links here
-
-### Features:
-
-REDCap.jl supports both importing and exporting records, as well as deletion.
-
-### Requirements:
+A Julia frontend for the REDCap API. REDCap.jl supports both importing and exporting records, as well as deletion from the REDCap Database. It also includes functions for surveys and report generation. 
 
 
-### Usage:
+## Getting Started
 
-All REDCap projects need to be tied to their url and API Key, which is done by creating a Config object
-```julia
-config = REDCap.Config("<url>", "<32-digit_API_key>")
+(These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.)
+
+### Prerequisites
+
+(What things you need to install the software and how to install them
+Give a list with links and how to install using code snippets.)
+
+```
+brew install ...
+npm install
+conda install ...
 ```
 
+### Installing
 
-#### Exporting:
-Exported records can be returned normally, or written to a file. Records can be exported by their record id, by specified fields, or even using a boolean logic string such as `[age]>80`
-```julia
-export_records(config)
+(A step by step on how to install the package.
 
-export_records(config, records=["1","2"], fields=["record_id", "firstname"], filterLogic="[age]>80")
+Say what the step will be
 
-export_records(config, file_loc="/src/output.csv", format="csv")
+```
+Give the example
 ```
 
+And repeat
 
-#### Importing:
-
-Importing is handled much the same way, with the ability to import directly from a file
-```julia
-import_records(config, records_data)
-
-import_records(config, "/src/records.csv", format="csv")
 ```
-By default, `json` is passed as the target format, but `csv`/`df`, `xml`, and `odm` formats are supported for import as well as output.
-
-
-#### Other Functionality:
-
-Projects can be created by first constructing a superConfig object, and initializing a project with desired settings. The function returns the config object for that project.
-```julia
-superconfig = REDCap.Config("<url>", "<64-digit_superAPI_key>")
-
-config = create_project(superconfig, "<New Project Name>", 0) #0 indicates a test project
+until finished
 ```
 
+End with an example of getting some data out of the system or using it for a little demo)
 
-```julia
-code example
-```
 
-```julia
-code example
-```
+## Tests
 
-```julia
-code example
-```
+Explain how to run the automated tests for this system
+
+
+## Deployment
+
+Add additional notes about how to deploy this on a local machine and in a cloud provider.
+
+
+## Contributing
+
+Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
+
+## Release History
+- 0.4
+  - CHANGES:  
+
+- 0.3
+  - CHANGES:
+
+
+## Authors
+
+List authors and affiliation.

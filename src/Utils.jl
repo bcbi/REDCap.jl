@@ -1,5 +1,6 @@
 #handling ssl- place up top as a global var, create a function that calls and modifies it? 
 #have poster just look at that to decide how to act?
+
 """
 	api_pusher(mode::String, content::String, config::Config; file_loc::String="", kwargs...)
 

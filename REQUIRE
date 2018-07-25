@@ -1,10 +1,8 @@
 julia 0.6
+
+HTTP
 JSON
 LightXML
 CSV
-
-LibCURL
-HTTP
-
 DataStructures
 DataFrames
