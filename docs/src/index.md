@@ -61,10 +61,3 @@ import_project_information(config, final_proj_info)
 #pdf summary of the project
 export_pdf(config, "/<path>/export.pdf", allRecords=true)
 ```
-
-```@docs
-export_field_names(config::Config; format::String="json", file_loc::String="")
-```
-## Index
-```@index
-```

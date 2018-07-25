@@ -1,9 +1,9 @@
-## Importing
+# Importing
 
 Importing into a REDCap database is simple. The data to be imported must be presented in either `json` (Array of Dicts), `csv`/`df`, or `xml` format. These files can be loaded from a filepath as well. The correct format must be passed along with the object. REDCap defaults to `json` if not format is given.
 
 
-### Records
+## Records
 
 EX Record:
 ```bash
@@ -51,7 +51,7 @@ Which returns the number as an integer.
 #### Note
 Some import functions (Metadata) are only available for projects marked in development, while others override features disabled (arm, event).
 
-### Project Information
+## Project Information
 
 The project information and settings can be changed using this function by importing a dict with some/all of the desired settings.
 
@@ -84,7 +84,7 @@ Dict{String,Any} with 23 entries:
 
 ```
 
-### Users
+## Users
 
 Users may be imported in the same way as above. User permissions are set/modified in this way.
 
@@ -126,6 +126,6 @@ Dict{String,Any} with 32 entries:
 
 ```
 
-### Files
+## Files
 
 A specified file upload field is required to import a file. Any attempts to upload a file in another field will result in error.

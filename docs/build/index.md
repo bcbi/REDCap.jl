@@ -5,12 +5,18 @@
 
 # REDCap
 
-    - [Exporting](export.md#Exporting-1)
-    - [Importing](import.md#Importing-1)
+- [Exporting](export.md#Exporting-1)
+    - [Records](export.md#Records-1)
+    - [Project Data](export.md#Project-Data-1)
+    - [Functions](export.md#Functions-1)
+- [Importing](import.md#Importing-1)
+    - [Records](import.md#Records-1)
+    - [Project Information](import.md#Project-Information-1)
+    - [Users](import.md#Users-1)
+    - [Files](import.md#Files-1)
 - [REDCap](index.md#REDCap-1)
     - [Overview](index.md#Overview-1)
     - [Usage](index.md#Usage-1)
-    - [Index](index.md#Index-1)
 - [Other Functionality](utils.md#Other-Functionality-1)
     - [Config](utils.md#Config-1)
     - [Project Creation](utils.md#Project-Creation-1)
@@ -78,28 +84,4 @@ import_project_information(config, final_proj_info)
 #pdf summary of the project
 export_pdf(config, "/<path>/export.pdf", allRecords=true)
 ```
-
-<a id='REDCap.export_field_names-Tuple{REDCap.Config}' href='#REDCap.export_field_names-Tuple{REDCap.Config}'>#</a>
-**`REDCap.export_field_names`** &mdash; *Method*.
-
-
-
-```
-export_field_names(config::Config; format::String="json", file_loc::String="")
-```
-
-##Parameters:
-
-  * `config` - struct containing url and api-key
-  * `format` - "json", "xml", "csv", or "odm". decides format of returned data
-  * `file_loc` - location to export to
-
-##Returns: Formatted dict of export/import-specific version of field names  for all fields (or for one field, if desired) in project:  'original_field_name', 'choice_value', and 'export_field_name'
-
-
-<a id='Index-1'></a>
-
-## Index
-
-- [`REDCap.export_field_names`](index.md#REDCap.export_field_names-Tuple{REDCap.Config})
 
