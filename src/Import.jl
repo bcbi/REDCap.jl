@@ -4,6 +4,7 @@ include("Utils.jl")
 	import_project_information(config::Config, data; format::String="json")
 
 Update basic attributes of given REDCap project.
+NOTE: Only for projects in development
 
 ##Parameters:
 * `config` - struct containing url and api-key
@@ -13,7 +14,6 @@ Update basic attributes of given REDCap project.
 ##Returns:
 Number of successfully imported values
 """
-###BROKEN###
 function import_project_information(config::Config, data; format::String="json")
 	output = api_pusher("import", "project_settings", config, data = import_file_checker(data, format), format=format)
 	return output
@@ -24,6 +24,7 @@ end
 	import_metadata(config::Config, data; format::String="json", returnFormat::String="json")
 
 Import metadata (i.e., Data Dictionary) into a project.
+NOTE: Only for projects in development
 
 ##Parameters:
 * `config` - struct containing url and api-key
@@ -53,9 +54,9 @@ Update/import new users into a project.
 * `returnFormat` - error message format
 
 ##Returns:
-Dict of users
+Number of succesfully added/modified users.
 """
-function import_user(config::Config, data; format::String="json", returnFormat::String="json")
+function import_users(config::Config, data; format::String="json", returnFormat::String="json")
 	output = api_pusher("import", "user", config, data = import_file_checker(data, format), format=format, returnFormat=returnFormat)
 	return output
 end
@@ -128,10 +129,10 @@ Import a set of records for a project.
 ##Returns:
 Specified by returnContent
 """
-function import_records(config::Config, recordData::Union{Array, String}; format::String="json", dtype::String="flat", 
+function import_records(config::Config, data; format::String="json", dtype::String="flat", 
 						overwriteBehavior::String="normal", forceNumber::Bool=false, dateFormat::String="YMD",
 						returnContent::String="count", returnFormat::String="json")
-	output = api_pusher("import", "record", config, data = import_file_checker(recordData, format), format=format, dtype=dtype, 
+	output = api_pusher("import", "record", config, data = import_file_checker(data, format), format=format, dtype=dtype, 
 							overwriteBehavior=overwriteBehavior, forceNumber=forceNumber, dateFormat=dateFormat,
 							returnContent=returnContent, returnFormat=returnFormat)
 	return output
@@ -181,7 +182,6 @@ Nothing/errors
 """
 function import_file(config::Config, record::String, field::String, event::String, repeat_instance::Int, file::String;
 					returnFormat::String="json")
-	#check that its a file and throw, or rely on the fact it'll error quickly?
 	output = api_pusher("import", "file", config, record=record, field=field, event=event, repeat_instance=repeat_instance, 
 							file=open(file), returnFormat=returnFormat)
 	return output
@@ -193,6 +193,7 @@ end
 						returnFormat::String="json", odm="NULL", purpose_other::String="", project_notes::String="", 
 						is_longitudinal::Integer=0, surveys_enabled::Integer=0, record_autonumbering_enabled::Integer=1)
 
+Creates a project with the given parameters
 ##Parameters:
 * `config` - struct containing url and super-api-key
 * `format` - "json", "xml", "csv", or "odm". declares format of imported data

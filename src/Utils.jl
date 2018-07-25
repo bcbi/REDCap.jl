@@ -1,10 +1,7 @@
 #handling ssl- place up top as a global var, create a function that calls and modifies it? 
 #have poster just look at that to decide how to act?
-
-valid_formats = ("json","csv","xml","df","odm") #redcap accepted formats (also df)
-
 """
-	api_pusher(mode::String, content::String, config::Config; kwargs...)
+	api_pusher(mode::String, content::String, config::Config; file_loc::String="", kwargs...)
 
 Pass the type of api call, the config struct, and any needed kwargs for that api call.
 Handles creation of the Dict of fields to pass to REDCap, and file IO/formatting. 
@@ -22,7 +19,6 @@ https://<your-redcap-site.com>/redcap/api/help/?content=exp_field_names
 ##Returns:
 Formatted response body
 """
-
 function api_pusher(mode::String, content::String, config::Config; file_loc::String="", kwargs...)
 	#initialize dict with basic info and api calls
 	fields = Dict()
@@ -30,16 +26,8 @@ function api_pusher(mode::String, content::String, config::Config; file_loc::Str
 	fields["action"] = mode #import, export, delete
 	fields["content"] = content #what API function to access
 
-	#validation here? Everyone passes through here...
-	#not the file vs data validation happening at the base of all imports; thats too specific due to passing keywords
-	#dont want to have to do a whole dict of just validating data to the right keyword.
-	#validate via kwarg? eg if match, check for value validation
-	#import validation?
-	#export validation?
-
 	for (k,v) in kwargs
 		if isequal(String(k), "format")
-			println(v)
 			format=v
 			if isequal(v, "df")
 				#Pass as the closest thing to api, but handle internally as df
@@ -50,7 +38,7 @@ function api_pusher(mode::String, content::String, config::Config; file_loc::Str
 		elseif isequal(String(k), "dtype") #type is reserved in julia, quick-fix
 			fields["type"]=v
 		elseif isequal(mode, "import") && isequal(String(k), "data") #check if its one of those oddly named import fields
-			println("DING")
+			#println("DING")
 			fields[String(k)]=IOBuffer(v)
 		elseif isa(v, Array)
 			for (i, item) in enumerate(v)
@@ -75,10 +63,11 @@ function api_pusher(mode::String, content::String, config::Config; file_loc::Str
 			#exporting to file
 			#println("to file")
 			export_to_file(file_loc, response)
+			return formatter(response, fields["format"], mode)
 		end
 	elseif mode=="import" && haskey(fields, "format")
 		#handle input feedback/errors
-		return formatter(response, fields["format"], "export") #treat returns from imports as exports
+		return formatter(response, fields["format"], "export") #treat returns from imports as exports?
 	else
 		#delete - this is a simple little report of how many things you deleted if anything -
 		return response
@@ -98,17 +87,14 @@ Handles the POST duties for all modules. Also does basic Status checking and SSL
 ##Returns:
 Anything the server returns; data or error messages.
 """
-
 function poster(config::Config, body)
 	println("POSTing")
-	response = HTTP.post(config.url; body=body, require_ssl_verification=true, verbose=3)
+	response = HTTP.post(config.url; body=body, require_ssl_verification=true)#, verbose=3)
 	println("POSTd")
-	#or is this an apropo place for a try/catch?
 	if response.status != 200
 		#Error - handle errors way more robustly- check for "error" field? here or back at api_pusher?
 		#an error is an error is an error, so it throws no matter what...
 		println(response.status)
-
 	else
 		return String(response.body)
 	end
@@ -128,8 +114,7 @@ The next available ID number for project
 function generate_next_record_id(config::Config)
 	fields = Dict("token" => config.key, 
 				  "content" => "generateNextRecordName")
-	output = poster(config, fields)
-	return parse(Int8, String(output.body)) #return as integer
+	return parse(Int8, poster(config, fields)) #return as integer
 end
 
 
@@ -159,7 +144,7 @@ function formatter(data, format, mode::String) #flag to save to file?
 		odm_formatter(data, mode)
 	elseif format=="df"
 		#Special solution
-		df_formatter(data, mode)
+		df_formatter(data)
 	else
 		error("$format is an invalid format.\nValid formats: \"json\", \"csv\", \"xml\", \"odm\", or \"df\"")
 	end
@@ -187,7 +172,6 @@ function json_formatter(data, mode::String)
 			println("Catch - data cannot be json formatted")
 			return data #for things that arent dicts - a surprising amount of REDCap's output
 		end
-
 	end
 end
 
@@ -202,21 +186,21 @@ end
 ##Returns:
 The opposite of what was given in relation to csv format
 """
+###BROKEN(?)###
 function csv_formatter(data, mode::String)
 	if mode=="import"
 		#must turn dict into csv
 		try
 			formattedData = IOBuffer()
-			return CSV.write(formattedData, data, missingstring=" ")
+			return CSV.write(formattedData, data)
 		catch
-			println("Catch")
+			println("Catch - data cannot be csv formatted")
 			return data
 		end
 	else
-		#must turn recieved csv into dict
+		#must turn recieved csv into dict? df?
 		try
-			println(data)
-			return df_formatter(data, mode)
+			return CSV.read(IOBuffer(data))
 		catch
 			println("Catch - data cannot be csv formatted")
 			return data
@@ -244,9 +228,8 @@ function xml_formatter(data, mode::String)
 		return xDoc = parse_string(string(data))
 	else
 		#must turn xml into dict-array
-		output=[]
 		try
-			#data is an xml
+			output=[]
 			for record in collect(child_elements(root(data)))
 				data = Dict()
 				for item in child_elements(record)
@@ -277,10 +260,10 @@ The opposite of what was given in relation to odm format
 ###BROKEN###
 function odm_formatter(data, mode::String)
 	if mode=="import"
-		#must turn dict into odm
+		#dict => odm
 		return data
 	else
-		#must turn odm into a dict
+		#odm => dict
 		try
 			return data
 		catch
@@ -290,44 +273,6 @@ function odm_formatter(data, mode::String)
 	end
 end
 
-
-"""
-	df_scrubber(data)
-
-Tries to remove missing values from a df but cant actually.....
-"""
-###BROKEN###
-function df_scrubber(data)
-	for row in 1:size(data)[1]
-		for col in 1:size(data)[2]
-			println(typeof(data[row, col]))
-	    	if isequal(typeof(data[row,col]), Missings.Missing)
-	        	data[row,col]=" "
-	        end
-	    end
-	end
-	return data
-end
-
-
-"""
-	df_formatter(data, mode::String)
-
-##Parameters:
-* `data` - the data to be formatted
-
-##Returns:
-A JSON of the given data to send to the API
-"""
-###BROKEN###
-function df_formatter(data, mode::String)
-	try
-		return df_formatter(data)
-	catch
-		println("Catch - data cannot be df formatted")
-		return data
-	end
-end
 
 """
 	df_formatter(data::Union{DataFrame, Dict})
@@ -342,18 +287,22 @@ The opposite of the diven format.
 """
 function df_formatter(data::Union{DataFrame, Array})
 	if isequal(typeof(data), DataFrame)
-		#DF => Dict
-		#data = df_scrubber(data)
+		#df => dict
 		chartDict=[]
 		for row in DataFrames.eachrow(data)
 			rowDict=Dict()
 			for item in row
-				rowDict[String(item[1])]=string(item[2])
+				if !isa(item[2], Missings.Missing)
+					rowDict[String(item[1])]=string(item[2])
+				else
+					rowDict[String(item[1])]="NA"
+				end
 			end
 			push!(chartDict,rowDict)
 		end
 		return chartDict
 	else
+		#dict => df
 		chartDF=DataFrames.DataFrame(String, length(data), length(data[1]))
 		keylist=[]
 		for key in keys(data[1])
@@ -386,11 +335,9 @@ Called by importing functions to load already formatted data directly from a des
 The formatted data
 """
 function import_from_file(file_loc::String, format::String)
-	#take from file
-	#verify file exists
+	valid_formats = ("json","csv","xml","df","odm") #redcap accepted formats (also df)
 	try
 		open(file_loc) do file
-			#Leave separate now just in case, but plan to simplify this
 			if format ∈ valid_formats
 				return String(read(file))
 			else
@@ -445,30 +392,4 @@ function export_to_file(file_loc::String, data)
 	catch
 		error("File could not be read:\n$file_loc")
 	end
-end
-
-
-"""
-	array_to_string(a::Array)
-
-turns an array into a string so I can lie to REDCap and pretend they were uri escaped nicenice
-*Don't pass this anything weird.
-
-#Params:
-* `a` - array to 'encode'
-
-#Returns:
-A string of all items in the list with commas in between them.
-"""
-function array_to_string(a::Array)
-	output = ""
-	i = length(a)
-	for item in a
-		output*=String(item)
-		if i > 1
-			output*=","
-		end
-		i-=1
-	end
-	return output
 end

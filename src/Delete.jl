@@ -16,7 +16,7 @@ number of succesfully deleted arms
 """
 ###BROKEN### - see HTTP's array handling in escapeuri()
 function delete_arms(config::Config, arms::Array)
-	output = api_pusher("delete", "arm", config, arms=array_to_string(arms))
+	output = api_pusher("delete", "arm", config, arms=arms)
 	return output
 end
 
@@ -37,7 +37,7 @@ number of successfully deleted events
 """
 ###BROKEN### - see HTTP's array handling in escapeuri()
 function delete_events(config::Config, events::Array)
-	output = api_pusher("delete", "event", config, events=array_to_string(events))
+	output = api_pusher("delete", "event", config, events=events)
 	return output
 end
 
@@ -59,7 +59,6 @@ Delete document attached to record.
 ##Returns:
 nothing/error
 """
-
 function delete_file(config::Config, record::String, field::String, event::String, 
 						repeat_instance::Integer; returnFormat::String="json")
 	output = api_pusher("delete", "file", config, record=record, field=field, event=event, 
@@ -82,7 +81,6 @@ Delete one or more records from project.
 ##Returns:
 number of records successfully deleted
 """
-###BROKEN### - see HTTP's array handling in escapeuri()
 function delete_records(config::Config, records::Array; arm::Integer=0)
 	#work on this - broken
 	if arm != 0

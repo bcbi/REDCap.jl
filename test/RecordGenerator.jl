@@ -85,11 +85,9 @@ end
 #Makes up a phone number
 function phone_generator()
 	number=""
-	while length(number)!=10
-		number = (rand(Int8)<0?"401":(rand(Int8)<0?"508":"617"))*
-					string((rand(UInt8)%9)+1)*string(rand(UInt8)%10)*string(rand(UInt8)%10)*
-					string((rand(UInt8)%9)+1)*string(rand(UInt8)%10)*string(rand(UInt8)%10)*string(rand(UInt8)%10)
-	end
+	number = (rand(Int8)<0?"401":(rand(Int8)<0?"508":"617"))*
+				string((rand(UInt8)%8)+2)*string(rand(UInt8)%10)*string(rand(UInt8)%10)*
+				string((rand(UInt8)%9)+1)*string(rand(UInt8)%10)*string(rand(UInt8)%10)*string(rand(UInt8)%10)
 	return number
 end
 
@@ -130,7 +128,7 @@ end
 
 
 #Makes a record for REDCap DB
-function record_generator(config::Config, id; mode::String="demography")
+function record_generator(config::REDCap.Config, id; mode::String="demography")
 	if mode=="demography"
 		#Return a basic demography form
 		(gender, fname, lname, (weight, height), race, ethnicity, (age, dob)) = human_generator()
