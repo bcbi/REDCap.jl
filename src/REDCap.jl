@@ -10,6 +10,11 @@ module REDCap
 using HTTP
 using JSON
 using LightXML
+<<<<<<< HEAD
+=======
+using HTTP
+using Requests
+>>>>>>> d539066f5adac360f33eb83f6d52cb72e05930b4
 using CSV
 using DataStructures
 using DataFrames

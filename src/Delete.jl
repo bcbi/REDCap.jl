@@ -16,7 +16,7 @@ number of succesfully deleted arms
 """
 ###BROKEN### - see HTTP's array handling in escapeuri()
 function delete_arms(config::Config, arms::Array)
-	output = api_pusher("delete", "arm", config, arms=arms)
+	output = api_pusher("delete", "arm", config, arms=array_to_string(arms))
 	return output
 end
 
@@ -37,7 +37,7 @@ number of successfully deleted events
 """
 ###BROKEN### - see HTTP's array handling in escapeuri()
 function delete_events(config::Config, events::Array)
-	output = api_pusher("delete", "event", config, events=events)
+	output = api_pusher("delete", "event", config, events=array_to_string(events))
 	return output
 end
 
@@ -84,9 +84,9 @@ number of records successfully deleted
 function delete_records(config::Config, records::Array; arm::Integer=0)
 	#work on this - broken
 	if arm != 0
-		return output = api_pusher("delete", "record", config, records=records, arm=arm)
+		return output = api_pusher("delete", "record", config, records=array_to_string(records), arm=arm)
 	else
 		#println("no ARM")
-		return output = api_pusher("delete", "record", config, records=records)
+		return output = api_pusher("delete", "record", config, records=array_to_string(records))
 	end
 end
