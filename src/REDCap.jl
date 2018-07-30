@@ -1,9 +1,9 @@
 """
-	REDCap - 
+	REDCap
 
-Julia frontend for the REDCap API. 
-Handles exporting, importing, and generation of project related information. 
-Must have a valid config object set up with the chosen API key and url.
+Julia frontend for the REDCap API.
+Must have a valid `REDCap.Config` object set up with the API key and url. All functions are mapped to an API call.
+Compatable with REDCap Version 8.1.0
 """
 module REDCap
 
@@ -36,7 +36,7 @@ export export_field_names,
 		export_instrument_event_mappings,
 		export_survey_participant_list,
 		export_file,
-		export_reports,
+		export_report,
 		export_survey_link,
 		generate_next_record_id,
 
@@ -55,9 +55,5 @@ export export_field_names,
 		delete_records,
 
 		create_project
-
-#search records? 
-#insert specific things into records (export current, replace with given value, and import/overwrite)?
-#create default fields for users/metdata/info? Not records- useless in medical studies
 
 end

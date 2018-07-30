@@ -69,7 +69,6 @@ Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c6
 - 0.1
 
 
-
 ## Authors
 
 List authors and affiliation.

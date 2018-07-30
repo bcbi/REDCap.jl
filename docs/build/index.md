@@ -11,17 +11,26 @@
 - [Exporting](export.md#Exporting-1)
     - [Records](export.md#Records-1)
     - [Project Data](export.md#Project-Data-1)
-    - [Functions](export.md#Functions-1)
+    - [Users](export.md#Users-1)
+    - [Surveys](export.md#Surveys-1)
+    - [Arms](export.md#Arms-1)
+    - [Instruments](export.md#Instruments-1)
 - [Importing](import.md#Importing-1)
     - [Records](import.md#Records-1)
     - [Project Information](import.md#Project-Information-1)
     - [Users](import.md#Users-1)
     - [Files](import.md#Files-1)
     - [Metadata](import.md#Metadata-1)
+    - [Arms](import.md#Arms-1)
+    - [Events](import.md#Events-1)
+- [Deleting](delete.md#Deleting-1)
+    - [Records](delete.md#Records-1)
+    - [Files](delete.md#Files-1)
+    - [Arms](delete.md#Arms-1)
+    - [Events](delete.md#Events-1)
 - [Other Functionality](utils.md#Other-Functionality-1)
     - [Config](utils.md#Config-1)
     - [Project Creation](utils.md#Project-Creation-1)
-    - [Deletion](utils.md#Deletion-1)
 
 
 <a id='Overview-1'></a>
@@ -29,10 +38,10 @@
 ## Overview
 
 
-A Julia frontend for the REDCap API. REDCap.jl supports both importing and exporting records, as well as deletion from the REDCap Database. It also includes functions for surveys and report generation. 
+A Julia frontend for the REDCap API. REDCap.jl supports both importing and exporting records, as well as deletion from the REDCap Database. It also includes functions for surveys and report generation.
 
 
-Available under the MIT license.
+This package is meant to be a straightforward wrapper for the REDCap API, and assumes familiarity with REDCap. 
 
 
 <a id='Usage-1'></a>

@@ -6,7 +6,15 @@
 # Importing
 
 
-Importing into a REDCap database is simple. The data to be imported must be presented in either `json` (Array of Dicts), `csv`/`df`, or `xml` format. These files can be loaded from a filepath as well. The correct format must be passed along with the object. REDCap defaults to `json` if not format is given.
+Importing into a REDCap database is straightforward. The data to be imported must be presented in either `json` (Array of Dicts), `csv`/`df`, or `xml` format. These files can be loaded from a filepath as well. The correct format must be passed along with the object. REDCap defaults to `json` if no format is given.
+
+
+<a id='Note-1'></a>
+
+#### Note
+
+
+Some import functions (Metadata) are only available for projects marked in development, while others override features disabled (arm, event).
 
 
 <a id='Records-1'></a>
@@ -64,19 +72,11 @@ For projects with auto-numbering enabled. The next available record id number is
 
 
 ```julia
-generate_next_record_id(config)
+next_id = generate_next_record_id(config)
 ```
 
 
 Which returns the number as an integer.
-
-
-<a id='Note-1'></a>
-
-#### Note
-
-
-Some import functions (Metadata) are only available for projects marked in development, while others override features disabled (arm, event).
 
 
 <a id='Project-Information-1'></a>
@@ -116,6 +116,9 @@ Dict{String,Any} with 23 entries:
 ```
 
 
+A project can be marked as "In Production" this way, by changing the `in_production` value to 1.
+
+
 <a id='Users-1'></a>
 
 ## Users
@@ -125,6 +128,8 @@ Users may be imported in the same way as above. User permissions are set/modifie
 
 
 ```bash
+julia> new_user
+
 Dict{String,Any} with 32 entries:
   "design"                     => "0"
   "api_export"                 => "0"
@@ -162,12 +167,47 @@ Dict{String,Any} with 32 entries:
 ```
 
 
+```julia
+#Add above user to the list of users
+push!(user_list, new_user)
+
+#Import new list into REDCap
+import_users(config, user_list)
+```
+
+
 <a id='Files-1'></a>
 
 ## Files
 
 
 A specified file upload field is required to import a file. Any attempts to upload a file in another field will result in error.
+
+<a id='REDCap.import_file-Tuple{REDCap.Config,String,String,String,String}' href='#REDCap.import_file-Tuple{REDCap.Config,String,String,String,String}'>#</a>
+**`REDCap.import_file`** &mdash; *Method*.
+
+
+
+```
+import_file(config::REDCap.Config, record::String, field::String, event::String, file::String; repeat_instance::Int=1,
+				returnFormat::String="json")
+```
+
+Upload a document to specific record to the designated uploading field.
+
+**Parameters:**
+
+  * `config` - struct containing url and api-key
+  * `record` - destination record id
+  * `field` - destination file upload field
+  * `event` - destination event
+  * `repeat_instance` - number of repeated instances (long project)
+  * `file` - file to be imported
+  * `returnFormat` - error message format
+
+**Returns:**
+
+Nothing/errors
 
 
 <a id='Metadata-1'></a>
@@ -178,7 +218,7 @@ A specified file upload field is required to import a file. Any attempts to uplo
 A projects metadata can be modified before it leaves development status using the `import_metadata()` function
 
 
-An example of field data:
+An example of the "Contact Information" field:
 
 
 ```bash
@@ -203,4 +243,19 @@ Dict{String,Any} with 18 entries:
   "field_name"                                 => "first_name"
 
 ```
+
+
+<a id='Arms-1'></a>
+
+## Arms
+
+
+<a id='Events-1'></a>
+
+## Events
+
+
+<a id='Instrument-Event-Mappings-1'></a>
+
+### Instrument Event Mappings
 

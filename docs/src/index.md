@@ -3,14 +3,14 @@ CurrentModule = REDCap
 ```
 # REDCap
 ```@contents
-Pages = ["index.md", "export.md", "import.md", "utils.md"]
+Pages = ["index.md", "export.md", "import.md", "delete.md", "utils.md"]
 ```
 
 ## Overview
 
-A Julia frontend for the REDCap API. REDCap.jl supports both importing and exporting records, as well as deletion from the REDCap Database. It also includes functions for surveys and report generation. 
+A Julia frontend for the REDCap API. REDCap.jl supports both importing and exporting records, as well as deletion from the REDCap Database. It also includes functions for surveys and report generation.
 
-Available under the MIT license.
+This package is meant to be a straightforward wrapper for the REDCap API, and assumes familiarity with REDCap. 
 
 ## Usage
 

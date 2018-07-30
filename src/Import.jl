@@ -1,7 +1,5 @@
-include("Utils.jl")
-
 """
-	import_project_information(config::Config, data; format::String="json")
+	import_project_information(config::REDCap.Config, data; format::String="json")
 
 Update basic attributes of given REDCap project.
 NOTE: Only for projects in development
@@ -14,14 +12,14 @@ NOTE: Only for projects in development
 #### Returns:
 Number of successfully imported values
 """
-function import_project_information(config::Config, data; format::String="json")
+function import_project_information(config::REDCap.Config, data; format::String="json")
 	output = api_pusher("import", "project_settings", config, data = import_file_checker(data, format), format=format)
 	return output
 end
 
 
 """
-	import_metadata(config::Config, data; format::String="json", returnFormat::String="json")
+	import_metadata(config::REDCap.Config, data; format::String="json", returnFormat::String="json")
 
 Import metadata (i.e., Data Dictionary) into a project.
 NOTE: Only for projects in development
@@ -36,7 +34,7 @@ NOTE: Only for projects in development
 Number of successfully imported fields
 """
 ###BROKEN###
-function import_metadata(config::Config, data; format::String="json", returnFormat::String="json")
+function import_metadata(config::REDCap.Config, data; format::String="json", returnFormat::String="json")
 	output = api_pusher("import", "metadata", config, data = import_file_checker(data, format), format=format, returnFormat=returnFormat)
 	return output
 end
@@ -81,7 +79,7 @@ Content-Type: application/json; charset=utf-8
 =#
 
 """
-	import_user(config::Config, data; format::String="json", returnFormat::String="json")
+	import_user(config::REDCap.Config, data; format::String="json", returnFormat::String="json")
 
 Update/import new users into a project.
 
@@ -94,14 +92,14 @@ Update/import new users into a project.
 #### Returns:
 Number of succesfully added/modified users.
 """
-function import_users(config::Config, data; format::String="json", returnFormat::String="json")
+function import_users(config::REDCap.Config, data; format::String="json", returnFormat::String="json")
 	output = api_pusher("import", "user", config, data = import_file_checker(data, format), format=format, returnFormat=returnFormat)
 	return output
 end
 
 
 """
-	import_arms(config::Config, data; override::Int=0, format::String="json", returnFormat::String="json")
+	import_arms(config::REDCap.Config, data; override::Int=0, format::String="json", returnFormat::String="json")
 
 Update/import Arms into a project.
 
@@ -116,14 +114,14 @@ Update/import Arms into a project.
 Number of successfully imported arms
 """
 ###BROKEN###
-function import_arms(config::Config, data; override::Int=0, format::String="json", returnFormat::String="json")
+function import_arms(config::REDCap.Config, data; override::Int=0, format::String="json", returnFormat::String="json")
 	output = api_pusher("import", "arm", config, data = import_file_checker(data, format), override=override, format=format, returnFormat=returnFormat)
 	return output
 end
 
 
 """
-	import_events(config::Config, data; override::Int=0, format::String="json", returnFormat::String="json")
+	import_events(config::REDCap.Config, data; override::Int=0, format::String="json", returnFormat::String="json")
 
 Update/import Events into a project.
 
@@ -138,14 +136,14 @@ Update/import Events into a project.
 Number of successfully imported events
 """
 ###BROKEN###
-function import_events(config::Config, data; override::Int=0, format::String="json", returnFormat::String="json")
+function import_events(config::REDCap.Config, data; override::Int=0, format::String="json", returnFormat::String="json")
 	output = api_pusher("import", "event", config, data = import_file_checker(data, format), override=override, format=format, returnFormat=returnFormat)
 	return output
 end
 
 
 """
-	import_records(config::Config, data::Any; format::String="json", dtype::String="flat", 
+	import_records(config::REDCap.Config, data::Any; format::String="json", dtype::String="flat", 
 						overwriteBehavior::String="normal", forceNumber::Bool=false, dateFormat::String="YMD",
 						returnContent::String="count", returnFormat::String="json")
 
@@ -167,7 +165,7 @@ Import a set of records for a project.
 #### Returns:
 Specified by returnContent
 """
-function import_records(config::Config, data; format::String="json", dtype::String="flat", 
+function import_records(config::REDCap.Config, data; format::String="json", dtype::String="flat", 
 						overwriteBehavior::String="normal", forceNumber::Bool=false, dateFormat::String="YMD",
 						returnContent::String="count", returnFormat::String="json")
 	output = api_pusher("import", "record", config, data = import_file_checker(data, format), format=format, dtype=dtype, 
@@ -178,7 +176,7 @@ end
 
 
 """
-	import_insrument_event_mappings(config::Config, data; format::String="json", returnFormat::String="json")
+	import_instrument_event_mappings(config::REDCap.Config, data; format::String="json", returnFormat::String="json")
 
 Import Instrument-Event Mappings into a project 
 
@@ -194,14 +192,14 @@ Import Instrument-Event Mappings into a project
 Number of successfully imported inst-event mappings
 """
 ###BROKEN###
-function import_insrument_event_mappings(config::Config, data; format::String="json", returnFormat::String="json")
+function import_instrument_event_mappings(config::REDCap.Config, data; format::String="json", returnFormat::String="json")
 	output = api_pusher("import", "formEventMapping", config, data = import_file_checker(data, format), format=format, returnFormat=returnFormat)
 	return output
 end
 
 
 """
-	import_file(config::Config, record::String, field::String, event::String, repeat_instance::Int, file;
+	import_file(config::REDCap.Config, record::String, field::String, event::String, file::String; repeat_instance::Int=1,
 					returnFormat::String="json")
 
 Upload a document to specific record to the designated uploading field.
@@ -218,17 +216,17 @@ Upload a document to specific record to the designated uploading field.
 #### Returns:
 Nothing/errors
 """
-function import_file(config::Config, record::String, field::String, event::String, repeat_instance::Int, file::String;
+function import_file(config::REDCap.Config, record::String, field::String, event::String, file::String; repeat_instance::Int=1,
 					returnFormat::String="json")
-	output = api_pusher("import", "file", config, record=record, field=field, event=event, repeat_instance=repeat_instance, 
-							file=open(file), returnFormat=returnFormat)
+	output = api_pusher("import", "file", config, record=record, field=field, event=event, file=open(file), 
+						repeat_instance=repeat_instance, returnFormat=returnFormat)
 	return output
 end
 
 
 """
-	create_project(config::Config, project_title::String, purpose::Integer; format::String="json",
-						returnFormat::String="json", odm="NULL", purpose_other::String="", project_notes::String="", 
+	create_project(config::REDCap.Config, project_title::String, purpose::Integer; format::String="json",
+						returnFormat::String="json", odm="", purpose_other::String="", project_notes::String="", 
 						is_longitudinal::Integer=0, surveys_enabled::Integer=0, record_autonumbering_enabled::Integer=1)
 
 Creates a project with the given parameters
@@ -249,21 +247,25 @@ Creates a project with the given parameters
 #### Returns:
 The standard config, with same url and API-key to access project
 """
-function create_project(config::Config, project_title::String, purpose::Integer; format::String="json",
+function create_project(config::REDCap.Config, project_title::String, purpose::Integer; format::String="json",
 						returnFormat::String="json", odm="", purpose_other::String="", project_notes::String="", 
 						is_longitudinal::Integer=0, surveys_enabled::Integer=0, record_autonumbering_enabled::Integer=1)
-	fields = Dict("token" => config.key,
-					"content" => "project",
-					"format" => format,
-					"data" =>  JSON.json([Dict("project_title" => project_title,
-												"purpose" => purpose,
-												"purpose_other" => purpose_other,
-												"project_notes" => project_notes,
-												"is_longitudinal" => is_longitudinal,
-												"surveys_enabled" => surveys_enabled,
-												"record_autonumbering_enabled" => record_autonumbering_enabled)]),
-					"returnFormat" => returnFormat,
-					"odm" => odm)
-	response = poster(config, fields)
-	return Config(config.url, String(response.body))
+	if length(config.key)==64
+		fields = Dict("token" => config.key,
+						"content" => "project",
+						"format" => format,
+						"data" =>  JSON.json([Dict("project_title" => project_title,
+													"purpose" => purpose,
+													"purpose_other" => purpose_other,
+													"project_notes" => project_notes,
+													"is_longitudinal" => is_longitudinal,
+													"surveys_enabled" => surveys_enabled,
+													"record_autonumbering_enabled" => record_autonumbering_enabled)]),
+						"returnFormat" => returnFormat,
+						"odm" => odm)
+		response = poster(config, fields)
+		return Config(config.url, response, config.ssl) #inherit all settings except the newly generated key
+	else
+		error("Please use a config object that contains a properly entered Super API key.\n$(config.key) is an incorrect API key.")
+	end
 end
