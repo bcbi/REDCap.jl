@@ -368,7 +368,7 @@ end
 Formatted dict of report.
 """
 ###BROKEN###
-function export_report(config::REDCap.Config, report_id::String; format::String="json", returnFormat::String="json", 
+function export_report(config::REDCap.Config, report_id; format::String="json", returnFormat::String="json", 
 						rawOrLabel::String="raw", rawOrLabelHeaders::String="raw", exportCheckboxLabel::Bool=false, 
 						file_loc::String="")
 	return api_pusher("export", "report", config, report_id=report_id, rawOrLabel=rawOrLabel, rawOrLabelHeaders=rawOrLabelHeaders, 

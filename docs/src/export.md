@@ -64,14 +64,12 @@ export_pdf(config, "<file-path>", record="1", event="", instrument="demographics
 
 ### Reports
 
-* broken fix reports
-
-Reports can also be exported using the report name given on the REDCap dashboard.
+Reports can also be exported using the generated id given on the REDCap dashboard. This is NOT the name of the report.
 
 ```julia
-report = export_report(config, "A")
+report = export_report(config, "2")
 ```
-
+A Report can contain a subset of records along with a subset of their fields. Report creation is handled through the REDCap project database.
 
 ## Users
 
@@ -82,13 +80,11 @@ A full list of users can be exported and viewed/modified using the `export_users
 user_dict = export_users(config)
 ```
 
-## Surveys 
-
-* broken fix surveys
+## Surveys
 
 REDCap allows surveys to be tied both to a given event and to an individual record. Accessing features of these surveys is easy through the provided API.
 
-A survey link can be generated for a particular record and instrument/event through the `export_survey_link()` function;
+A survey link can be generated for a particular record and instrument/event through the `export_survey_link()` function. The instrument name may be different then it is displayed on the REDCap dashboard.
 ```julia
 #Creates a URL to survey for a given record
 link = export_survey_link(config, "23", "demographics", "")

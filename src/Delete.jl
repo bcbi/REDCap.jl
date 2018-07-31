@@ -12,7 +12,7 @@ Delete Arms from project.
 #### Returns:
 number of succesfully deleted arms
 """
-###BROKEN###
+###BROKEN(?)###
 function delete_arms(config::REDCap.Config, arms::Array)
 	return api_pusher("delete", "arm", config, arms=arms)
 end
@@ -32,7 +32,7 @@ Delete Events from project.
 #### Returns:
 number of successfully deleted events
 """
-###BROKEN###
+###BROKEN(?)###
 function delete_events(config::REDCap.Config, events::Array)
 	return api_pusher("delete", "event", config, events=events)
 end

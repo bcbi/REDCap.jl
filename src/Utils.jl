@@ -80,7 +80,9 @@ The response body.
 """
 function poster(config::Config, body)
 	println("POSTing")
+
 	response = HTTP.post(config.url; body=body, require_ssl_verification=config.ssl)#, verbose=3)
+
 	println("POSTd")
 	if response.status != 200
 		#Error - handle errors way more robustly- check for "error" field? here or back at api_pusher?
@@ -262,6 +264,7 @@ function odm_formatter(data, mode::String)
 	end
 end
 
+
 """
 	df_formatter(data::Union{DataFrame, Dict})
 
@@ -294,7 +297,7 @@ function df_formatter(data::Union{DataFrame, Array})
 		end
 		return chartDict
 	else
-		#dict => df
+		#dict => df 
 		chartDF=DataFrames.DataFrame(String, length(data), length(data[1]))
 		keylist=[]
 		for key in keys(data[1])
