@@ -5,3 +5,6 @@
 *.csv
 *.json
 *.xml
+site/
+docs/build/
+mkdocs.yml
