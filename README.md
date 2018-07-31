@@ -1,10 +1,10 @@
 # RedCap
 
-[![Build Status](https://travis-ci.org/FLCN17/REDCap.jl.svg?branch=master)](https://travis-ci.org/FLCN17/REDCap.jl)
+[![Build Status](https://travis-ci.org/bcbi/REDCap.jl.svg?branch=master)](https://travis-ci.org/bcbi/REDCap.jl)
 
-[![Coverage Status](https://coveralls.io/repos/FLCN17/REDCap.jl/badge.svg?branch=master&service=github)](https://coveralls.io/github/FLCN17/REDCap.jl?branch=master)
+[![Coverage Status](https://coveralls.io/repos/bcbi/REDCap.jl/badge.svg?branch=master&service=github)](https://coveralls.io/github/bcbi/REDCap.jl?branch=master)
 
-[![codecov.io](http://codecov.io/github/FLCN17/REDCap.jl/coverage.svg?branch=master)](http://codecov.io/github/FLCN17/REDCap.jl?branch=master)
+[![codecov.io](http://codecov.io/github/bcbi/REDCap.jl/coverage.svg?branch=master)](http://codecov.io/github/bcbi/REDCap.jl?branch=master)
 
 
 
