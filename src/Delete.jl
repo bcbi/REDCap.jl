@@ -1,54 +1,50 @@
-include("Utils.jl")
-
 """ 
-	delete_arms(config::Config, arms=[]) 
+	delete_arms(config::REDCap.Config, arms::Array) 
 
 Delete Arms from project.
 
-#NOTE: This only works for longitudinal projects. 
+#### NOTE: This only works for longitudinal projects. 
 
-##Parameters:
+#### Parameters:
 * `config` - struct containing url and api-key
 * `arms` - array of arm names to delete
 
-##Returns:
+#### Returns:
 number of succesfully deleted arms
 """
-###BROKEN### - see HTTP's array handling in escapeuri()
-function delete_arms(config::Config, arms::Array)
-	output = api_pusher("delete", "arm", config, arms=arms)
-	return output
+###BROKEN###
+function delete_arms(config::REDCap.Config, arms::Array)
+	return api_pusher("delete", "arm", config, arms=arms)
 end
 
 
 """ 
-	delete_events(config::Config, events=[]) 
+	delete_events(config::REDCap.Config, events::Array) 
 
 Delete Events from project.
 
-#NOTE: This only works for longitudinal projects. 
+#### NOTE: This only works for longitudinal projects. 
 
-##Parameters:
+#### Parameters:
 * `config` - struct containing url and api-key
 * `events` - array of event names to delete
 
-##Returns:
+#### Returns:
 number of successfully deleted events
 """
-###BROKEN### - see HTTP's array handling in escapeuri()
-function delete_events(config::Config, events::Array)
-	output = api_pusher("delete", "event", config, events=events)
-	return output
+###BROKEN###
+function delete_events(config::REDCap.Config, events::Array)
+	return api_pusher("delete", "event", config, events=events)
 end
 
 
 """
-	delete_file(config::Config, record::Int, field::String, event::String, 
-					repeat_instance::Int; returnFormat::String="json") 
+	delete_file(config::REDCap.Config, record::String, field::String, event::String; 
+						repeat_instance::Integer=1, returnFormat::String="json") 
 
 Delete document attached to record.
 
-##Parameters:
+#### Parameters:
 * `config` - struct containing url and api-key
 * `record` - name of record containing file
 * `field` - name of field containing file
@@ -56,39 +52,35 @@ Delete document attached to record.
 * `repeat_instance` - number of repeated instances (long project)
 * `returnFormat` - error message format
 
-##Returns:
+#### Returns:
 nothing/error
 """
-
-function delete_file(config::Config, record::String, field::String, event::String, 
-						repeat_instance::Integer; returnFormat::String="json")
-	output = api_pusher("delete", "file", config, record=record, field=field, event=event, 
+function delete_file(config::REDCap.Config, record::String, field::String, event::String; 
+						repeat_instance::Integer=1, returnFormat::String="json")
+	return api_pusher("delete", "file", config, record=record, field=field, event=event, 
 							repeat_instance=repeat_instance, returnFormat=returnFormat)
-	return output
 end
 
 
 
 """
-	delete_records(config::Config, records=[]; arm::Int=0)
+	delete_records(config::REDCap.Config, records::Array; arm::Integer=0)
 
 Delete one or more records from project.
 
-##Parameters:
+#### Parameters:
 * `config` - struct containing the url and api-key
 * `records` - array of record names to delete
 * `arm` - number of arm containing records
 
-##Returns:
+#### Returns:
 number of records successfully deleted
 """
-###BROKEN### - see HTTP's array handling in escapeuri()
-function delete_records(config::Config, records::Array; arm::Integer=0)
-	#work on this - broken
+function delete_records(config::REDCap.Config, records::Array; arm::Integer=0)
 	if arm != 0
-		return output = api_pusher("delete", "record", config, records=records, arm=arm)
+		#REDCap treats the request differently if arm is sent as a field- dont send if you dont have to
+		return api_pusher("delete", "record", config, records=records, arm=arm)
 	else
-		#println("no ARM")
-		return output = api_pusher("delete", "record", config, records=records)
+		return api_pusher("delete", "record", config, records=records)
 	end
 end
