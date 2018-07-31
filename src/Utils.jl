@@ -20,26 +20,22 @@ https://<your-redcap-site.com>/redcap/api/help/?content=exp_field_names
 #### Returns:
 Formatted response body
 """
-function api_pusher(mode::String, content::String, config::Config; file_loc::String="", kwargs...)
+function api_pusher(mode::String, content::String, config::Config; format::String="", file_loc::String="", kwargs...)
 	#initialize dict with basic info and api calls
 	fields = Dict()
 	fields["token"] = config.key
-	fields["action"] = mode #import, export, delete
-	fields["content"] = content #what API function to access
+	fields["action"] = mode 		#import, export, delete
+	fields["content"] = content 	#what API function to access
+	fields["format"] = format
 
 	for (k,v) in kwargs
-		k=String(k) #k is a Symbol, make easier to handle
-		if isequal(k, "format")
-			format=v
-			if isequal(v, "df")
-				#Pass as the closest thing to api, but handle internally as df
-				fields[k]="csv"
-			else
-				fields[k]=v
-			end
-		elseif isequal(k, "dtype") #type is reserved in julia, quick-fix
+		k=String(k) 				#k is a Symbol, make easier to handle
+		if isequal(k, "dtype") 		#type is reserved in julia, quick-fix
 			fields["type"]=v
 		elseif mode=="import" && isequal(k, "data")
+			if format ∈ ("csv", "df")
+				#Needs to be handled- CSV and DF break the machine as it were...
+			end
 			fields[k]=IOBuffer(v)
 		elseif isa(v, Array)
 			for (i, item) in enumerate(v)
@@ -59,10 +55,10 @@ function api_pusher(mode::String, content::String, config::Config; file_loc::Str
 	if mode=="export" && length(file_loc)>0
 		export_to_file(file_loc, response)
 	elseif mode=="import"
-		mode="export" #treat returns from imports as exports- turn to dicts
+		mode="export" 
 	end
-	if haskey(fields, "format")
-		return formatter(response, fields["format"], mode)
+	if length(format)>0
+		return formatter(response, format, mode)
 	else
 		return response
 	end
@@ -211,7 +207,6 @@ end
 #### Returns:
 The opposite of what was given in relation to xml format
 """
-###BROKEN(?)###
 function xml_formatter(data, mode::String)
 	if mode=="import"
 		#must turn dict into xml
@@ -273,6 +268,7 @@ end
 
 Takes a DF/Dict, turns it into a Dict/DF
 When a DF is passed, every row is turned into a dict() with the columns as keys, and pushed into an array to pass as a JSON object.
+Does the reverse for Dicts.
 
 #### Parameters:
 * `data` - data to be formatted
@@ -280,7 +276,9 @@ When a DF is passed, every row is turned into a dict() with the columns as keys,
 #### Returns:
 The opposite of the given format.
 """
+###BROKEN###
 function df_formatter(data::Union{DataFrame, Array})
+	## I no longer understand why this exists...
 	if isequal(typeof(data), DataFrame)
 		#df => dict
 		chartDict=[]

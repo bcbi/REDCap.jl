@@ -47,11 +47,11 @@ Dict{String,Any} with 16 entries:
 
 
 ```julia
-records_data=[Dict("record_id"=>"1","first_name"=>"John")]
+record_data=[Dict("record_id"=>"1","first_name"=>"John")]
 
-import_records(config, records_data)
+import_records(config, record_data)
 
-#Or from a file
+#or from a file
 import_records(config, "/src/records.csv", format="csv")
 ```
 
@@ -79,9 +79,9 @@ next_id = generate_next_record_id(config)
 Which returns the number as an integer.
 
 
-<a id='Project-Information-1'></a>
+<a id='Project-Info-1'></a>
 
-## Project Information
+## Project Info
 
 
 The project information and settings can be changed using this function by importing a dict with some/all of the desired settings.
@@ -117,6 +117,54 @@ Dict{String,Any} with 23 entries:
 
 
 A project can be marked as "In Production" this way, by changing the `in_production` value to 1.
+
+
+```julia
+#Modifying existing information
+info = export_project_information(config)
+info["in_production"]="1"
+import_project_information(config, info)
+```
+
+
+<a id='Metadata-1'></a>
+
+### Metadata
+
+
+A projects metadata can be modified before it leaves development status using the `import_metadata()` function
+
+
+An example of the "Contact Information" field:
+
+
+```bash
+Dict{String,Any} with 18 entries:
+  "required_field"                             => ""
+  "section_header"                             => "Contact Information"
+  "matrix_ranking"                             => ""
+  "select_choices_or_calculations"             => ""
+  "field_type"                                 => "text"
+  "field_note"                                 => ""
+  "form_name"                                  => "demographics"
+  "matrix_group_name"                          => ""
+  "field_label"                                => "First Name"
+  "custom_alignment"                           => ""
+  "question_number"                            => ""
+  "text_validation_max"                        => ""
+  "text_validation_type_or_show_slider_number" => ""
+  "branching_logic"                            => ""
+  "field_annotation"                           => ""
+  "identifier"                                 => "y"
+  "text_validation_min"                        => ""
+  "field_name"                                 => "first_name"
+
+```
+
+
+```julia
+#Example once this works
+```
 
 
 <a id='Users-1'></a>
@@ -210,38 +258,8 @@ Upload a document to specific record to the designated uploading field.
 Nothing/errors
 
 
-<a id='Metadata-1'></a>
-
-## Metadata
-
-
-A projects metadata can be modified before it leaves development status using the `import_metadata()` function
-
-
-An example of the "Contact Information" field:
-
-
-```bash
-Dict{String,Any} with 18 entries:
-  "required_field"                             => ""
-  "section_header"                             => "Contact Information"
-  "matrix_ranking"                             => ""
-  "select_choices_or_calculations"             => ""
-  "field_type"                                 => "text"
-  "field_note"                                 => ""
-  "form_name"                                  => "demographics"
-  "matrix_group_name"                          => ""
-  "field_label"                                => "First Name"
-  "custom_alignment"                           => ""
-  "question_number"                            => ""
-  "text_validation_max"                        => ""
-  "text_validation_type_or_show_slider_number" => ""
-  "branching_logic"                            => ""
-  "field_annotation"                           => ""
-  "identifier"                                 => "y"
-  "text_validation_min"                        => ""
-  "field_name"                                 => "first_name"
-
+```julia
+import_file(config, "2", "file_upload", "", "/src/example.csv")
 ```
 
 
@@ -250,12 +268,27 @@ Dict{String,Any} with 18 entries:
 ## Arms
 
 
+```julia
+
+```
+
+
 <a id='Events-1'></a>
 
 ## Events
 
 
+```julia
+
+```
+
+
 <a id='Instrument-Event-Mappings-1'></a>
 
 ### Instrument Event Mappings
+
+
+```julia
+
+```
 

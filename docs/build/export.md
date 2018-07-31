@@ -6,15 +6,25 @@
 # Exporting
 
 
-Exporting from a REDCap database is straightforward. If not specified, data exports will return as a Dict. If `csv` is passed as the format, a DF will be returned. Some exports, such as version and url/return code for surveys return as simple strings, while most others return in the specified format.
+Exporting from a REDCap database is straightforward. If not specified, data exports will return as a `Dict`. If `csv` is passed as the format, a `DataFrame` will be returned. Some exports, such as version and url/return code for surveys return as simple strings, while most others return in the specified format.
 
 
-Because REDCap is medical in nature, some information may be identifing information. Luckily this is handled on REDCaps end using on a user by user basis based on their User Access Rights. Data tagged as identifying will not be exported in the request, either with fields omitted or simply returning an error.
+Because REDCap is medical in nature, some information may be identifing information.  From REDCap Documentation:
+
+
+<b>Note about export rights:</b>
+
+
+> Please be aware that Data Export user rights will be applied to this API request. For example, if you have 'No Access' data export rights in the project, then the API data export will fail and return an error. And if you have 'De-Identified' or 'Remove all tagged Identifier fields' data export rights, then some data fields *might* be removed and filtered out of the data set returned from the API. To make sure that no data is unnecessarily filtered out of your API request, you should have 'Full Data Set' export rights in the project.
+
 
 
 <a id='Records-1'></a>
 
 ## Records
+
+
+___
 
 <a id='REDCap.export_records-Tuple{REDCap.Config}' href='#REDCap.export_records-Tuple{REDCap.Config}'>#</a>
 **`REDCap.export_records`** &mdash; *Method*.
@@ -51,7 +61,7 @@ export_records(config::REDCap.Config; format::String="json", dtype::String="flat
 Array of formatted dicts of set of records for a project.
 
 
-Exported records can be returned normally, or written to a file. Records can be exported by their record id, by specified fields, or even using a boolean logic string such as `[age]>80`
+___ Exported records can be returned normally, or written to a file. Records can be exported by their record id, by specified fields, or even using a boolean logic string such as `[age]>80`
 
 
 ```julia
@@ -64,9 +74,9 @@ export_records(config, file_loc="/src/output.csv", format="csv")
 ```
 
 
-<a id='Project-Data-1'></a>
+<a id='Project-Info-1'></a>
 
-## Project Data
+## Project Info
 
 
 Project information, field names, and metadata are all available for export. As above, the can be written directly to a file.
@@ -179,12 +189,27 @@ list = export_survey_participant_list(config, "demographics", "")
 ## Arms
 
 
+```julia
+
+```
+
+
 <a id='Instruments-1'></a>
 
 ## Instruments
 
 
-<a id='Inst-Event-Mappings-1'></a>
+```julia
 
-### Inst Event Mappings
+```
+
+
+<a id='Instrument-Event-Mappings-1'></a>
+
+### Instrument Event Mappings
+
+
+```julia
+
+```
 

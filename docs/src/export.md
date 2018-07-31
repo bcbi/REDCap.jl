@@ -5,7 +5,12 @@ CurrentModule = REDCap
 
 Exporting from a REDCap database is straightforward. If not specified, data exports will return as a `Dict`. If `csv` is passed as the format, a `DataFrame` will be returned. Some exports, such as version and url/return code for surveys return as simple strings, while most others return in the specified format.
 
-Because REDCap is medical in nature, some information may be identifing information. Luckily this is handled on REDCaps end using on a user by user basis based on their User Access Rights. Data tagged as identifying will not be exported in the request, either with fields omitted or simply returning an error.
+Because REDCap is medical in nature, some information may be identifing information. 
+From REDCap Documentation:
+
+<b>Note about export rights:</b>
+> Please be aware that Data Export user rights will be applied to this API request. For example, if you have 'No Access' data export rights in the project, then the API data export will fail and return an error. And if you have 'De-Identified' or 'Remove all tagged Identifier fields' data export rights, then some data fields *might* be removed and filtered out of the data set returned from the API. To make sure that no data is unnecessarily filtered out of your API request, you should have 'Full Data Set' export rights in the project.
+
 
 
 ## Records
