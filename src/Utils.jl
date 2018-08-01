@@ -10,8 +10,8 @@ https://<your-redcap-site.com>/redcap/api/help/?content=exp_field_names
 #### Parameters:
 * `mode` - "import", "export", or "delete"
 * `content` - Passed by calling modules to indicate what data to access
-* `config` - struct containing url and api-key
-* `file_loc` - location of file
+* `config` - Struct containing url and api-key
+* `file_loc` - Location of file
 * `kwargs...` - Any addtl. arguments passed by the calling module
 
 #### Returns:
@@ -69,8 +69,8 @@ end
 Handles the POST duties for all modules. Also does basic Status checking and SSL verification.
 
 #### Parameters:
-* `config` - struct containing url and api-key
-* `body` - request body data
+* `config` - Struct containing url and api-key
+* `body` - Request body data
 
 #### Returns:
 The response body.
@@ -95,7 +95,7 @@ end
 	generate_next_record_id(config::Config) 
 
 #### Parameters:
-* `config` - struct containing url and api-key
+* `config` - Struct containing url and api-key
 
 #### Returns:
 The next available ID number for project (Max record number +1)
@@ -113,9 +113,9 @@ end
 Takes data and sends out to the proper formating function.
 
 #### Parameters:
-* `data` - the data to be formatted
-* `format` - the target format
-* `mode` - formatting for Import (data to server) or Export (data from server)
+* `data` - The data to be formatted
+* `format` - The target format
+* `mode` - Formatting for Import (data to server) or Export (data from server)
 
 #### Returns:
 The specified formatted/unformatted object
@@ -143,8 +143,8 @@ end
 	json_formatter(data, mode::String)
 
 #### Parameters:
-* `data` - the data to be formatted
-* `mode` - formatting for Import (data to server) or Export (data from server)
+* `data` - The data to be formatted
+* `mode` - Formatting for Import (data to server) or Export (data from server)
 
 #### Returns:
 The opposite of what was given in relation to json format
@@ -167,8 +167,8 @@ end
 	csv_formatter(data, mode::String)
 
 #### Parameters:
-* `data` - the data to be formatted
-* `mode` - formatting for Import (data to server) or Export (data from server)
+* `data` - The data to be formatted
+* `mode` - Formatting for Import (data to server) or Export (data from server)
 
 #### Returns:
 The opposite of what was given in relation to csv format
@@ -200,8 +200,8 @@ end
 	xml_formatter(data, mode::String)
 
 #### Parameters:
-* `data` - the data to be formatted
-* `mode` - formatting for Import (data to server) or Export (data from server)
+* `data` - The data to be formatted
+* `mode` - Formatting for Import (data to server) or Export (data from server)
 
 #### Returns:
 The opposite of what was given in relation to xml format
@@ -238,8 +238,8 @@ end
 May just be XML in disguise - really weird format
 
 #### Parameters:
-* `data` - the data to be formatted
-* `mode` - formatting for Import (data to server) or Export (data from server)
+* `data` - The data to be formatted
+* `mode` - Formatting for Import (data to server) or Export (data from server)
 
 #### Returns:
 The opposite of what was given in relation to odm format
@@ -270,7 +270,7 @@ When a DF is passed, every row is turned into a dict() with the columns as keys,
 Does the reverse for Dicts.
 
 #### Parameters:
-* `data` - data to be formatted
+* `data` - Data to be formatted
 
 #### Returns:
 The opposite of the given format.
@@ -320,8 +320,8 @@ end
 Called by importing functions to load already formatted data directly from a designated file
 
 #### Parameters:
-* `file_loc`: location of file
-* `format`: the target format
+* `file_loc` - Location of file
+* `format` - The target format
 
 #### Returns:
 The formatted data
@@ -350,7 +350,7 @@ If a path, calls a loading function; if data, calls a formatter.
 
 #### Parametes:
 * `data` - The data to check
-* `format` - the format to pass along
+* `format` - The format to pass along
 
 #### Returns:
 The retreived/formatted data
@@ -375,8 +375,8 @@ end
 Called by exporting functions to dump data into designated file, or yell at you for a bad path.
 
 #### Parameters:
-* `file_loc`: location of file - pass with proper extensions
-* `data`: the data to save to file
+* `file_loc` - Location of file - pass with proper extensions
+* `data` - The data to save to file
 
 #### Returns:
 Nothing/error

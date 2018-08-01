@@ -2,7 +2,7 @@ site_name: REDCap.jl
 repo_url: https://github.com/bcbi/REDCap.jl.git
 site_description: Documentation for REDCap.jl
 site_author: FLCN17
-docs_dir: '/home/cory/gitHub/REDCap.jl/docs/build/'
+docs_dir: 'build/'
 pages:
   - Home: index.md
   - Export: export.md

@@ -2,10 +2,10 @@
 	export_field_names(config::REDCap.Config; field::String="", format::String="json", file_loc::String="") 
 
 #### Parameters:
-* `config` - struct containing url and api-key
-* `field` - specifies the field to export
+* `config` - Struct containing url and api-key
+* `field` - Specifies the field to export
 * `format` - "json", "xml", "csv", or "odm". decides format of returned data
-* `file_loc` - location to export to
+* `file_loc` - Location to export to
 
 #### Returns:
 Formatted dict of export/import-specific version of field names 
@@ -25,9 +25,9 @@ end
 	export_instruments(config::REDCap.Config; format::String="json", file_loc::String="") 
 
 #### Parameters:
-* `config` - struct containing url and api-key
+* `config` - Struct containing url and api-key
 * `format` - "json", "xml", "csv", or "odm". decides format of returned data
-* `file_loc` - location to export to
+* `file_loc` - Location to export to
 
 #### Returns:
 Formatted dict for data collection instruments of project.
@@ -41,12 +41,12 @@ end
 	export_metadata(config::REDCap.Config; fields::Array=[], forms::Array=[], format::String="json", returnFormat::String="json", file_loc::String="") 
 
 #### Parameters:
-* `config` - struct containing url and api-key
+* `config` - Struct containing url and api-key
 * `fields` - Array of field names to pull data from
 * `forms` - Array of form names to pull data from
 * `format` - "json", "xml", "csv", or "odm". decides format of returned data
-* `returnFormat` - error message format
-* `file_loc` - location to export to
+* `returnFormat` - Error message format
+* `file_loc` - Location to export to
 
 #### Returns:
 Formatted dict of the metadata for project.
@@ -60,10 +60,10 @@ end
 	export_project_information(config::REDCap.Config; format::String="json", returnFormat::String="json", file_loc::String="") 
 
 #### Parameters:
-* `config` - struct containing url and api-key
+* `config` - Struct containing url and api-key
 * `format` - "json", "xml", "csv", or "odm". decides format of returned data
-* `returnFormat` - error message format
-* `file_loc` - location to export to
+* `returnFormat` - Error message format
+* `file_loc` - Location to export to
 
 #### Returns:
 Formatted dict of the basic attributes of given REDCap project.
@@ -77,10 +77,10 @@ end
 	export_user(config::REDCap.Config; format::String="json", returnFormat::String="json", file_loc::String="") 
 
 #### Parameters:
-* `config` - struct containing url and api-key
+* `config` - Struct containing url and api-key
 * `format` - "json", "xml", "csv", or "odm". decides format of returned data
-* `returnFormat` - error message format
-* `file_loc` - location to export to
+* `returnFormat` - Error message format
+* `file_loc` - Location to export to
 
 #### Returns:
 Array of formatted dicts of users for project.
@@ -96,7 +96,7 @@ end
 Returns a string of the current REDCap version.
 
 #### Parameters:
-* `config` - struct containing url and api-key
+* `config` - Struct containing url and api-key
 * `format` - "json", "xml", "csv", or "odm". decides format of returned data
 
 #### Returns:
@@ -115,11 +115,11 @@ Returns a dict of all arms used in the project.
 #### NOTE: This only works for longitudinal projects.
 
 #### Parameters:
-* `config` - struct containing url and api-key
-* `arms` - array of arm names to export
+* `config` - Struct containing url and api-key
+* `arms` - Array of arm names to export
 * `format` - "json", "xml", "csv", or "odm". decides format of returned data
-* `returnFormat` - error message format
-* `file_loc` - location to export to
+* `returnFormat` - Error message format
+* `file_loc` - Location to export to
 
 #### Returns:
 Formatted dict of Arms for project.
@@ -135,11 +135,11 @@ end
 #### NOTE: This only works for longitudinal projects.
 
 #### Parameters:
-* `config` - struct containing url and api-key
-* `arms` - array of arm names to export
+* `config` - Struct containing url and api-key
+* `arms` - Array of arm names to export
 * `format` - "json", "xml", "csv", or "odm". decides format of returned data
-* `returnFormat` - error message format
-* `file_loc` - location to export to
+* `returnFormat` - Error message format
+* `file_loc` - Location to export to
 
 #### Returns:
 Formatted dict of events for project.
@@ -153,12 +153,12 @@ end
 	export_pdf(config::REDCap.Config, file_loc::String; record::String="", event::String="", instrument::String="", allRecords::Bool=false) 
 
 #### Parameters:
-* `config` - struct containing url and api-key
-* `record` - record ID to populate PDF
-* `event` - event name to populate PDF
-* `instrument` - name of instrument to populate PDF
-* `allRecords` - flag to take all records or not
-* `file_loc` - location to export to
+* `config` - Struct containing url and api-key
+* `record` - Record ID to populate PDF
+* `event` - Event name to populate PDF
+* `instrument` - Name of instrument to populate PDF
+* `allRecords` - Flag to take all records or not
+* `file_loc` - Location to export to
 
 #### Returns:
 PDF file for: 
@@ -190,17 +190,17 @@ end
 						filterLogic::String="", exportFiles::Bool=false, file_loc::String="") 
 
 #### Parameters:
-* `config` - struct containing url and api-key
-* `returnMetadataOnly` - flag to return metedata or not
-* `records` - array of record names to include
-* `fields` - array of field names to include
-* `events` - array of event names to include
-* `returnFormat` - error message format
-* `exportSurveyFields` - flag to return survey fields or not
-* `exportDataAccessGroups` - flag to return DAGroups or not
-* `filterLogic` - allows collection of records that fulfill a criteria eg. "[age] > 65"
-* `exportFiles` - flag to include files or not
-* `file_loc` - location to export to
+* `config` - Struct containing url and api-key
+* `returnMetadataOnly` - Flag to return metedata or not
+* `records` - Array of record names to include
+* `fields` - Array of field names to include
+* `events` - Array of event names to include
+* `returnFormat` - Error message format
+* `exportSurveyFields` - Flag to return survey fields or not
+* `exportDataAccessGroups` - Flag to return DAGroups or not
+* `filterLogic` - Allows collection of records that fulfill a criteria eg. "[age] > 65"
+* `exportFiles` - Flag to include files or not
+* `file_loc` - Location to export to
 
 #### Returns:
 Entire project as XML file.
@@ -224,21 +224,21 @@ end
 					exportDataAccessGroups::Bool=false, filterLogic::String="", file_loc::String="")
 
 #### Parameters:
-* `config` - struct containing url and api-key
+* `config` - Struct containing url and api-key
 * `format` - "json", "xml", "csv", or "odm". decides format of returned data
-* `dtype` - output mode: "flat" (output one record per row) or "eav" (one data point per row)
-* `records` - array of record names to include
-* `fields` - array of field names to include
-* `forms` - array of form names to include
-* `events` - array of event names to include
+* `dtype` - Output mode: "flat" (output one record per row) or "eav" (one data point per row)
+* `records` - Array of record names to include
+* `fields` - Array of field names to include
+* `forms` - Array of form names to include
+* `events` - Array of event names to include
 * `rawOrLabel` - "raw" or "label" - export raw coded values or labels for multiple choice fields
-* `rawOrLabelHeaders` - same as above, for headers
-* `exportCheckboxLabel` - checkbox behavior: export checkboxes as "checked/unchecked" or as "field-name/'blank'"
-* `returnFormat` - error message format
-* `exportSurveyFields` - flag to return survey fields or not
-* `exportDataAccessGroups` - flag to return DAGroups or not
-* `filterLogic` - allows collection of records that fulfill a criteria eg. "[age] > 65"
-* `file_loc` - location to export to
+* `rawOrLabelHeaders` - Same as above, for headers
+* `exportCheckboxLabel` - Checkbox behavior: export checkboxes as "checked/unchecked" or as "field-name/'blank'"
+* `returnFormat` - Error message format
+* `exportSurveyFields` - Flag to return survey fields or not
+* `exportDataAccessGroups` - Flag to return DAGroups or not
+* `filterLogic` - Allows collection of records that fulfill a criteria eg. "[age] > 65"
+* `file_loc` - Location to export to
 
 #### Returns:
 Array of formatted dicts of set of records for a project.
@@ -259,9 +259,9 @@ end
 	export_survey_queue_link(config::REDCap.Config, record::String; returnFormat::String="json") 
 
 #### Parameters:
-* `config` - struct containing url and api-key
-* `record` - record id for link
-* `returnFormat` - error message format
+* `config` - Struct containing url and api-key
+* `record` - Record id for link
+* `returnFormat` - Error message format
 
 #### Returns:
 Unique Survey Queue link.
@@ -276,12 +276,12 @@ end
 								repeat_instance::Integer=1, returnFormat::String="json") 
 
 #### Parameters:
-* `config` - struct containing url and api-key
-* `record` - record id for link
-* `instrument` = name of instrument to export code for
-* `event` - event name conatining instrument
-* `repeat_instance` - number of repeated instances (long project)
-* `returnFormat` - error message format
+* `config` - Struct containing url and api-key
+* `record` - Record id for link
+* `instrument` - Name of instrument to export code for
+* `event` - event Name conatining instrument
+* `repeat_instance` - Number of repeated instances (long project)
+* `returnFormat` - Error message format
 
 #### Returns:
 Unique Return Code in plain text format.
@@ -300,11 +300,11 @@ end
 #### NOTE: This only works for longitudinal projects.
 
 #### Parameters:
-* `config` - struct containing url and api-key
-* `arms` - array of arm names to export
+* `config` - Struct containing url and api-key
+* `arms` - Array of arm names to export
 * `format` - "json", "xml", "csv", or "odm". decides format of returned data
-* `returnFormat` - error message format
-* `file_loc` - location to export to
+* `returnFormat` - Error message format
+* `file_loc` - Location to export to
 
 #### Returns:
 Formatted dict of instrument-event mappings for project.
@@ -319,12 +319,12 @@ end
 									returnFormat::String="json", file_loc::String="") 
 
 #### Parameters:
-* `config` - struct containing url and api-key
-* `instrument` = name of instrument to export list of participants
-* `event` - event name conatining instrument
+* `config` - Struct containing url and api-key
+* `instrument` - Name of instrument to export list of participants
+* `event` - Event name conatining instrument
 * `format` - "json", "xml", "csv", or "odm". decides format of returned data
-* `returnFormat` - error message format
-* `file_loc` - location to export to
+* `returnFormat` - Error message format
+* `file_loc` - Location to export to
 
 #### Returns:
 Formatted dict of all participants for specific survey instrument.
@@ -339,13 +339,13 @@ end
 				returnFormat::String="json", file_loc::String="") 
 
 #### Parameters:
-* `config` - struct containing url and api-key
-* `record` - record id containing file
-* `field` - field containing file
-* `event` - event containing file
-* `repeat_instance` - number of repeated instances (long. project)
-* `returnFormat` - error message format
-* `file_loc` - location to export to
+* `config` - Struct containing url and api-key
+* `record` - Record id containing file
+* `field` - Field containing file
+* `event` - Event containing file
+* `repeat_instance` - Number of repeated instances (long. project)
+* `returnFormat` - Error message format
+* `file_loc` - Location to export to
 
 #### Returns:
 File attached to individual record.
@@ -362,14 +362,14 @@ end
 						file_loc::String="") 
 
 #### Parameters:
-* `config` - struct containing url and api-key
-* `report_id` - id of report to export
+* `config` - Struct containing url and api-key
+* `report_id` - Id of report to export
 * `format` - "json", "xml", "csv", or "odm". decides format of returned data
-* `returnFormat` - error message format
+* `returnFormat` - Error message format
 * `rawOrLabel` - "raw" or "label" - export raw coded values or labels for multiple choice fields
-* `rawOrLabelHeaders` - same as above, for headers
-* `exportCheckboxLabel` - checkbox behavior: export checkboxes as "checked/unchecked" or as "field-name/'blank'"
-* `file_loc` - location to export to
+* `rawOrLabelHeaders` - Same as above, for headers
+* `exportCheckboxLabel` - Checkbox behavior: export checkboxes as "checked/unchecked" or as "field-name/'blank'"
+* `file_loc` - Location to export to
 
 #### Returns:
 Formatted dict of report.
@@ -387,12 +387,12 @@ end
 						returnFormat::String="json") 
 
 #### Parameters:
-* `config` - struct containing url and api-key
-* `record` - record id
-* `instrument` = name of instrument linking to
-* `event` - event name conatining instrument
-* `repeat_instance` - number of repeated instances (long project)
-* `returnFormat` - error message format
+* `config` - Struct containing url and api-key
+* `record` - Record id
+* `instrument` - Name of instrument linking to
+* `event` - Event name conatining instrument
+* `repeat_instance` - Number of repeated instances (long project)
+* `returnFormat` - Error message format
 
 #### Returns:
 Unique survey link.
