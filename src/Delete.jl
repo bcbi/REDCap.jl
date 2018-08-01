@@ -12,7 +12,6 @@ Delete Arms from project.
 #### Returns:
 number of succesfully deleted arms
 """
-###BROKEN(?)###
 function delete_arms(config::REDCap.Config, arms::Array)
 	return api_pusher("delete", "arm", config, arms=arms)
 end
@@ -21,7 +20,7 @@ end
 """ 
 	delete_events(config::REDCap.Config, events::Array) 
 
-Delete Events from project.
+Delete Events from project. Removing all but one event reverts the project into a longitudinal project.
 
 #### NOTE: This only works for longitudinal projects. 
 
@@ -32,7 +31,6 @@ Delete Events from project.
 #### Returns:
 number of successfully deleted events
 """
-###BROKEN(?)###
 function delete_events(config::REDCap.Config, events::Array)
 	return api_pusher("delete", "event", config, events=events)
 end

@@ -9,7 +9,9 @@ All REDCap projects need to be tied to their url and API Key, which is done by c
 ```julia
 config = REDCap.Config("<url>", "<32-digit_API_key>")
 ```
-This object is then passed to all API calling functions. The config object also contains an `ssl` field, allowing the user to enable/disable SSL verification. For some projects that cannot properly verify SSL, disable this feature. 
+This object is then passed to all API calling functions. The config object also contains an `ssl` field, allowing the user to enable/disable SSL verification. 
+
+For some projects that cannot properly verify SSL, disable this feature, but be aware it creates a massive security vulnerability in your connection to REDCap. 
 
 #### NOTE: SSL verification should be left on at all times.
 SSL Verification prevents Man-in-the-Middle attacks.
@@ -31,3 +33,5 @@ superconfig = REDCap.Config("<url>", "<64-digit_superAPI_key>")
 #A default test project.
 config = create_project(superconfig, "<New Project Name>", 0) #0 indicates a test project
 ```
+
+Any new calls to this project can now be made using the returned config object. 

@@ -1,6 +1,3 @@
-#handling ssl- place up top as a global var, create a function that calls and modifies it? 
-#have poster just look at that to decide how to act?
-
 """
 	api_pusher(mode::String, content::String, config::Config; file_loc::String="", kwargs...)
 
@@ -101,7 +98,7 @@ end
 * `config` - struct containing url and api-key
 
 #### Returns:
-The next available ID number for project
+The next available ID number for project (Max record number +1)
 """
 function generate_next_record_id(config::Config)
 	fields = Dict("token" => config.key, 
@@ -365,7 +362,7 @@ function import_file_checker(data, format::String)
 		end
 	catch
 		if isa(data, String)
-			error("Not a valid path:\n$data")
+			warn("Not a valid path:\n$data")
 		end
 		return formatter(data, format, "import")
 	end

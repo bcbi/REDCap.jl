@@ -177,10 +177,15 @@ push!(user_list, new_user)
 #Import new list into REDCap
 import_users(config, user_list)
 ```
-
+User Permissions:
+```
+Data Export: 0=No Access, 2=De-Identified, 1=Full Data Set
+Form Rights: 0=No Access, 2=Read Only, 1=View records/responses and edit records (survey responses are read-only), 3=Edit survey responses
+Other attribute values: 0=No Access, 1=Access.
+```
 ## Files
 
-A specified file upload field is required to import a file. Any attempts to upload a file in another field will result in error.
+A specified file upload field is required to import a file. Any attempts to upload a file in a non-file field will result in error.
 ```@docs
 import_file(config::REDCap.Config, record::String, field::String, event::String, file::String; repeat_instance::Int=1, returnFormat::String="json")
 ```
@@ -190,19 +195,49 @@ import_file(config, "2", "file_upload", "", "/src/example.csv")
 
 ## Arms
 
-```julia
+Arms may be imported into REDCap by passing the name and arm number
 
+```bash
+Dict{String,Any} with 2 entries:
+  "name"    => "Arm 1"
+  "arm_num" => 1
+```
+
+```julia
+import_arms(config, newarm)
 ```
 
 ## Events
 
-```julia
-
+Events can be passed into REDCap by passing their name and arm number, as well as any additional configurations.
+```bash
+Dict{String,Any} with 7 entries:
+  "unique_event_name"  => "event_1_arm_1"
+  "custom_event_label" => nothing
+  "offset_max"         => "0"
+  "arm_num"            => "1"
+  "event_name"         => "Event 1"
+  "day_offset"         => "1"
+  "offset_min"         => "0"
 ```
+
+```julia
+import_events(config, event)
+```
+Importing events with the same name will not overwrite by default, and will instead append a character. This can be changed by passing `override=1` to overwrite existing events.
 
 
 ### Instrument Event Mappings
 
-```julia
+The Instrument Event mapping allows REDCap to link different forms to different events easily.
 
+```bash
+Dict{String,Any} with 3 entries:
+  "arm_num"           => 1
+  "form"              => "demographics"
+  "unique_event_name" => "event_1_arm_1"
+```
+
+```julia
+import_instrument_event_mappings(config, newmap)
 ```

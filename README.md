@@ -72,13 +72,13 @@ Add additional notes about how to deploy this on a local machine and in a cloud 
 
 ## Contributing *
 
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
+Please read [CONTRIBUTING.md]() for details on our code of conduct, and the process for submitting pull requests to us.
 
-## Release History
+## Release History *
 - 0.1
 
 
-## Authors
+## Authors *
 
 List authors and affiliation.
 

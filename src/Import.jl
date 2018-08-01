@@ -13,8 +13,7 @@ NOTE: Only for projects in development
 Number of successfully imported values
 """
 function import_project_information(config::REDCap.Config, data; format::String="json")
-	output = api_pusher("import", "project_settings", config, data = import_file_checker(data, format), format=format)
-	return output
+	return api_pusher("import", "project_settings", config, data = import_file_checker(data, format), format=format)
 end
 
 
@@ -35,8 +34,7 @@ Number of successfully imported fields
 """
 ###BROKEN###
 function import_metadata(config::REDCap.Config, data; format::String="json", returnFormat::String="json")
-	output = api_pusher("import", "metadata", config, data = import_file_checker(data, format), format=format, returnFormat=returnFormat)
-	return output
+	return api_pusher("import", "metadata", config, data = import_file_checker(data, format), format=format, returnFormat=returnFormat)
 end
 #=
 newmeta = Dict("required_field"=>"",
@@ -93,8 +91,7 @@ Update/import new users into a project.
 Number of succesfully added/modified users.
 """
 function import_users(config::REDCap.Config, data; format::String="json", returnFormat::String="json")
-	output = api_pusher("import", "user", config, data = import_file_checker(data, format), format=format, returnFormat=returnFormat)
-	return output
+	return api_pusher("import", "user", config, data = import_file_checker(data, format), format=format, returnFormat=returnFormat)
 end
 
 
@@ -115,8 +112,7 @@ Number of successfully imported arms
 """
 ###BROKEN###
 function import_arms(config::REDCap.Config, data; override::Int=0, format::String="json", returnFormat::String="json")
-	output = api_pusher("import", "arm", config, data = import_file_checker(data, format), override=override, format=format, returnFormat=returnFormat)
-	return output
+	return api_pusher("import", "arm", config, data = import_file_checker(data, format), override=override, format=format, returnFormat=returnFormat)
 end
 
 
@@ -135,16 +131,14 @@ Update/import Events into a project.
 #### Returns:
 Number of successfully imported events
 """
-###BROKEN###
 function import_events(config::REDCap.Config, data; override::Int=0, format::String="json", returnFormat::String="json")
-	output = api_pusher("import", "event", config, data = import_file_checker(data, format), override=override, format=format, returnFormat=returnFormat)
-	return output
+	return api_pusher("import", "event", config, data = import_file_checker(data, format), override=override, format=format, returnFormat=returnFormat)
 end
 
 
 """
 	import_records(config::REDCap.Config, data::Any; format::String="json", dtype::String="flat", 
-						overwriteBehavior::String="normal", forceNumber::Bool=false, dateFormat::String="YMD",
+						overwriteBehavior::String="normal", forceAutoNumber::Bool=false, dateFormat::String="YMD",
 						returnContent::String="count", returnFormat::String="json")
 
 Import a set of records for a project.
@@ -155,7 +149,7 @@ Import a set of records for a project.
 * `format` - "json", "xml", "csv", or "odm". declares format of imported data
 * `dtype` - "flat" (one record per row) or "eav" (one data point per row)
 * `overwriteBehavior` - "normal" - will not overwrite, "overwrite" - will
-* `forceNumber` - force auto-numbering and overwrite given id number
+* `forceAutoNumber` - force auto-numbering and overwrite given id number
 * `dateFormat` - "YMD", "MDY", or "DMY"
 * `returnContent` - "count" (number of successfully uploaded records), 
 						"ids" (list of record numbers imported), 
@@ -166,12 +160,11 @@ Import a set of records for a project.
 Specified by returnContent
 """
 function import_records(config::REDCap.Config, data; format::String="json", dtype::String="flat", 
-						overwriteBehavior::String="normal", forceNumber::Bool=false, dateFormat::String="YMD",
+						overwriteBehavior::String="normal", forceAutoNumber::Bool=false, dateFormat::String="YMD",
 						returnContent::String="count", returnFormat::String="json")
-	output = api_pusher("import", "record", config, data = import_file_checker(data, format), format=format, dtype=dtype, 
-							overwriteBehavior=overwriteBehavior, forceNumber=forceNumber, dateFormat=dateFormat,
+	return api_pusher("import", "record", config, data = import_file_checker(data, format), format=format, dtype=dtype, 
+							overwriteBehavior=overwriteBehavior, forceAutoNumber=forceAutoNumber, dateFormat=dateFormat,
 							returnContent=returnContent, returnFormat=returnFormat)
-	return output
 end
 
 
@@ -191,10 +184,9 @@ Import Instrument-Event Mappings into a project
 #### Returns:
 Number of successfully imported inst-event mappings
 """
-###BROKEN###
+###BROKEN(?)###
 function import_instrument_event_mappings(config::REDCap.Config, data; format::String="json", returnFormat::String="json")
-	output = api_pusher("import", "formEventMapping", config, data = import_file_checker(data, format), format=format, returnFormat=returnFormat)
-	return output
+	return api_pusher("import", "formEventMapping", config, data = import_file_checker(data, format), format=format, returnFormat=returnFormat)
 end
 
 
@@ -218,9 +210,8 @@ Nothing/errors
 """
 function import_file(config::REDCap.Config, record::String, field::String, event::String, file::String; repeat_instance::Int=1,
 					returnFormat::String="json")
-	output = api_pusher("import", "file", config, record=record, field=field, event=event, file=open(file), 
+	return api_pusher("import", "file", config, record=record, field=field, event=event, file=open(file), 
 						repeat_instance=repeat_instance, returnFormat=returnFormat)
-	return output
 end
 
 
@@ -245,7 +236,7 @@ Creates a project with the given parameters
 * `odm` - XML string containing metadata
 
 #### Returns:
-The standard config, with same url and API-key to access project
+The standard config for that project.
 """
 function create_project(config::REDCap.Config, project_title::String, purpose::Integer; format::String="json",
 						returnFormat::String="json", odm="", purpose_other::String="", project_notes::String="", 

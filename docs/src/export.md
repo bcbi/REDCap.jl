@@ -105,17 +105,18 @@ list = export_survey_participant_list(config, "demographics", "")
 
 ## Arms
 
+The metadata of a projects arms can be exported with `export_arms(config)`, which by default returns a dictionary containing both the name and number of an arm. Only select arms may be exported by passing an array of arm numbers.
 ```julia
-
+arms = export_arms(config)
 ```
-
+This can only be used in a longitudinal project. Exporting arms in a non-longitudinal project will result in an error.
 
 ## Instruments
 
+Instrument information may also be exported using `export_instruments(config)`. By default this returns a dictionary of the instrument label and the instruments variable name (which is often different from the label and is needed to access instruments via the API).
 ```julia
-
+instruments = export_instruments(config)
 ```
-
 
 ### Instrument Event Mappings
 
