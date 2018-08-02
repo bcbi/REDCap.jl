@@ -64,3 +64,15 @@ import_project_information(config, final_proj_info)
 #pdf summary of the project
 export_pdf(config, "/<path>/export.pdf", allRecords=true)
 ```
+
+Several project may wish to take advantage of loading directly from a file;
+```julia
+#Examples using file io
+
+```
+
+
+## Index
+
+```@index
+```

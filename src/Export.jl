@@ -74,7 +74,7 @@ end
 
 
 """
-	export_user(config::REDCap.Config; format::String="json", returnFormat::String="json", file_loc::String="") 
+	export_users(config::REDCap.Config; format::String="json", returnFormat::String="json", file_loc::String="") 
 
 #### Parameters:
 * `config` - Struct containing url and api-key
@@ -203,7 +203,7 @@ end
 * `file_loc` - Location to export to
 
 #### Returns:
-Entire project as XML file.
+Entire project as XML.
 """
 function export_project(config::REDCap.Config; returnMetadataOnly::Bool=false, records::Array=[], fields::Array=[], events::Array=[], returnFormat::String="json", exportSurveyFields::Bool=false, exportDataAccessGroups::Bool=false, filterLogic::String="", exportFiles::Bool=false, file_loc::String="")
 	output = api_pusher("export", "project_xml", config, returnMetadataOnly=returnMetadataOnly, records=records, fields=fields,
@@ -357,7 +357,7 @@ end
 
 
 """
-	export_reports(config::REDCap.Config, report_id::Integer; format::String="json", returnFormat::String="json",  
+	export_report(config::REDCap.Config, report_id::Integer; format::String="json", returnFormat::String="json",  
 						rawOrLabel::String="raw", rawOrLabelHeaders::String="raw", exportCheckboxLabel::Bool=false, 
 						file_loc::String="") 
 
@@ -390,7 +390,7 @@ end
 * `config` - Struct containing url and api-key
 * `record` - Record id
 * `instrument` - Name of instrument linking to
-* `event` - Event name conatining instrument
+* `event` - Event name containing instrument
 * `repeat_instance` - Number of repeated instances (long project)
 * `returnFormat` - Error message format
 

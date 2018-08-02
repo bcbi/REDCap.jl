@@ -5,7 +5,7 @@ Struct to hold api url and key/superkey.
 `APIConfigObj = Config("http...","ABCD...")`
 
 This will be passed to all function calls to both orient and authorize the api_pusher() function. The REDCap API cannot
-be accessed without this config object. Always test your config object before automating a project. 
+be accessed without this config object properly set-up. Always test your config object before automating a project. 
 
 #### NOTE: SSL should always be on by default.
 If for whatever reason, your project will not SSL verify AND you must use it, disable ssl verification with `ssl=false`
@@ -14,7 +14,7 @@ Leaving SSL verification disabled leaves you open for Man-in-the-Middle attacks 
 #### Parameters:
 * `url` - The url of the REDCap instance.
 * `key` - Either the standard or super API key.
-* `ssl` - Flag to access the project with ssl verification enabled
+* `ssl` - Flag to enable ssl verification
 """
 struct Config
 	url::String

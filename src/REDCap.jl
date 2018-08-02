@@ -5,6 +5,8 @@ Julia frontend for the REDCap API.
 Must have a valid `REDCap.Config` object set up with the API key and url. All functions are mapped to an API call.
 Compatable with REDCap Version 8.1.0
 """
+
+#literate - examples packages separate from elses
 module REDCap
 
 using HTTP
@@ -46,7 +48,7 @@ export export_field_names,
 		import_arms,
 		import_events,
 		import_records,
-		import_insrument_event_mappings,
+		import_instrument_event_mappings,
 		import_file,
 
 		delete_arms,

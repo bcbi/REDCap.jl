@@ -77,7 +77,7 @@ Content-Type: application/json; charset=utf-8
 =#
 
 """
-	import_user(config::REDCap.Config, data; format::String="json", returnFormat::String="json")
+	import_users(config::REDCap.Config, data; format::String="json", returnFormat::String="json")
 
 Update/import new users into a project.
 
@@ -115,6 +115,42 @@ function import_arms(config::REDCap.Config, data; override::Int=0, format::Strin
 	return api_pusher("import", "arm", config, data = import_file_checker(data, format), override=override, format=format, returnFormat=returnFormat)
 end
 
+#=
+julia> arms = export_arms(config)
+POSTing
+POSTd
+1-element Array{Any,1}:
+ Dict{String,Any}(Pair{String,Any}("name", "Arm 1"),Pair{String,Any}("arm_num", 1))
+
+julia> newarm=arms[1]
+Dict{String,Any} with 2 entries:
+  "name"    => "Arm 1"
+  "arm_num" => 1
+
+julia> newarm["name"]="Arm 2"
+"Arm 2"
+
+julia> newarm["arm_num"]="2"
+"2"
+
+julia> push!(arms, newarm)
+2-element Array{Any,1}:
+ Dict{String,Any}(Pair{String,Any}("name", "Arm 2"),Pair{String,Any}("arm_num", "2"))
+ Dict{String,Any}(Pair{String,Any}("name", "Arm 2"),Pair{String,Any}("arm_num", "2"))
+
+julia> import_arms(config, arms)
+POSTing
+POSTd
+2
+
+julia> export_arms(config)
+POSTing
+POSTd
+1-element Array{Any,1}:
+ Dict{String,Any}(Pair{String,Any}("name", "Arm 1"),Pair{String,Any}("arm_num", 1))
+
+WHY THO???
+=#
 
 """
 	import_events(config::REDCap.Config, data; override::Int=0, format::String="json", returnFormat::String="json")

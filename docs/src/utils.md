@@ -5,25 +5,27 @@ CurrentModule = REDCap
 
 ## Config
 
+```@docs
+REDCap.Config(url::String, key::String; ssl::Bool=true)
+```
+
 All REDCap projects need to be tied to their url and API Key, which is done by creating a REDCap.Config object
 ```julia
 config = REDCap.Config("<url>", "<32-digit_API_key>")
 ```
-This object is then passed to all API calling functions. The config object also contains an `ssl` field, allowing the user to enable/disable SSL verification. 
 
-For some projects that cannot properly verify SSL, disable this feature, but be aware it creates a massive security vulnerability in your connection to REDCap. 
+For certain projects, SSL Verifification may need to be disabled. The config object can be set-up without ssl verification as so:
+```julia
+config = REDCap.Config("<url>", "<32-digit_API_key>", ssl=false)
+```
+SSL verification should only be disabled in circumstances where a REDCap API cannot be SSL secured, but must still be accessed. The ssl setting will default to true.
 
-#### NOTE: SSL verification should be left on at all times.
-SSL Verification prevents Man-in-the-Middle attacks.
 
 ## Project Creation
-___
+
 ```@docs
-create_project(config::REDCap.Config, project_title::String, purpose::Integer; format::String="json",
-						returnFormat::String="json", odm="", purpose_other::String="", project_notes::String="", 
-						is_longitudinal::Integer=0, surveys_enabled::Integer=0, record_autonumbering_enabled::Integer=1)
+create_project(config::REDCap.Config, project_title::String, purpose::Integer; format::String="json", returnFormat::String="json", odm="", purpose_other::String="", project_notes::String="", is_longitudinal::Integer=0, surveys_enabled::Integer=0, record_autonumbering_enabled::Integer=1)
 ```
-___
 
 Projects can be created by first constructing a superConfig object, and initializing a project with desired settings. The function returns the config object for the new project.
 

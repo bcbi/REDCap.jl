@@ -5,10 +5,14 @@ CurrentModule = REDCap
 
 Importing into a REDCap database is straightforward. The data to be imported must be presented in either `json` (Array of Dicts), `csv`/`df`, or `xml` format. These files can be loaded from a filepath as well. The correct format must be passed along with the object. REDCap defaults to `json` if no format is given.
 
-#### Note
+<b>Note</b>
 Some import functions (Metadata) are only available for projects marked in development, while others override features disabled (arm, event).
 
 ## Records
+
+```@docs
+import_records(config::REDCap.Config, data::Any; format::String="json", dtype::String="flat", overwriteBehavior::String="normal", forceAutoNumber::Bool=false, dateFormat::String="YMD", returnContent::String="count", returnFormat::String="json")
+```
 
 Record:
 ```bash
@@ -56,6 +60,10 @@ Which returns the number as an integer.
 
 ## Project Info
 
+```@docs
+import_project_information(config::REDCap.Config, data; format::String="json")
+```
+
 The project information and settings can be changed using this function by importing a dict with some/all of the desired settings.
 
 ```bash
@@ -95,7 +103,11 @@ info["in_production"]="1"
 import_project_information(config, info)
 ```
 
-### Metadata
+## Metadata
+
+```@docs
+import_metadata(config::REDCap.Config, data; format::String="json", returnFormat::String="json")
+```
 
 A projects metadata can be modified before it leaves development status using the `import_metadata()` function
 
@@ -128,6 +140,10 @@ Dict{String,Any} with 18 entries:
 ```
 
 ## Users
+
+```@docs
+import_users(config::REDCap.Config, data; format::String="json", returnFormat::String="json")
+```
 
 Users may be imported in the same way as above. User permissions are set/modified in this way.
 
@@ -185,15 +201,21 @@ Other attribute values: 0=No Access, 1=Access.
 ```
 ## Files
 
-A specified file upload field is required to import a file. Any attempts to upload a file in a non-file field will result in error.
 ```@docs
 import_file(config::REDCap.Config, record::String, field::String, event::String, file::String; repeat_instance::Int=1, returnFormat::String="json")
 ```
+
+A specified file upload field is required to import a file. Any attempts to upload a file in a non-file field will result in error.
+
 ```julia
 import_file(config, "2", "file_upload", "", "/src/example.csv")
 ```
 
 ## Arms
+
+```@docs
+import_arms(config::REDCap.Config, data; override::Int=0, format::String="json", returnFormat::String="json")
+```
 
 Arms may be imported into REDCap by passing the name and arm number
 
@@ -208,6 +230,10 @@ import_arms(config, newarm)
 ```
 
 ## Events
+
+```@docs
+import_events(config::REDCap.Config, data; override::Int=0, format::String="json", returnFormat::String="json")
+```
 
 Events can be passed into REDCap by passing their name and arm number, as well as any additional configurations.
 ```bash
@@ -227,7 +253,11 @@ import_events(config, event)
 Importing events with the same name will not overwrite by default, and will instead append a character. This can be changed by passing `override=1` to overwrite existing events.
 
 
-### Instrument Event Mappings
+## Instrument Event Mappings
+
+```@docs
+import_instrument_event_mappings(config::REDCap.Config, data; format::String="json", returnFormat::String="json")
+```
 
 The Instrument Event mapping allows REDCap to link different forms to different events easily.
 
@@ -237,7 +267,7 @@ Dict{String,Any} with 3 entries:
   "form"              => "demographics"
   "unique_event_name" => "event_1_arm_1"
 ```
-
+New mappings can be created by specifying the arm, form, and event name to link together.
 ```julia
 import_instrument_event_mappings(config, newmap)
 ```

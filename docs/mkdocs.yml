@@ -9,4 +9,4 @@ pages:
   - Import: import.md
   - Deletion: delete.md
   - Utilities: utils.md
-theme: readthedocs
+theme: material

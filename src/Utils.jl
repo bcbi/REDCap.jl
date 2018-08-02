@@ -27,7 +27,7 @@ function api_pusher(mode::String, content::String, config::Config; format::Strin
 
 	for (k,v) in kwargs
 		k=String(k) 				#k is a Symbol, make easier to handle
-		if isequal(k, "dtype") 		#type is reserved in julia, quick-fix
+		if isequal(k, "dtype") 		#type is reserved in julia, quick-fix ##May be depreciated in Julia v0.7.0
 			fields["type"]=v
 		elseif mode=="import" && isequal(k, "data")
 			if format ∈ ("csv", "df")

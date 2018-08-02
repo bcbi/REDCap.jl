@@ -9,17 +9,47 @@
 Importing into a REDCap database is straightforward. The data to be imported must be presented in either `json` (Array of Dicts), `csv`/`df`, or `xml` format. These files can be loaded from a filepath as well. The correct format must be passed along with the object. REDCap defaults to `json` if no format is given.
 
 
-<a id='Note-1'></a>
-
-#### Note
-
-
-Some import functions (Metadata) are only available for projects marked in development, while others override features disabled (arm, event).
+<b>Note</b> Some import functions (Metadata) are only available for projects marked in development, while others override features disabled (arm, event).
 
 
 <a id='Records-1'></a>
 
 ## Records
+
+<a id='REDCap.import_records-Tuple{REDCap.Config,Any}' href='#REDCap.import_records-Tuple{REDCap.Config,Any}'>#</a>
+**`REDCap.import_records`** &mdash; *Method*.
+
+
+
+```
+import_records(config::REDCap.Config, data::Any; format::String="json", dtype::String="flat", 
+					overwriteBehavior::String="normal", forceAutoNumber::Bool=false, dateFormat::String="YMD",
+					returnContent::String="count", returnFormat::String="json")
+```
+
+Import a set of records for a project.
+
+**Parameters:**
+
+  * `config` - Struct containing url and api-key
+  * `recordData` - Array of record data to be imported - pass as a file location to import from disk
+  * `format` - "json", "xml", "csv", or "odm". declares format of imported data
+  * `dtype` - "flat" (one record per row) or "eav" (one data point per row)
+  * `overwriteBehavior` - "normal" - will not overwrite, "overwrite" - will
+  * `forceAutoNumber` - Force auto-numbering and overwrite given id number
+  * `dateFormat` - "YMD", "MDY", or "DMY"
+  * `returnContent` - "count" (number of successfully uploaded records),
+
+```
+					"ids" (list of record numbers imported), 
+					"auto-ids" (pair of assigned id and given id)
+```
+
+  * `returnFormat` - Error message format
+
+**Returns:**
+
+Specified by returnContent
 
 
 Record:
@@ -83,6 +113,27 @@ Which returns the number as an integer.
 
 ## Project Info
 
+<a id='REDCap.import_project_information-Tuple{REDCap.Config,Any}' href='#REDCap.import_project_information-Tuple{REDCap.Config,Any}'>#</a>
+**`REDCap.import_project_information`** &mdash; *Method*.
+
+
+
+```
+import_project_information(config::REDCap.Config, data; format::String="json")
+```
+
+Update basic attributes of given REDCap project. NOTE: Only for projects in development
+
+**Parameters:**
+
+  * `config` - Struct containing url and api-key
+  * `data` - Data to be imported - pass as a file location to import from disk
+  * `format` - "json", "xml", "csv", or "odm". declares format of imported data
+
+**Returns:**
+
+Number of successfully imported values
+
 
 The project information and settings can be changed using this function by importing a dict with some/all of the desired settings.
 
@@ -129,7 +180,29 @@ import_project_information(config, info)
 
 <a id='Metadata-1'></a>
 
-### Metadata
+## Metadata
+
+<a id='REDCap.import_metadata-Tuple{REDCap.Config,Any}' href='#REDCap.import_metadata-Tuple{REDCap.Config,Any}'>#</a>
+**`REDCap.import_metadata`** &mdash; *Method*.
+
+
+
+```
+import_metadata(config::REDCap.Config, data; format::String="json", returnFormat::String="json")
+```
+
+Import metadata (i.e., Data Dictionary) into a project. NOTE: Only for projects in development
+
+**Parameters:**
+
+  * `config` - Struct containing url and api-key
+  * `data` - Data to be imported - pass as a file location to import from disk
+  * `format` - "json", "xml", "csv", or "odm". declares format of imported data
+  * `returnFormat` - Error message format
+
+**Returns:**
+
+Number of successfully imported fields
 
 
 A projects metadata can be modified before it leaves development status using the `import_metadata()` function
@@ -170,6 +243,28 @@ Dict{String,Any} with 18 entries:
 <a id='Users-1'></a>
 
 ## Users
+
+<a id='REDCap.import_users-Tuple{REDCap.Config,Any}' href='#REDCap.import_users-Tuple{REDCap.Config,Any}'>#</a>
+**`REDCap.import_users`** &mdash; *Method*.
+
+
+
+```
+import_users(config::REDCap.Config, data; format::String="json", returnFormat::String="json")
+```
+
+Update/import new users into a project.
+
+**Parameters:**
+
+  * `config` - Struct containing url and api-key
+  * `data` - Data to be imported - pass as a file location to import from disk
+  * `format` - "json", "xml", "csv", or "odm". declares format of imported data
+  * `returnFormat` - Error message format
+
+**Returns:**
+
+Number of succesfully added/modified users.
 
 
 Users may be imported in the same way as above. User permissions are set/modified in this way.
@@ -224,12 +319,19 @@ import_users(config, user_list)
 ```
 
 
+User Permissions:
+
+
+```
+Data Export: 0=No Access, 2=De-Identified, 1=Full Data Set
+Form Rights: 0=No Access, 2=Read Only, 1=View records/responses and edit records (survey responses are read-only), 3=Edit survey responses
+Other attribute values: 0=No Access, 1=Access.
+```
+
+
 <a id='Files-1'></a>
 
 ## Files
-
-
-A specified file upload field is required to import a file. Any attempts to upload a file in another field will result in error.
 
 <a id='REDCap.import_file-Tuple{REDCap.Config,String,String,String,String}' href='#REDCap.import_file-Tuple{REDCap.Config,String,String,String,String}'>#</a>
 **`REDCap.import_file`** &mdash; *Method*.
@@ -245,17 +347,20 @@ Upload a document to specific record to the designated uploading field.
 
 **Parameters:**
 
-  * `config` - struct containing url and api-key
-  * `record` - destination record id
-  * `field` - destination file upload field
-  * `event` - destination event
-  * `repeat_instance` - number of repeated instances (long project)
-  * `file` - file to be imported
-  * `returnFormat` - error message format
+  * `config` - Struct containing url and api-key
+  * `record` - Destination record id
+  * `field` - Destination file upload field
+  * `event` - Destination event
+  * `repeat_instance` - Number of repeated instances (long project)
+  * `file` - File to be imported
+  * `returnFormat` - Error message format
 
 **Returns:**
 
 Nothing/errors
+
+
+A specified file upload field is required to import a file. Any attempts to upload a file in a non-file field will result in error.
 
 
 ```julia
@@ -267,9 +372,42 @@ import_file(config, "2", "file_upload", "", "/src/example.csv")
 
 ## Arms
 
+<a id='REDCap.import_arms-Tuple{REDCap.Config,Any}' href='#REDCap.import_arms-Tuple{REDCap.Config,Any}'>#</a>
+**`REDCap.import_arms`** &mdash; *Method*.
+
+
+
+```
+import_arms(config::REDCap.Config, data; override::Int=0, format::String="json", returnFormat::String="json")
+```
+
+Update/import Arms into a project.
+
+**Parameters:**
+
+  * `config` - Struct containing url and api-key
+  * `data` - Data to be imported - pass as a file location to import from disk
+  * `override` - 0 (false) 1 (true) - overwrites existing arms
+  * `format` - "json", "xml", "csv", or "odm". declares format of imported data
+  * `returnFormat` - Error message format
+
+**Returns:**
+
+Number of successfully imported arms
+
+
+Arms may be imported into REDCap by passing the name and arm number
+
+
+```bash
+Dict{String,Any} with 2 entries:
+  "name"    => "Arm 1"
+  "arm_num" => 1
+```
+
 
 ```julia
-
+import_arms(config, newarm)
 ```
 
 
@@ -277,18 +415,97 @@ import_file(config, "2", "file_upload", "", "/src/example.csv")
 
 ## Events
 
+<a id='REDCap.import_events-Tuple{REDCap.Config,Any}' href='#REDCap.import_events-Tuple{REDCap.Config,Any}'>#</a>
+**`REDCap.import_events`** &mdash; *Method*.
 
-```julia
+
 
 ```
+import_events(config::REDCap.Config, data; override::Int=0, format::String="json", returnFormat::String="json")
+```
+
+Update/import Events into a project.
+
+**Parameters:**
+
+  * `config` - Struct containing url and api-key
+  * `data` - Data to be imported - pass as a file location to import from disk
+  * `override` - 0 (false) 1 (true) - overwrites existing events
+  * `format` - "json", "xml", "csv", or "odm". declares format of imported data
+  * `returnFormat` - Error message format
+
+**Returns:**
+
+Number of successfully imported events
+
+
+Events can be passed into REDCap by passing their name and arm number, as well as any additional configurations.
+
+
+```bash
+Dict{String,Any} with 7 entries:
+  "unique_event_name"  => "event_1_arm_1"
+  "custom_event_label" => nothing
+  "offset_max"         => "0"
+  "arm_num"            => "1"
+  "event_name"         => "Event 1"
+  "day_offset"         => "1"
+  "offset_min"         => "0"
+```
+
+
+```julia
+import_events(config, event)
+```
+
+
+Importing events with the same name will not overwrite by default, and will instead append a character. This can be changed by passing `override=1` to overwrite existing events.
 
 
 <a id='Instrument-Event-Mappings-1'></a>
 
-### Instrument Event Mappings
+## Instrument Event Mappings
+
+<a id='REDCap.import_instrument_event_mappings-Tuple{REDCap.Config,Any}' href='#REDCap.import_instrument_event_mappings-Tuple{REDCap.Config,Any}'>#</a>
+**`REDCap.import_instrument_event_mappings`** &mdash; *Method*.
+
+
+
+```
+import_instrument_event_mappings(config::REDCap.Config, data; format::String="json", returnFormat::String="json")
+```
+
+Import Instrument-Event Mappings into a project 
+
+**NOTE: This only works for longitudinal projects.**
+
+**Parameters:**
+
+  * `config` - Struct containing url and api-key
+  * `data` - Data to be imported - pass as a file location to import from disk
+  * `format` - "json", "xml", "csv", or "odm". declares format of imported data
+  * `returnFormat` - Error message format
+
+**Returns:**
+
+Number of successfully imported inst-event mappings
+
+
+The Instrument Event mapping allows REDCap to link different forms to different events easily.
+
+
+```bash
+Dict{String,Any} with 3 entries:
+  "arm_num"           => 1
+  "form"              => "demographics"
+  "unique_event_name" => "event_1_arm_1"
+```
+
+
+New mappings can be created by specifying the arm, form, and event name to link together.
 
 
 ```julia
-
+import_instrument_event_mappings(config, newmap)
 ```
 

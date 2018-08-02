@@ -6,6 +6,7 @@ end
 
 using REDCap
 
+config = ""
 full_test=false
 #Get keys from user environment
 api_url=get(ENV, "REDCAP_URL", "")
