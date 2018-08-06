@@ -6,7 +6,7 @@
 # Exporting
 
 
-Exporting from a REDCap database is straightforward. If not specified, data exports will return as a `Dict`. If `csv` is passed as the format, a `DataFrame` will be returned. Some exports, such as version and url/return code for surveys return as simple strings, while most others return in the specified format.
+Exporting from a REDCap database is straightforward. If not specified, data exports will return as a `json`, turned into a `Dict`. `xml`, `csv`/`df`, and `odm` formats are all valid formats to pass into this API. Some exports, such as version and url/return code for surveys return as simple strings, while most others return in the specified format.
 
 
 Because REDCap is medical in nature, some information may be identifing information. 
@@ -381,10 +381,28 @@ instruments = export_instruments(config)
 
 ## Instrument Event Mappings
 
+<a id='REDCap.export_instrument_event_mappings' href='#REDCap.export_instrument_event_mappings'>#</a>
+**`REDCap.export_instrument_event_mappings`** &mdash; *Function*.
+
+
 
 ```
-export_instrument_event_mappings(config::REDCap.Config, arms=[]; format::String="json", returnFormat::String="json", file_loc::String="")
+export_instrument_event_mappings(config::REDCap.Config, arms::Array=[]; format::String="json", returnFormat::String="json", file_loc::String="")
 ```
+
+**NOTE: This only works for longitudinal projects.**
+
+**Parameters:**
+
+  * `config` - Struct containing url and api-key
+  * `arms` - Array of arm names to export
+  * `format` - "json", "xml", "csv", or "odm". decides format of returned data
+  * `returnFormat` - Error message format
+  * `file_loc` - Location to export to
+
+**Returns:**
+
+Formatted dict of instrument-event mappings for project.
 
 
 The mappings between events and instruments may be exported using `export_instrument_event_mappings()`

@@ -6,5 +6,5 @@
 *.json
 *.xml
 *.pdf
-site/
+docs/site/
 docs/build/

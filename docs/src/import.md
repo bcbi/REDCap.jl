@@ -6,7 +6,7 @@ CurrentModule = REDCap
 Importing into a REDCap database is straightforward. The data to be imported must be presented in either `json` (Array of Dicts), `csv`/`df`, or `xml` format. These files can be loaded from a filepath as well. The correct format must be passed along with the object. REDCap defaults to `json` if no format is given.
 
 <b>Note</b>
-Some import functions (Metadata) are only available for projects marked in development, while others override features disabled (arm, event).
+Some import functions (Metadata) are only available for projects marked in development, while others have their `override` parameters disabled (arm, event).
 
 ## Records
 

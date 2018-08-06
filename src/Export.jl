@@ -296,8 +296,7 @@ end
 
 
 """
-	export_instrument_event_mappings(config::REDCap.Config, arms=[]; format::String="json", returnFormat::String="json", 
-										file_loc::String="") 
+	export_instrument_event_mappings(config::REDCap.Config, arms::Array=[]; format::String="json", returnFormat::String="json", file_loc::String="") 
 
 #### NOTE: This only works for longitudinal projects.
 

@@ -78,7 +78,6 @@ import_records(config, "<path>/records.xml", format="xml") #NOTE: The format mus
 import_users(config, "<path>/users.csv", format="csv")
 ```
 
-
 ## Index
 
 ```@index

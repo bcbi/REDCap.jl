@@ -6,7 +6,7 @@ CurrentModule = REDCap
 ## Config
 
 ```@docs
-REDCap.Config(url::String, key::String; ssl::Bool=true)
+REDCap.Config(url::String, key::String; ssl::Bool = true)
 ```
 
 All REDCap projects need to be tied to their url and API Key, which is done by creating a REDCap.Config object

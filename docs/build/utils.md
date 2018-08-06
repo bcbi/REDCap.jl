@@ -12,7 +12,7 @@
 
 
 ```
-REDCap.Config(url::String, key::String; ssl::Bool=true)
+REDCap.Config(url::String, key::String; ssl::Bool = true)
 ```
 
 
@@ -22,6 +22,17 @@ All REDCap projects need to be tied to their url and API Key, which is done by c
 ```julia
 config = REDCap.Config("<url>", "<32-digit_API_key>")
 ```
+
+
+For certain projects, SSL Verifification may need to be disabled. The config object can be set-up without ssl verification as so:
+
+
+```julia
+config = REDCap.Config("<url>", "<32-digit_API_key>", ssl=false)
+```
+
+
+SSL verification should only be disabled in circumstances where a REDCap API cannot be SSL secured, but must still be accessed. The ssl setting will default to true.
 
 
 <a id='Project-Creation-1'></a>

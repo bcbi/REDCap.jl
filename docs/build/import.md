@@ -178,6 +178,9 @@ import_project_information(config, info)
 ```
 
 
+Similarily, a projects Grant ID can be entered and tied to the project.
+
+
 <a id='Metadata-1'></a>
 
 ## Metadata

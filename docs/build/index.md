@@ -107,6 +107,22 @@ export_pdf(config, "/<path>/export.pdf", allRecords=true)
 ```
 
 
+Several projects may wish to take advantage of saving and loading directly to/from a file;
+
+
+```julia
+#Exporting - file_loc must be provided as the save path
+export_records(config, file_loc="<path>/records.xml", format="xml")
+
+export_users(config, file_loc="<path>/users.csv", format="csv")
+
+#Importing - data passed as a file-path is loaded directly into the API
+import_records(config, "<path>/records.xml", format="xml") #NOTE: The format must match the file format you are uploading
+
+import_users(config, "<path>/users.csv", format="csv")
+```
+
+
 <a id='Index-1'></a>
 
 ## Index
@@ -118,6 +134,7 @@ export_pdf(config, "/<path>/export.pdf", allRecords=true)
 - [`REDCap.delete_records`](delete.md#REDCap.delete_records-Tuple{REDCap.Config,Array})
 - [`REDCap.export_arms`](export.md#REDCap.export_arms-Tuple{REDCap.Config})
 - [`REDCap.export_events`](export.md#REDCap.export_events-Tuple{REDCap.Config})
+- [`REDCap.export_instrument_event_mappings`](export.md#REDCap.export_instrument_event_mappings)
 - [`REDCap.export_instruments`](export.md#REDCap.export_instruments-Tuple{REDCap.Config})
 - [`REDCap.export_records`](export.md#REDCap.export_records-Tuple{REDCap.Config})
 - [`REDCap.export_report`](export.md#REDCap.export_report-Tuple{REDCap.Config,Integer})

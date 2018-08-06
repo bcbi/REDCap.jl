@@ -32,19 +32,16 @@ The location of the file must be specified by passing the record name, the field
 ```julia
 delete_file(config, "2", "file_upload", "event")
 ```
-The number of files deleted will be returned.
 
 ## Arms
 
 ```@docs
 delete_arms(config::REDCap.Config, arms::Array) 
 ```
-A list of arms to be deleted is passed.
 
 ```julia
 delete_arms(config, ["1"])
 ```
-The number of arms deleted is returned.
 
 ## Events
 
@@ -52,8 +49,6 @@ The number of arms deleted is returned.
 delete_events(config::REDCap.Config, events::Array)
 ```
 
-A list of events to be deleted is passed.
 ```julia
 delete_events(config, ["event_1_arm_1"])
 ```
-The number of events deleted is returned.

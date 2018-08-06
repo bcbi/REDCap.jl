@@ -1,7 +1,7 @@
 """ 
 	delete_arms(config::REDCap.Config, arms::Array) 
 
-Delete Arms from project.
+Delete Arms from project. Removing all arms reverts the project into a non-longitudinal project.
 
 #### NOTE: This only works for longitudinal projects. 
 
@@ -20,7 +20,7 @@ end
 """ 
 	delete_events(config::REDCap.Config, events::Array) 
 
-Delete Events from project. Removing all but one event reverts the project into a longitudinal project.
+Delete Events from project. Removing all but one event reverts the project into a non-longitudinal project.
 
 #### NOTE: This only works for longitudinal projects. 
 

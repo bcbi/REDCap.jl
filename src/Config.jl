@@ -1,5 +1,5 @@
 """
-	REDCap.Config(url::String, key::String; ssl::Bool=true)
+	REDCap.Config(url::String, key::String; ssl::Bool = true)
 
 Struct to hold api url and key/superkey.
 `APIConfigObj = Config("http...","ABCD...")`
@@ -21,7 +21,7 @@ struct Config
 	key::String
 	ssl::Bool
 	#basic validation - checks that the url starts and ends 'properly', and then checks the key length
-	function Config(url::String, key::String; ssl::Bool=true)
+	function Config(url::String, key::String; ssl::Bool = true)
 		if isequal(url[end-4:end], "/api/") && (isequal(url[1:7], "http://") || isequal(url[1:8], "https://"))
 			if (length(key)==32 || length(key)==64)
 				new(url, key, ssl)
