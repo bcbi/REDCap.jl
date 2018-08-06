@@ -1,5 +1,5 @@
 """
-	api_pusher(mode::String, content::String, config::Config; file_loc::String="", kwargs...)
+	api_pusher(mode::String, content::String, config::Config; format::String="", returnFormat::String="", file_loc::String="", kwargs...)
 
 Pass the type of api call, the config struct, and any needed kwargs for that api call.
 Handles creation of the Dict of fields to pass to REDCap, and file IO/formatting. 
@@ -11,18 +11,21 @@ https://<your-redcap-site.com>/redcap/api/help/
 * `mode` - "import", "export", or "delete"
 * `content` - Passed by calling modules to indicate what data to access
 * `config` - Struct containing url and api-key
+* `format` - "json", "xml", "csv", or "odm". decides format of returned data
+* `returnFormat` - Error message format
 * `file_loc` - Location of file
 * `kwargs...` - Any addtl. arguments passed by the calling module
 
 #### Returns:
 Formatted response body
 """
-function api_pusher(mode::String, content::String, config::Config; format::String="", file_loc::String="", kwargs...)
+function api_pusher(mode::String, content::String, config::Config; format::String="", returnFormat::String="", file_loc::String="", kwargs...)
 	#initialize dict with basic info and api calls
 	fields = Dict()
 	fields["token"] = config.key
 	fields["action"] = mode 								#import, export, delete
 	fields["content"] = content 							#what API function to access
+	fields["returnFormat"] = returnFormat
 	if format=="df"
 		if mode=="import"
 			fields["format"] = "json" 						#REDCap doesnt know what df is
@@ -59,9 +62,8 @@ function api_pusher(mode::String, content::String, config::Config; format::Strin
 			return formatter(response, format, mode)
 		end
 	elseif mode=="import" || mode=="delete"
-		return response
+		return formatter(response, returnFormat, "export")
 	end
-
 end
 
 

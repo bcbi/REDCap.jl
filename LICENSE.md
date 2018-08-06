@@ -1,6 +1,6 @@
 The RedCap.jl package is licensed under the MIT "Expat" License:
 
-> Copyright (c) 2018: coryc.
+> Copyright (c) 2018: Brown Center for Biomedical Informatics
 >
 > Permission is hereby granted, free of charge, to any person obtaining a copy
 > of this software and associated documentation files (the "Software"), to deal
