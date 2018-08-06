@@ -37,6 +37,8 @@ function import_metadata(config::REDCap.Config, data; format::String="json", ret
 	return api_pusher("import", "metadata", config, data = import_file_checker(data, format), format=format, returnFormat=returnFormat)
 end
 #=
+Breaks on JSON, XML, not CSV
+
 newmeta = Dict("required_field"=>"",
   "section_header"=>"",
   "matrix_ranking"=>"",
@@ -282,18 +284,18 @@ function create_project(config::REDCap.Config, project_title::String, purpose::I
 		fields = Dict("token" => config.key,
 						"content" => "project",
 						"format" => format,
-						"data" =>  JSON.json([Dict("project_title" => project_title,
+						"data" => json_formatter([Dict("project_title" => project_title,
 													"purpose" => purpose,
 													"purpose_other" => purpose_other,
 													"project_notes" => project_notes,
 													"is_longitudinal" => is_longitudinal,
 													"surveys_enabled" => surveys_enabled,
-													"record_autonumbering_enabled" => record_autonumbering_enabled)]),
+													"record_autonumbering_enabled" => record_autonumbering_enabled)], "import"),
 						"returnFormat" => returnFormat,
 						"odm" => odm)
 		response = poster(config, fields)
 		return Config(config.url, response, config.ssl) #inherit all settings except the newly generated key
 	else
-		error("Please use a config object that contains a properly entered Super API key.\n$(config.key) is an incorrect API key.")
+		error("Please use a config object that contains a properly entered Super API key.\n$(config.key) is an invalid Super-API key.")
 	end
 end

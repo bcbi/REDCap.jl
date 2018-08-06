@@ -74,9 +74,8 @@ Delete one or more records from project.
 #### Returns:
 Number of records successfully deleted
 """
-function delete_records(config::REDCap.Config, records::Array; arm::Integer=0)
-	if arm != 0
-		#REDCap treats the request differently if arm is sent as a field- dont send if you dont have to
+function delete_records(config::REDCap.Config, records::Array; arm::Integer=-1)
+	if arm != -1	#REDCap treats the request differently if arm is sent as a field
 		return api_pusher("delete", "record", config, records=records, arm=arm)
 	else
 		return api_pusher("delete", "record", config, records=records)

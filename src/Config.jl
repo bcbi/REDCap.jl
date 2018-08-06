@@ -26,10 +26,10 @@ struct Config
 			if (length(key)==32 || length(key)==64)
 				new(url, key, ssl)
 			else
-				error("Invalid Key: must be 32 characters long for a standard key, or 64 characters long for a super key.")
+				error("Invalid Key: $key \nMust be 32 characters long for a standard key, or 64 characters long for a super key.")
 			end
 		else
-			error("Invalid URL: Must be in format of http(s)://<redcap-hosting-url>/api/")
+			error("Invalid URL: $url \nMust be in format of http(s)://<redcap-hosting-url>/api/")
 		end
 	end
 end

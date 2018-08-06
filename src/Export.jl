@@ -152,12 +152,14 @@ end
 """
 	export_pdf(config::REDCap.Config, file_loc::String; record::String="", event::String="", instrument::String="", allRecords::Bool=false) 
 
+Exports a PDF for a selected portion of the project.
+
 #### Parameters:
 * `config` - Struct containing url and api-key
 * `record` - Record ID to populate PDF
 * `event` - Event name to populate PDF
 * `instrument` - Name of instrument to populate PDF
-* `allRecords` - Flag to take all records or not
+* `allRecords` - Flag to take all records or not - if passed, the other specifying fields will be ignored
 * `file_loc` - Location to export to
 
 #### Returns:
@@ -212,7 +214,7 @@ function export_project(config::REDCap.Config; returnMetadataOnly::Bool=false, r
 	if length(file_loc)>0
 		return "Success"
 	else
-		return output #may want to always return data, even if bulky.
+		return xml_formatter(output, "export")
 	end
 end
 

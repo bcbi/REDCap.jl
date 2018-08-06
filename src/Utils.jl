@@ -5,7 +5,7 @@ Pass the type of api call, the config struct, and any needed kwargs for that api
 Handles creation of the Dict of fields to pass to REDCap, and file IO/formatting. 
 
 API documentation found here:
-https://<your-redcap-site.com>/redcap/api/help/?content=exp_field_names
+https://<your-redcap-site.com>/redcap/api/help/
 
 #### Parameters:
 * `mode` - "import", "export", or "delete"
@@ -21,20 +21,25 @@ function api_pusher(mode::String, content::String, config::Config; format::Strin
 	#initialize dict with basic info and api calls
 	fields = Dict()
 	fields["token"] = config.key
-	fields["action"] = mode 		#import, export, delete
-	fields["content"] = content 	#what API function to access
-	fields["format"] = format
+	fields["action"] = mode 								#import, export, delete
+	fields["content"] = content 							#what API function to access
+	if format=="df"
+		if mode=="import"
+			fields["format"] = "json" 						#REDCap doesnt know what df is
+		elseif mode=="export"
+			fields["format"] = "csv"						#Julia can parse csv as a df
+		end
+	else
+		fields["format"] = format
+	end
 
 	for (k,v) in kwargs
-		k=String(k) 				#k is a Symbol, make easier to handle
-		if isequal(k, "dtype") 		#type is reserved in julia, quick-fix ##May be depreciated in Julia v0.7.0
+		k=String(k) 										#k is a Symbol, make easier to handle
+		if isequal(k, "dtype") 								#type is reserved in julia, quick-fix ##Depreciated in Julia v0.7.0
 			fields["type"]=v
-		elseif mode=="import" && isequal(k, "data")
-			if format ∈ ("csv", "df")
-				#Needs to be handled- CSV and DF break the machine as it were...
-			end
+		elseif mode=="import" && isequal(k, "data")			#Turn all imported data into an IOBuffer so REDCap won't mess with it
 			fields[k]=IOBuffer(v)
-		elseif isa(v, Array)
+		elseif isa(v, Array)								#Turn arrays into specially URI encoded arrays
 			for (i, item) in enumerate(v)
 			    fields["$k[$(i-1)]"]=String(item)
 			end
@@ -47,16 +52,13 @@ function api_pusher(mode::String, content::String, config::Config; format::Strin
 	response = poster(config, fields)
 
 	#check if user wanted to save the file here
-	#println(file_loc)
-	#println(ispath(file_loc)) ##Something wrong here
-	if mode=="export" && length(file_loc)>0
-		export_to_file(file_loc, response)
-	elseif mode=="import"
-		mode="export" 
-	end
-	if length(format)>0
-		return formatter(response, format, mode)
-	else
+	if mode=="export" 
+		if length(file_loc)>0
+			export_to_file(file_loc, response)
+		else
+			return formatter(response, format, mode)
+		end
+	elseif mode=="import" || mode=="delete"
 		return response
 	end
 
@@ -120,19 +122,17 @@ Takes data and sends out to the proper formating function.
 #### Returns:
 The specified formatted/unformatted object
 """
-function formatter(data, format, mode::String) #flag to save to file?
-	#println(typeof(data))
+function formatter(data, format, mode::String)
 	if format=="json"
-		json_formatter(data, mode)
+		return json_formatter(data, mode)
 	elseif format=="csv"
-		csv_formatter(data, mode)
+		return data #very little needs to be done, but still keep as a sep. case
 	elseif format=="xml"
-		xml_formatter(data, mode)
+		return xml_formatter(data, mode)
 	elseif format=="odm"
-		odm_formatter(data, mode)
+		return odm_formatter(data, mode)
 	elseif format=="df"
-		#Special solution
-		df_formatter(data)
+		return df_formatter(data, mode)
 	else
 		error("$format is an invalid format.\nValid formats: \"json\", \"csv\", \"xml\", \"odm\", or \"df\"")
 	end
@@ -147,7 +147,7 @@ end
 * `mode` - Formatting for Import (data to server) or Export (data from server)
 
 #### Returns:
-The opposite of what was given in relation to json format
+Either a JSON'ed object or a parsed Dict
 """
 function json_formatter(data, mode::String)
 	if mode=="import"
@@ -164,39 +164,6 @@ end
 
 
 """
-	csv_formatter(data, mode::String)
-
-#### Parameters:
-* `data` - The data to be formatted
-* `mode` - Formatting for Import (data to server) or Export (data from server)
-
-#### Returns:
-The opposite of what was given in relation to csv format
-"""
-###BROKEN(?)###
-function csv_formatter(data, mode::String)
-	if mode=="import"
-		#must turn dict into csv
-		try
-			formattedData = IOBuffer()
-			return CSV.write(formattedData, data)
-		catch
-			warn("Catch - data cannot be csv formatted")
-			return data
-		end
-	else
-		#must turn recieved csv into dict? df?
-		try
-			return CSV.read(IOBuffer(data))
-		catch
-			warn("Catch - data cannot be csv formatted")
-			return data
-		end
-	end
-end
-
-
-"""
 	xml_formatter(data, mode::String)
 
 #### Parameters:
@@ -204,26 +171,14 @@ end
 * `mode` - Formatting for Import (data to server) or Export (data from server)
 
 #### Returns:
-The opposite of what was given in relation to xml format
+Either an xml-formatted string, or an xml document
 """
 function xml_formatter(data, mode::String)
 	if mode=="import"
-		#must turn dict into xml
-		#do i need to make this?
-		xDoc = XMLDocument()
-		return xDoc = parse_string(string(data))
+		return string(data)
 	else
-		#must turn xml into dict-array
 		try
-			output=[]
-			for record in collect(child_elements(root(data)))
-				data = Dict()
-				for item in child_elements(record)
-					data[name(item)]=content(item)
-				end
-				push!(output, data)
-			end
-			return data
+			return parse_string(data)
 		catch
 			warn("Catch - data cannot be xml formatted")
 			return data
@@ -235,25 +190,22 @@ end
 """
 	odm_formatter(data, mode::String)
 
-May just be XML in disguise - really weird format
+May just be XML in disguise - really weird format - Currently treated as just odm, but probably shouldnt be
 
 #### Parameters:
 * `data` - The data to be formatted
 * `mode` - Formatting for Import (data to server) or Export (data from server)
 
 #### Returns:
-The opposite of what was given in relation to odm format
+Either an xml-formatted string, or an xml document
 """
-###BROKEN###
+###BROKEN(?)###
 function odm_formatter(data, mode::String)
 	if mode=="import"
-		#dict => odm
-		return data
+		return string(data)
 	else
-		#odm => dict
 		try
-			#shorthand for actual work goes here.
-			return data
+			return parse_string(data)
 		catch
 			warn("Catch - data cannot be odm formatted")
 			return data
@@ -263,54 +215,57 @@ end
 
 
 """
-	df_formatter(data::Union{DataFrame, Dict})
+	df_formatter(data, mode::String)
 
-Takes a DF/Dict, turns it into a Dict/DF
+#### Parameters:
+* `data` - The data to be formatted
+* `mode` - Formatting for Import (data to server) or Export (data from server)
+
+#### Returns:
+Either an JSON'ed dict, or a df
+"""
+function df_formatter(data, mode::String)
+	if mode=="import"
+		#must turn df into a json'ed dict
+		return json_formatter(df_parser(data), mode)
+	else
+		try
+			return CSV.read(IOBuffer(data))
+		catch
+			warn("Catch - data cannot be df formatted")
+			return data
+		end
+	end
+end
+
+
+"""
+	df_parser(data::Union{DataFrame, Dict})
+
+Takes a DF, turns it into a Dict
 When a DF is passed, every row is turned into a dict() with the columns as keys, and pushed into an array to pass as a JSON object.
-Does the reverse for Dicts.
 
 #### Parameters:
 * `data` - Data to be formatted
 
 #### Returns:
-The opposite of the given format.
+A JSON ready dictionary array.
 """
-###BROKEN###
-function df_formatter(data::Union{DataFrame, Array})
-	## I no longer understand why this exists...
-	if isequal(typeof(data), DataFrame)
-		#df => dict
-		chartDict=[]
-		for row in DataFrames.eachrow(data)
-			rowDict=Dict()
-			for item in row
-				if ismissing(item[2])
-					rowDict[String(item[1])]="NA"
-				else
-					rowDict[String(item[1])]=string(item[2])
-				end
+function df_parser(data::Union{DataFrame, Array})
+	#df => dict
+	chartDict=[]
+	for row in DataFrames.eachrow(data)
+		rowDict=Dict()
+		for item in row
+			if ismissing(item[2])
+				rowDict[String(item[1])]="" #force things to be blanks
+			else
+				rowDict[String(item[1])]=string(item[2])
 			end
-			push!(chartDict,rowDict)
 		end
-		return chartDict
-	else
-		#dict => df 
-		chartDF=DataFrames.DataFrame(String, length(data), length(data[1]))
-		keylist=[]
-		for key in keys(data[1])
-			push!(keylist,key)
-		end
-		rename!(chartDF, f=>t for (f,t)=zip(names(chartDF), Symbol.(keylist)))
-		i=1
-		for row in data
-			println(row)
-			for (k, v) in row
-				chartDF[i:i, k] = v
-			end
-			i+=1
-		end
-		return chartDF
+		push!(chartDict,rowDict)
 	end
+	return chartDict
 end
 
 
@@ -356,16 +311,16 @@ If a path, calls a loading function; if data, calls a formatter.
 The retreived/formatted data
 """
 function import_file_checker(data, format::String)
-	try
-		if ispath(data)
+	if isa(data, String) && length(data)<50 && ispath(data)
+		try
 			return import_from_file(data, format)
+		catch
+			error("File could not be opened:\n$data")
 		end
-	catch
-		if isa(data, String)
-			warn("Not a valid path:\n$data")
-		end
+	else
 		return formatter(data, format, "import")
 	end
+	
 end
 
 
@@ -385,6 +340,7 @@ function export_to_file(file_loc::String, data)
 	try
 		open(file_loc, "w") do file
 			write(file, data)
+			return "Success"
 		end
 	catch
 		error("File could not be opened:\n$file_loc")

@@ -103,6 +103,8 @@ info["in_production"]="1"
 import_project_information(config, info)
 ```
 
+Similarily, a projects Grant ID can be entered and tied to the project.
+
 ## Metadata
 
 ```@docs
