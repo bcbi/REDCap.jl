@@ -7,7 +7,6 @@
 
 - [REDCap](index.md#REDCap-1)
     - [Overview](index.md#Overview-1)
-    - [Usage](index.md#Usage-1)
     - [Index](index.md#Index-1)
 - [Exporting](export.md#Exporting-1)
     - [Records](export.md#Records-1)
@@ -35,6 +34,11 @@
 - [Other Functionality](utils.md#Other-Functionality-1)
     - [Config](utils.md#Config-1)
     - [Project Creation](utils.md#Project-Creation-1)
+- [Examples](examples.md#Examples-1)
+    - [Basic Usage](examples.md#Basic-Usage-1)
+    - [File Handling](examples.md#File-Handling-1)
+    - [Changing Settings](examples.md#Changing-Settings-1)
+    - [Other Examples](examples.md#Other-Examples-1)
 
 
 <a id='Overview-1'></a>
@@ -46,81 +50,6 @@ A Julia frontend for the REDCap API. REDCap.jl supports both importing and expor
 
 
 This package is meant to be a straightforward wrapper for the REDCap API, and assumes familiarity with REDCap. 
-
-
-<a id='Usage-1'></a>
-
-## Usage
-
-
-A basic project can be created and accessed like so:
-
-
-```julia
-using REDCap
-
-#create config object for project creation
-super_config = REDCap.Config("<URL>", "<S-API>")
-
-config = create_project(super_config, "Test Project", 1; purpose_other="Testing REDCap.jl Functionality", project_notes="This is not an actual REDCap Database.")
-
-
-#Importing- NOTE: Records may be incomplete. Only provided fields will be updated
-record=[Dict("sex"=>"0",
-	  "age"=>"56",
-	  "address"=>"168 Anderson Blvd. Quincy MA 01227",
-	  "height"=>"80",
-	  "dob"=>"1962-04-08",
-	  "record_id"=>"1",
-	  "bmi"=>"125",
-	  "comments"=>"Randomly Generated - Demographics",
-	  "email"=>"ALin@aol.com",
-	  "first_name"=>"Alexia",
-	  "demographics_complete"=>"0",
-	  "telephone"=>"(617) 882-6049",
-	  "weight"=>"80",
-	  "last_name"=>"Lin",
-	  "ethnicity"=>"1",
-	  "race"=>"1")]
-
-import_records(config, record)
-
-#create new user with basic import/export permissions
-user=[Dict("username" => "john_smith@email.com",
-		 "email" => "john_smith@email.com",
-		 "lastname" => "Smith",
-		 "api_export"=>"1",
-		 "api_import"=>"1")]
-
-import_users(config, user)
-
-#Exporting
-records = export_records(config)
-
-#Edit project info to remove development status
-final_proj_info=Dict("project_title" => "RC Production",
-				  	 "in_production" => "1")
-import_project_information(config, final_proj_info)
-
-#pdf summary of the project
-export_pdf(config, "/<path>/export.pdf", allRecords=true)
-```
-
-
-Several projects may wish to take advantage of saving and loading directly to/from a file;
-
-
-```julia
-#Exporting - file_loc must be provided as the save path
-export_records(config, file_loc="<path>/records.xml", format="xml")
-
-export_users(config, file_loc="<path>/users.csv", format="csv")
-
-#Importing - data passed as a file-path is loaded directly into the API
-import_records(config, "<path>/records.xml", format="xml") #NOTE: The format must match the file format you are uploading
-
-import_users(config, "<path>/users.csv", format="csv")
-```
 
 
 <a id='Index-1'></a>

@@ -12,7 +12,7 @@
 
 
 ```
-REDCap.Config(url::String, key::String; ssl::Bool = true)
+Config(url::String, key::String; ssl::Bool = true)
 ```
 
 

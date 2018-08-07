@@ -13,11 +13,7 @@ for all fields (or for one field, if desired) in project:
 'original_field_name', 'choice_value', and 'export_field_name'
 """
 function export_field_names(config::REDCap.Config; field::String="", format::String="json", file_loc::String="")
-	if length(field)>0
-		return api_pusher("export", "exportFieldNames", config, field=field, format=format, file_loc=file_loc)
-	else
-		return api_pusher("export", "exportFieldNames", config, format=format, file_loc=file_loc)
-	end
+	return api_pusher("export", "exportFieldNames", config, field=field, format=format, file_loc=file_loc)
 end
 
 
@@ -172,16 +168,9 @@ PDF file for:
 """
 function export_pdf(config::REDCap.Config, file_loc::String; record::String="", event::String="", instrument::String="", allRecords::Bool=false)
 	if allRecords==true #REDCap handles request differently based on fields passed
-		output = api_pusher("export", "pdf", config, allRecords=allRecords)
+		output = api_pusher("export", "pdf", config, file_loc=file_loc, allRecords=allRecords)
 	else
-		output = api_pusher("export", "pdf", config, record=record, event=event, instrument=instrument)
-	end
-	#save right to file? how to unpack a PDF...
-	try
-		write(file_loc, output)
-		return "Success"
-	catch
-		error("File could not be opened:\n$file_loc")
+		output = api_pusher("export", "pdf", config, file_loc=file_loc, record=record, event=event, instrument=instrument)
 	end
 end
 

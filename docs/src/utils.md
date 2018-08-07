@@ -37,3 +37,6 @@ config = create_project(superconfig, "<New Project Name>", 0) #0 indicates a tes
 ```
 
 Any new calls to this project can now be made using the returned config object. 
+
+#### NOTE: 
+There is currently no available way to delete a project through the API. Under most circumstances, only your REDCap system administrator can delete a project.

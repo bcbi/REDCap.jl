@@ -55,7 +55,7 @@ function api_pusher(mode::String, content::String, config::Config; format::Strin
 	response = poster(config, fields)
 
 	#check if user wanted to save the file here
-	if mode=="export" 
+	if mode=="export"
 		if length(file_loc)>0
 			export_to_file(file_loc, response)
 		else
@@ -125,7 +125,7 @@ Takes data and sends out to the proper formating function.
 The specified formatted/unformatted object
 """
 function formatter(data, format, mode::String)
-	if format=="json"
+	if format=="json" || format=="" #REDCap likes to send json back sometimes as default
 		return json_formatter(data, mode)
 	elseif format=="csv"
 		return data #very little needs to be done, but still keep as a sep. case
@@ -253,7 +253,7 @@ When a DF is passed, every row is turned into a dict() with the columns as keys,
 #### Returns:
 A JSON ready dictionary array.
 """
-function df_parser(data::Union{DataFrame, Array})
+function df_parser(data::DataFrame)
 	#df => dict
 	chartDict=[]
 	for row in DataFrames.eachrow(data)
@@ -313,7 +313,7 @@ If a path, calls a loading function; if data, calls a formatter.
 The retreived/formatted data
 """
 function import_file_checker(data, format::String)
-	if isa(data, String) && length(data)<50 && ispath(data)
+	if isa(data, String) && length(data)<143 && ispath(data) #143 characters seems to be the hard limit for ispath(); longer and it returns an ERROR: stat: name too long (ENAMETOOLONG)
 		try
 			return import_from_file(data, format)
 		catch
