@@ -138,6 +138,7 @@ end
 	response = import_project_information(config, stock_proj_info)
 	@test response == length(stock_proj_info) || 23 #either the changed or all values idk...
 
+	#Import arms and events here, along with inst-event-mappings
 
 	#Exporting - verify that data exported is accurate and in there(?)
 	#Call functions in more varietyies of ways - show off options - export to file, verifiy file is there and can 

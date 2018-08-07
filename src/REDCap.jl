@@ -6,7 +6,7 @@ Must have a valid `REDCap.Config` object set up with the API key and url.
 Compatable with REDCap Version 8.1.0
 """
 
-#literate - examples packages separate from elses
+#literate - examples packages separate from rest
 module REDCap
 
 using HTTP
