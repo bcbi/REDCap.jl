@@ -6,5 +6,6 @@ makedocs()
 deploydocs(
 	deps = Deps.pip("mkdocs", "mkdocs-material"),
     repo = "github.com/bcbi/REDCap.jl.git",
-    julia = "0.6"
+    julia = "0.6",
+    osname = "linux"
 )

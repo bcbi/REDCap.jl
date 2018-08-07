@@ -34,6 +34,7 @@
 - [Other Functionality](utils.md#Other-Functionality-1)
     - [Config](utils.md#Config-1)
     - [Project Creation](utils.md#Project-Creation-1)
+    - [Record ID](utils.md#Record-ID-1)
 - [Examples](examples.md#Examples-1)
     - [Basic Usage](examples.md#Basic-Usage-1)
     - [File Handling](examples.md#File-Handling-1)
@@ -49,7 +50,7 @@
 A Julia frontend for the REDCap API. REDCap.jl supports both importing and exporting records, as well as deletion from the REDCap Database. It also includes functions for surveys and report generation.
 
 
-This package is meant to be a straightforward wrapper for the REDCap API, and assumes familiarity with REDCap. 
+This package is meant to be a straightforward wrapper for the REDCap API, and assumes familiarity with REDCap. Knowledge of the data expected by the instruments you are working in is required, as this package makes few assumptions on incoming data. 
 
 
 <a id='Index-1'></a>
