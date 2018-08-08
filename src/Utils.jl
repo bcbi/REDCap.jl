@@ -2,7 +2,7 @@
 	api_pusher(mode::String, content::String, config::Config; format::String="", returnFormat::String="", file_loc::String="", kwargs...)
 
 Pass the type of api call, the config struct, and any needed kwargs for that api call.
-Handles creation of the Dict of fields to pass to REDCap, and file IO/formatting. 
+Handles creation of the Dict of fields to pass to REDCap, and file IO/formatting.
 
 API documentation found here:
 https://<your-redcap-site.com>/redcap/api/help/
@@ -20,12 +20,11 @@ https://<your-redcap-site.com>/redcap/api/help/
 Formatted response body
 """
 function api_pusher(mode::String, content::String, config::Config; format::String="", returnFormat::String="", file_loc::String="", kwargs...)
-	#initialize dict with basic info and api calls
-	fields = Dict()
-	fields["token"] = config.key
-	fields["action"] = mode 								#import, export, delete
-	fields["content"] = content 							#what API function to access
-	fields["returnFormat"] = returnFormat
+	#initialize a dict with basic info and api calls
+	fields = Dict("token" => config.key,
+				"action" => mode,							#import, export, delete
+				"content" => content,						#API call
+				"returnFormat" => returnFormat)
 	if format=="df"
 		if mode=="import"
 			fields["format"] = "json" 						#REDCap doesnt know what df is
@@ -36,7 +35,7 @@ function api_pusher(mode::String, content::String, config::Config; format::Strin
 		fields["format"] = format
 	end
 
-	for (k,v) in kwargs
+	for (k,v) in kwargs										#should survive 0.7 as it breaks the pair up anyway but idk...
 		k=String(k) 										#k is a Symbol, make easier to handle
 		if isequal(k, "dtype") 								#type is reserved in julia, quick-fix ##Depreciated in Julia v0.7.0
 			fields["type"]=v
@@ -54,6 +53,8 @@ function api_pusher(mode::String, content::String, config::Config; format::Strin
 	#POST request and get response
 	response = poster(config, fields)
 
+	#TESTING TODO: Try out different returnFormats and see what breaks
+
 	#check if user wanted to save the file here
 	if mode=="export"
 		if length(file_loc)>0
@@ -62,7 +63,7 @@ function api_pusher(mode::String, content::String, config::Config; format::Strin
 			return formatter(response, format, mode)
 		end
 	elseif mode=="import" || mode=="delete"
-		return formatter(response, returnFormat, "export")
+		return formatter(response, (returnFormat == "" ? "json" : returnFormat), "export") #seems fragile
 	end
 end
 
@@ -85,7 +86,7 @@ function poster(config::Config, body)
 	response = HTTP.post(config.url; body=body, require_ssl_verification=config.ssl)#, verbose=3)
 
 	println("POSTd")
-	if response.status != 200
+	if response.status != 200		#This never catches, even on error...
 		#Error - handle errors way more robustly- check for "error" field? here or back at api_pusher?
 		#an error is an error is an error, so it throws no matter what, on REDCaps end
 		println(response.status)
@@ -96,7 +97,7 @@ end
 
 
 """
-	generate_next_record_id(config::Config) 
+	generate_next_record_id(config::Config)
 
 #### Parameters:
 * `config` - Struct containing url and api-key
@@ -105,9 +106,9 @@ end
 The next available ID number for project (Max record number +1)
 """
 function generate_next_record_id(config::Config)
-	fields = Dict("token" => config.key, 
+	fields = Dict("token" => config.key,
 				  "content" => "generateNextRecordName")
-	return parse(Int8, poster(config, fields)) #return as integer
+	return parse(Int8, poster(config, fields)) #return as integer #Bigger Int space?
 end
 
 
@@ -125,7 +126,7 @@ Takes data and sends out to the proper formating function.
 The specified formatted/unformatted object
 """
 function formatter(data, format, mode::String)
-	if format=="json" || format=="" #REDCap likes to send json back sometimes as default
+	if format=="json"
 		return json_formatter(data, mode)
 	elseif format=="csv"
 		return data #very little needs to be done, but still keep as a sep. case
@@ -156,7 +157,7 @@ function json_formatter(data, mode::String)
 		return JSON.json(data)
 	else
 		try
-			return JSON.parse(data) 
+			return JSON.parse(data)
 		catch
 			warn("Catch - data cannot be json formatted")
 			return data #for things that arent dicts - a surprising amount of REDCap's output
@@ -228,7 +229,7 @@ Either an JSON'ed dict, or a df
 """
 function df_formatter(data, mode::String)
 	if mode=="import"
-		#must turn df into a json'ed dict
+		#must turn df into a json'ed dict #Easier to parse into a pure csv and send as-is?
 		return json_formatter(df_parser(data), mode)
 	else
 		try
@@ -242,7 +243,7 @@ end
 
 
 """
-	df_parser(data::Union{DataFrame, Dict})
+	df_parser(data::DataFrame)
 
 Takes a DF, turns it into a Dict
 When a DF is passed, every row is turned into a dict() with the columns as keys, and pushed into an array to pass as a JSON object.
@@ -284,7 +285,7 @@ Called by importing functions to load already formatted data directly from a des
 The formatted data
 """
 function import_from_file(file_loc::String, format::String)
-	valid_formats = ("json","csv","xml","df","odm") #redcap accepted formats (also df)
+	valid_formats = ("json", "csv", "xml", "df", "odm") #redcap accepted formats (also df)
 	try
 		open(file_loc) do file
 			if format ∈ valid_formats
@@ -302,7 +303,7 @@ end
 """
 	import_file_checker()
 
-Checks if the passed data is a valid path to a file, or data in itself. 
+Checks if the passed data is a valid path to a file, or data in itself.
 If a path, calls a loading function; if data, calls a formatter.
 
 #### Parametes:
@@ -322,21 +323,20 @@ function import_file_checker(data, format::String)
 	else
 		return formatter(data, format, "import")
 	end
-	
 end
 
 
 """
 	export_to_file(fileLoc::String, format::String, data)
 
-Called by exporting functions to dump data into designated file, or yell at you for a bad path.
+Called by exporting functions to save data into designated file.
 
 #### Parameters:
 * `file_loc` - Location of file - pass with proper extensions
 * `data` - The data to save to file
 
 #### Returns:
-Nothing/error
+Success/Error
 """
 function export_to_file(file_loc::String, data)
 	try

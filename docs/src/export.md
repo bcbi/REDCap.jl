@@ -5,12 +5,11 @@ CurrentModule = REDCap
 
 Exporting from a REDCap database is straightforward. If not specified, data exports will return as a `json`, turned into a `Dict`. `xml`, `csv`/`df`, and `odm` formats are all valid formats to pass into this API. Some exports, such as version and url/return code for surveys return as simple strings, while most others return in the specified format.
 
-Because REDCap is medical in nature, some information may be identifing information. 
+Because REDCap is medical in nature, some information may be identifying information.
 
 From the REDCap Documentation:
 <b>Note about export rights:</b>
 > Please be aware that Data Export user rights will be applied to this API request. For example, if you have 'No Access' data export rights in the project, then the API data export will fail and return an error. And if you have 'De-Identified' or 'Remove all tagged Identifier fields' data export rights, then some data fields *might* be removed and filtered out of the data set returned from the API. To make sure that no data is unnecessarily filtered out of your API request, you should have 'Full Data Set' export rights in the project.
-
 
 
 ## Records
@@ -30,10 +29,21 @@ export_records(config, records=["1","2"], fields=["record_id", "firstname"], fil
 export_records(config, file_loc="/src/output.csv", format="csv")
 ```
 
+The label headers
+
+```julia
+export_records(config, rawOrLabel="label")
+export_records(config, rawOrLabelHeaders="label")
+```
+
+dtype - what is it #### Deprec by 0.7
+```julia
+export_records(config, dtype="eav")
+```
 
 ## Project Info
 
-Project information, field names, and metadata are all available for export. As above, the can be written directly to a file.
+Project information, field names, and metadata are all available for export. As above, they can be written directly to a file.
 
 A `.pdf` of the entire project is available through `export_pdf()`, as well as the entire project as an `xml` file through `export_project()`
 
@@ -60,7 +70,7 @@ metacsv = export_metadata(config, format="csv")
 The entire project can be exported in a number of ways. Using `export_project()`, the entire project is returned as an xml file. `export_project_information()` returns a dictionary of the projects configuration
 
 ```julia
-#A dict of the projects information can be retreived through:
+#A dict of the projects information can be retrieved through:
 proj_info = export_project_information(config)
 
 #The entire project can also be exported as a xml
@@ -76,10 +86,10 @@ export_pdf(config, "<file-path>", record="1", event="", instrument="demographics
 ### Reports
 
 ```@docs
-export_report(config::REDCap.Config, report_id::Integer; format::String="json", returnFormat::String="json", rawOrLabel::String="raw", rawOrLabelHeaders::String="raw", exportCheckboxLabel::Bool=false, file_loc::String="") 
+export_report(config::REDCap.Config, report_id::Integer; format::String="json", returnFormat::String="json", rawOrLabel::String="raw", rawOrLabelHeaders::String="raw", exportCheckboxLabel::Bool=false, file_loc::String="")
 ```
 
-Reports can also be exported using the generated id given on the REDCap dashboard. 
+Reports can also be exported using the generated id given on the REDCap dashboard.
 
 #### NOTE:
 This is <b>NOT</b> the name of the report.
@@ -111,7 +121,7 @@ A full list of users can be exported and viewed/modified using the `export_users
 
 ```julia
 #Returns an array of dictionaries
-user_dict = export_users(config)
+users = export_users(config)
 ```
 
 ## Surveys
@@ -133,14 +143,14 @@ code = export_survey_return_code(config, "1", "demographics", "event")
 #Survey queue link
 qlink =  export_survey_queue_link(config, "1")
 
-#Survey Partcipant list
+#Survey participant list
 list = export_survey_participant_list(config, "demographics", "event")
 ```
 
 ## Arms
 
 ```@docs
-export_arms(config::REDCap.Config; arms::Array=[], format::String="json", returnFormat::String="json", file_loc::String="") 
+export_arms(config::REDCap.Config; arms::Array=[], format::String="json", returnFormat::String="json", file_loc::String="")
 ```
 
 The metadata of a projects arms can be exported with `export_arms(config)`, which by default returns a dictionary containing both the name and number of an arm. Only select arms may be exported by passing an array of arm numbers.
@@ -153,7 +163,7 @@ This can only be used in a longitudinal project. Exporting arms in a non-longitu
 ## Events
 
 ```@docs
-export_events(config::REDCap.Config; arms::Array=[], format::String="json", returnFormat::String="json", file_loc::String="") 
+export_events(config::REDCap.Config; arms::Array=[], format::String="json", returnFormat::String="json", file_loc::String="")
 ```
 An array of events is returned, along with the events information.
 
@@ -164,7 +174,7 @@ events = export_events(config)
 ## Instruments
 
 ```@docs
-export_instruments(config::REDCap.Config; format::String="json", file_loc::String="") 
+export_instruments(config::REDCap.Config; format::String="json", file_loc::String="")
 ```
 
 Instrument information may also be exported using `export_instruments(config)`. By default this returns a dictionary of the instrument label and the instruments variable name (which is often different from the label and is needed to access instruments via the API).
