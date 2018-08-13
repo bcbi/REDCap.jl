@@ -51,8 +51,7 @@ end
 	if full_test
 		println("full test")
 		#Creating
-		#config = create_project(super_config, "Test Project", 1; purpose_other="Testing REDCap.jl Functionality", project_notes="This is not an actual REDCap Database.", 
-		#					is_longitudinal=1, surveys_enabled=1, record_autonumbering_enabled=1)
+		config = create_project(super_config, "Test Project", 1; purpose_other="Testing REDCap.jl Functionality", project_notes="This is not an actual REDCap Database.", is_longitudinal=1, surveys_enabled=1, record_autonumbering_enabled=1)
 	end
 
 	#Importing- 
@@ -281,6 +280,12 @@ end
 		#import_project_information(config, final_proj_info)
 
 		#Do things to a production project you shouldnt do
+
+		#post_meta =
+		#import_metadata(config, post_meta)
+
+		#post_project_info = 
+		#import_project_information(config, post_project_info)
 
 	end
 
