@@ -14,9 +14,11 @@ A Julia frontend for the REDCap API. REDCap.jl supports both importing and expor
 
 Available under the MIT license.
 
+[![](https://img.shields.io/badge/docs-stable-blue.svg)](https://bcbi.github.io/REDCap.jl)
+<!---
 [![](https://img.shields.io/badge/docs-stable-blue.svg)](https://bcbi.github.io/REDCap.jl/stable)
 [![](https://img.shields.io/badge/docs-latest-blue.svg)](https://bcbi.github.io/REDCap.jl/latest)
-
+--->
 
 ## Getting Started 
 

@@ -92,7 +92,6 @@ Update/import new users into a project.
 #### Returns:
 Number of succesfully added/modified users.
 """
-###BROKEN###
 function import_users(config::REDCap.Config, data; format::String="json", returnFormat::String="json")
 	return api_pusher("import", "user", config, data = import_file_checker(data, format), format=format, returnFormat=returnFormat)
 end
@@ -297,6 +296,6 @@ function create_project(config::REDCap.Config, project_title::String, purpose::I
 		response = poster(config, fields)
 		return Config(config.url, response, config.ssl) #inherit all settings except the newly generated key
 	else
-		error("Please use a config object that contains a properly entered Super API key.\n$(config.key) is an invalid Super-API key.")
+		@error("Please use a config object that contains a properly entered Super API key.\n$(config.key) is an invalid Super-API key.")
 	end
 end

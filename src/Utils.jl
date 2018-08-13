@@ -2,7 +2,7 @@
 	api_pusher(mode::String, content::String, config::Config; format::String="", returnFormat::String="", file_loc::String="", kwargs...)
 
 Pass the type of api call, the config struct, and any needed kwargs for that api call.
-Handles creation of the Dict of fields to pass to REDCap, and file IO/formatting.
+Handles creation of the Dict of fields to pass to REDCap, and file IO/formatting. 
 
 API documentation found here:
 https://<your-redcap-site.com>/redcap/api/help/
@@ -20,11 +20,12 @@ https://<your-redcap-site.com>/redcap/api/help/
 Formatted response body
 """
 function api_pusher(mode::String, content::String, config::Config; format::String="", returnFormat::String="", file_loc::String="", kwargs...)
-	#initialize a dict with basic info and api calls
-	fields = Dict("token" => config.key,
-				"action" => mode,							#import, export, delete
-				"content" => content,						#API call
-				"returnFormat" => returnFormat)
+	#initialize dict with basic info and api calls
+	fields = Dict()
+	fields["token"] = config.key
+	fields["action"] = mode 								#import, export, delete
+	fields["content"] = content 							#what API function to access
+	fields["returnFormat"] = returnFormat
 	if format=="df"
 		if mode=="import"
 			fields["format"] = "json" 						#REDCap doesnt know what df is
@@ -35,7 +36,7 @@ function api_pusher(mode::String, content::String, config::Config; format::Strin
 		fields["format"] = format
 	end
 
-	for (k,v) in kwargs										#should survive 0.7 as it breaks the pair up anyway but idk...
+	for (k,v) in kwargs
 		k=String(k) 										#k is a Symbol, make easier to handle
 		if isequal(k, "dtype") 								#type is reserved in julia, quick-fix ##Depreciated in Julia v0.7.0
 			fields["type"]=v
@@ -53,8 +54,6 @@ function api_pusher(mode::String, content::String, config::Config; format::Strin
 	#POST request and get response
 	response = poster(config, fields)
 
-	#TESTING TODO: Try out different returnFormats and see what breaks
-
 	#check if user wanted to save the file here
 	if mode=="export"
 		if length(file_loc)>0
@@ -63,7 +62,7 @@ function api_pusher(mode::String, content::String, config::Config; format::Strin
 			return formatter(response, format, mode)
 		end
 	elseif mode=="import" || mode=="delete"
-		return formatter(response, (returnFormat == "" ? "json" : returnFormat), "export") #seems fragile
+		return formatter(response, returnFormat, "export")
 	end
 end
 
@@ -86,7 +85,7 @@ function poster(config::Config, body)
 	response = HTTP.post(config.url; body=body, require_ssl_verification=config.ssl)#, verbose=3)
 
 	println("POSTd")
-	if response.status != 200		#This never catches, even on error...
+	if response.status != 200
 		#Error - handle errors way more robustly- check for "error" field? here or back at api_pusher?
 		#an error is an error is an error, so it throws no matter what, on REDCaps end
 		println(response.status)
@@ -97,7 +96,7 @@ end
 
 
 """
-	generate_next_record_id(config::Config)
+	generate_next_record_id(config::Config) 
 
 #### Parameters:
 * `config` - Struct containing url and api-key
@@ -106,9 +105,9 @@ end
 The next available ID number for project (Max record number +1)
 """
 function generate_next_record_id(config::Config)
-	fields = Dict("token" => config.key,
+	fields = Dict("token" => config.key, 
 				  "content" => "generateNextRecordName")
-	return parse(Int8, poster(config, fields)) #return as integer #Bigger Int space?
+	return parse(Int8, poster(config, fields)) #return as integer
 end
 
 
@@ -126,10 +125,10 @@ Takes data and sends out to the proper formating function.
 The specified formatted/unformatted object
 """
 function formatter(data, format, mode::String)
-	if format=="json"
+	if format=="json" || format=="" #REDCap likes to send json back sometimes as default
 		return json_formatter(data, mode)
 	elseif format=="csv"
-		return data 										#very little needs to be done, but still keep as a sep. case
+		return data #very little needs to be done, but still keep as a sep. case
 	elseif format=="xml"
 		return xml_formatter(data, mode)
 	elseif format=="odm"
@@ -137,7 +136,7 @@ function formatter(data, format, mode::String)
 	elseif format=="df"
 		return df_formatter(data, mode)
 	else
-		error("$format is an invalid format.\nValid formats: \"json\", \"csv\", \"xml\", \"odm\", or \"df\"")
+		@error("$format is an invalid format.\nValid formats: \"json\", \"csv\", \"xml\", \"odm\", or \"df\"")
 	end
 end
 
@@ -157,10 +156,10 @@ function json_formatter(data, mode::String)
 		return JSON.json(data)
 	else
 		try
-			return JSON.parse(data)
+			return JSON.parse(data) 
 		catch
-			warn("Catch - data cannot be json formatted")
-			return data 									#for things that arent dicts - a surprising amount of REDCap's output
+			@warn("Data cannot be json formatted")
+			return data #for things that arent dicts - a surprising amount of REDCap's output
 		end
 	end
 end
@@ -183,7 +182,7 @@ function xml_formatter(data, mode::String)
 		try
 			return parse_string(data)
 		catch
-			warn("Catch - data cannot be xml formatted")
+			@warn("Data cannot be xml formatted")
 			return data
 		end
 	end
@@ -193,7 +192,7 @@ end
 """
 	odm_formatter(data, mode::String)
 
-May just be XML in disguise - really weird format - Currently treated as just xml, but probably shouldnt be
+May just be XML in disguise - really weird format - Currently treated as just odm, but probably shouldnt be
 
 #### Parameters:
 * `data` - The data to be formatted
@@ -210,7 +209,7 @@ function odm_formatter(data, mode::String)
 		try
 			return parse_string(data)
 		catch
-			warn("Catch - data cannot be odm formatted")
+			@warn("Data cannot be odm formatted")
 			return data
 		end
 	end
@@ -229,13 +228,13 @@ Either an JSON'ed dict, or a df
 """
 function df_formatter(data, mode::String)
 	if mode=="import"
-		#must turn df into a json'ed dict #Easier to parse into a pure csv and send as-is?
+		#must turn df into a json'ed dict
 		return json_formatter(df_parser(data), mode)
 	else
 		try
 			return CSV.read(IOBuffer(data))
 		catch
-			warn("Catch - data cannot be df formatted")
+			@warn("Data cannot be df formatted")
 			return data
 		end
 	end
@@ -243,7 +242,7 @@ end
 
 
 """
-	df_parser(data::DataFrame)
+	df_parser(data::Union{DataFrame, Dict})
 
 Takes a DF, turns it into a Dict
 When a DF is passed, every row is turned into a dict() with the columns as keys, and pushed into an array to pass as a JSON object.
@@ -261,7 +260,7 @@ function df_parser(data::DataFrame)
 		rowDict=Dict()
 		for item in row
 			if ismissing(item[2])
-				rowDict[String(item[1])]="" 				#force things to be blanks
+				rowDict[String(item[1])]="" #force things to be blanks
 			else
 				rowDict[String(item[1])]=string(item[2])
 			end
@@ -285,17 +284,17 @@ Called by importing functions to load already formatted data directly from a des
 The formatted data
 """
 function import_from_file(file_loc::String, format::String)
-	valid_formats = ("json", "csv", "xml", "df", "odm") #redcap accepted formats (also df)
+	valid_formats = ("json","csv","xml","df","odm") #redcap accepted formats (also df)
 	try
 		open(file_loc) do file
 			if format ∈ valid_formats
 				return String(read(file))
 			else
-				error("$format is an invalid format.\nValid formats: \"json\", \"csv\", \"xml\", \"odm\", or \"df\"")
+				@error("$format is an invalid format.\nValid formats: \"json\", \"csv\", \"xml\", \"odm\", or \"df\"")
 			end
 		end
 	catch
-		error("File could not be opened:\n$file_loc")
+		@error("File could not be opened:\n$file_loc")
 	end
 end
 
@@ -303,7 +302,7 @@ end
 """
 	import_file_checker()
 
-Checks if the passed data is a valid path to a file, or data in itself.
+Checks if the passed data is a valid path to a file, or data in itself. 
 If a path, calls a loading function; if data, calls a formatter.
 
 #### Parametes:
@@ -318,25 +317,26 @@ function import_file_checker(data, format::String)
 		try
 			return import_from_file(data, format)
 		catch
-			error("File could not be opened:\n$data")
+			@error("File could not be opened:\n$data")
 		end
 	else
 		return formatter(data, format, "import")
 	end
+	
 end
 
 
 """
 	export_to_file(fileLoc::String, format::String, data)
 
-Called by exporting functions to save data into designated file.
+Called by exporting functions to dump data into designated file, or yell at you for a bad path.
 
 #### Parameters:
 * `file_loc` - Location of file - pass with proper extensions
 * `data` - The data to save to file
 
 #### Returns:
-Success/Error
+Nothing/error
 """
 function export_to_file(file_loc::String, data)
 	try
@@ -345,6 +345,6 @@ function export_to_file(file_loc::String, data)
 			return "Success"
 		end
 	catch
-		error("File could not be opened:\n$file_loc")
+		@error("File could not be opened:\n$file_loc")
 	end
 end
