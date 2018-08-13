@@ -187,8 +187,6 @@ end
 				:(export_records(config, fields=["record_id","first_name"])),
 				:(export_metadata(config)),
 				:(export_version(config)),
-				#:(export_arms(config)),
-				#:(export_events(config)),
 				:(export_pdf(config, "export.pdf")),
 				:(export_project(config))]
 	for m in modules
@@ -214,6 +212,8 @@ end
     testing_info = export_project_information(config)
     @test testing_info["project_notes"] == stock_proj_info["project_notes"]
     @test testing_info["project_title"] == stock_proj_info["project_title"]
+
+###TODO
     testing_arms = export_arms(config)
     #Verify arm is there - can check for 2 arms?
 
