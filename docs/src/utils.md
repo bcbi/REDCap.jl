@@ -14,7 +14,7 @@ All REDCap projects need to be tied to their url and API Key, which is done by c
 config = REDCap.Config("<url>", "<32-digit_API_key>")
 ```
 
-For certain projects, SSL Verifification may need to be disabled. The config object can be set-up without ssl verification as so:
+For certain projects, SSL Verification may need to be disabled. The config object can be set-up without ssl verification as so:
 ```julia
 config = REDCap.Config("<url>", "<32-digit_API_key>", ssl=false)
 ```
@@ -36,14 +36,14 @@ superconfig = REDCap.Config("<url>", "<64-digit_superAPI_key>")
 config = create_project(superconfig, "<New Project Name>", 0) #0 indicates a test project
 ```
 
-Any new calls to this project can now be made using the returned config object. 
+Any new calls to this project can now be made using the returned config object.
 
-#### NOTE: 
+#### NOTE:
 There is currently no available way to delete a project through the API. Under most circumstances, only your REDCap system administrator can delete a project.
 
 ## Record ID
 
-It may be necessary for some projects to retreive the next available record ID. This can be done using `generate_next_record_id()`. 
+It may be necessary for some projects to retrieve the next available record ID. This can be done using `generate_next_record_id()`.
 
 ```julia
 generate_next_record_id(config)

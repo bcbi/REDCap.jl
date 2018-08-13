@@ -60,7 +60,7 @@ export_pdf(config, "/<path>/export.pdf", allRecords=true)
 
 ## File Handling
 
-Records and other project information can be loaded directly from a `.csv`, `.xml`, or `.odm`. Likewise, exported information can be saved directly to a specified file. 
+Records and other project information can be loaded directly from a `.csv`, `.xml`, or `.odm`. Likewise, exported information can be saved directly to a specified file.
 
 ```julia
 #Exporting - file_loc must be provided as the save path
@@ -95,6 +95,9 @@ user_list[1]["data_export"]="1"
 #Changing project info
 ```
 
+-issues with this: import user seems to not work, and import metadata too. Import records is fine, and arms/events too. They use similar formats, so odd why it won't read. Metadata wont read anything but CSV, but CSV doesn't work for the others as a fix...
+
+- detail project info modification, whole works. Record modification (correction of something?). Adding fields using metadata imports? Adding users/changing permissions after a study ends?
 ```julia
 #Changing metadata
 ```
