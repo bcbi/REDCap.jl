@@ -22,35 +22,10 @@ Available under the MIT license.
 
 ## Getting Started 
 
-### Prerequisites *
 
-(What things you need to install the software and how to install them
-Give a list with links and how to install using code snippets.)
+### Installing
 
-```
-brew install ...
-npm install
-conda install ...
-```
-
-### Installing *
-
-(A step by step on how to install the package.
-
-Say what the step will be
-
-```
-Give the example
-```
-
-And repeat
-
-```
-until finished
-```
-
-End with an example of getting some data out of the system or using it for a little demo)
-
+(Ideally) Julia can be found using the standard pakckage manager
 
 ## Tests 
 

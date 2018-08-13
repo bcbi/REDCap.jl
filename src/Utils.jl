@@ -21,11 +21,11 @@ Formatted response body
 """
 function api_pusher(mode::String, content::String, config::Config; format::String="", returnFormat::String="", file_loc::String="", kwargs...)
 	#initialize dict with basic info and api calls
-	fields = Dict()
-	fields["token"] = config.key
-	fields["action"] = mode 								#import, export, delete
-	fields["content"] = content 							#what API function to access
-	fields["returnFormat"] = returnFormat
+	fields = Dict("token" => config.key,
+					"action" => mode,						#import, export, delete
+					"content" => content,					#API call to access
+					"returnFormat" => returnFormat)
+
 	if format=="df"
 		if mode=="import"
 			fields["format"] = "json" 						#REDCap doesnt know what df is
@@ -38,9 +38,7 @@ function api_pusher(mode::String, content::String, config::Config; format::Strin
 
 	for (k,v) in kwargs
 		k=String(k) 										#k is a Symbol, make easier to handle
-		if isequal(k, "dtype") 								#type is reserved in julia, quick-fix ##Depreciated in Julia v0.7.0
-			fields["type"]=v
-		elseif mode=="import" && isequal(k, "data")			#Turn all imported data into an IOBuffer so REDCap won't mess with it
+		if mode=="import" && isequal(k, "data")			#Turn all imported data into an IOBuffer so REDCap won't mess with it
 			fields[k]=IOBuffer(v)
 		elseif isa(v, Array)								#Turn arrays into specially URI encoded arrays
 			for (i, item) in enumerate(v)
@@ -107,7 +105,7 @@ The next available ID number for project (Max record number +1)
 function generate_next_record_id(config::Config)
 	fields = Dict("token" => config.key, 
 				  "content" => "generateNextRecordName")
-	return parse(Int8, poster(config, fields)) #return as integer
+	return parse(Int64, poster(config, fields)) #return as integer
 end
 
 
@@ -125,7 +123,7 @@ Takes data and sends out to the proper formating function.
 The specified formatted/unformatted object
 """
 function formatter(data, format, mode::String)
-	if format=="json" || format=="" #REDCap likes to send json back sometimes as default
+	if format=="json"
 		return json_formatter(data, mode)
 	elseif format=="csv"
 		return data #very little needs to be done, but still keep as a sep. case
@@ -192,7 +190,7 @@ end
 """
 	odm_formatter(data, mode::String)
 
-May just be XML in disguise - really weird format - Currently treated as just odm, but probably shouldnt be
+May just be XML in disguise - really weird format - Currently treated as just xml, but probably shouldnt be
 
 #### Parameters:
 * `data` - The data to be formatted
@@ -284,7 +282,7 @@ Called by importing functions to load already formatted data directly from a des
 The formatted data
 """
 function import_from_file(file_loc::String, format::String)
-	valid_formats = ("json","csv","xml","df","odm") #redcap accepted formats (also df)
+	valid_formats = ("json", "csv", "xml", "df", "odm") #redcap accepted formats (also df)
 	try
 		open(file_loc) do file
 			if format ∈ valid_formats
