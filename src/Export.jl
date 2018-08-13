@@ -167,7 +167,7 @@ PDF file for:
 * 5) all instruments (with data from ALL records)
 """
 function export_pdf(config::REDCap.Config, file_loc::String; record::String="", event::String="", instrument::String="", allRecords::Bool=false)
-	if allRecords==true #REDCap handles request differently based on fields passed
+	if allRecords==true 					#REDCap handles request differently based which fields passed
 		output = api_pusher("export", "pdf", config, file_loc=file_loc, allRecords=allRecords)
 	else
 		output = api_pusher("export", "pdf", config, file_loc=file_loc, record=record, event=event, instrument=instrument)
@@ -176,9 +176,7 @@ end
 
 
 """
-	export_project(config::REDCap.Config; returnMetadataOnly::Bool=false, records::Array=[], fields::Array=[], events::Array=[], 
-						returnFormat::String="json", exportSurveyFields::Bool=false, exportDataAccessGroups::Bool=false, 
-						filterLogic::String="", exportFiles::Bool=false, file_loc::String="") 
+	export_project(config::REDCap.Config; returnMetadataOnly::Bool=false, records::Array=[], fields::Array=[], events::Array=[], returnFormat::String="json", exportSurveyFields::Bool=false, exportDataAccessGroups::Bool=false, filterLogic::String="", exportFiles::Bool=false, file_loc::String="") 
 
 #### Parameters:
 * `config` - Struct containing url and api-key
@@ -197,9 +195,7 @@ end
 Entire project as XML.
 """
 function export_project(config::REDCap.Config; returnMetadataOnly::Bool=false, records::Array=[], fields::Array=[], events::Array=[], returnFormat::String="json", exportSurveyFields::Bool=false, exportDataAccessGroups::Bool=false, filterLogic::String="", exportFiles::Bool=false, file_loc::String="")
-	output = api_pusher("export", "project_xml", config, returnMetadataOnly=returnMetadataOnly, records=records, fields=fields,
-							events=events, returnFormat=returnFormat, exportSurveyFields=exportSurveyFields, 
-							exportDataAccessGroups=exportDataAccessGroups, filterLogic=filterLogic, exportFiles=exportFiles, file_loc=file_loc)
+	output = api_pusher("export", "project_xml", config, returnMetadataOnly=returnMetadataOnly, records=records, fields=fields, events=events, returnFormat=returnFormat, exportSurveyFields=exportSurveyFields, exportDataAccessGroups=exportDataAccessGroups, filterLogic=filterLogic, exportFiles=exportFiles, file_loc=file_loc)
 	if length(file_loc)>0
 		return "Success"
 	else
@@ -209,10 +205,7 @@ end
 
 
 """
-	export_records(config::REDCap.Config; format::String="json", type::String="flat", 
-					records::Array=[], fields::Array=[], forms::Array=[], events::Array=[], rawOrLabel::String="raw", rawOrLabelHeaders::String="raw", 
-					exportCheckboxLabel::Bool=false, returnFormat::String="json", exportSurveyFields::Bool=false, 
-					exportDataAccessGroups::Bool=false, filterLogic::String="", file_loc::String="")
+	export_records(config::REDCap.Config; format::String="json", type::String="flat", records::Array=[], fields::Array=[], forms::Array=[], events::Array=[], rawOrLabel::String="raw", rawOrLabelHeaders::String="raw", exportCheckboxLabel::Bool=false, returnFormat::String="json", exportSurveyFields::Bool=false, exportDataAccessGroups::Bool=false, filterLogic::String="", file_loc::String="")
 
 #### Parameters:
 * `config` - Struct containing url and api-key
@@ -234,14 +227,8 @@ end
 #### Returns:
 Array of formatted dicts of set of records for a project.
 """
-function export_records(config::REDCap.Config; format::String="json", type::String="flat", 
-					records::Array=[], fields::Array=[], forms::Array=[], events::Array=[], rawOrLabel::String="raw", rawOrLabelHeaders::String="raw", 
-					exportCheckboxLabel::Bool=false, returnFormat::String="json", exportSurveyFields::Bool=false, 
-					exportDataAccessGroups::Bool=false, filterLogic::String="", file_loc::String="")
-	return api_pusher("export", "record", config, format=format, type=type, records=records, fields=fields, forms=forms,
-							events=events, rawOrLabel=rawOrLabel, rawOrLabelHeaders=rawOrLabelHeaders, exportCheckboxLabel=exportCheckboxLabel,
-							exportSurveyFields=exportSurveyFields, exportDataAccessGroups=exportDataAccessGroups, filterLogic=filterLogic,
-							returnFormat=returnFormat, file_loc=file_loc)
+function export_records(config::REDCap.Config; format::String="json", type::String="flat", records::Array=[], fields::Array=[], forms::Array=[], events::Array=[], rawOrLabel::String="raw", rawOrLabelHeaders::String="raw", exportCheckboxLabel::Bool=false, returnFormat::String="json", exportSurveyFields::Bool=false, exportDataAccessGroups::Bool=false, filterLogic::String="", file_loc::String="")
+	return api_pusher("export", "record", config, format=format, type=type, records=records, fields=fields, forms=forms, events=events, rawOrLabel=rawOrLabel, rawOrLabelHeaders=rawOrLabelHeaders, exportCheckboxLabel=exportCheckboxLabel, exportSurveyFields=exportSurveyFields, exportDataAccessGroups=exportDataAccessGroups, filterLogic=filterLogic, returnFormat=returnFormat, file_loc=file_loc)
 end
 
 
@@ -263,8 +250,7 @@ end
 
 
 """
-	export_survey_return_code(config::REDCap.Config, record::String, instrument::String, event::String; 
-								repeat_instance::Integer=1, returnFormat::String="json") 
+	export_survey_return_code(config::REDCap.Config, record::String, instrument::String, event::String; repeat_instance::Integer=1, returnFormat::String="json") 
 
 #### Parameters:
 * `config` - Struct containing url and api-key
@@ -277,8 +263,7 @@ end
 #### Returns:
 Unique Return Code in plain text format.
 """
-function export_survey_return_code(config::REDCap.Config, record::String, instrument::String, event::String; 
-									repeat_instance::Integer=1, returnFormat::String="json")
+function export_survey_return_code(config::REDCap.Config, record::String, instrument::String, event::String; repeat_instance::Integer=1, returnFormat::String="json")
 	return api_pusher("export", "surveyReturnCode", config, record=record, instrument=instrument, event=event, 
 							repeat_instance=repeat_instance, returnFormat=returnFormat)
 end
@@ -305,8 +290,7 @@ end
 
 
 """
-	export_survey_participant_list(config::REDCap.Config, instrument::String, event::String; format::String="json", 
-									returnFormat::String="json", file_loc::String="") 
+	export_survey_participant_list(config::REDCap.Config, instrument::String, event::String; format::String="json", returnFormat::String="json", file_loc::String="") 
 
 #### Parameters:
 * `config` - Struct containing url and api-key
@@ -325,8 +309,7 @@ end
 
 
 """
-	export_file(config::REDCap.Config, record::String, field::String, event::String; repeat_instance::Integer=1, 
-				returnFormat::String="json", file_loc::String="") 
+	export_file(config::REDCap.Config, record::String, field::String, event::String; repeat_instance::Integer=1, returnFormat::String="json", file_loc::String="") 
 
 #### Parameters:
 * `config` - Struct containing url and api-key
@@ -340,16 +323,13 @@ end
 #### Returns:
 File attached to individual record.
 """
-function export_file(config::REDCap.Config, record::String, field::String, event::String; repeat_instance::Integer=1, 
-					returnFormat::String="json", file_loc::String="")
+function export_file(config::REDCap.Config, record::String, field::String, event::String; repeat_instance::Integer=1, returnFormat::String="json", file_loc::String="")
 	return api_pusher("export", "file", config, event=event, record=record, field=field, repeat_instance=repeat_instance, returnFormat=returnFormat, file_loc=file_loc)
 end
 
 
 """
-	export_report(config::REDCap.Config, report_id::Integer; format::String="json", returnFormat::String="json",  
-						rawOrLabel::String="raw", rawOrLabelHeaders::String="raw", exportCheckboxLabel::Bool=false, 
-						file_loc::String="") 
+	export_report(config::REDCap.Config, report_id::Integer; format::String="json", returnFormat::String="json", rawOrLabel::String="raw", rawOrLabelHeaders::String="raw", exportCheckboxLabel::Bool=false, file_loc::String="") 
 
 #### Parameters:
 * `config` - Struct containing url and api-key
@@ -364,9 +344,7 @@ end
 #### Returns:
 Formatted dict of report.
 """
-function export_report(config::REDCap.Config, report_id; format::String="json", returnFormat::String="json", 
-						rawOrLabel::String="raw", rawOrLabelHeaders::String="raw", exportCheckboxLabel::Bool=false, 
-						file_loc::String="")
+function export_report(config::REDCap.Config, report_id; format::String="json", returnFormat::String="json", rawOrLabel::String="raw", rawOrLabelHeaders::String="raw", exportCheckboxLabel::Bool=false, file_loc::String="")
 	return api_pusher("export", "report", config, report_id=report_id, rawOrLabel=rawOrLabel, rawOrLabelHeaders=rawOrLabelHeaders, 
 							exportCheckboxLabel=exportCheckboxLabel, format=format, returnFormat=returnFormat, file_loc=file_loc)
 end

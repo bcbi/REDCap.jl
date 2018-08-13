@@ -11,7 +11,7 @@ Some import functions (Metadata) are only available for projects marked in devel
 ## Records
 
 ```@docs
-import_records(config::REDCap.Config, data::Any; format::String="json", dtype::String="flat", overwriteBehavior::String="normal", forceAutoNumber::Bool=false, dateFormat::String="YMD", returnContent::String="count", returnFormat::String="json")
+import_records(config::REDCap.Config, data::Any; format::String="json", type::String="flat", overwriteBehavior::String="normal", forceAutoNumber::Bool=false, dateFormat::String="YMD", returnContent::String="count", returnFormat::String="json")
 ```
 
 Record:
@@ -218,7 +218,7 @@ import_file(config, "2", "file_upload", "", "/src/example.csv")
 import_arms(config::REDCap.Config, data; override::Int=0, format::String="json", returnFormat::String="json")
 ```
 
-Arms may be imported into REDCap by passing the name and arm number
+Arms may be imported into REDCap by passing the name and arm number.
 
 ```bash
 Dict{String,Any} with 2 entries:
@@ -229,6 +229,9 @@ Dict{String,Any} with 2 entries:
 ```julia
 import_arms(config, newarm)
 ```
+
+### NOTE:
+Using the override command on a project may lead to loss of arms, which will remove access to any associated records.
 
 ## Events
 

@@ -181,9 +181,7 @@ end
 
 
 """
-	import_records(config::REDCap.Config, data::Any; format::String="json", type::String="flat", 
-						overwriteBehavior::String="normal", forceAutoNumber::Bool=false, dateFormat::String="YMD",
-						returnContent::String="count", returnFormat::String="json")
+	import_records(config::REDCap.Config, data::Any; format::String="json", type::String="flat", overwriteBehavior::String="normal", forceAutoNumber::Bool=false, dateFormat::String="YMD", returnContent::String="count", returnFormat::String="json")
 
 Import a set of records for a project.
 
@@ -203,12 +201,8 @@ Import a set of records for a project.
 #### Returns:
 Specified by returnContent
 """
-function import_records(config::REDCap.Config, data; format::String="json", type::String="flat", 
-						overwriteBehavior::String="normal", forceAutoNumber::Bool=false, dateFormat::String="YMD",
-						returnContent::String="count", returnFormat::String="json")
-	return api_pusher("import", "record", config, data = import_file_checker(data, format), format=format, type=type, 
-							overwriteBehavior=overwriteBehavior, forceAutoNumber=forceAutoNumber, dateFormat=dateFormat,
-							returnContent=returnContent, returnFormat=returnFormat)
+function import_records(config::REDCap.Config, data; format::String="json", type::String="flat", overwriteBehavior::String="normal", forceAutoNumber::Bool=false, dateFormat::String="YMD", returnContent::String="count", returnFormat::String="json")
+	return api_pusher("import", "record", config, data = import_file_checker(data, format), format=format, type=type, overwriteBehavior=overwriteBehavior, forceAutoNumber=forceAutoNumber, dateFormat=dateFormat, returnContent=returnContent, returnFormat=returnFormat)
 end
 
 
@@ -235,8 +229,7 @@ end
 
 
 """
-	import_file(config::REDCap.Config, record::String, field::String, event::String, file::String; repeat_instance::Int=1,
-					returnFormat::String="json")
+	import_file(config::REDCap.Config, record::String, field::String, event::String, file::String; repeat_instance::Int=1, returnFormat::String="json")
 
 Upload a document to specific record to the designated uploading field.
 
@@ -252,17 +245,13 @@ Upload a document to specific record to the designated uploading field.
 #### Returns:
 Nothing/errors
 """
-function import_file(config::REDCap.Config, record::String, field::String, event::String, file::String; repeat_instance::Int=1,
-					returnFormat::String="json")
-	return api_pusher("import", "file", config, record=record, field=field, event=event, file=open(file), 
-						repeat_instance=repeat_instance, returnFormat=returnFormat)
+function import_file(config::REDCap.Config, record::String, field::String, event::String, file::String; repeat_instance::Int=1, returnFormat::String="json")
+	return api_pusher("import", "file", config, record=record, field=field, event=event, file=open(file), repeat_instance=repeat_instance, returnFormat=returnFormat)
 end
 
 
 """
-	create_project(config::REDCap.Config, project_title::String, purpose::Integer; format::String="json",
-						returnFormat::String="json", odm="", purpose_other::String="", project_notes::String="", 
-						is_longitudinal::Integer=0, surveys_enabled::Integer=0, record_autonumbering_enabled::Integer=1)
+	create_project(config::REDCap.Config, project_title::String, purpose::Integer; format::String="json", returnFormat::String="json", odm="", purpose_other::String="", project_notes::String="", is_longitudinal::Integer=0, surveys_enabled::Integer=0, record_autonumbering_enabled::Integer=1)
 
 Creates a project with the given parameters
 
@@ -283,9 +272,7 @@ Creates a project with the given parameters
 #### Returns:
 The standard config for that project.
 """
-function create_project(config::REDCap.Config, project_title::String, purpose::Integer; format::String="json",
-						returnFormat::String="json", odm="", purpose_other::String="", project_notes::String="", 
-						is_longitudinal::Integer=0, surveys_enabled::Integer=0, record_autonumbering_enabled::Integer=1)
+function create_project(config::REDCap.Config, project_title::String, purpose::Integer; format::String="json", returnFormat::String="json", odm="", purpose_other::String="", project_notes::String="", is_longitudinal::Integer=0, surveys_enabled::Integer=0, record_autonumbering_enabled::Integer=1)
 	if length(config.key)==64
 		fields = Dict("token" => config.key,
 						"content" => "project",

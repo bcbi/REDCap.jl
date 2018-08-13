@@ -5,8 +5,6 @@ Julia frontend for the REDCap API. Handles all available API calls from REDCap t
 Must have a valid `REDCap.Config` object set up with the API key and url. 
 Compatable with REDCap Version 8.1.0
 """
-
-#literate - examples packages separate from elses
 module REDCap
 
 using HTTP

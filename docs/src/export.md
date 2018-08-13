@@ -15,7 +15,7 @@ From the REDCap Documentation:
 ## Records
 
 ```@docs
-export_records(config::REDCap.Config; format::String="json", dtype::String="flat", records, fields, forms, events, rawOrLabel::String="raw", rawOrLabelHeaders::String="raw", exportCheckboxLabel::Bool=false, returnFormat::String="json", exportSurveyField::Bool=false, exportDataAccessGroups::Bool=false, filterLogic::String, file_loc::String="")
+export_records(config::REDCap.Config; format::String="json", type::String="flat", records, fields, forms, events, rawOrLabel::String="raw", rawOrLabelHeaders::String="raw", exportCheckboxLabel::Bool=false, returnFormat::String="json", exportSurveyField::Bool=false, exportDataAccessGroups::Bool=false, filterLogic::String, file_loc::String="")
 ```
 
 Exported records can be returned normally, or written to a file. Records can be exported by their record id, by specified fields, or even using a boolean logic string such as `[age]>80`
@@ -29,16 +29,39 @@ export_records(config, records=["1","2"], fields=["record_id", "firstname"], fil
 export_records(config, file_loc="/src/output.csv", format="csv")
 ```
 
-The label headers
+The rawOrLabel* parameters control the return format of some fields like gender, which returns as either "Male/Female" for `label`, or "1/0" for `raw`.
 
 ```julia
 export_records(config, rawOrLabel="label")
 export_records(config, rawOrLabelHeaders="label")
 ```
 
-dtype - what is it #### Deprec by 0.7
+The type parameter controls whether records are returned as one record per row, or one data-point per row.
 ```julia
-export_records(config, dtype="eav")
+export_records(config, type="eav")
+```
+Returns: 
+```bash
+68-element Array{Any,1}:
+ Dict{String,Any}("record"=>"1","value"=>"1","field_name"=>"sex")                                     
+ Dict{String,Any}("record"=>"1","value"=>"168 Anderson Blvd. Quincy MA 01227","field_name"=>"address")
+ Dict{String,Any}("record"=>"1","value"=>"180","field_name"=>"height")                                
+ Dict{String,Any}("record"=>"1","value"=>"1962-07-30","field_name"=>"dob")                            
+ Dict{String,Any}("record"=>"1","value"=>"1","field_name"=>"record_id")                               
+ Dict{String,Any}("record"=>"1","value"=>"Randomly Generated - Demographics","field_name"=>"comments")
+ Dict{String,Any}("record"=>"1","value"=>"JSmith@aol.com","field_name"=>"email")                      
+ Dict{String,Any}("record"=>"1","value"=>"John","field_name"=>"first_name")                           
+ Dict{String,Any}("record"=>"1","value"=>"0","field_name"=>"demographics_complete")           
+ ⋮                           
+ Dict{String,Any}("record"=>"4","value"=>"1","field_name"=>"race")                                    
+ Dict{String,Any}("record"=>"4","value"=>"0","field_name"=>"sex")                                     
+ Dict{String,Any}("record"=>"4","value"=>"185","field_name"=>"height")                                
+ Dict{String,Any}("record"=>"4","value"=>"90","field_name"=>"weight")                                 
+ Dict{String,Any}("record"=>"4","value"=>"Randomly Generated - Demographics","field_name"=>"comments")
+ Dict{String,Any}("record"=>"4","value"=>"0","field_name"=>"demographics_complete")                   
+ Dict{String,Any}("record"=>"4","value"=>"0","field_name"=>"visit_form_complete")                     
+ Dict{String,Any}("record"=>"4","value"=>"46","field_name"=>"age")                                    
+ Dict{String,Any}("record"=>"4","value"=>"26.3","field_name"=>"bmi")   
 ```
 
 ## Project Info

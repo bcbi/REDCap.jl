@@ -37,8 +37,7 @@ end
 
 
 """
-	delete_file(config::REDCap.Config, record::String, field::String, event::String; 
-						repeat_instance::Integer=1, returnFormat::String="json") 
+	delete_file(config::REDCap.Config, record::String, field::String, event::String; repeat_instance::Integer=1, returnFormat::String="json") 
 
 Delete document attached to record.
 
@@ -53,10 +52,8 @@ Delete document attached to record.
 #### Returns:
 Nothing/error
 """
-function delete_file(config::REDCap.Config, record::String, field::String, event::String; 
-						repeat_instance::Integer=1, returnFormat::String="json")
-	return api_pusher("delete", "file", config, record=record, field=field, event=event, 
-							repeat_instance=repeat_instance, returnFormat=returnFormat)
+function delete_file(config::REDCap.Config, record::String, field::String, event::String; repeat_instance::Integer=1, returnFormat::String="json")
+	return api_pusher("delete", "file", config, record=record, field=field, event=event, repeat_instance=repeat_instance, returnFormat=returnFormat)
 end
 
 

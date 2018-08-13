@@ -38,7 +38,7 @@ function api_pusher(mode::String, content::String, config::Config; format::Strin
 
 	for (k,v) in kwargs
 		k=String(k) 										#k is a Symbol, make easier to handle
-		if mode=="import" && isequal(k, "data")			#Turn all imported data into an IOBuffer so REDCap won't mess with it
+		if mode=="import" && isequal(k, "data")				#Turn all imported data into an IOBuffer so HTTP won't mess with it
 			fields[k]=IOBuffer(v)
 		elseif isa(v, Array)								#Turn arrays into specially URI encoded arrays
 			for (i, item) in enumerate(v)
@@ -105,7 +105,7 @@ The next available ID number for project (Max record number +1)
 function generate_next_record_id(config::Config)
 	fields = Dict("token" => config.key, 
 				  "content" => "generateNextRecordName")
-	return parse(Int64, poster(config, fields)) #return as integer
+	return parse(Int64, poster(config, fields)) 		#return as integer
 end
 
 
@@ -126,7 +126,7 @@ function formatter(data, format, mode::String)
 	if format=="json"
 		return json_formatter(data, mode)
 	elseif format=="csv"
-		return data #very little needs to be done, but still keep as a sep. case
+		return data 						#very little needs to be done, but still keep as a sep. case
 	elseif format=="xml"
 		return xml_formatter(data, mode)
 	elseif format=="odm"
@@ -157,7 +157,7 @@ function json_formatter(data, mode::String)
 			return JSON.parse(data) 
 		catch
 			@warn("Data cannot be json formatted")
-			return data #for things that arent dicts - a surprising amount of REDCap's output
+			return data 					#for things that arent dicts - a surprising amount of REDCap's output
 		end
 	end
 end
@@ -225,8 +225,7 @@ end
 Either an JSON'ed dict, or a df
 """
 function df_formatter(data, mode::String)
-	if mode=="import"
-		#must turn df into a json'ed dict
+	if mode=="import"						#must turn df into a json'ed dict
 		return json_formatter(df_parser(data), mode)
 	else
 		try
