@@ -185,7 +185,6 @@ Dict{String,Any} with 32 entries:
   "data_quality_execute"       => "0"
   "manage_survey_participants" => "0"
   "lastname"                   => ""
-
 ```
 
 ```julia

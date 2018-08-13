@@ -33,7 +33,7 @@ export_records(config, file_loc="/src/output.csv", format="csv")
 
 ## Project Info
 
-Project information, field names, and metadata are all available for export. As above, the can be written directly to a file.
+Project information, field names, and metadata are all available for export. As above, they can be written directly to a file.
 
 A `.pdf` of the entire project is available through `export_pdf()`, as well as the entire project as an `xml` file through `export_project()`
 

@@ -4,6 +4,8 @@ repo_url: https://github.com/bcbi/REDCap.jl
 site_description: Documentation for REDCap.jl
 site_author: bcbi
 docs_dir: 'build'
+extra_css:
+  - build/assets/Documenter.css
 pages:
   - Home: index.md
   - Export: export.md

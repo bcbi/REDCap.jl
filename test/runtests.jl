@@ -127,6 +127,7 @@ end
 
 	@test response["count"] == length(stock_records)
 
+	#This doesnt actually work correctly...
 	stock_user=[Dict("username" => "john_smith@email.com",
 					 "email" => "john_smith@email.com",
 					 "lastname" => "Smith")]

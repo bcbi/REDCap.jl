@@ -76,9 +76,27 @@ import_users(config, "<path>/users.csv", format="csv")
 
 ## Changing Settings
 
-Export/Import modified settings like users and project info, as well as records
+
+
+Export/Import modified settings like users and project info, as well as records.
+
+### BROKEN
+```julia
+#Changing user permissions
+
+user_list=export_users(config) #Returns an array of dictionaries by default
+
+user_list[1]["api_export"]="1"
+user_list[1]["data_export"]="1"
+
+```
 
 ```julia
+#Changing project info
+```
+
+```julia
+#Changing metadata
 ```
 
 

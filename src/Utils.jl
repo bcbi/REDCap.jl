@@ -107,7 +107,7 @@ The next available ID number for project (Max record number +1)
 function generate_next_record_id(config::Config)
 	fields = Dict("token" => config.key, 
 				  "content" => "generateNextRecordName")
-	return parse(Int8, poster(config, fields)) #return as integer
+	return parse(Int8, poster(config, fields)) 				#return as integer
 end
 
 
@@ -125,10 +125,10 @@ Takes data and sends out to the proper formating function.
 The specified formatted/unformatted object
 """
 function formatter(data, format, mode::String)
-	if format=="json" || format=="" #REDCap likes to send json back sometimes as default
+	if format=="json" || format=="" 						#REDCap likes to send json back sometimes as default
 		return json_formatter(data, mode)
 	elseif format=="csv"
-		return data #very little needs to be done, but still keep as a sep. case
+		return data 										#very little needs to be done, but still keep as a sep. case
 	elseif format=="xml"
 		return xml_formatter(data, mode)
 	elseif format=="odm"
@@ -159,7 +159,7 @@ function json_formatter(data, mode::String)
 			return JSON.parse(data) 
 		catch
 			warn("Catch - data cannot be json formatted")
-			return data #for things that arent dicts - a surprising amount of REDCap's output
+			return data 									#for things that arent dicts - a surprising amount of REDCap's output
 		end
 	end
 end
@@ -192,7 +192,7 @@ end
 """
 	odm_formatter(data, mode::String)
 
-May just be XML in disguise - really weird format - Currently treated as just odm, but probably shouldnt be
+May just be XML in disguise - really weird format - Currently treated as just xml, but probably shouldnt be
 
 #### Parameters:
 * `data` - The data to be formatted
@@ -260,7 +260,7 @@ function df_parser(data::DataFrame)
 		rowDict=Dict()
 		for item in row
 			if ismissing(item[2])
-				rowDict[String(item[1])]="" #force things to be blanks
+				rowDict[String(item[1])]="" 				#force things to be blanks
 			else
 				rowDict[String(item[1])]=string(item[2])
 			end
@@ -284,7 +284,7 @@ Called by importing functions to load already formatted data directly from a des
 The formatted data
 """
 function import_from_file(file_loc::String, format::String)
-	valid_formats = ("json","csv","xml","df","odm") #redcap accepted formats (also df)
+	valid_formats = ("json","csv","xml","df","odm") 		#redcap accepted formats (also df)
 	try
 		open(file_loc) do file
 			if format ∈ valid_formats

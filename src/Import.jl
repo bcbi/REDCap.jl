@@ -92,6 +92,7 @@ Update/import new users into a project.
 #### Returns:
 Number of succesfully added/modified users.
 """
+###BROKEN###
 function import_users(config::REDCap.Config, data; format::String="json", returnFormat::String="json")
 	return api_pusher("import", "user", config, data = import_file_checker(data, format), format=format, returnFormat=returnFormat)
 end
