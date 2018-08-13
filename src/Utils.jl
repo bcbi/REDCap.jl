@@ -108,11 +108,7 @@ The next available ID number for project (Max record number +1)
 function generate_next_record_id(config::Config)
 	fields = Dict("token" => config.key,
 				  "content" => "generateNextRecordName")
-<<<<<<< HEAD
-	return parse(Int8, poster(config, fields)) 				#return as integer
-=======
 	return parse(Int8, poster(config, fields)) #return as integer #Bigger Int space?
->>>>>>> 0444977cdb027b59482caf5db164091f81d88d9a
 end
 
 
@@ -130,11 +126,7 @@ Takes data and sends out to the proper formating function.
 The specified formatted/unformatted object
 """
 function formatter(data, format, mode::String)
-<<<<<<< HEAD
-	if format=="json" || format=="" 						#REDCap likes to send json back sometimes as default
-=======
 	if format=="json"
->>>>>>> 0444977cdb027b59482caf5db164091f81d88d9a
 		return json_formatter(data, mode)
 	elseif format=="csv"
 		return data 										#very little needs to be done, but still keep as a sep. case
@@ -293,11 +285,7 @@ Called by importing functions to load already formatted data directly from a des
 The formatted data
 """
 function import_from_file(file_loc::String, format::String)
-<<<<<<< HEAD
-	valid_formats = ("json","csv","xml","df","odm") 		#redcap accepted formats (also df)
-=======
 	valid_formats = ("json", "csv", "xml", "df", "odm") #redcap accepted formats (also df)
->>>>>>> 0444977cdb027b59482caf5db164091f81d88d9a
 	try
 		open(file_loc) do file
 			if format ∈ valid_formats
