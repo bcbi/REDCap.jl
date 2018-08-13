@@ -16,7 +16,7 @@ if length(api_url)>0
 		full_test=true
 		super_config = REDCap.Config(api_url, super_key)
 	else
-		warn("Cannot find REDCap Super API key in environment.")
+		@warn("Cannot find REDCap Super API key in environment.")
 		key=get(ENV, "REDCAP_API", "")
 		if length(key)>0
 			config = REDCap.Config(api_url, key)
@@ -29,7 +29,7 @@ else
 end
 			
 # -=: Test: Functionality :=- #
-@testset "Import Functionality" begin
+@testset "Full Functionality" begin
 	#setup for any needed vars
 	
 
@@ -123,21 +123,59 @@ end
 					  "race"  => "1")]
 
 
-	response = import_records(config, stock_records)
-
-	@test response["count"] == length(stock_records)
+	@test import_records(config, stock_records) == length(stock_records)
 
 	stock_user=[Dict("username" => "john_smith@email.com",
-					 "email" => "john_smith@email.com",
-					 "lastname" => "Smith")]
-	response = import_users(config, stock_user)
-	@test response == 1
+					"email" => "john_smith@email.com",
+                    "design" => "1",
+                    "api_export" => "1",
+                    "user_rights" => "1",
+                    "data_access_groups" => "0",
+                    "data_comparison_tool" => "0",
+                    "data_access_group_id" => "",
+                    "data_export" => "1",
+                    "record_create" => "1",
+                    "reports" => "1",
+                    "data_import_tool" => "1",
+                    "file_repository" => "0",
+                    "mobile_app_download_data" => "1",
+                    "mobile_app" => "1",
+                    "data_quality_create" => "1",
+                    "record_delete" => "1",
+                    "calendar" => "1",
+                    "lock_records_all_forms" => "1",
+                    "firstname" => "John",
+                    "expiration" => "",
+                    "data_access_group" => "",
+                    "api_import" => "1",
+                    "stats_and_charts" => "1",
+                    "record_rename" => "1",
+                    "lock_records_customization" => "1",
+                    "logging" => "1",
+                    "lock_records" => "1",
+                    "data_quality_execute" => "1",
+                    "manage_survey_participants" => "1",
+					"lastname" => "Smith")]
+
+	@test import_users(config, stock_user) == 1
 
 	stock_proj_info=Dict("project_title" => "RC Test",
 						 "project_notes" => "testing")
-	response = import_project_information(config, stock_proj_info)
-	@test response == length(stock_proj_info) || 23 #either the changed or all values idk...
+	@test import_project_information(config, stock_proj_info) == length(stock_proj_info) || 23 #either the changed or all values idk...
 
+	#Import arms and events here, along with inst-event-mappings
+    stock_arms=Dict("name" => "Arm 2",
+                    "arm_num" => "2") #verify this
+    @test import_arms(config, stock_arms) == 1
+
+    stock_events=Dict("unique_event_name" => "event_1_arm_2",
+                      "custom_event_label" => nothing,
+                      "offset_max" => "0",
+                      "arm_num" => "2",
+                      "event_name" => "Event 1",
+                      "day_offset" => "1",
+                      "offset_min" => "0")
+    @test import_events(config, stock_events) == 1
 
 	#Exporting - verify that data exported is accurate and in there(?)
 	#Call functions in more varietyies of ways - show off options - export to file, verifiy file is there and can 
@@ -146,6 +184,7 @@ end
 				:(export_records(config, format="csv")),
 				:(export_records(config, format="xml")),
 				:(export_records(config, format="odm")),
+				:(export_records(config, format="df")),
 				:(export_records(config, fields=["record_id","first_name"])),
 				:(export_metadata(config)),
 				:(export_version(config)),
@@ -156,18 +195,84 @@ end
 	for m in modules
 		try #use carefully!
 			eval(m)
-			@test 1==1
+			@test true
 		catch
 			println("Failed - $m")
-			@test 1==2
+			@test false
 		end
 	end
 
-	ex_records = export_records(config)
-	@test isequal(ex_records[1]["first_name"], stock_records[1]["first_name"])
+	testing_records = export_records(config)
+    #for loop here to run through all of them?
+    for i, (k, v) in enumerate(testing_records)
+        @test testing_records[i][k] == stock_records[i][k]
+    end
+    testing_user = export_users(config)
+    #Test to ensure user matches stock - all settings transfer
+    for (k, v) in testing_user[end]
+        @test testing_user[end][k] == stock_user[1][k]
+    end
+    testing_info = export_project_information(config)
+    @test testing_info["project_notes"] == stock_proj_info["project_notes"]
+    @test testing_info["project_title"] == stock_proj_info["project_title"]
+    testing_arms = export_arms(config)
+    #Verify arm is there - can check for 2 arms?
 
+    testing_events = export_events(config)
 	ex_info = export_project_information(config)
-	@test ex_info["project_title"] == stock_proj_info["project_title"]
+    #verify event there
+
+
+###TODO
+	testing_mapping = export_instrument_event_mappings(config)
+    #change mapping, check again
+    new_mapping = Dict("arm_num" => "2",
+                        "form" => "demographics",
+                        "unique_event_name" => "event_1_arm_2")
+
+
+
+    testing_mapping_again = export_instrument_event_mappings(config)
+
+    #Test modifying user - this may rely on what your permissions are after project creation - will need to test that more
+    stock_user_changed=[Dict("username" => "john_smith21@email.com",
+        					"email" => "john_smith21@email.com",
+                            "design" => "0",
+                            "api_export" => "0",
+                            "user_rights" => "0",
+                            "data_access_groups" => "0",
+                            "data_comparison_tool" => "0",
+                            "data_access_group_id" => "",
+                            "data_export" => "0",
+                            "record_create" => "0",
+                            "reports" => "0",
+                            "data_import_tool" => "0",
+                            "file_repository" => "0",
+                            "mobile_app_download_data" => "0",
+                            "mobile_app" => "0",
+                            "data_quality_create" => "0",
+                            "record_delete" => "0",
+                            "calendar" => "0",
+                            "lock_records_all_forms" => "0",
+                            "firstname" => "Johnathan",
+                            "expiration" => "",
+                            "data_access_group" => "",
+                            "api_import" => "0",
+                            "stats_and_charts" => "0",
+                            "record_rename" => "0",
+                            "lock_records_customization" => "0",
+                            "logging" => "0",
+                            "lock_records" => "0",
+                            "data_quality_execute" => "0",
+                            "manage_survey_participants" => "0",
+        					"lastname" => "Smithy")]
+    @test import_users(config, stock_user_changed) == 1
+    #Verify changes made
+    testing_user_changed = export_users(config)
+    #Test to ensure user matches stock - all settings transfer
+    for (k, v) in testing_user_changed[end]
+        @test testing_user_changed[end][k] == stock_user_changed[1][k]
+    end
 
 
 	if full_test
