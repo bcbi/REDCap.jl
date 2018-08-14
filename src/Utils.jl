@@ -41,18 +41,21 @@ function api_pusher(mode::String, content::String, config::Config; format::Strin
 		println(k)
 		println(v)										#k is a Symbol, make easier to handle
 		if mode=="import" && isequal(k, "data")		#Turn all imported data into an IOBuffer so HTTP won't mess with it OR turn filterLogic data into a buffer because it uses []'s and REDCap can't understand URI encoding
-			io = IOBuffer()
-			fields[k]=write(io, string(v))
+			#io = IOBuffer(write=true)
+			#println(v)
+			#fields[k]=write(io, v)
+			fields[k]=IOBuffer(v)
 		elseif isa(v, Array)								#Turn arrays into specially URI encoded arrays
 			for (i, item) in enumerate(v)
 			    fields["$k[$(i-1)]"]=String(item)
 			end
 		elseif isequal(k, "filterLogic")
-			io = IOBuffer()
-			fields[k]=write(io, v)
+			#io = IOBuffer()
+			#fields[k]=write(io, v)
 		else
 			fields[k]=string(v)
 		end
+		println(fields)
 	end
 
 	#POST request and get response
