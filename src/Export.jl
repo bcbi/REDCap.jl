@@ -351,8 +351,7 @@ end
 
 
 """ 
-	export_survey_link(config::REDCap.Config, record::String, instrument::String, event::String; repeat_instance::Int=1, 
-						returnFormat::String="json") 
+	export_survey_link(config::REDCap.Config, record::String, instrument::String, event::String; repeat_instance::Int=1, returnFormat::String="json") 
 
 #### Parameters:
 * `config` - Struct containing url and api-key

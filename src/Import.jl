@@ -37,7 +37,8 @@ function import_metadata(config::REDCap.Config, data; format::String="json", ret
 	return api_pusher("import", "metadata", config, data = import_file_checker(data, format), format=format, returnFormat=returnFormat)
 end
 #=
-Breaks on JSON, XML, not CSV
+Breaks on JSON, XML, 
+Works for CSV
 
 newmeta = Dict("required_field"=>"",
   "section_header"=>"",
