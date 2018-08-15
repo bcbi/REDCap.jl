@@ -37,21 +37,17 @@ function api_pusher(mode::String, content::String, config::Config; format::Strin
 	end
 
 	for (k,v) in kwargs
-		k=String(k) 
-		println(k)
-		println(v)										#k is a Symbol, make easier to handle
-		if mode=="import" && isequal(k, "data")		#Turn all imported data into an IOBuffer so HTTP won't mess with it OR turn filterLogic data into a buffer because it uses []'s and REDCap can't understand URI encoding
-			#io = IOBuffer(write=true)
-			#println(v)
-			#fields[k]=write(io, v)
+		k=String(k)									#k is a Symbol, make easier to handle
+		if isequal(k, "dtype") 		#type is reserved in julia, quick-fix
+			fields["type"]=v
+		elseif mode=="import" && isequal(k, "data")		#Turn all imported data into an IOBuffer so HTTP won't mess with it OR turn filterLogic data into a buffer because it uses []'s and REDCap can't understand URI encoding
 			fields[k]=IOBuffer(v)
 		elseif isa(v, Array)								#Turn arrays into specially URI encoded arrays
 			for (i, item) in enumerate(v)
 			    fields["$k[$(i-1)]"]=String(item)
 			end
 		elseif isequal(k, "filterLogic")
-			#io = IOBuffer()
-			#fields[k]=write(io, v)
+			fields[k]=IOBuffer(v)
 		else
 			fields[k]=string(v)
 		end
@@ -143,7 +139,7 @@ function formatter(data, format, mode::String)
 	elseif format=="df"
 		return df_formatter(data, mode)
 	else
-		@error("$format is an invalid format.\nValid formats: \"json\", \"csv\", \"xml\", \"odm\", or \"df\"")
+		error("$format is an invalid format.\nValid formats: \"json\", \"csv\", \"xml\", \"odm\", or \"df\"")
 	end
 end
 
@@ -165,7 +161,7 @@ function json_formatter(data, mode::String)
 		try
 			return JSON.parse(data) 
 		catch
-			@warn("Data cannot be json formatted")
+			warn("Data cannot be json formatted")
 			return data 					#for things that arent dicts - a surprising amount of REDCap's output
 		end
 	end
@@ -189,7 +185,7 @@ function xml_formatter(data, mode::String)
 		try
 			return parse_string(data)
 		catch
-			@warn("Data cannot be xml formatted")
+			warn("Data cannot be xml formatted")
 			return data
 		end
 	end
@@ -216,7 +212,7 @@ function odm_formatter(data, mode::String)
 		try
 			return parse_string(data)
 		catch
-			@warn("Data cannot be odm formatted")
+			warn("Data cannot be odm formatted")
 			return data
 		end
 	end
@@ -240,7 +236,7 @@ function df_formatter(data, mode::String)
 		try
 			return CSV.read(IOBuffer(data))
 		catch
-			@warn("Data cannot be df formatted")
+			warn("Data cannot be df formatted")
 			return data
 		end
 	end
@@ -296,11 +292,11 @@ function import_from_file(file_loc::String, format::String)
 			if format ∈ valid_formats
 				return String(read(file))
 			else
-				@error("$format is an invalid format.\nValid formats: \"json\", \"csv\", \"xml\", \"odm\", or \"df\"")
+				error("$format is an invalid format.\nValid formats: \"json\", \"csv\", \"xml\", \"odm\", or \"df\"")
 			end
 		end
 	catch
-		@error("File could not be opened:\n$file_loc")
+		error("File could not be opened:\n$file_loc")
 	end
 end
 
@@ -323,7 +319,7 @@ function import_file_checker(data, format::String)
 		try
 			return import_from_file(data, format)
 		catch
-			@error("File could not be opened:\n$data")
+			error("File could not be opened:\n$data")
 		end
 	else
 		return formatter(data, format, "import")
@@ -351,6 +347,6 @@ function export_to_file(file_loc::String, data)
 			return "Success"
 		end
 	catch
-		@error("File could not be opened:\n$file_loc")
+		error("File could not be opened:\n$file_loc")
 	end
 end

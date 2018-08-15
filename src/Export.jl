@@ -205,12 +205,12 @@ end
 
 
 """
-	export_records(config::REDCap.Config; format::String="json", type::String="flat", records::Array=[], fields::Array=[], forms::Array=[], events::Array=[], rawOrLabel::String="raw", rawOrLabelHeaders::String="raw", exportCheckboxLabel::Bool=false, returnFormat::String="json", exportSurveyFields::Bool=false, exportDataAccessGroups::Bool=false, filterLogic::String="", file_loc::String="")
+	export_records(config::REDCap.Config; format::String="json", dtype::String="flat", records::Array=[], fields::Array=[], forms::Array=[], events::Array=[], rawOrLabel::String="raw", rawOrLabelHeaders::String="raw", exportCheckboxLabel::Bool=false, returnFormat::String="json", exportSurveyFields::Bool=false, exportDataAccessGroups::Bool=false, filterLogic::String="", file_loc::String="")
 
 #### Parameters:
 * `config` - Struct containing url and api-key
 * `format` - "json", "xml", "csv", or "odm". decides format of returned data
-* `type` - Output mode: "flat" (output one record per row) or "eav" (one data point per row)
+* `dtype` - Output mode: "flat" (output one record per row) or "eav" (one data point per row)
 * `records` - Array of record names to include
 * `fields` - Array of field names to include
 * `forms` - Array of form names to include
@@ -227,8 +227,8 @@ end
 #### Returns:
 Array of formatted dicts of set of records for a project.
 """
-function export_records(config::REDCap.Config; format::String="json", type::String="flat", records::Array=[], fields::Array=[], forms::Array=[], events::Array=[], rawOrLabel::String="raw", rawOrLabelHeaders::String="raw", exportCheckboxLabel::Bool=false, returnFormat::String="json", exportSurveyFields::Bool=false, exportDataAccessGroups::Bool=false, filterLogic::String="", file_loc::String="")
-	return api_pusher("export", "record", config, format=format, type=type, records=records, fields=fields, forms=forms, events=events, rawOrLabel=rawOrLabel, rawOrLabelHeaders=rawOrLabelHeaders, exportCheckboxLabel=exportCheckboxLabel, exportSurveyFields=exportSurveyFields, exportDataAccessGroups=exportDataAccessGroups, filterLogic=filterLogic, returnFormat=returnFormat, file_loc=file_loc)
+function export_records(config::REDCap.Config; format::String="json", dtype::String="flat", records::Array=[], fields::Array=[], forms::Array=[], events::Array=[], rawOrLabel::String="raw", rawOrLabelHeaders::String="raw", exportCheckboxLabel::Bool=false, returnFormat::String="json", exportSurveyFields::Bool=false, exportDataAccessGroups::Bool=false, filterLogic::String="", file_loc::String="")
+	return api_pusher("export", "record", config, format=format, dtype=dtype, records=records, fields=fields, forms=forms, events=events, rawOrLabel=rawOrLabel, rawOrLabelHeaders=rawOrLabelHeaders, exportCheckboxLabel=exportCheckboxLabel, exportSurveyFields=exportSurveyFields, exportDataAccessGroups=exportDataAccessGroups, filterLogic=filterLogic, returnFormat=returnFormat, file_loc=file_loc)
 end
 
 

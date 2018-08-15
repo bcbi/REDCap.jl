@@ -1,7 +1,7 @@
 """
 	REDCap
 
-Julia frontend for the REDCap API. Handles all available API calls from REDCap through top-level functions.
+Legacy Julia 0.6 frontend for the REDCap API. Handles all available API calls from REDCap through top-level functions.
 Must have a valid `REDCap.Config` object set up with the API key and url. 
 Compatable with REDCap Version 8.1.0
 """
