@@ -35,15 +35,15 @@ function api_pusher(mode::String, content::String, config::Config; format::Strin
 	else
 		fields["format"] = format
 	end
-	#println("HERE")
+
 	for (k,v) in kwargs
-		k=String(k) 
-		#println(k)
-		#println(v)										#k is a Symbol, make easier to handle
-		if mode=="import" && isequal(k, "data")		#Turn all imported data into an IOBuffer so HTTP won't mess with it OR turn filterLogic data into a buffer because it uses []'s and REDCap can't understand URI encoding
-			#io = IOBuffer()
-			#write(io, v)
-			fields[k]=v
+		k=String(k) 										#k is a Symbol, make easier to handle
+		if mode=="import" && isequal(k, "data")				#Turn all imported data into an IOBuffer so HTTP won't mess with it OR turn filterLogic data into a buffer because it uses []'s and REDCap can't understand URI encoding
+			io = IOBuffer()
+			write(io, v)
+			fields[k]=io
+			println("IO")
+			println(String(read(io)))
 		elseif isa(v, Array)								#Turn arrays into specially URI encoded arrays
 			for (i, item) in enumerate(v)
 			    fields["$k[$(i-1)]"]=String(item)
@@ -55,8 +55,8 @@ function api_pusher(mode::String, content::String, config::Config; format::Strin
 		else
 			fields[k]=string(v)
 		end
-		#println(fields)
 	end
+	println(fields)
 
 	#POST request and get response
 	response = poster(config, fields)
