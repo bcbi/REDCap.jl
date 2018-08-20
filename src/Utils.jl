@@ -21,7 +21,7 @@ Formatted response body
 """
 function api_pusher(mode::String, content::String, config::Config; format::String="", returnFormat::String="", file_loc::String="", kwargs...)
 	#initialize dict with basic info and api calls
-	fields = Dict("token" => config.key,
+	fields = Dict{String, Any}("token" => config.key,
 					"action" => mode,						#import, export, delete
 					"content" => content,					#API call to access
 					"returnFormat" => returnFormat)
@@ -51,7 +51,6 @@ function api_pusher(mode::String, content::String, config::Config; format::Strin
 		else
 			fields[k]=string(v)
 		end
-		println(fields)
 	end
 
 	#POST request and get response
