@@ -16,16 +16,16 @@ if length(api_url)>0
 		full_test=true
 		super_config = REDCap.Config(api_url, super_key)
 	else
-		@warn("Cannot find REDCap Super API key in environment.")
+		warn("Cannot find REDCap Super API key in environment.")
 		key=get(ENV, "REDCAP_API", "")
 		if length(key)>0
 			config = REDCap.Config(api_url, key)
 		else
-			@error("Cannot find REDCap API key in environment.")
+			error("Cannot find REDCap API key in environment.")
 		end
 	end
 else
-	@error("Cannot find REDCap URL in environment.")	
+	error("Cannot find REDCap URL in environment.")	
 end
 			
 # -=: Test: Functionality :=- #
