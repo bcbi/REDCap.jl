@@ -6,32 +6,32 @@ end
 
 using REDCap
 
-config = ""
-full_test=false
-#Get keys from user environment
-api_url=get(ENV, "REDCAP_URL", "")
-if length(api_url)>0
-	super_key=get(ENV, "REDCAP_SUPER_API", "")
-	if length(super_key)>0
-		full_test=true
-		super_config = REDCap.Config(api_url, super_key)
-	else
-		@warn("Cannot find REDCap Super API key in environment.")
-		key=get(ENV, "REDCAP_API", "")
-		if length(key)>0
-			config = REDCap.Config(api_url, key)
-		else
-			@error("Cannot find REDCap API key in environment.")
-		end
-	end
-else
-	@error("Cannot find REDCap URL in environment.")	
-end
-			
+
 # -=: Test: Functionality :=- #
 @testset "Full Functionality" begin
 	#setup for any needed vars
-	
+	super_config = ""
+	config = ""
+	full_test=false
+	#Get keys from user environment
+	api_url=get(ENV, "REDCAP_URL", "")
+	if length(api_url)>0
+		super_key=get(ENV, "REDCAP_SUPER_API", "")
+		if length(super_key)>0
+			full_test=true
+			global super_config = REDCap.Config(api_url, super_key)
+		else
+			@warn("Cannot find REDCap Super API key in environment.")
+			key=get(ENV, "REDCAP_API", "")
+			if length(key)>0
+				global config = REDCap.Config(api_url, key)
+			else
+				@error("Cannot find REDCap API key in environment.")
+			end
+		end
+	else
+		@error("Cannot find REDCap URL in environment.")	
+	end	
 
 	#=	TESTING:
 	# needs to be able to manipulate a project, and verify what comes back. Create project in users environment? Dedicated test env?
@@ -54,6 +54,10 @@ end
 		config = create_project(super_config, "Test Project", 1; purpose_other="Testing REDCap.jl Functionality", project_notes="This is not an actual REDCap Database.", is_longitudinal=1, surveys_enabled=1, record_autonumbering_enabled=1)
 	end
 
+	#=
+	create_project(config::REDCap.Config, project_title::String, purpose::Integer; format::String="json", returnFormat::String="json", odm="", purpose_other::String="", project_notes::String="", is_longitudinal::Integer=0, surveys_enabled::Integer=0, record_autonumbering_enabled::Integer=1)
+	=#
+
 	#Importing- 
 	#stock records
 	stock_records=[Dict("sex" => "1",
@@ -62,7 +66,7 @@ end
 					  "height" => "180",
 					  "dob" => "1962-07-30",
 					  "record_id" => "1",
-					  "bmi" => "",
+					  "bmi" => "24.7",
 					  "comments" => "Randomly Generated - Demographics",
 					  "email" => "JSmith@aol.com",
 					  "first_name" => "John",
@@ -75,26 +79,26 @@ end
 					Dict("sex" => "1",
 					  "age" => "16",
 					  "address" => "168 Anderson Blvd. Quincy MA 01227",
-					  "height" => "190",
+					  "height" => "180",
 					  "dob" => "2002-07-30",
 					  "record_id" => "2",
-					  "bmi" => "",
+					  "bmi" => "24.7",
 					  "comments" => "Randomly Generated - Demographics",
 					  "email" => "M_Smith@aol.com",
 					  "first_name" => "Matthew",
 					  "demographics_complete" => "0",
 					  "telephone" => "(617) 882-6049",
-					  "weight" => "100",
+					  "weight" => "80",
 					  "last_name" => "Smith",
 					  "ethnicity" => "1",
 					  "race"  => "1"),
 					Dict("sex" => "0",
 					  "age" => "20",
 					  "address" => "168 Anderson Blvd. Quincy MA 01227",
-					  "height" => "170",
+					  "height" => "180",
 					  "dob" => "1998-07-30",
 					  "record_id" => "3",
-					  "bmi" => "",
+					  "bmi" => "24.7",
 					  "comments" => "Randomly Generated - Demographics",
 					  "email" => "MJ_Smith@aol.com",
 					  "first_name" => "Mary",
@@ -107,22 +111,22 @@ end
 					Dict("sex" => "0",
 					  "age" => "46",
 					  "address" => "168 Anderson Blvd. Quincy MA 01227",
-					  "height" => "185",
+					  "height" => "180",
 					  "dob" => "1972-07-30",
 					  "record_id" => "4",
-					  "bmi" => "",
+					  "bmi" => "24.7",
 					  "comments" => "Randomly Generated - Demographics",
 					  "email" => "L_Smith@aol.com",
 					  "first_name" => "Lisa",
 					  "demographics_complete" => "0",
 					  "telephone" => "(617) 882-6049",
-					  "weight" => "90",
+					  "weight" => "80",
 					  "last_name" => "Smith",
 					  "ethnicity" => "1",
 					  "race"  => "1")]
 
 
-	@test import_records(config, stock_records) == length(stock_records)
+	@test import_records(config, stock_records)["count"] == length(stock_records)
 
 	stock_user=[Dict("username" => "john_smith@email.com",
 					"email" => "john_smith@email.com",
@@ -160,20 +164,21 @@ end
 
 	stock_proj_info=Dict("project_title" => "RC Test",
 						 "project_notes" => "testing")
-	@test import_project_information(config, stock_proj_info) == length(stock_proj_info) || 23 #either the changed or all values idk...
+	result = import_project_information(config, stock_proj_info)
+	@test (result == length(stock_proj_info)) || (result == 23) #either the changed or all values idk...
 
 	#Import arms and events here, along with inst-event-mappings
-    stock_arms=Dict("name" => "Arm 2",
-                    "arm_num" => "2") #verify this
+    stock_arms=[Dict("name" => "Arm 2",
+                    "arm_num" => "2")] #verify this
     @test import_arms(config, stock_arms) == 1
 
-    stock_events=Dict("unique_event_name" => "event_1_arm_2",
+    stock_events=[Dict("unique_event_name" => "event_1_arm_2",
                       "custom_event_label" => nothing,
                       "offset_max" => "0",
                       "arm_num" => "2",
                       "event_name" => "Event 1",
                       "day_offset" => "1",
-                      "offset_min" => "0")
+                      "offset_min" => "0")]
     @test import_events(config, stock_events) == 1
 
 	#Exporting - verify that data exported is accurate and in there(?)
@@ -190,6 +195,7 @@ end
 				:(export_pdf(config, "export.pdf")),
 				:(export_project(config))]
 	for m in modules
+		println(m)
 		try #use carefully!
 			eval(m)
 			@test true
@@ -199,31 +205,34 @@ end
 		end
 	end
 
-	testing_records = export_records(config)
+	testing_records = export_records(config, rawOrLabel="raw")
     #for loop here to run through all of them?
-    for i, (k, v) in enumerate(testing_records)
-        @test testing_records[i][k] == stock_records[i][k]
+    for (i, item) in enumerate(testing_records)
+    	for (k,v) in item
+    		@test v == stock_records[i][k]
+    	end
     end
-    testing_user = export_users(config)
+
+    #testing_user = export_users(config)
     #Test to ensure user matches stock - all settings transfer
-    for (k, v) in testing_user[end]
-        @test testing_user[end][k] == stock_user[1][k]
-    end
+    #for (k, v) in testing_user[end]
+    #    @test testing_user[end][k] == stock_user[1][k]
+    #end
     testing_info = export_project_information(config)
     @test testing_info["project_notes"] == stock_proj_info["project_notes"]
     @test testing_info["project_title"] == stock_proj_info["project_title"]
 
 ###TODO
-    testing_arms = export_arms(config)
+    #testing_arms = export_arms(config)
     #Verify arm is there - can check for 2 arms?
 
-    testing_events = export_events(config)
+    #testing_events = export_events(config)
 	ex_info = export_project_information(config)
     #verify event there
 
 
 ###TODO
-	testing_mapping = export_instrument_event_mappings(config)
+	#testing_mapping = export_instrument_event_mappings(config)
     #change mapping, check again
     new_mapping = Dict("arm_num" => "2",
                         "form" => "demographics",
@@ -231,7 +240,7 @@ end
 
 
 
-    testing_mapping_again = export_instrument_event_mappings(config)
+    #testing_mapping_again = export_instrument_event_mappings(config)
 
     #Test modifying user - this may rely on what your permissions are after project creation - will need to test that more
     stock_user_changed=[Dict("username" => "john_smith21@email.com",
@@ -275,18 +284,49 @@ end
 
 
 	if full_test
-		#final_proj_info=Dict("project_title" => "RC Production",
-		#				  	 "in_production" => "1")
-		#import_project_information(config, final_proj_info)
+		final_proj_info=Dict("project_title" => "RC Production",
+						  	 "in_production" => "1")
+		import_project_information(config, final_proj_info)
 
 		#Do things to a production project you shouldnt do
 
-		#post_meta =
-		#import_metadata(config, post_meta)
+		post_meta = Dict("required_field"=>"",
+						  "section_header"=>"",
+						  "matrix_ranking"=>"",
+						  "select_choices_or_calculations"=>"",
+						  "field_type"=>"file",
+						  "field_note"=>"",
+						  "form_name"=>"demographics",
+						  "matrix_group_name"=>"",
+						  "field_label"=>"File Upload",
+						  "custom_alignment"=>"",
+						  "question_number"=>"",
+						  "text_validation_max"=>"",
+						  "text_validation_type_or_show_slider_number"=>"",
+						  "branching_logic"=>"",
+						  "field_annotation"=>"",
+						  "identifier"=>"",
+						  "text_validation_min"=>"",
+						  "field_name"=>"file_upload")
+		try
+			import_metadata(config, post_meta)
+			@test false
+		catch
+			@test true
+		end
 
-		#post_project_info = 
-		#import_project_information(config, post_project_info)
-
+		post_project_info = Dict{String, Any}("project_title" => "New Title",
+											"purpose" => 3,
+											"is_longitudinal" => 1,
+											"surveys_enabled" => 1,
+											"record_autonumbering_enabled" => 1)
+		import_project_information(config, post_project_info)
+		try
+			import_metadata(config, post_meta)
+			@test false
+		catch
+			@test true
+		end
 	end
 
 end

@@ -12,8 +12,8 @@ NOTE: Only for projects in development
 #### Returns:
 Number of successfully imported values
 """
-function import_project_information(config::REDCap.Config, data; format::String="json")
-	return api_pusher("import", "project_settings", config, data = import_file_checker(data, format), format=format)
+function import_project_information(config::REDCap.Config, data; format::String="json", returnFormat::String="json")
+	return api_pusher("import", "project_settings", config, data = import_file_checker(data, format), format=format, returnFormat=returnFormat)
 end
 
 
@@ -278,7 +278,7 @@ function create_project(config::REDCap.Config, project_title::String, purpose::I
 		fields = Dict("token" => config.key,
 						"content" => "project",
 						"format" => format,
-						"data" => json_formatter([Dict("project_title" => project_title,
+						"data" => json_formatter([Dict{String, Any}("project_title" => project_title,
 													"purpose" => purpose,
 													"purpose_other" => purpose_other,
 													"project_notes" => project_notes,
@@ -293,3 +293,5 @@ function create_project(config::REDCap.Config, project_title::String, purpose::I
 		@error("Please use a config object that contains a properly entered Super API key.\n$(config.key) is an invalid Super-API key.")
 	end
 end
+
+#config = create_project(super_config, "Test Project", 1; purpose_other="Testing REDCap.jl Functionality", project_notes="This is not an actual REDCap Database.", is_longitudinal=1, surveys_enabled=1, record_autonumbering_enabled=1)
