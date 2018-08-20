@@ -42,8 +42,6 @@ function api_pusher(mode::String, content::String, config::Config; format::Strin
 			io = IOBuffer()
 			write(io, v)
 			fields[k]=io
-			println("IO")
-			println(String(read(io)))
 		elseif isa(v, Array)								#Turn arrays into specially URI encoded arrays
 			for (i, item) in enumerate(v)
 			    fields["$k[$(i-1)]"]=String(item)
@@ -56,6 +54,7 @@ function api_pusher(mode::String, content::String, config::Config; format::Strin
 			fields[k]=string(v)
 		end
 	end
+	println("HERE")
 	println(fields)
 
 	#POST request and get response
