@@ -213,6 +213,10 @@ using REDCap
     	end
     end
 
+    #File I/O
+    export_records(config, file_loc="records.txt")
+    @test import_records(config, "records.txt")["count"] == length(stock_records)
+
     #testing_user = export_users(config)
     #Test to ensure user matches stock - all settings transfer
     #for (k, v) in testing_user[end]
