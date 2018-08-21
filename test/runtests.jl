@@ -10,6 +10,7 @@ using REDCap
 # -=: Test: Functionality :=- #
 @testset "Full Functionality" begin
 	#setup for any needed vars
+	println("Creating Config Object")
 	super_config = ""
 	config = ""
 	full_test=false
@@ -49,7 +50,7 @@ using REDCap
 	# 
 	=#
 	if full_test
-		println("full test")
+		println("Creating Project")
 		#Creating
 		config = create_project(super_config, "Test Project", 1; purpose_other="Testing REDCap.jl Functionality", project_notes="This is not an actual REDCap Database.", is_longitudinal=1, surveys_enabled=1, record_autonumbering_enabled=1)
 	end
@@ -60,7 +61,7 @@ using REDCap
 
 	#Importing- 
 	#stock records
-	stock_records=[Dict("sex" => "1",
+	stock_records=[Dict{String, String}("sex" => "1",
 					  "age" => "56",
 					  "address" => "168 Anderson Blvd. Quincy MA 01227",
 					  "height" => "180",
@@ -76,7 +77,7 @@ using REDCap
 					  "last_name" => "Smith",
 					  "ethnicity" => "1",
 					  "race"  => "1"),
-					Dict("sex" => "1",
+					Dict{String, String}("sex" => "1",
 					  "age" => "16",
 					  "address" => "168 Anderson Blvd. Quincy MA 01227",
 					  "height" => "180",
@@ -92,7 +93,7 @@ using REDCap
 					  "last_name" => "Smith",
 					  "ethnicity" => "1",
 					  "race"  => "1"),
-					Dict("sex" => "0",
+					Dict{String, String}("sex" => "0",
 					  "age" => "20",
 					  "address" => "168 Anderson Blvd. Quincy MA 01227",
 					  "height" => "180",
@@ -108,7 +109,7 @@ using REDCap
 					  "last_name" => "Smith",
 					  "ethnicity" => "1",
 					  "race"  => "1"),
-					Dict("sex" => "0",
+					Dict{String, String}("sex" => "0",
 					  "age" => "46",
 					  "address" => "168 Anderson Blvd. Quincy MA 01227",
 					  "height" => "180",
@@ -125,10 +126,10 @@ using REDCap
 					  "ethnicity" => "1",
 					  "race"  => "1")]
 
-
+	println("Initial Import Records Test")
 	@test import_records(config, stock_records)["count"] == length(stock_records)
 
-	stock_user=[Dict("username" => "john_smith@email.com",
+	stock_user=[Dict{String, Any}("username" => "john_smith@email.com",
 					"email" => "john_smith@email.com",
                     "design" => "1",
                     "api_export" => "1",
@@ -158,21 +159,26 @@ using REDCap
                     "lock_records" => "1",
                     "data_quality_execute" => "1",
                     "manage_survey_participants" => "1",
+                    "forms" => Dict{String,Any}("demographics"=>"0","visit_form"=>"0"),
 					"lastname" => "Smith")]
 
+	println("Initial Import Users Test")
 	@test import_users(config, stock_user) == 1
 
-	stock_proj_info=Dict("project_title" => "RC Test",
+	println("Initial Import Project Info Test")
+	stock_proj_info=Dict{String, String}("project_title" => "RC Test",
 						 "project_notes" => "testing")
 	result = import_project_information(config, stock_proj_info)
 	@test (result == length(stock_proj_info)) || (result == 23) #either the changed or all values idk...
 
+	println("Initial Import Arms Test")
 	#Import arms and events here, along with inst-event-mappings
-    stock_arms=[Dict("name" => "Arm 2",
+    stock_arms=[Dict{String, String}("name" => "Arm 2",
                     "arm_num" => "2")] #verify this
     @test import_arms(config, stock_arms) == 1
 
-    stock_events=[Dict("unique_event_name" => "event_1_arm_2",
+    println("Initial Import Events Test")
+    stock_events=[Dict{String, Any}("unique_event_name" => "event_1_arm_2",
                       "custom_event_label" => nothing,
                       "offset_max" => "0",
                       "arm_num" => "2",
@@ -184,6 +190,7 @@ using REDCap
 	#Exporting - verify that data exported is accurate and in there(?)
 	#Call functions in more varietyies of ways - show off options - export to file, verifiy file is there and can 
 	#be grabbed, modified, and re-imported
+	println("Batch Testing-")
 	modules = [:(export_field_names(config)),
 				:(export_records(config, format="csv")),
 				:(export_records(config, format="xml")),
@@ -205,6 +212,7 @@ using REDCap
 		end
 	end
 
+	println("Records Validation")
 	testing_records = export_records(config, rawOrLabel="raw")
     #for loop here to run through all of them?
     for (i, item) in enumerate(testing_records)
@@ -213,11 +221,17 @@ using REDCap
     	end
     end
 
+    println("Records I/O Test")
+    #File I/O
+    export_records(config, file_loc="records.txt")
+    @test import_records(config, "records.txt")["count"] == length(stock_records)
+
     #testing_user = export_users(config)
     #Test to ensure user matches stock - all settings transfer
     #for (k, v) in testing_user[end]
     #    @test testing_user[end][k] == stock_user[1][k]
     #end
+    println("Project Info Verification")
     testing_info = export_project_information(config)
     @test testing_info["project_notes"] == stock_proj_info["project_notes"]
     @test testing_info["project_title"] == stock_proj_info["project_title"]
@@ -243,7 +257,7 @@ using REDCap
     #testing_mapping_again = export_instrument_event_mappings(config)
 
     #Test modifying user - this may rely on what your permissions are after project creation - will need to test that more
-    stock_user_changed=[Dict("username" => "john_smith21@email.com",
+    stock_user_changed=[Dict{String, Any}("username" => "john_smith21@email.com",
         					"email" => "john_smith21@email.com",
                             "design" => "0",
                             "api_export" => "0",
@@ -273,7 +287,10 @@ using REDCap
                             "lock_records" => "0",
                             "data_quality_execute" => "0",
                             "manage_survey_participants" => "0",
-        					"lastname" => "Smithy")]
+        					"forms" => Dict{String,Any}("demographics"=>"0","visit_form"=>"0"),
+							"lastname" => "Smithy")]
+
+    println("Import User Modification Test")
     @test import_users(config, stock_user_changed) == 1
     #Verify changes made
     testing_user_changed = export_users(config)
@@ -284,13 +301,14 @@ using REDCap
 
 
 	if full_test
-		final_proj_info=Dict("project_title" => "RC Production",
+		println("Project Finalization Test")
+		final_proj_info=Dict{String, String}("project_title" => "RC Production",
 						  	 "in_production" => "1")
 		import_project_information(config, final_proj_info)
 
 		#Do things to a production project you shouldnt do
 
-		post_meta = Dict("required_field"=>"",
+		post_meta = Dict{String, String}("required_field"=>"",
 						  "section_header"=>"",
 						  "matrix_ranking"=>"",
 						  "select_choices_or_calculations"=>"",
@@ -308,6 +326,7 @@ using REDCap
 						  "identifier"=>"",
 						  "text_validation_min"=>"",
 						  "field_name"=>"file_upload")
+		println("Metadata Post-Finalization Test")
 		try
 			import_metadata(config, post_meta)
 			@test false
@@ -320,6 +339,7 @@ using REDCap
 											"is_longitudinal" => 1,
 											"surveys_enabled" => 1,
 											"record_autonumbering_enabled" => 1)
+		println("Project Info Post-Finalization Test")
 		import_project_information(config, post_project_info)
 		try
 			import_metadata(config, post_meta)
