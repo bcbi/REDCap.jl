@@ -150,7 +150,7 @@ julia> push!(arms, newarm)
 julia> import_arms(config, arms)
 POSTing
 POSTd
-2
+2	<- this should indicate 2 arms added.
 
 julia> export_arms(config)
 POSTing
@@ -246,6 +246,7 @@ Upload a document to specific record to the designated uploading field.
 #### Returns:
 Nothing/errors
 """
+###BROKEN###
 function import_file(config::REDCap.Config, record::String, field::String, event::String, file::String; repeat_instance::Int=1, returnFormat::String="json")
 	return api_pusher("import", "file", config, record=record, field=field, event=event, file=open(file), repeat_instance=repeat_instance, returnFormat=returnFormat)
 end
@@ -273,6 +274,7 @@ Creates a project with the given parameters
 #### Returns:
 The standard config for that project.
 """
+###BROKEN(?)###
 function create_project(config::REDCap.Config, project_title::String, purpose::Integer; format::String="json", returnFormat::String="json", odm="", purpose_other::String="", project_notes::String="", is_longitudinal::Integer=0, surveys_enabled::Integer=0, record_autonumbering_enabled::Integer=1)
 	if length(config.key)==64
 		fields = Dict("token" => config.key,

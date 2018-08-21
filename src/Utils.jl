@@ -181,12 +181,7 @@ function xml_formatter(data, mode::String)
 	if mode=="import"
 		return string(data)
 	else
-		try
-			return parse_string(data)
-		catch
-			@warn("Data cannot be xml formatted")
-			return data
-		end
+		return parse_string(string(data))
 	end
 end
 
