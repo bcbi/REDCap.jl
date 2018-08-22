@@ -1,7 +1,7 @@
 ```@meta
 CurrentModule = REDCap
 ```
-# Deleting
+# Deletion
 
 Records, Files, Arms, and Events may be deleted from a project via API call.
 
@@ -10,6 +10,7 @@ Records, Files, Arms, and Events may be deleted from a project via API call.
 ```@docs
 delete_records(config::REDCap.Config, records::Array; arm::Integer=0)
 ```
+#### Notes:
 
 An array of `record_id` names is passed, and if they exist, they will be deleted.
 
@@ -26,6 +27,7 @@ The number of records deleted will be returned. If a record is specified that do
 ```@docs
 delete_file(config::REDCap.Config, record::String, field::String, event::String; repeat_instance::Integer=1, returnFormat::String="json") 
 ```
+#### Notes:
 
 The location of the file must be specified by passing the record name, the field containing the file, and the event.
 

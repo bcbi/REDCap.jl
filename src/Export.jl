@@ -225,7 +225,7 @@ end
 * `file_loc` - Location to export to
 
 #### Returns:
-Array of formatted dicts of set of records for a project.
+An array of Dictionaries containing record information
 """
 function export_records(config::REDCap.Config; format::String="json", type::String="flat", records::Array=[], fields::Array=[], forms::Array=[], events::Array=[], rawOrLabel::String="raw", rawOrLabelHeaders::String="raw", exportCheckboxLabel::Bool=false, returnFormat::String="json", exportSurveyFields::Bool=false, exportDataAccessGroups::Bool=false, filterLogic::String="", file_loc::String="")
 	return api_pusher("export", "record", config, format=format, type=type, records=records, fields=fields, forms=forms, events=events, rawOrLabel=rawOrLabel, rawOrLabelHeaders=rawOrLabelHeaders, exportCheckboxLabel=exportCheckboxLabel, exportSurveyFields=exportSurveyFields, exportDataAccessGroups=exportDataAccessGroups, filterLogic=filterLogic, returnFormat=returnFormat, file_loc=file_loc)
