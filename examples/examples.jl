@@ -8,7 +8,6 @@ super_config = REDCap.Config("<URL>", "<S-API>")
 # `create_project()` returns the new projects config object, ready to use.
 config = create_project(super_config, "Test Project", 1; purpose_other="Testing REDCap.jl Functionality", project_notes="This is not an actual REDCap Database.")
 
-
 # ### Importing- NOTE: Records may be incomplete. Only provided fields will be updated
 record=[Dict("sex"=>"0",
       "age"=>"56",
@@ -40,11 +39,6 @@ import_users(config, user)
 
 # ### Exporting
 records = export_records(config)
-
-# Edit project info to remove development status
-final_proj_info=Dict("project_title" => "RC Production",
-                     "in_production" => "1")
-import_project_information(config, final_proj_info)
 
 # `.pdf` summary of the project
 export_pdf(config, "/<path>/export.pdf", allRecords=true)
