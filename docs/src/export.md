@@ -6,7 +6,9 @@ CurrentModule = REDCap
 Exporting from a REDCap database is straightforward. Exports are in `json` format by default, returned as a `Dict`. `xml`, `csv`, `df`, and `odm` formats are all valid formats to pass into this API, and will return a LightXML document, raw `csv`, a Dataframe object, or `odm` interpreted as a LightXML document (Julia support for `odm` is sparse). Some exports, such as version and url/return code for surveys return as simple strings, while most others return in the specified format.
 
 Because REDCap is medical in nature, some information may be identifying information.
+
 From the REDCap Documentation:
+
 <b>Note about export rights:</b>
 > Please be aware that Data Export user rights will be applied to this API request. For example, if you have 'No Access' data export rights in the project, then the API data export will fail and return an error. And if you have 'De-Identified' or 'Remove all tagged Identifier fields' data export rights, then some data fields *might* be removed and filtered out of the data set returned from the API. To make sure that no data is unnecessarily filtered out of your API request, you should have 'Full Data Set' export rights in the project.
 
