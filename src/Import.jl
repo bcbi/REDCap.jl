@@ -32,7 +32,7 @@ NOTE: Only for projects in development
 #### Returns:
 Number of successfully imported fields
 """
-###BROKEN###
+###BROKEN(?)###
 function import_metadata(config::REDCap.Config, data; format::String="json", returnFormat::String="json")
 	return api_pusher("import", "metadata", config, data = import_file_checker(data, format), format=format, returnFormat=returnFormat)
 end
@@ -274,7 +274,6 @@ Creates a project with the given parameters
 #### Returns:
 The standard config for that project.
 """
-###BROKEN(?)###
 function create_project(config::REDCap.Config, project_title::String, purpose::Integer; format::String="json", returnFormat::String="json", odm="", purpose_other::String="", project_notes::String="", is_longitudinal::Integer=0, surveys_enabled::Integer=0, record_autonumbering_enabled::Integer=1)
 	if length(config.key)==64
 		data = json_formatter([Dict{String, Any}("project_title" => project_title,

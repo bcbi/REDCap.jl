@@ -7,7 +7,7 @@ end
 using REDCap
 
 
-if get(ENV, "TRAVIS", "")=="true"
+if get(ENV, "TRAVIS", "")=="true" || get(ENV, "CI", "")=="true"
 	println("Travis - Don't build")
 else
 	# -=: Test: Functionality :=- #
