@@ -98,8 +98,8 @@ Returns a string of the current REDCap version.
 #### Returns:
 The version number (eg 1.0.0) as a string
 """
-function export_version(config::REDCap.Config; format::String="json")
-	return api_pusher("export", "version", config, format="json")
+function export_version(config::REDCap.Config; format::String="text")
+	return api_pusher("export", "version", config, format=format)
 end
 
 
@@ -176,7 +176,7 @@ end
 
 
 """
-	export_project(config::REDCap.Config; returnMetadataOnly::Bool=false, records::Array=[], fields::Array=[], events::Array=[], returnFormat::String="json", exportSurveyFields::Bool=false, exportDataAccessGroups::Bool=false, filterLogic::String="", exportFiles::Bool=false, file_loc::String="") 
+	export_project(config::REDCap.Config; returnMetadataOnly::Bool=false, records::Array=[], fields::Array=[], events::Array=[], format::String="xml", returnFormat::String="json", exportSurveyFields::Bool=false, exportDataAccessGroups::Bool=false, filterLogic::String="", exportFiles::Bool=false, file_loc::String="") 
 
 #### Parameters:
 * `config` - Struct containing url and api-key
@@ -194,8 +194,8 @@ end
 #### Returns:
 Entire project as XML.
 """
-function export_project(config::REDCap.Config; returnMetadataOnly::Bool=false, records::Array=[], fields::Array=[], events::Array=[], returnFormat::String="json", exportSurveyFields::Bool=false, exportDataAccessGroups::Bool=false, filterLogic::String="", exportFiles::Bool=false, file_loc::String="")
-	output = api_pusher("export", "project_xml", config, returnMetadataOnly=returnMetadataOnly, records=records, fields=fields, events=events, returnFormat=returnFormat, exportSurveyFields=exportSurveyFields, exportDataAccessGroups=exportDataAccessGroups, filterLogic=filterLogic, exportFiles=exportFiles, file_loc=file_loc)
+function export_project(config::REDCap.Config; returnMetadataOnly::Bool=false, records::Array=[], fields::Array=[], events::Array=[], format::String="xml", returnFormat::String="json", exportSurveyFields::Bool=false, exportDataAccessGroups::Bool=false, filterLogic::String="", exportFiles::Bool=false, file_loc::String="")
+	output = api_pusher("export", "project_xml", config, returnMetadataOnly=returnMetadataOnly, records=records, fields=fields, events=events, format=format, returnFormat=returnFormat, exportSurveyFields=exportSurveyFields, exportDataAccessGroups=exportDataAccessGroups, filterLogic=filterLogic, exportFiles=exportFiles, file_loc=file_loc)
 	if length(file_loc)>0
 		return "Success"
 	else
@@ -225,7 +225,7 @@ end
 * `file_loc` - Location to export to
 
 #### Returns:
-Array of formatted dicts of set of records for a project.
+An array of Dictionaries containing record information
 """
 function export_records(config::REDCap.Config; format::String="json", dtype::String="flat", records::Array=[], fields::Array=[], forms::Array=[], events::Array=[], rawOrLabel::String="raw", rawOrLabelHeaders::String="raw", exportCheckboxLabel::Bool=false, returnFormat::String="json", exportSurveyFields::Bool=false, exportDataAccessGroups::Bool=false, filterLogic::String="", file_loc::String="")
 	return api_pusher("export", "record", config, format=format, dtype=dtype, records=records, fields=fields, forms=forms, events=events, rawOrLabel=rawOrLabel, rawOrLabelHeaders=rawOrLabelHeaders, exportCheckboxLabel=exportCheckboxLabel, exportSurveyFields=exportSurveyFields, exportDataAccessGroups=exportDataAccessGroups, filterLogic=filterLogic, returnFormat=returnFormat, file_loc=file_loc)
@@ -244,8 +244,8 @@ end
 #### Returns:
 Unique Survey Queue link.
 """
-function export_survey_queue_link(config::REDCap.Config, record::String; returnFormat::String="json")
-	return api_pusher("export", "surveyQueueLink", config, record=record, returnFormat=returnFormat)
+function export_survey_queue_link(config::REDCap.Config, record::String; format::String="text", returnFormat::String="json")
+	return api_pusher("export", "surveyQueueLink", config, record=record, format=format, returnFormat=returnFormat)
 end
 
 
@@ -263,9 +263,9 @@ end
 #### Returns:
 Unique Return Code in plain text format.
 """
-function export_survey_return_code(config::REDCap.Config, record::String, instrument::String, event::String; repeat_instance::Integer=1, returnFormat::String="json")
+function export_survey_return_code(config::REDCap.Config, record::String, instrument::String, event::String; format::String="text", repeat_instance::Integer=1, returnFormat::String="json")
 	return api_pusher("export", "surveyReturnCode", config, record=record, instrument=instrument, event=event, 
-							repeat_instance=repeat_instance, returnFormat=returnFormat)
+							repeat_instance=repeat_instance, format=format, returnFormat=returnFormat)
 end
 
 
@@ -364,7 +364,7 @@ end
 #### Returns:
 Unique survey link.
 """
-function export_survey_link(config::REDCap.Config, record::String, instrument::String, event::String; repeat_instance::Int=1, returnFormat::String="json")
+function export_survey_link(config::REDCap.Config, record::String, instrument::String, event::String; format::String="text", repeat_instance::Int=1, returnFormat::String="json")
 	return api_pusher("export", "surveyLink", config, record=record, instrument=instrument, event=event, 
-							repeat_instance=repeat_instance, returnFormat=returnFormat)
+							format=format, repeat_instance=repeat_instance, returnFormat=returnFormat)
 end

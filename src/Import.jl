@@ -12,8 +12,8 @@ NOTE: Only for projects in development
 #### Returns:
 Number of successfully imported values
 """
-function import_project_information(config::REDCap.Config, data; format::String="json")
-	return api_pusher("import", "project_settings", config, data = import_file_checker(data, format), format=format)
+function import_project_information(config::REDCap.Config, data; format::String="json", returnFormat::String="json")
+	return api_pusher("import", "project_settings", config, data = import_file_checker(data, format), format=format, returnFormat=returnFormat)
 end
 
 
@@ -150,7 +150,7 @@ julia> push!(arms, newarm)
 julia> import_arms(config, arms)
 POSTing
 POSTd
-2
+2	<- this should indicate 2 arms added.
 
 julia> export_arms(config)
 POSTing
@@ -246,6 +246,7 @@ Upload a document to specific record to the designated uploading field.
 #### Returns:
 Nothing/errors
 """
+###BROKEN###
 function import_file(config::REDCap.Config, record::String, field::String, event::String, file::String; repeat_instance::Int=1, returnFormat::String="json")
 	return api_pusher("import", "file", config, record=record, field=field, event=event, file=open(file), repeat_instance=repeat_instance, returnFormat=returnFormat)
 end
@@ -273,23 +274,22 @@ Creates a project with the given parameters
 #### Returns:
 The standard config for that project.
 """
+###BROKEN(?)###
 function create_project(config::REDCap.Config, project_title::String, purpose::Integer; format::String="json", returnFormat::String="json", odm="", purpose_other::String="", project_notes::String="", is_longitudinal::Integer=0, surveys_enabled::Integer=0, record_autonumbering_enabled::Integer=1)
 	if length(config.key)==64
-		fields = Dict("token" => config.key,
-						"content" => "project",
-						"format" => format,
-						"data" => json_formatter([Dict("project_title" => project_title,
+		data = json_formatter([Dict{String, Any}("project_title" => project_title,
 													"purpose" => purpose,
 													"purpose_other" => purpose_other,
 													"project_notes" => project_notes,
 													"is_longitudinal" => is_longitudinal,
 													"surveys_enabled" => surveys_enabled,
-													"record_autonumbering_enabled" => record_autonumbering_enabled)], "import"),
-						"returnFormat" => returnFormat,
-						"odm" => odm)
-		response = poster(config, fields)
-		return Config(config.url, response, config.ssl) #inherit all settings except the newly generated key
+													"record_autonumbering_enabled" => record_autonumbering_enabled)], "import")
+		#Send through api_pusher NOT poster
+		response = api_pusher("import", "project", config, format=format, data=data, returnFormat=returnFormat, odm=odm)
+		return Config(config.url, response; ssl=config.ssl) #inherit all settings except the newly generated key
 	else
 		error("Please use a config object that contains a properly entered Super API key.\n$(config.key) is an invalid Super-API key.")
 	end
 end
+
+#config = create_project(super_config, "Test Project", 1; purpose_other="Testing REDCap.jl Functionality", project_notes="This is not an actual REDCap Database.", is_longitudinal=1, surveys_enabled=1, record_autonumbering_enabled=1)
