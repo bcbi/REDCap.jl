@@ -52,7 +52,29 @@ using REDCap
 	if full_test
 		println("Creating Project")
 		#Creating
-		config = create_project(super_config, "Test Project", 1; purpose_other="Testing REDCap.jl Functionality", project_notes="This is not an actual REDCap Database.", is_longitudinal=1, surveys_enabled=1, record_autonumbering_enabled=1)
+		config = create_project(super_config, "Test Project", 1; purpose_other="Testing REDCap.jl Functionality", project_notes="This is not an actual REDCap Database.", is_longitudinal=0, surveys_enabled=1, record_autonumbering_enabled=1)
+
+
+		new_meta = """field_name,form_name,section_header,field_type,field_label,select_choices_or_calculations,field_note,text_validation_type_or_show_slider_number,text_validation_min,text_validation_max,identifier,branching_logic,required_field,custom_alignment,question_number,matrix_group_name,matrix_ranking,field_annotation
+record_id,demographics,,text,"Study ID",,,,,,,,,,,,,
+first_name,demographics,"Contact Information",text,"First Name",,,,,,y,,,,,,,
+last_name,demographics,,text,"Last Name",,,,,,y,,,,,,,
+address,demographics,,notes,"Street, City, State, ZIP",,,,,,y,,,,,,,
+telephone,demographics,,text,"Phone number",,"Include Area Code",phone,,,y,,,,,,,
+email,demographics,,text,E-mail,,,email,,,y,,,,,,,
+dob,demographics,,text,"Date of birth",,,date_ymd,,,y,,,,,,,
+age,demographics,,calc,"Age (years)","rounddown(datediff([dob],'today','y'))",,,,,,,,,,,,
+ethnicity,demographics,,radio,Ethnicity,"0, Hispanic or Latino | 1, NOT Hispanic or Latino | 2, Unknown / Not Reported",,,,,,,,LH,,,,
+race,demographics,,dropdown,Race,"0, American Indian/Alaska Native | 1, Asian | 2, Native Hawaiian or Other Pacific Islander | 3, Black or African American | 4, White | 5, More Than One Race | 6, Unknown / Not Reported",,,,,,,,,,,,
+sex,demographics,,radio,Sex,"0, Female | 1, Male",,,,,,,,,,,,
+height,demographics,,text,"Height (cm)",,,number,130,215,,,,,,,,
+weight,demographics,,text,"Weight (kilograms)",,,integer,35,200,,,,,,,,
+bmi,demographics,,calc,BMI,"round(([weight]*10000)/(([height])^(2)),1)",,,,,,,,,,,,
+comments,demographics,"General Comments",notes,Comments,,,,,,,,,,,,,"""
+	
+	import_metadata(config, new_meta, format="csv")
+
+
 	end
 
 	#=
@@ -159,7 +181,6 @@ using REDCap
                     "lock_records" => "1",
                     "data_quality_execute" => "1",
                     "manage_survey_participants" => "1",
-                    "forms" => Dict{String,Any}("demographics"=>"0","visit_form"=>"0"),
 					"lastname" => "Smith")]
 
 	println("Initial Import Users Test")
@@ -253,12 +274,12 @@ using REDCap
                         "unique_event_name" => "event_1_arm_2")
 
 
-
+#=
     #testing_mapping_again = export_instrument_event_mappings(config)
-
+    current_users=export_users(config)
     #Test modifying user - this may rely on what your permissions are after project creation - will need to test that more
-    stock_user_changed=[Dict{String, Any}("username" => "john_smith21@email.com",
-        					"email" => "john_smith21@email.com",
+    stock_user_changed=[Dict{String, Any}("username" => "john_smith@email.com",
+        					"email" => "john_smith@email.com",
                             "design" => "0",
                             "api_export" => "0",
                             "user_rights" => "0",
@@ -276,7 +297,7 @@ using REDCap
                             "record_delete" => "0",
                             "calendar" => "0",
                             "lock_records_all_forms" => "0",
-                            "firstname" => "Johnathan",
+                            "firstname" => "John",
                             "expiration" => "",
                             "data_access_group" => "",
                             "api_import" => "0",
@@ -287,18 +308,18 @@ using REDCap
                             "lock_records" => "0",
                             "data_quality_execute" => "0",
                             "manage_survey_participants" => "0",
-        					"forms" => Dict{String,Any}("demographics"=>"0","visit_form"=>"0"),
-							"lastname" => "Smithy")]
+							"lastname" => "Smith")]
 
+    current_users[2]=stock_user_changed[1]
     println("Import User Modification Test")
-    @test import_users(config, stock_user_changed) == 1
+    @test import_users(config, current_users) == 1
     #Verify changes made
     testing_user_changed = export_users(config)
     #Test to ensure user matches stock - all settings transfer
     for (k, v) in testing_user_changed[end]
         @test testing_user_changed[end][k] == stock_user_changed[1][k]
     end
-
+=#
 
 	if full_test
 		println("Project Finalization Test")
@@ -329,6 +350,7 @@ using REDCap
 		println("Metadata Post-Finalization Test")
 		try
 			import_metadata(config, post_meta)
+			println("Metedata Imported")
 			@test false
 		catch
 			@test true
@@ -343,10 +365,12 @@ using REDCap
 		import_project_information(config, post_project_info)
 		try
 			import_metadata(config, post_meta)
+			println("Info Imported")
 			@test false
 		catch
 			@test true
 		end
 	end
+	println("End of Testing")
 
 end

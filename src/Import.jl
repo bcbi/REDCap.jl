@@ -277,20 +277,16 @@ The standard config for that project.
 ###BROKEN(?)###
 function create_project(config::REDCap.Config, project_title::String, purpose::Integer; format::String="json", returnFormat::String="json", odm="", purpose_other::String="", project_notes::String="", is_longitudinal::Integer=0, surveys_enabled::Integer=0, record_autonumbering_enabled::Integer=1)
 	if length(config.key)==64
-		fields = Dict("token" => config.key,
-						"content" => "project",
-						"format" => format,
-						"data" => json_formatter([Dict{String, Any}("project_title" => project_title,
+		data = json_formatter([Dict{String, Any}("project_title" => project_title,
 													"purpose" => purpose,
 													"purpose_other" => purpose_other,
 													"project_notes" => project_notes,
 													"is_longitudinal" => is_longitudinal,
 													"surveys_enabled" => surveys_enabled,
-													"record_autonumbering_enabled" => record_autonumbering_enabled)], "import"),
-						"returnFormat" => returnFormat,
-						"odm" => odm)
-		response = poster(config, fields)
-		return Config(config.url, response, config.ssl) #inherit all settings except the newly generated key
+													"record_autonumbering_enabled" => record_autonumbering_enabled)], "import")
+		#Send through api_pusher NOT poster
+		response = api_pusher("import", "project", config, format=format, data=data, returnFormat=returnFormat, odm=odm)
+		return Config(config.url, response; ssl=config.ssl) #inherit all settings except the newly generated key
 	else
 		@error("Please use a config object that contains a properly entered Super API key.\n$(config.key) is an invalid Super-API key.")
 	end
