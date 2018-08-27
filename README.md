@@ -26,6 +26,8 @@ Available under the MIT license.
 
 ### Installing
 
+(Working on Julia 0.6)
+
 (Ideally) Julia can be found using the standard pakckage manager
 
 ## Tests 

@@ -182,7 +182,7 @@ end
 
 
 """
-	import_records(config::REDCap.Config, data::Any; format::String="json", type::String="flat", overwriteBehavior::String="normal", forceAutoNumber::Bool=false, dateFormat::String="YMD", returnContent::String="count", returnFormat::String="json")
+	import_records(config::REDCap.Config, data::Any; format::String="json", dtype::String="flat", overwriteBehavior::String="normal", forceAutoNumber::Bool=false, dateFormat::String="YMD", returnContent::String="count", returnFormat::String="json")
 
 Import a set of records for a project.
 
@@ -190,7 +190,7 @@ Import a set of records for a project.
 * `config` - Struct containing url and api-key
 * `recordData` - Array of record data to be imported - pass as a file location to import from disk
 * `format` - "json", "xml", "csv", or "odm". declares format of imported data
-* `type` - "flat" (one record per row) or "eav" (one data point per row)
+* `dtype` - "flat" (one record per row) or "eav" (one data point per row)
 * `overwriteBehavior` - "normal" - will not overwrite, "overwrite" - will
 * `forceAutoNumber` - Force auto-numbering and overwrite given id number
 * `dateFormat` - "YMD", "MDY", or "DMY"
@@ -202,8 +202,8 @@ Import a set of records for a project.
 #### Returns:
 Specified by returnContent
 """
-function import_records(config::REDCap.Config, data; format::String="json", type::String="flat", overwriteBehavior::String="normal", forceAutoNumber::Bool=false, dateFormat::String="YMD", returnContent::String="count", returnFormat::String="json")
-	return api_pusher("import", "record", config, data = import_file_checker(data, format), format=format, type=type, overwriteBehavior=overwriteBehavior, forceAutoNumber=forceAutoNumber, dateFormat=dateFormat, returnContent=returnContent, returnFormat=returnFormat)
+function import_records(config::REDCap.Config, data; format::String="json", dtype::String="flat", overwriteBehavior::String="normal", forceAutoNumber::Bool=false, dateFormat::String="YMD", returnContent::String="count", returnFormat::String="json")
+	return api_pusher("import", "record", config, data = import_file_checker(data, format), format=format, dtype=dtype, overwriteBehavior=overwriteBehavior, forceAutoNumber=forceAutoNumber, dateFormat=dateFormat, returnContent=returnContent, returnFormat=returnFormat)
 end
 
 
@@ -288,7 +288,7 @@ function create_project(config::REDCap.Config, project_title::String, purpose::I
 		response = api_pusher("import", "project", config, format=format, data=data, returnFormat=returnFormat, odm=odm)
 		return Config(config.url, response; ssl=config.ssl) #inherit all settings except the newly generated key
 	else
-		@error("Please use a config object that contains a properly entered Super API key.\n$(config.key) is an invalid Super-API key.")
+		error("Please use a config object that contains a properly entered Super API key.\n$(config.key) is an invalid Super-API key.")
 	end
 end
 
