@@ -28,8 +28,8 @@ git:
 ## uncomment the following lines to override the default test script
 #script:
 #  - julia -e 'import Pkg; Pkg.clone(pwd()); Pkg.build("REDCap")' #; Pkg.test("REDCap"; coverage=true)'
-- julia -e 'if VERSION < v\"0.7.0-DEV.5183\"; Pkg.clone(pwd()); Pkg.build("REDCap"); else using Pkg; Pkg.build(); end'
-- julia -e 'if VERSION < v\"0.7.0-DEV.5183\"; Pkg.add("Test"); Pkg.test("REDCap", coverage=true); else using Pkg; Pkg.add("Test"); Pkg.test(coverage=true); end'
+- julia -e 'if VERSION < v"0.7.0-DEV.5183"; Pkg.clone(pwd()); Pkg.build("REDCap"); else using Pkg; Pkg.build(); end'
+#- julia -e 'if VERSION < v\"0.7.0-DEV.5183\"; Pkg.add("Test"); Pkg.test("REDCap", coverage=true); else using Pkg; Pkg.add("Test"); Pkg.test(coverage=true); end'
 after_success:
   - julia -e 'cd(Pkg.dir("REDCap")); Pkg.add("Documenter"); include(joinpath("docs", "make.jl"))'
   # push coverage results to Coveralls
