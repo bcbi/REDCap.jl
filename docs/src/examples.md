@@ -73,36 +73,3 @@ import_records(config, "<path>/records.xml", format="xml") #NOTE: The format mus
 
 import_users(config, "<path>/users.csv", format="csv")
 ```
-
-## Changing Settings
-
-
-
-Export/Import modified settings like users and project info, as well as records.
-
-### BROKEN
-```julia
-#Changing user permissions
-
-user_list=export_users(config) #Returns an array of dictionaries by default
-
-user_list[1]["api_export"]="1"
-user_list[1]["data_export"]="1"
-
-```
-
-```julia
-#Changing project info
-```
-
--issues with this: import user seems to not work, and import metadata too. Import records is fine, and arms/events too. They use similar formats, so odd why it won't read. Metadata wont read anything but CSV, but CSV doesn't work for the others as a fix...
-
-- detail project info modification, whole works. Record modification (correction of something?). Adding fields using metadata imports? Adding users/changing permissions after a study ends?
-```julia
-#Changing metadata
-```
-
-
-## Other Examples
-
-Arms/Events? Report generation?
