@@ -26,9 +26,11 @@ Available under the MIT license.
 
 ### Installing
 
-(Working on Julia 0.6)
+Julia can be found using the standard package manager.
 
-(Ideally) Julia can be found using the standard pakckage manager
+```bash
+add REDCap
+```
 
 ## Tests 
 
