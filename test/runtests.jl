@@ -357,20 +357,6 @@ else
 		catch
 			@test true
 		end
-
-		post_project_info = Dict{String, Any}("project_title" => "New Title",
-											"purpose" => 3,
-											"is_longitudinal" => 1,
-											"surveys_enabled" => 1,
-											"record_autonumbering_enabled" => 1)
-		println("Project Info Post-Finalization Test")
-		try
-			import_project_information(config, post_project_info)
-			println("Info Imported")
-			@test false
-		catch
-			@test true
-		end
 	end
 	println("End of Testing")
 	end
