@@ -211,6 +211,9 @@ function odm_formatter(data, mode::String)
 		end
 	end
 end
+#=
+There is such sparse documentation on odm and Julia, and its so low priority- just use xml.
+=#
 
 
 """

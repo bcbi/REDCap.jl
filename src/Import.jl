@@ -99,7 +99,7 @@ function import_users(config::REDCap.Config, data; format::String="json", return
 end
 
 #=
-No longer modifies users! Can add them wholesale, not modify them afterwards WHY THO???
+No longer modifies users! Can add them wholesale, not modify them after???
 
 =#
 
@@ -131,20 +131,14 @@ POSTd
 1-element Array{Any,1}:
  Dict{String,Any}(Pair{String,Any}("name", "Arm 1"),Pair{String,Any}("arm_num", 1))
 
-julia> newarm=arms[1]
+julia> newarm
 Dict{String,Any} with 2 entries:
   "name"    => "Arm 1"
   "arm_num" => 1
 
-julia> newarm["name"]="Arm 2"
-"Arm 2"
-
-julia> newarm["arm_num"]="2"
-"2"
-
 julia> push!(arms, newarm)
 2-element Array{Any,1}:
- Dict{String,Any}(Pair{String,Any}("name", "Arm 2"),Pair{String,Any}("arm_num", "2"))
+ Dict{String,Any}(Pair{String,Any}("name", "Arm 1"),Pair{String,Any}("arm_num", "1"))
  Dict{String,Any}(Pair{String,Any}("name", "Arm 2"),Pair{String,Any}("arm_num", "2"))
 
 julia> import_arms(config, arms)
@@ -158,7 +152,6 @@ POSTd
 1-element Array{Any,1}:
  Dict{String,Any}(Pair{String,Any}("name", "Arm 1"),Pair{String,Any}("arm_num", 1))
 
-WHY THO???
 =#
 
 """
@@ -250,6 +243,9 @@ Nothing/errors
 function import_file(config::REDCap.Config, record::String, field::String, event::String, file::String; repeat_instance::Int=1, returnFormat::String="json")
 	return api_pusher("import", "file", config, record=record, field=field, event=event, file=open(file), repeat_instance=repeat_instance, returnFormat=returnFormat)
 end
+#=
+No longer properly passes files- REDCap returns an error of invalid file.
+=#
 
 
 """
@@ -290,5 +286,3 @@ function create_project(config::REDCap.Config, project_title::String, purpose::I
 		error("Please use a config object that contains a properly entered Super API key.\n$(config.key) is an invalid Super-API key.")
 	end
 end
-
-#config = create_project(super_config, "Test Project", 1; purpose_other="Testing REDCap.jl Functionality", project_notes="This is not an actual REDCap Database.", is_longitudinal=1, surveys_enabled=1, record_autonumbering_enabled=1)

@@ -15,19 +15,16 @@ A Julia frontend for the REDCap API. REDCap.jl supports both importing and expor
 
 Available under the MIT license.
 
-[![](https://img.shields.io/badge/docs-latest-blue.svg)](https://bcbi.github.io/REDCap.jl/latest)
-<!---
-	#Re-enable once docs push right
 [![](https://img.shields.io/badge/docs-stable-blue.svg)](https://bcbi.github.io/REDCap.jl/stable)
 [![](https://img.shields.io/badge/docs-latest-blue.svg)](https://bcbi.github.io/REDCap.jl/latest)
---->
+
 
 ## Getting Started 
 
 
 ### Installing
 
-Julia can be found using the standard package manager.
+Julia can be found using the standard package manager, and installed like any other package.
 
 ```bash
 add REDCap
@@ -53,8 +50,3 @@ Projects are tested according to a rough template. Several tests may fail if you
 
 ## Release History
 - 1.0 - Initial Release - compatible with Julia 1.0 and REDCap 8.1.0
-
-
-## Authors
-
-Cory Cothrum - BCBI Intern

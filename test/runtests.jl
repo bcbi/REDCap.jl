@@ -246,33 +246,35 @@ else
     export_records(config, file_loc="records.txt")
     @test import_records(config, "records.txt")["count"] == length(stock_records)
 
-    #testing_user = export_users(config)
-    #Test to ensure user matches stock - all settings transfer
-    #for (k, v) in testing_user[end]
-    #    @test testing_user[end][k] == stock_user[1][k]
-    #end
     println("Project Info Verification")
     testing_info = export_project_information(config)
     @test testing_info["project_notes"] == stock_proj_info["project_notes"]
     @test testing_info["project_title"] == stock_proj_info["project_title"]
 
-###TODO
-    #testing_arms = export_arms(config)
+###TODO- once importing arms/mappings works
+#=
+    testing_arms = export_arms(config)
     #Verify arm is there - can check for 2 arms?
+    #
 
-    #testing_events = export_events(config)
+    testing_events = export_events(config)
 	ex_info = export_project_information(config)
     #verify event there
+    #
+=#
 
-
-###TODO
-	#testing_mapping = export_instrument_event_mappings(config)
+###TODO- once importing arms/mappings works
+#=
+	testing_mapping = export_instrument_event_mappings(config)
     #change mapping, check again
     new_mapping = Dict("arm_num" => "2",
                         "form" => "demographics",
                         "unique_event_name" => "event_1_arm_2")
+=#
+#=
+The following test is removed because it doesn't work- users cannot be properly modified. It would be really great if they could, and those changes verified.
 
-
+=#
 #=
     #testing_mapping_again = export_instrument_event_mappings(config)
     current_users=export_users(config)

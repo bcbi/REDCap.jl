@@ -57,7 +57,6 @@ function delete_file(config::REDCap.Config, record::String, field::String, event
 end
 
 
-
 """
 	delete_records(config::REDCap.Config, records::Array; arm::Integer=0)
 
