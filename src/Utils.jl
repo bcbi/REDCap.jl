@@ -138,7 +138,7 @@ function formatter(data, format, mode::String)
 	elseif format=="text"
 		return data 						#Internal format
 	else
-		error("$format is an invalid format.\nValid formats: \"json\", \"csv\", \"xml\", \"odm\", or \"df\"")
+		@error("$format is an invalid format.\nValid formats: \"json\", \"csv\", \"xml\", \"odm\", or \"df\"")
 	end
 end
 
