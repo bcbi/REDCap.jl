@@ -271,8 +271,9 @@ else
                         "form" => "demographics",
                         "unique_event_name" => "event_1_arm_2")
 =#
+
 #=
-The following test is removed because it doesn't work- users cannot be properly modified. It would be really great if they could, and those changes verified.
+###The following test is removed because it doesn't work- users cannot be properly modified. It would be really great if they could, and those changes verified.
 
 =#
 #=
@@ -351,7 +352,7 @@ The following test is removed because it doesn't work- users cannot be properly 
 		println("Metadata Post-Finalization Test")
 		try
 			import_metadata(config, post_meta)
-			println("Metedata Imported")
+			println("Metadata Imported")
 			@test false
 		catch
 			@test true
@@ -363,9 +364,8 @@ The following test is removed because it doesn't work- users cannot be properly 
 											"surveys_enabled" => 1,
 											"record_autonumbering_enabled" => 1)
 		println("Project Info Post-Finalization Test")
-		import_project_information(config, post_project_info)
 		try
-			import_metadata(config, post_meta)
+			import_project_information(config, post_project_info)
 			println("Info Imported")
 			@test false
 		catch
