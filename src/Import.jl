@@ -283,6 +283,6 @@ function create_project(config::REDCap.Config, project_title::String, purpose::I
 		response = api_pusher("import", "project", config, format=format, data=data, returnFormat=returnFormat, odm=odm)
 		return Config(config.url, response; ssl=config.ssl) #inherit all settings except the newly generated key
 	else
-		error("Please use a config object that contains a properly entered Super API key.\n$(config.key) is an invalid Super-API key.")
+		@error("Please use a config object that contains a properly entered Super API key.\n$(config.key) is an invalid Super-API key.")
 	end
 end

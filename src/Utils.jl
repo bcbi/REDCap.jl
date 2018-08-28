@@ -160,7 +160,7 @@ function json_formatter(data, mode::String)
 		try
 			return JSON.parse(data) 
 		catch
-			warn("Data cannot be json formatted")
+			@warn("Data cannot be json formatted")
 			return data 					#for things that arent dicts - a surprising amount of REDCap's output
 		end
 	end
@@ -206,7 +206,7 @@ function odm_formatter(data, mode::String)
 		try
 			return parse_string(data)
 		catch
-			warn("Data cannot be odm formatted")
+			@warn("Data cannot be odm formatted")
 			return data
 		end
 	end
@@ -233,7 +233,7 @@ function df_formatter(data, mode::String)
 		try
 			return CSV.read(IOBuffer(data))
 		catch
-			warn("Data cannot be df formatted")
+			@warn("Data cannot be df formatted")
 			return data
 		end
 	end
@@ -289,11 +289,11 @@ function import_from_file(file_loc::String, format::String)
 			if format ∈ valid_formats
 				return String(read(file))
 			else
-				error("$format is an invalid format.\nValid formats: \"json\", \"csv\", \"xml\", \"odm\", or \"df\"")
+				@error("$format is an invalid format.\nValid formats: \"json\", \"csv\", \"xml\", \"odm\", or \"df\"")
 			end
 		end
 	catch
-		error("File could not be opened:\n$file_loc")
+		@error("File could not be opened:\n$file_loc")
 	end
 end
 
@@ -316,7 +316,7 @@ function import_file_checker(data, format::String)
 		try
 			return import_from_file(data, format)
 		catch
-			error("File could not be opened:\n$data")
+			@error("File could not be opened:\n$data")
 		end
 	else
 		return formatter(data, format, "import")
@@ -344,6 +344,6 @@ function export_to_file(file_loc::String, data)
 			return "Success"
 		end
 	catch
-		error("File could not be opened:\n$file_loc")
+		@error("File could not be opened:\n$file_loc")
 	end
 end
