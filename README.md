@@ -46,6 +46,7 @@ ENV["REDCAP_URL"] = "<url>"
 If a super-key is not provided, project creation will not be tested. Otherwise, a project will be created, and verified.
 
 ### NOTE:
+Testing must be performed on the users own REDCap environment. If you are unable to access your own REDCap environment, testing will also fail.
 Projects are tested according to a rough template. Several tests may fail if your project deviates from this template such as record contents and users.
 
 ## Release History
