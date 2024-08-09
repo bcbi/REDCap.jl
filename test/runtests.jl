@@ -18,15 +18,15 @@ else
 		config = ""
 		full_test=false
 		#Get keys from user environment
-		api_url=get(ENV, "REDCAP_URL", "")
+		api_url=get(ENV, "REDCAP_API_URL", "")
 		if length(api_url)>0
-			super_key=get(ENV, "REDCAP_SUPER_API", "")
+			super_key=get(ENV, "REDCAP_API_SUPER_TOKEN", "")
 			if length(super_key)>0
 				full_test=true
 				global super_config = REDCap.Config(api_url, super_key)
 			else
 				@warn("Cannot find REDCap Super API key in environment.")
-				key=get(ENV, "REDCAP_API", "")
+				key=get(ENV, "REDCAP_API_TOKEN", "")
 				if length(key)>0
 					global config = REDCap.Config(api_url, key)
 				else

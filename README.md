@@ -34,11 +34,12 @@ Tests can be run using the Julia package manager
 test REDCap
 ```
 
-Due to the nature of the API, the API-Key and URL must be set in the users `.juliarc` file:
-```bash
-ENV["REDCAP_SUPER_API"] = "<super-key>"
-ENV["REDCAP_API"] = "<key>"
-ENV["REDCAP_URL"] = "<url>"
+Your institution's REDCap URL and any tokens are read from Julia's environment variables.
+You can make them avaiable to REDCap.jl by putting the following lines in [your local Julia startup file](https://docs.julialang.org/en/v1/manual/command-line-interface/#Startup-file) (probably `~/.julia/config/startup.jl`):
+```
+ENV["REDCAP_API_SUPER_TOKEN"] = "ABCD1234ABCD1234ABCD1234ABCD1234ABCD1234ABCD1234ABCD1234ABCD1234"
+ENV["REDCAP_API_TOKEN"] = "ABCD1234ABCD1234ABCD1234ABCD1234"
+ENV["REDCAP_API_URL"] = "http://example.com/redcap/api/"
 ```
 If a super-key is not provided, project creation will not be tested. Otherwise, a project will be created, and verified.
 
