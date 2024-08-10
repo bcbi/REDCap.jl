@@ -20,16 +20,16 @@ struct Config
 	url::String
 	key::String
 	ssl::Bool
-	#basic validation - checks that the url starts and ends 'properly', and then checks the key length
 	function Config(url::String, key::String; ssl::Bool = true)
-		if isequal(url[end-4:end], "/api/") && (isequal(url[1:7], "http://") || isequal(url[1:8], "https://"))
-			if (length(key)==32 || length(key)==64)
-				new(url, key, ssl)
-			else
-				@error("Invalid Key: $key \nMust be 32 characters long for a standard key, or 64 characters long for a super key.")
-			end
+		#TODO: What's the proper datatype? Hexadecimal? A new string literal?
+		is_valid_redcap_token(s) = length(s) ∈ [32,64]
+		is_valid_redcap_url(u) = occursin(r"^https:\/\/.*\/api\/?$", u)
+
+		if is_valid_redcap_token(s) && is_valid_redcap_url(u)
+			new(url, key, ssl)
 		else
-			@error("Invalid URL: $url \nMust be in format of http(s)://<redcap-hosting-url>/api/")
+			@error("Invalid REDCap credentials")
+			new("", "", ssl)
 		end
 	end
 end

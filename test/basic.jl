@@ -48,8 +48,10 @@ test_sets = Dict(
 		@testset "$test_set_name" begin
 			for function_call in test_sets[test_set_name]
 				@testset "$function_call" begin
-					eval(function_call)
-					@test true
+					@test begin
+						eval(function_call)
+						true
+					end
 				end
 			end
 		end
