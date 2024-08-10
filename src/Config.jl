@@ -22,15 +22,10 @@ struct Config
 	ssl::Bool
 	function Config(url::String, key::String; ssl::Bool = true)
 		#TODO: What's the proper datatype? Hexadecimal? A new string literal?
-		is_valid_redcap_token(x) = occursin(r"^[0-9A-F]{32}([0-9A-F]{32})?$", x)
-		is_valid_redcap_url(x) = occursin(r"^https:\/\/.*\/api\/?$", x)
+		is_valid_token(x) = occursin(r"^[0-9A-F]{32}([0-9A-F]{32})?$", x)
+		is_valid_url(x) = occursin(r"^https:\/\/.*\/api\/?$", x)
 
-		if is_valid_redcap_token(key) && is_valid_redcap_url(url)
-			return new(url, key, ssl)
-		else
-			@error("Invalid REDCap credentials")
-			return nothing
-		end
+		is_valid_token(key) && is_valid_url(url) ? new(url, key, ssl) : nothing
 	end
 end
 

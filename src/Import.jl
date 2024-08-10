@@ -11,13 +11,13 @@ NOTE: Only for projects in development
 #### Returns:
 Number of successfully imported values
 """
-function import_project_information(data; format::String="json", returnFormat::String="json")
-	return api_pusher("import", "project_settings", data = import_file_checker(data, format), format=format, returnFormat=returnFormat)
+function import_project_information(data; format::String="json")
+	return api_pusher("import", "project_settings", data = import_file_checker(data, format), format=format)
 end
 
 
 """
-	import_metadata(data; format::String="json", returnFormat::String="json")
+	import_metadata(data; format::String="json")
 
 Import metadata (i.e., Data Dictionary) into a project.
 NOTE: Only for projects in development
@@ -25,14 +25,13 @@ NOTE: Only for projects in development
 #### Parameters:
 * `data` - Data to be imported - pass as a file location to import from disk
 * `format` - "json", "xml", "csv", or "odm". declares format of imported data
-* `returnFormat` - Error message format
 
 #### Returns:
 Number of successfully imported fields
 """
 ###BROKEN(?)###
-function import_metadata(data; format::String="json", returnFormat::String="json")
-	return api_pusher("import", "metadata", data = import_file_checker(data, format), format=format, returnFormat=returnFormat)
+function import_metadata(data; format::String="json")
+	return api_pusher("import", "metadata", data = import_file_checker(data, format), format=format)
 end
 #=
 Breaks on JSON, XML, 
@@ -78,21 +77,20 @@ Content-Type: application/json; charset=utf-8
 =#
 
 """
-	import_users(data; format::String="json", returnFormat::String="json")
+	import_users(data; format::String="json")
 
 Update/import new users into a project.
 
 #### Parameters:
 * `data` - Data to be imported - pass as a file location to import from disk
 * `format` - "json", "xml", "csv", or "odm". declares format of imported data
-* `returnFormat` - Error message format
 
 #### Returns:
 Number of succesfully added/modified users.
 """
 ###BROKEN###
-function import_users(data; format::String="json", returnFormat::String="json")
-	return api_pusher("import", "user", data = import_file_checker(data, format), format=format, returnFormat=returnFormat)
+function import_users(data; format::String="json")
+	return api_pusher("import", "user", data = import_file_checker(data, format), format=format)
 end
 
 #=
@@ -102,7 +100,7 @@ No longer modifies users! Can add them wholesale, not modify them after???
 
 
 """
-	import_arms(data; override::Int=0, format::String="json", returnFormat::String="json")
+	import_arms(data; override::Int=0, format::String="json")
 
 Update/import Arms into a project.
 
@@ -110,14 +108,13 @@ Update/import Arms into a project.
 * `data` - Data to be imported - pass as a file location to import from disk
 * `override` - 0 (false) 1 (true) - overwrites existing arms
 * `format` - "json", "xml", "csv", or "odm". declares format of imported data
-* `returnFormat` - Error message format
 
 #### Returns:
 Number of successfully imported arms
 """
 ###BROKEN###
-function import_arms(data; override::Int=0, format::String="json", returnFormat::String="json")
-	return api_pusher("import", "arm", data = import_file_checker(data, format), override=override, format=format, returnFormat=returnFormat)
+function import_arms(data; override::Int=0, format::String="json")
+	return api_pusher("import", "arm", data = import_file_checker(data, format), override=override, format=format)
 end
 
 #=
@@ -151,7 +148,7 @@ POSTd
 =#
 
 """
-	import_events(data; override::Int=0, format::String="json", returnFormat::String="json")
+	import_events(data; override::Int=0, format::String="json")
 
 Update/import Events into a project.
 
@@ -159,18 +156,17 @@ Update/import Events into a project.
 * `data` - Data to be imported - pass as a file location to import from disk
 * `override` - 0 (false) 1 (true) - overwrites existing events
 * `format` - "json", "xml", "csv", or "odm". declares format of imported data
-* `returnFormat` - Error message format
 
 #### Returns:
 Number of successfully imported events
 """
-function import_events(data; override::Int=0, format::String="json", returnFormat::String="json")
-	return api_pusher("import", "event", data = import_file_checker(data, format), override=override, format=format, returnFormat=returnFormat)
+function import_events(data; override::Int=0, format::String="json")
+	return api_pusher("import", "event", data = import_file_checker(data, format), override=override, format=format)
 end
 
 
 """
-	import_records(data::Any; format::String="json", dtype::String="flat", overwriteBehavior::String="normal", forceAutoNumber::Bool=false, dateFormat::String="YMD", returnContent::String="count", returnFormat::String="json")
+	import_records(data::Any; format::String="json", dtype::String="flat", overwriteBehavior::String="normal", forceAutoNumber::Bool=false, dateFormat::String="YMD", returnContent::String="count")
 
 Import a set of records for a project.
 
@@ -184,18 +180,17 @@ Import a set of records for a project.
 * `returnContent` - "count" (number of successfully uploaded records), 
 						"ids" (list of record numbers imported), 
 						"auto-ids" (pair of assigned id and given id)
-* `returnFormat` - Error message format
 
 #### Returns:
 Specified by returnContent
 """
-function import_records(data; format::String="json", dtype::String="flat", overwriteBehavior::String="normal", forceAutoNumber::Bool=false, dateFormat::String="YMD", returnContent::String="count", returnFormat::String="json")
-	return api_pusher("import", "record", data = import_file_checker(data, format), format=format, dtype=dtype, overwriteBehavior=overwriteBehavior, forceAutoNumber=forceAutoNumber, dateFormat=dateFormat, returnContent=returnContent, returnFormat=returnFormat)
+function import_records(data; format::String="json", dtype::String="flat", overwriteBehavior::String="normal", forceAutoNumber::Bool=false, dateFormat::String="YMD", returnContent::String="count")
+	return api_pusher("import", "record", data = import_file_checker(data, format), format=format, dtype=dtype, overwriteBehavior=overwriteBehavior, forceAutoNumber=forceAutoNumber, dateFormat=dateFormat, returnContent=returnContent)
 end
 
 
 """
-	import_instrument_event_mappings(data; format::String="json", returnFormat::String="json")
+	import_instrument_event_mappings(data; format::String="json")
 
 Import Instrument-Event Mappings into a project 
 
@@ -204,19 +199,18 @@ Import Instrument-Event Mappings into a project
 #### Parameters:
 * `data` - Data to be imported - pass as a file location to import from disk
 * `format` - "json", "xml", "csv", or "odm". declares format of imported data
-* `returnFormat` - Error message format
 
 #### Returns:
 Number of successfully imported inst-event mappings
 """
 ###BROKEN(?)###
-function import_instrument_event_mappings(data; format::String="json", returnFormat::String="json")
-	return api_pusher("import", "formEventMapping", data = import_file_checker(data, format), format=format, returnFormat=returnFormat)
+function import_instrument_event_mappings(data; format::String="json")
+	return api_pusher("import", "formEventMapping", data = import_file_checker(data, format), format=format)
 end
 
 
 """
-	import_file(record::String, field::String, event::String, file::String; repeat_instance::Int=1, returnFormat::String="json")
+	import_file(record::String, field::String, event::String, file::String; repeat_instance::Int=1)
 
 Upload a document to specific record to the designated uploading field.
 
@@ -226,14 +220,13 @@ Upload a document to specific record to the designated uploading field.
 * `event` - Destination event
 * `repeat_instance` - Number of repeated instances (long project)
 * `file` - File to be imported
-* `returnFormat` - Error message format
 
 #### Returns:
 Nothing/errors
 """
 ###BROKEN###
-function import_file(record::String, field::String, event::String, file::String; repeat_instance::Int=1, returnFormat::String="json")
-	return api_pusher("import", "file", record=record, field=field, event=event, file=open(file), repeat_instance=repeat_instance, returnFormat=returnFormat)
+function import_file(record::String, field::String, event::String, file::String; repeat_instance::Int=1)
+	return api_pusher("import", "file", record=record, field=field, event=event, file=open(file), repeat_instance=repeat_instance)
 end
 #=
 No longer properly passes files- REDCap returns an error of invalid file.
@@ -241,7 +234,7 @@ No longer properly passes files- REDCap returns an error of invalid file.
 
 
 """
-	create_project(project_title::String, purpose::Integer; format::String="json", returnFormat::String="json", odm="", purpose_other::String="", project_notes::String="", is_longitudinal::Integer=0, surveys_enabled::Integer=0, record_autonumbering_enabled::Integer=1)
+	create_project(project_title::String, purpose::Integer; format::String="json", odm="", purpose_other::String="", project_notes::String="", is_longitudinal::Integer=0, surveys_enabled::Integer=0, record_autonumbering_enabled::Integer=1)
 
 Creates a project with the given parameters
 
@@ -255,13 +248,12 @@ Creates a project with the given parameters
 	* `is_longitudinal`: 0 - false*, 1 - true
 	* `surveys_enabled`: 0 - false*, 1 - true
 	* `record_autonumbering_enabled`: 0 - false, 1 - true*
-* `returnFormat` - Error message format
 * `odm` - XML string containing metadata
 
 #### Returns:
 The standard config for that project.
 """
-function create_project(project_title::String, purpose::Integer; format::String="json", returnFormat::String="json", odm="", purpose_other::String="", project_notes::String="", is_longitudinal::Integer=0, surveys_enabled::Integer=0, record_autonumbering_enabled::Integer=1)
+function create_project(project_title::String, purpose::Integer; format::String="json", odm="", purpose_other::String="", project_notes::String="", is_longitudinal::Integer=0, surveys_enabled::Integer=0, record_autonumbering_enabled::Integer=1)
 	if length(config.key)==64
 		data = json_formatter([Dict{String, Any}("project_title" => project_title,
 													"purpose" => purpose,
@@ -271,7 +263,7 @@ function create_project(project_title::String, purpose::Integer; format::String=
 													"surveys_enabled" => surveys_enabled,
 													"record_autonumbering_enabled" => record_autonumbering_enabled)], "import")
 		#Send through api_pusher NOT poster
-		response = api_pusher("import", "project", format=format, data=data, returnFormat=returnFormat, odm=odm)
+		response = api_pusher("import", "project", format=format, data=data, odm=odm)
 		return Config(config.url, response; ssl=config.ssl) #inherit all settings except the newly generated key
 	else
 		@error("Please use a config object that contains a properly entered Super API key.\n$(config.key) is an invalid Super-API key.")
