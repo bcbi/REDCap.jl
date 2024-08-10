@@ -1,7 +1,6 @@
 # RedCap
 
 <p>
-<a href="https://app.bors.tech/repositories/12274"><img alt="Bors enabled" src="https://bors.tech/images/badge_small.svg"></a>
 <a href="https://travis-ci.org/bcbi/REDCap.jl/branches"><img alt="Travis build status" src="https://travis-ci.org/bcbi/REDCap.jl.svg?branch=master"></a>
 <a href="http://codecov.io/github/bcbi/REDCap.jl?branch=master"><img src="http://codecov.io/github/bcbi/REDCap.jl/coverage.svg?branch=master"></a>
 </p>
