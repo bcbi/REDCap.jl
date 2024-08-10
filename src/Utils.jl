@@ -20,6 +20,10 @@ Formatted response body
 """
 function api_pusher(mode::String, content::String; format::String="", returnFormat::String="", file_loc::String="", kwargs...)
 	config = get_redcap_user_config()
+	if isnothing(config)
+		@error("No valid credentials found")
+		return
+	end
 	#initialize dict with basic info and api calls
 	fields = Dict{String, Any}("token" => config.key,
 					"action" => mode,						#import, export, delete

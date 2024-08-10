@@ -26,10 +26,10 @@ struct Config
 		is_valid_redcap_url(x) = occursin(r"^https:\/\/.*\/api\/?$", x)
 
 		if is_valid_redcap_token(key) && is_valid_redcap_url(url)
-			new(url, key, ssl)
+			return new(url, key, ssl)
 		else
 			@error("Invalid REDCap credentials")
-			new("", "", ssl)
+			return nothing
 		end
 	end
 end
