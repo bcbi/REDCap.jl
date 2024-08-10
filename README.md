@@ -48,3 +48,7 @@ Projects are tested according to a rough template. Several tests may fail if you
 
 ## Release History
 - 1.0 - Initial Release - compatible with Julia 1.0 and REDCap 8.1.0
+
+## Acknowledgements
+The contributors are grateful for the support of Mary McGrath, Paul Stey, Fernando Gelin, the Brown Data Science Team.
+

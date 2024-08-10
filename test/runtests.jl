@@ -307,6 +307,17 @@ else
         @test testing_user_changed[end][k] == stock_user_changed[1][k]
     end
 =#
+#=
+An example from the old paper:
+# Create new user with basic import/export permissions
+user=[Dict("username" => "john_smith@email.com",
+         "email" => "john_smith@email.com",
+         "lastname" => "Smith",
+         "api_export"=>"1",
+         "api_import"=>"1")]
+
+import_users(config, user)
+=#
 
 	if full_test
 		println("Project Finalization Test")
