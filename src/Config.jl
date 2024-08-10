@@ -30,4 +30,3 @@ struct Config
 end
 
 get_redcap_user_config() = Config(get(ENV, "REDCAP_API_URL", ""), get(ENV, "REDCAP_API_TOKEN", ""))
-get_redcap_superuser_config() = Config(get(ENV, "REDCAP_API_URL", ""), get(ENV, "REDCAP_API_SUPER_TOKEN", ""))

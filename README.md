@@ -11,8 +11,7 @@ Your institution's REDCap URL and any tokens are read from Julia's environment v
 You can make them avaiable to REDCap.jl by putting the following lines in [your local Julia startup file](https://docs.julialang.org/en/v1/manual/command-line-interface/#Startup-file) (probably `~/.julia/config/startup.jl`):
 
 ```julia
-ENV["REDCAP_API_SUPER_TOKEN"] = "ABCD1234ABCD1234ABCD1234ABCD1234ABCD1234ABCD1234ABCD1234ABCD1234"
-ENV["REDCAP_API_TOKEN"] = "ABCD1234ABCD1234ABCD1234ABCD1234"
+ENV["REDCAP_API_TOKEN"] = "C0FFEEC0AC0AC0DEC0FFEEC0AC0AC0DE"
 ENV["REDCAP_API_URL"] = "http://example.com/redcap/api/"
 ```
 
