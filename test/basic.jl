@@ -43,12 +43,14 @@ test_sets = Dict(
 	       ],
 )
 
-for test_set_name in keys(test_sets)
-	@testset "$test_set_name" begin
-		for function_call in test_sets[test_set_name]
-			@testset "$function_call" begin
+@testset "User-facing functions" begin
+	for test_set_name in keys(test_sets)
+		@testset "$test_set_name" begin
+			for function_call in test_sets[test_set_name]
+				@testset "$function_call" begin
 					eval(function_call)
-				@test true
+					@test true
+				end
 			end
 		end
 	end
