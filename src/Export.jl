@@ -44,8 +44,8 @@ end
 #### Returns:
 Formatted dict of the metadata for project.
 """
-function export_metadata(; fields::Array=[], forms::Array=[], format::String="json", returnFormat::String="json", file_loc::String="")
-	return api_pusher("export", "metadata", fields=fields, forms=forms, format=format, returnFormat=returnFormat, file_loc=file_loc)
+function export_metadata()
+	return api_pusher("export", "metadata")
 end
 
 

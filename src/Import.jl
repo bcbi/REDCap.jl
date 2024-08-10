@@ -30,8 +30,8 @@ NOTE: Only for projects in development
 Number of successfully imported fields
 """
 ###BROKEN(?)###
-function import_metadata(data; format::String="json")
-	return api_pusher("import", "metadata", data = import_file_checker(data, format), format=format)
+function import_metadata(data)
+	return api_pusher("import", "metadata", data = data)
 end
 #=
 Breaks on JSON, XML, 
