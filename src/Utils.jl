@@ -21,30 +21,20 @@ Formatted response body
 function api_pusher(mode::String, content::String; format::String="", returnFormat::String="", file_loc::String="", kwargs...)
 	config = get_redcap_user_config()
 	if isnothing(config)
-		@error("No valid credentials found")
 		return
 	end
-	#initialize dict with basic info and api calls
-	fields = Dict{String, Any}("token" => config.key,
-					"action" => mode,						#import, export, delete
-					"content" => content,					#API call to access
-					"returnFormat" => returnFormat)
 
-	if format=="df"
-		if mode=="import"
-			fields["format"] = "json" 						#REDCap doesnt know what df is
-		elseif mode=="export"
-			fields["format"] = "csv"						#Julia can parse csv as a df
-		end
-	else
-		fields["format"] = format
-	end
+	fields = Dict{String, Any}("token" => config.key,
+		"action" => mode,
+		"content" => content,
+		"format" => Format,
+		"returnFormat" => returnFormat)
 
 	for (k,v) in kwargs
-		k=String(k) 										#k is a Symbol, make easier to handle
-		if mode=="import" && isequal(k, "data")				#Turn all imported data into an IOBuffer so HTTP won't mess with it OR turn filterLogic data into a buffer because it uses []'s and REDCap can't understand URI encoding
+		k=String(k) #k is a Symbol, make easier to handle
+		if mode=="import" && isequal(k, "data") #Turn all imported data into an IOBuffer so HTTP won't mess with it OR turn filterLogic data into a buffer because it uses []'s and REDCap can't understand URI encoding
 			fields[k]=IOBuffer(v)
-		elseif isa(v, Array)								#Turn arrays into specially URI encoded arrays
+		elseif isa(v, Array) #Turn arrays into specially URI encoded arrays
 			for (i, item) in enumerate(v)
 			    fields["$k[$(i-1)]"]=String(item)
 			end
@@ -55,7 +45,6 @@ function api_pusher(mode::String, content::String; format::String="", returnForm
 		end
 	end
 
-	#POST request and get response
 	response = poster(config, fields)
 
 	#check if user wanted to save the file here
@@ -84,11 +73,11 @@ Handles the POST duties for all modules. Also does basic Status checking and SSL
 The response body.
 """
 function poster(config::Config, body)
-	println("POSTing")
+	@debug("POSTing")
 
-	response = HTTP.post(config.url; body=body, require_ssl_verification=config.ssl)#, verbose=3)
+	response = HTTP.post(config.url; body=body, require_ssl_verification=config.ssl, verbose=3)
 
-	println("POSTd")
+	@debug("POSTed")
 	if response.status != 200
 		#Error - handle errors way more robustly- check for "error" field? here or back at api_pusher?
 		#an error is an error is an error, so it throws no matter what, on REDCaps end
