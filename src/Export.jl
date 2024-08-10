@@ -1,140 +1,11 @@
-"""
-	export_field_names(field::String="", format::String="json", file_loc::String="") 
-
-#### Parameters:
-* `field` - Specifies the field to export
-* `format` - "json", "xml", "csv", or "odm". decides format of returned data
-* `file_loc` - Location to export to
-
-#### Returns:
-Formatted dict of export/import-specific version of field names 
-for all fields (or for one field, if desired) in project: 
-'original_field_name', 'choice_value', and 'export_field_name'
-"""
-function export_field_names(field::String="", format::String="json", file_loc::String="")
-	return api_pusher("export", "exportFieldNames", field=field, format=format, file_loc=file_loc)
-end
-
-
-"""
-	export_instruments(format::String="json", file_loc::String="") 
-
-#### Parameters:
-* `format` - "json", "xml", "csv", or "odm". decides format of returned data
-* `file_loc` - Location to export to
-
-#### Returns:
-Formatted dict for data collection instruments of project.
-"""
-function export_instruments(; format::String="json", file_loc::String="")
-	return api_pusher("export", "instrument", format=format, file_loc=file_loc)
-end
-
-
-"""
-	export_metadata(; fields::Array=[], forms::Array=[], format::String="json", returnFormat::String="json", file_loc::String="") 
-
-#### Parameters:
-* `fields` - Array of field names to pull data from
-* `forms` - Array of form names to pull data from
-* `format` - "json", "xml", "csv", or "odm". decides format of returned data
-* `returnFormat` - Error message format
-* `file_loc` - Location to export to
-
-#### Returns:
-Formatted dict of the metadata for project.
-"""
-function export_metadata()
-	return api_pusher("export", "metadata")
-end
-
-
-"""
-	export_project_information(; format::String="json", returnFormat::String="json", file_loc::String="") 
-
-#### Parameters:
-* `format` - "json", "xml", "csv", or "odm". decides format of returned data
-* `returnFormat` - Error message format
-* `file_loc` - Location to export to
-
-#### Returns:
-Formatted dict of the basic attributes of given REDCap project.
-"""
-function export_project_information(; format::String="json", returnFormat::String="json", file_loc::String="")
-	return api_pusher("export", "project", format=format, returnFormat=returnFormat, file_loc=file_loc)
-end
-
-
-"""
-	export_users(; format::String="json", returnFormat::String="json", file_loc::String="") 
-
-#### Parameters:
-* `format` - "json", "xml", "csv", or "odm". decides format of returned data
-* `returnFormat` - Error message format
-* `file_loc` - Location to export to
-
-#### Returns:
-Array of formatted dicts of users for project.
-"""
-function export_users(; format::String="json", returnFormat::String="json", file_loc::String="")
-	return api_pusher("export", "user", format=format, returnFormat=returnFormat, file_loc=file_loc)
-end
-
-
-"""
-	export_version(; format::String="json") 
-
-Returns a string of the current REDCap version.
-
-#### Parameters:
-* `format` - "json", "xml", "csv", or "odm". decides format of returned data
-
-#### Returns:
-The version number (eg 1.0.0) as a string
-"""
-function export_version(; format::String="text")
-	return api_pusher("export", "version", format=format)
-end
-
-
-"""
-	export_arms(; arms::Array=[], format::String="json", returnFormat::String="json", file_loc::String="") 
-
-Returns a dict of all arms used in the project.
-
-#### NOTE: This only works for longitudinal projects.
-
-#### Parameters:
-* `arms` - Array of arm names to export
-* `format` - "json", "xml", "csv", or "odm". decides format of returned data
-* `returnFormat` - Error message format
-* `file_loc` - Location to export to
-
-#### Returns:
-Formatted dict of Arms for project.
-"""
-function export_arms(; arms::Array=[], format::String="json", returnFormat::String="json", file_loc::String="")
-	return api_pusher("export", "arm", format=format, returnFormat=returnFormat, arms=arms, file_loc=file_loc)
-end
-
-
-"""
-	export_events(; arms::Array=[], format::String="json", returnFormat::String="json", file_loc::String="") 
-
-#### NOTE: This only works for longitudinal projects.
-
-#### Parameters:
-* `arms` - Array of arm names to export
-* `format` - "json", "xml", "csv", or "odm". decides format of returned data
-* `returnFormat` - Error message format
-* `file_loc` - Location to export to
-
-#### Returns:
-Formatted dict of events for project.
-"""
-function export_events(; arms::Array=[], format::String="json", returnFormat::String="json", file_loc::String="")
-	return api_pusher("export", "event", format=format, returnFormat=returnFormat, arms=arms, file_loc=file_loc)
-end
+export_field_names(field) = api_pusher("export", "exportFieldNames", field)
+export_instruments() = api_pusher("export", "instrument")
+export_metadata() = api_pusher("export", "metadata")
+export_project_information() = api_pusher("export", "project")
+export_users() = api_pusher("export", "user")
+export_version() = api_pusher("export", "version")
+export_arms() = api_pusher("export", "arm")
+export_events() = api_pusher("export", "event")
 
 
 """
@@ -167,14 +38,13 @@ end
 
 
 """
-	export_project(; returnMetadataOnly::Bool=false, records::Array=[], fields::Array=[], events::Array=[], format::String="xml", returnFormat::String="json", exportSurveyFields::Bool=false, exportDataAccessGroups::Bool=false, filterLogic::String="", exportFiles::Bool=false, file_loc::String="") 
+	export_project(; returnMetadataOnly::Bool=false, records::Array=[], fields::Array=[], events::Array=[], format::String="xml", exportSurveyFields::Bool=false, exportDataAccessGroups::Bool=false, filterLogic::String="", exportFiles::Bool=false, file_loc::String="") 
 
 #### Parameters:
 * `returnMetadataOnly` - Flag to return metedata or not
 * `records` - Array of record names to include
 * `fields` - Array of field names to include
 * `events` - Array of event names to include
-* `returnFormat` - Error message format
 * `exportSurveyFields` - Flag to return survey fields or not
 * `exportDataAccessGroups` - Flag to return DAGroups or not
 * `filterLogic` - Allows collection of records that fulfill a criteria eg. "[age] > 65"
@@ -184,8 +54,8 @@ end
 #### Returns:
 Entire project as XML.
 """
-function export_project(; returnMetadataOnly::Bool=false, records::Array=[], fields::Array=[], events::Array=[], format::String="xml", returnFormat::String="json", exportSurveyFields::Bool=false, exportDataAccessGroups::Bool=false, filterLogic::String="", exportFiles::Bool=false, file_loc::String="")
-	output = api_pusher("export", "project_xml", returnMetadataOnly=returnMetadataOnly, records=records, fields=fields, events=events, format=format, returnFormat=returnFormat, exportSurveyFields=exportSurveyFields, exportDataAccessGroups=exportDataAccessGroups, filterLogic=filterLogic, exportFiles=exportFiles, file_loc=file_loc)
+function export_project(; returnMetadataOnly::Bool=false, records::Array=[], fields::Array=[], events::Array=[], format::String="xml", exportSurveyFields::Bool=false, exportDataAccessGroups::Bool=false, filterLogic::String="", exportFiles::Bool=false, file_loc::String="")
+	output = api_pusher("export", "project_xml", returnMetadataOnly=returnMetadataOnly, records=records, fields=fields, events=events, format=format, exportSurveyFields=exportSurveyFields, exportDataAccessGroups=exportDataAccessGroups, filterLogic=filterLogic, exportFiles=exportFiles, file_loc=file_loc)
 	if length(file_loc)>0
 		return "Success"
 	else
@@ -195,7 +65,7 @@ end
 
 
 """
-	export_records(; format::String="json", dtype::String="flat", records::Array=[], fields::Array=[], forms::Array=[], events::Array=[], rawOrLabel::String="raw", rawOrLabelHeaders::String="raw", exportCheckboxLabel::Bool=false, returnFormat::String="json", exportSurveyFields::Bool=false, exportDataAccessGroups::Bool=false, filterLogic::String="", file_loc::String="")
+	export_records(; format::String="json", dtype::String="flat", records::Array=[], fields::Array=[], forms::Array=[], events::Array=[], rawOrLabel::String="raw", rawOrLabelHeaders::String="raw", exportCheckboxLabel::Bool=false, exportSurveyFields::Bool=false, exportDataAccessGroups::Bool=false, filterLogic::String="", file_loc::String="")
 
 #### Parameters:
 * `format` - "json", "xml", "csv", or "odm". decides format of returned data
@@ -207,7 +77,6 @@ end
 * `rawOrLabel` - "raw" or "label" - export raw coded values or labels for multiple choice fields
 * `rawOrLabelHeaders` - Same as above, for headers
 * `exportCheckboxLabel` - Checkbox behavior: export checkboxes as "checked/unchecked" or as "field-name/'blank'"
-* `returnFormat` - Error message format
 * `exportSurveyFields` - Flag to return survey fields or not
 * `exportDataAccessGroups` - Flag to return DAGroups or not
 * `filterLogic` - Allows collection of records that fulfill a criteria eg. "[age] > 65"
@@ -216,109 +85,76 @@ end
 #### Returns:
 An array of Dictionaries containing record information
 """
-function export_records(; format::String="json", dtype::String="flat", records::Array=[], fields::Array=[], forms::Array=[], events::Array=[], rawOrLabel::String="raw", rawOrLabelHeaders::String="raw", exportCheckboxLabel::Bool=false, returnFormat::String="json", exportSurveyFields::Bool=false, exportDataAccessGroups::Bool=false, filterLogic::String="", file_loc::String="")
-	return api_pusher("export", "record", format=format, dtype=dtype, records=records, fields=fields, forms=forms, events=events, rawOrLabel=rawOrLabel, rawOrLabelHeaders=rawOrLabelHeaders, exportCheckboxLabel=exportCheckboxLabel, exportSurveyFields=exportSurveyFields, exportDataAccessGroups=exportDataAccessGroups, filterLogic=filterLogic, returnFormat=returnFormat, file_loc=file_loc)
+function export_records(; format::String="json", dtype::String="flat", records::Array=[], fields::Array=[], forms::Array=[], events::Array=[], rawOrLabel::String="raw", rawOrLabelHeaders::String="raw", exportCheckboxLabel::Bool=false, exportSurveyFields::Bool=false, exportDataAccessGroups::Bool=false, filterLogic::String="", file_loc::String="")
+	return api_pusher("export", "record", format=format, dtype=dtype, records=records, fields=fields, forms=forms, events=events, rawOrLabel=rawOrLabel, rawOrLabelHeaders=rawOrLabelHeaders, exportCheckboxLabel=exportCheckboxLabel, exportSurveyFields=exportSurveyFields, exportDataAccessGroups=exportDataAccessGroups, filterLogic=filterLogic, file_loc=file_loc)
 end
 
 
-
-"""
-	export_survey_queue_link(record::String; returnFormat::String="json") 
-
-#### Parameters:
-* `record` - Record id for link
-* `returnFormat` - Error message format
-
-#### Returns:
-Unique Survey Queue link.
-"""
-function export_survey_queue_link(record::String; format::String="text", returnFormat::String="json")
-	return api_pusher("export", "surveyQueueLink", record=record, format=format, returnFormat=returnFormat)
-end
+export_survey_queue_link(record::String) = api_pusher("export", "surveyQueueLink", record=record)
 
 
 """
-	export_survey_return_code(record::String, instrument::String, event::String; repeat_instance::Integer=1, returnFormat::String="json") 
+	export_survey_return_code(record::String, instrument::String, event::String; repeat_instance::Integer=1) 
 
 #### Parameters:
 * `record` - Record id for link
 * `instrument` - Name of instrument to export code for
 * `event` - event Name conatining instrument
 * `repeat_instance` - Number of repeated instances (long project)
-* `returnFormat` - Error message format
 
 #### Returns:
 Unique Return Code in plain text format.
 """
-function export_survey_return_code(record::String, instrument::String, event::String; format::String="text", repeat_instance::Integer=1, returnFormat::String="json")
+function export_survey_return_code(record::String, instrument::String, event::String; format::String="text", repeat_instance::Integer=1)
 	return api_pusher("export", "surveyReturnCode", record=record, instrument=instrument, event=event, 
-							repeat_instance=repeat_instance, format=format, returnFormat=returnFormat)
+							repeat_instance=repeat_instance, format=format, )
 end
 
 
-"""
-	export_instrument_event_mappings(arms::Array=[]; format::String="json", returnFormat::String="json", file_loc::String="") 
-
-#### NOTE: This only works for longitudinal projects.
-
-#### Parameters:
-* `arms` - Array of arm names to export
-* `format` - "json", "xml", "csv", or "odm". decides format of returned data
-* `returnFormat` - Error message format
-* `file_loc` - Location to export to
-
-#### Returns:
-Formatted dict of instrument-event mappings for project.
-"""
-function export_instrument_event_mappings(arms::Array=[]; format::String="json", returnFormat::String="json", file_loc::String="")
-	return api_pusher("export", "formEventMapping", arms=arms, format=format, returnFormat=returnFormat, file_loc=file_loc)
-end
+export_instrument_event_mappings(arms::Array=[])= api_pusher("export", "formEventMapping", arms=arms)
 
 
 """
-	export_survey_participant_list(instrument::String, event::String; format::String="json", returnFormat::String="json", file_loc::String="") 
+	export_survey_participant_list(instrument::String, event::String; format::String="json", file_loc::String="") 
 
 #### Parameters:
 * `instrument` - Name of instrument to export list of participants
 * `event` - Event name conatining instrument
 * `format` - "json", "xml", "csv", or "odm". decides format of returned data
-* `returnFormat` - Error message format
 * `file_loc` - Location to export to
 
 #### Returns:
 Formatted dict of all participants for specific survey instrument.
 """
-function export_survey_participant_list(instrument::String, event::String; format::String="json", returnFormat::String="json", file_loc::String="")
-	return api_pusher("export", "participantList", event=event, instrument=instrument, format=format, returnFormat=returnFormat, file_loc=file_loc)
+function export_survey_participant_list(instrument::String, event::String; format::String="json", file_loc::String="")
+	return api_pusher("export", "participantList", event=event, instrument=instrument, format=format, file_loc=file_loc)
 end
 
 
 """
-	export_file(record::String, field::String, event::String; repeat_instance::Integer=1, returnFormat::String="json", file_loc::String="") 
+	export_file(record::String, field::String, event::String; repeat_instance::Integer=1, file_loc::String="") 
 
 #### Parameters:
 * `record` - Record id containing file
 * `field` - Field containing file
 * `event` - Event containing file
 * `repeat_instance` - Number of repeated instances (long. project)
-* `returnFormat` - Error message format
 * `file_loc` - Location to export to
 
 #### Returns:
 File attached to individual record.
 """
-function export_file(record::String, field::String, event::String; repeat_instance::Integer=1, returnFormat::String="json", file_loc::String="")
-	return api_pusher("export", "file", event=event, record=record, field=field, repeat_instance=repeat_instance, returnFormat=returnFormat, file_loc=file_loc)
+function export_file(record::String, field::String, event::String; repeat_instance::Integer=1, file_loc::String="")
+	return api_pusher("export", "file", event=event, record=record, field=field, repeat_instance=repeat_instance, file_loc=file_loc)
 end
 
 
 """
-	export_report(report_id::Integer; format::String="json", returnFormat::String="json", rawOrLabel::String="raw", rawOrLabelHeaders::String="raw", exportCheckboxLabel::Bool=false, file_loc::String="") 
+	export_report(report_id::Integer; format::String="json", rawOrLabel::String="raw", rawOrLabelHeaders::String="raw", exportCheckboxLabel::Bool=false, file_loc::String="") 
 
 #### Parameters:
 * `report_id` - Id of report to export
 * `format` - "json", "xml", "csv", or "odm". decides format of returned data
-* `returnFormat` - Error message format
 * `rawOrLabel` - "raw" or "label" - export raw coded values or labels for multiple choice fields
 * `rawOrLabelHeaders` - Same as above, for headers
 * `exportCheckboxLabel` - Checkbox behavior: export checkboxes as "checked/unchecked" or as "field-name/'blank'"
@@ -327,26 +163,25 @@ end
 #### Returns:
 Formatted dict of report.
 """
-function export_report(report_id; format::String="json", returnFormat::String="json", rawOrLabel::String="raw", rawOrLabelHeaders::String="raw", exportCheckboxLabel::Bool=false, file_loc::String="")
+function export_report(report_id; format::String="json", rawOrLabel::String="raw", rawOrLabelHeaders::String="raw", exportCheckboxLabel::Bool=false, file_loc::String="")
 	return api_pusher("export", "report", report_id=report_id, rawOrLabel=rawOrLabel, rawOrLabelHeaders=rawOrLabelHeaders, 
-							exportCheckboxLabel=exportCheckboxLabel, format=format, returnFormat=returnFormat, file_loc=file_loc)
+							exportCheckboxLabel=exportCheckboxLabel, format=format, file_loc=file_loc)
 end
 
 
 """ 
-	export_survey_link(record::String, instrument::String, event::String; repeat_instance::Int=1, returnFormat::String="json") 
+	export_survey_link(record::String, instrument::String, event::String; repeat_instance::Int=1) 
 
 #### Parameters:
 * `record` - Record id
 * `instrument` - Name of instrument linking to
 * `event` - Event name containing instrument
 * `repeat_instance` - Number of repeated instances (long project)
-* `returnFormat` - Error message format
 
 #### Returns:
 Unique survey link.
 """
-function export_survey_link(record::String, instrument::String, event::String; format::String="text", repeat_instance::Int=1, returnFormat::String="json")
+function export_survey_link(record::String, instrument::String, event::String; format::String="text", repeat_instance::Int=1, )
 	return api_pusher("export", "surveyLink", record=record, instrument=instrument, event=event, 
-							format=format, repeat_instance=repeat_instance, returnFormat=returnFormat)
+							format=format, repeat_instance=repeat_instance, )
 end
