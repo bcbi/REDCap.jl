@@ -396,7 +396,7 @@ File attached to individual record.
 function export_file(config::REDCap.Config, record::String, field::String, event::String; repeat_instance::Integer=1, returnFormat::String="json", file_loc::String="")
 	return api_pusher("export", "file", config, event=event, record=record, field=field, repeat_instance=repeat_instance, returnFormat=returnFormat, file_loc=file_loc)
 end
-function export_file(config::REDCap.Config, record::String, field::String, event::String; repeat_instance::Integer=1, returnFormat::String="json", file_loc::String="")
+function export_file(record::String, field::String, event::String; repeat_instance::Integer=1, returnFormat::String="json", file_loc::String="")
 	config = get_redcap_user_config()
 	return api_pusher("export", "file", config, event=event, record=record, field=field, repeat_instance=repeat_instance, returnFormat=returnFormat, file_loc=file_loc)
 end
