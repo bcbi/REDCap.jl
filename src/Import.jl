@@ -1,34 +1,28 @@
 """
-	import_project_information(config::REDCap.Config, data; format::String="json")
+	import_project_information(data; format::String="json")
 
 Update basic attributes of given REDCap project.
 NOTE: Only for projects in development
 
 #### Parameters:
-* `config` - Struct containing url and api-key
 * `data` - Data to be imported - pass as a file location to import from disk
 * `format` - "json", "xml", "csv", or "odm". declares format of imported data
 
 #### Returns:
 Number of successfully imported values
 """
-function import_project_information(config::REDCap.Config, data; format::String="json", returnFormat::String="json")
-	return api_pusher("import", "project_settings", config, data = import_file_checker(data, format), format=format, returnFormat=returnFormat)
-end
 function import_project_information(data; format::String="json", returnFormat::String="json")
-	config = get_redcap_user_config()
-	return api_pusher("import", "project_settings", config, data = import_file_checker(data, format), format=format, returnFormat=returnFormat)
+	return api_pusher("import", "project_settings", data = import_file_checker(data, format), format=format, returnFormat=returnFormat)
 end
 
 
 """
-	import_metadata(config::REDCap.Config, data; format::String="json", returnFormat::String="json")
+	import_metadata(data; format::String="json", returnFormat::String="json")
 
 Import metadata (i.e., Data Dictionary) into a project.
 NOTE: Only for projects in development
 
 #### Parameters:
-* `config` - Struct containing url and api-key
 * `data` - Data to be imported - pass as a file location to import from disk
 * `format` - "json", "xml", "csv", or "odm". declares format of imported data
 * `returnFormat` - Error message format
@@ -37,12 +31,8 @@ NOTE: Only for projects in development
 Number of successfully imported fields
 """
 ###BROKEN(?)###
-function import_metadata(config::REDCap.Config, data; format::String="json", returnFormat::String="json")
-	return api_pusher("import", "metadata", config, data = import_file_checker(data, format), format=format, returnFormat=returnFormat)
-end
 function import_metadata(data; format::String="json", returnFormat::String="json")
-	config = get_redcap_user_config()
-	return api_pusher("import", "metadata", config, data = import_file_checker(data, format), format=format, returnFormat=returnFormat)
+	return api_pusher("import", "metadata", data = import_file_checker(data, format), format=format, returnFormat=returnFormat)
 end
 #=
 Breaks on JSON, XML, 
@@ -88,12 +78,11 @@ Content-Type: application/json; charset=utf-8
 =#
 
 """
-	import_users(config::REDCap.Config, data; format::String="json", returnFormat::String="json")
+	import_users(data; format::String="json", returnFormat::String="json")
 
 Update/import new users into a project.
 
 #### Parameters:
-* `config` - Struct containing url and api-key
 * `data` - Data to be imported - pass as a file location to import from disk
 * `format` - "json", "xml", "csv", or "odm". declares format of imported data
 * `returnFormat` - Error message format
@@ -102,12 +91,8 @@ Update/import new users into a project.
 Number of succesfully added/modified users.
 """
 ###BROKEN###
-function import_users(config::REDCap.Config, data; format::String="json", returnFormat::String="json")
-	return api_pusher("import", "user", config, data = import_file_checker(data, format), format=format, returnFormat=returnFormat)
-end
 function import_users(data; format::String="json", returnFormat::String="json")
-	config = get_redcap_user_config()
-	return api_pusher("import", "user", config, data = import_file_checker(data, format), format=format, returnFormat=returnFormat)
+	return api_pusher("import", "user", data = import_file_checker(data, format), format=format, returnFormat=returnFormat)
 end
 
 #=
@@ -117,12 +102,11 @@ No longer modifies users! Can add them wholesale, not modify them after???
 
 
 """
-	import_arms(config::REDCap.Config, data; override::Int=0, format::String="json", returnFormat::String="json")
+	import_arms(data; override::Int=0, format::String="json", returnFormat::String="json")
 
 Update/import Arms into a project.
 
 #### Parameters:
-* `config` - Struct containing url and api-key
 * `data` - Data to be imported - pass as a file location to import from disk
 * `override` - 0 (false) 1 (true) - overwrites existing arms
 * `format` - "json", "xml", "csv", or "odm". declares format of imported data
@@ -132,16 +116,12 @@ Update/import Arms into a project.
 Number of successfully imported arms
 """
 ###BROKEN###
-function import_arms(config::REDCap.Config, data; override::Int=0, format::String="json", returnFormat::String="json")
-	return api_pusher("import", "arm", config, data = import_file_checker(data, format), override=override, format=format, returnFormat=returnFormat)
-end
 function import_arms(data; override::Int=0, format::String="json", returnFormat::String="json")
-	config = get_redcap_user_config()
-	return api_pusher("import", "arm", config, data = import_file_checker(data, format), override=override, format=format, returnFormat=returnFormat)
+	return api_pusher("import", "arm", data = import_file_checker(data, format), override=override, format=format, returnFormat=returnFormat)
 end
 
 #=
-julia> arms = export_arms(config)
+julia> arms = export_arms()
 POSTing
 POSTd
 1-element Array{Any,1}:
@@ -157,12 +137,12 @@ julia> push!(arms, newarm)
  Dict{String,Any}(Pair{String,Any}("name", "Arm 1"),Pair{String,Any}("arm_num", "1"))
  Dict{String,Any}(Pair{String,Any}("name", "Arm 2"),Pair{String,Any}("arm_num", "2"))
 
-julia> import_arms(config, arms)
+julia> import_arms(arms)
 POSTing
 POSTd
 2	<- this should indicate 2 arms added.
 
-julia> export_arms(config)
+julia> export_arms()
 POSTing
 POSTd
 1-element Array{Any,1}:
@@ -171,12 +151,11 @@ POSTd
 =#
 
 """
-	import_events(config::REDCap.Config, data; override::Int=0, format::String="json", returnFormat::String="json")
+	import_events(data; override::Int=0, format::String="json", returnFormat::String="json")
 
 Update/import Events into a project.
 
 #### Parameters:
-* `config` - Struct containing url and api-key
 * `data` - Data to be imported - pass as a file location to import from disk
 * `override` - 0 (false) 1 (true) - overwrites existing events
 * `format` - "json", "xml", "csv", or "odm". declares format of imported data
@@ -185,22 +164,17 @@ Update/import Events into a project.
 #### Returns:
 Number of successfully imported events
 """
-function import_events(config::REDCap.Config, data; override::Int=0, format::String="json", returnFormat::String="json")
-	return api_pusher("import", "event", config, data = import_file_checker(data, format), override=override, format=format, returnFormat=returnFormat)
-end
 function import_events(data; override::Int=0, format::String="json", returnFormat::String="json")
-	config = get_redcap_user_config()
-	return api_pusher("import", "event", config, data = import_file_checker(data, format), override=override, format=format, returnFormat=returnFormat)
+	return api_pusher("import", "event", data = import_file_checker(data, format), override=override, format=format, returnFormat=returnFormat)
 end
 
 
 """
-	import_records(config::REDCap.Config, data::Any; format::String="json", dtype::String="flat", overwriteBehavior::String="normal", forceAutoNumber::Bool=false, dateFormat::String="YMD", returnContent::String="count", returnFormat::String="json")
+	import_records(data::Any; format::String="json", dtype::String="flat", overwriteBehavior::String="normal", forceAutoNumber::Bool=false, dateFormat::String="YMD", returnContent::String="count", returnFormat::String="json")
 
 Import a set of records for a project.
 
 #### Parameters:
-* `config` - Struct containing url and api-key
 * `recordData` - Array of record data to be imported - pass as a file location to import from disk
 * `format` - "json", "xml", "csv", or "odm". declares format of imported data
 * `dtype` - "flat" (one record per row) or "eav" (one data point per row)
@@ -215,24 +189,19 @@ Import a set of records for a project.
 #### Returns:
 Specified by returnContent
 """
-function import_records(config::REDCap.Config, data; format::String="json", dtype::String="flat", overwriteBehavior::String="normal", forceAutoNumber::Bool=false, dateFormat::String="YMD", returnContent::String="count", returnFormat::String="json")
-	return api_pusher("import", "record", config, data = import_file_checker(data, format), format=format, dtype=dtype, overwriteBehavior=overwriteBehavior, forceAutoNumber=forceAutoNumber, dateFormat=dateFormat, returnContent=returnContent, returnFormat=returnFormat)
-end
 function import_records(data; format::String="json", dtype::String="flat", overwriteBehavior::String="normal", forceAutoNumber::Bool=false, dateFormat::String="YMD", returnContent::String="count", returnFormat::String="json")
-	config = get_redcap_user_config()
-	return api_pusher("import", "record", config, data = import_file_checker(data, format), format=format, dtype=dtype, overwriteBehavior=overwriteBehavior, forceAutoNumber=forceAutoNumber, dateFormat=dateFormat, returnContent=returnContent, returnFormat=returnFormat)
+	return api_pusher("import", "record", data = import_file_checker(data, format), format=format, dtype=dtype, overwriteBehavior=overwriteBehavior, forceAutoNumber=forceAutoNumber, dateFormat=dateFormat, returnContent=returnContent, returnFormat=returnFormat)
 end
 
 
 """
-	import_instrument_event_mappings(config::REDCap.Config, data; format::String="json", returnFormat::String="json")
+	import_instrument_event_mappings(data; format::String="json", returnFormat::String="json")
 
 Import Instrument-Event Mappings into a project 
 
 #### NOTE: This only works for longitudinal projects.
 
 #### Parameters:
-* `config` - Struct containing url and api-key
 * `data` - Data to be imported - pass as a file location to import from disk
 * `format` - "json", "xml", "csv", or "odm". declares format of imported data
 * `returnFormat` - Error message format
@@ -241,22 +210,17 @@ Import Instrument-Event Mappings into a project
 Number of successfully imported inst-event mappings
 """
 ###BROKEN(?)###
-function import_instrument_event_mappings(config::REDCap.Config, data; format::String="json", returnFormat::String="json")
-	return api_pusher("import", "formEventMapping", config, data = import_file_checker(data, format), format=format, returnFormat=returnFormat)
-end
 function import_instrument_event_mappings(data; format::String="json", returnFormat::String="json")
-	config = get_redcap_user_config()
-	return api_pusher("import", "formEventMapping", config, data = import_file_checker(data, format), format=format, returnFormat=returnFormat)
+	return api_pusher("import", "formEventMapping", data = import_file_checker(data, format), format=format, returnFormat=returnFormat)
 end
 
 
 """
-	import_file(config::REDCap.Config, record::String, field::String, event::String, file::String; repeat_instance::Int=1, returnFormat::String="json")
+	import_file(record::String, field::String, event::String, file::String; repeat_instance::Int=1, returnFormat::String="json")
 
 Upload a document to specific record to the designated uploading field.
 
 #### Parameters:
-* `config` - Struct containing url and api-key
 * `record` - Destination record id
 * `field` - Destination file upload field
 * `event` - Destination event
@@ -268,12 +232,8 @@ Upload a document to specific record to the designated uploading field.
 Nothing/errors
 """
 ###BROKEN###
-function import_file(config::REDCap.Config, record::String, field::String, event::String, file::String; repeat_instance::Int=1, returnFormat::String="json")
-	return api_pusher("import", "file", config, record=record, field=field, event=event, file=open(file), repeat_instance=repeat_instance, returnFormat=returnFormat)
-end
 function import_file(record::String, field::String, event::String, file::String; repeat_instance::Int=1, returnFormat::String="json")
-	config = get_redcap_user_config()
-	return api_pusher("import", "file", config, record=record, field=field, event=event, file=open(file), repeat_instance=repeat_instance, returnFormat=returnFormat)
+	return api_pusher("import", "file", record=record, field=field, event=event, file=open(file), repeat_instance=repeat_instance, returnFormat=returnFormat)
 end
 #=
 No longer properly passes files- REDCap returns an error of invalid file.
@@ -281,12 +241,11 @@ No longer properly passes files- REDCap returns an error of invalid file.
 
 
 """
-	create_project(config::REDCap.Config, project_title::String, purpose::Integer; format::String="json", returnFormat::String="json", odm="", purpose_other::String="", project_notes::String="", is_longitudinal::Integer=0, surveys_enabled::Integer=0, record_autonumbering_enabled::Integer=1)
+	create_project(project_title::String, purpose::Integer; format::String="json", returnFormat::String="json", odm="", purpose_other::String="", project_notes::String="", is_longitudinal::Integer=0, surveys_enabled::Integer=0, record_autonumbering_enabled::Integer=1)
 
 Creates a project with the given parameters
 
 #### Parameters:
-* `config` - Struct containing url and super-api-key
 * `format` - "json", "xml", "csv", or "odm". declares format of imported data
 * `data` - Attributes of project to create- only project_title and purpose are required (* for default)
 	* `project_title`: Title
@@ -302,24 +261,7 @@ Creates a project with the given parameters
 #### Returns:
 The standard config for that project.
 """
-function create_project(config::REDCap.Config, project_title::String, purpose::Integer; format::String="json", returnFormat::String="json", odm="", purpose_other::String="", project_notes::String="", is_longitudinal::Integer=0, surveys_enabled::Integer=0, record_autonumbering_enabled::Integer=1)
-	if length(config.key)==64
-		data = json_formatter([Dict{String, Any}("project_title" => project_title,
-													"purpose" => purpose,
-													"purpose_other" => purpose_other,
-													"project_notes" => project_notes,
-													"is_longitudinal" => is_longitudinal,
-													"surveys_enabled" => surveys_enabled,
-													"record_autonumbering_enabled" => record_autonumbering_enabled)], "import")
-		#Send through api_pusher NOT poster
-		response = api_pusher("import", "project", config, format=format, data=data, returnFormat=returnFormat, odm=odm)
-		return Config(config.url, response; ssl=config.ssl) #inherit all settings except the newly generated key
-	else
-		@error("Please use a config object that contains a properly entered Super API key.\n$(config.key) is an invalid Super-API key.")
-	end
-end
 function create_project(project_title::String, purpose::Integer; format::String="json", returnFormat::String="json", odm="", purpose_other::String="", project_notes::String="", is_longitudinal::Integer=0, surveys_enabled::Integer=0, record_autonumbering_enabled::Integer=1)
-	config = get_redcap_superuser_config()
 	if length(config.key)==64
 		data = json_formatter([Dict{String, Any}("project_title" => project_title,
 													"purpose" => purpose,
@@ -329,7 +271,7 @@ function create_project(project_title::String, purpose::Integer; format::String=
 													"surveys_enabled" => surveys_enabled,
 													"record_autonumbering_enabled" => record_autonumbering_enabled)], "import")
 		#Send through api_pusher NOT poster
-		response = api_pusher("import", "project", config, format=format, data=data, returnFormat=returnFormat, odm=odm)
+		response = api_pusher("import", "project", format=format, data=data, returnFormat=returnFormat, odm=odm)
 		return Config(config.url, response; ssl=config.ssl) #inherit all settings except the newly generated key
 	else
 		@error("Please use a config object that contains a properly entered Super API key.\n$(config.key) is an invalid Super-API key.")

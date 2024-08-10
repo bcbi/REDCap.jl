@@ -19,7 +19,8 @@ https://<your-redcap-site.com>/redcap/api/help/
 #### Returns:
 Formatted response body
 """
-function api_pusher(mode::String, content::String, config::Config; format::String="", returnFormat::String="", file_loc::String="", kwargs...)
+function api_pusher(mode::String, content::String; format::String="", returnFormat::String="", file_loc::String="", kwargs...)
+	config = get_redcap_user_config()
 	#initialize dict with basic info and api calls
 	fields = Dict{String, Any}("token" => config.key,
 					"action" => mode,						#import, export, delete
