@@ -357,3 +357,38 @@ import_users(config, user)
 	println("End of Testing")
 	end
 end
+
+#=
+
+record=[Dict("sex"=>"0",
+      "age"=>"56",
+      "address"=>"168 Anderson Blvd. Quincy MA 01227",
+      "height"=>"80",
+      "dob"=>"1962-04-08",
+      "record_id"=>"1",
+      "bmi"=>"125",
+      "comments"=>"Randomly Generated - Demographics",
+      "email"=>"ALin@aol.com",
+      "first_name"=>"Alexia",
+      "demographics_complete"=>"0",
+      "telephone"=>"(617) 882-6049",
+      "weight"=>"80",
+      "last_name"=>"Lin",
+      "ethnicity"=>"1",
+      "race"=>"1")]
+
+import_records(config, record)
+
+user=[Dict("username" => "john_smith@email.com",
+         "email" => "john_smith@email.com",
+         "lastname" => "Smith",
+         "api_export"=>"1",
+         "api_import"=>"1")]
+
+import_users(config, user)
+
+records = export_records(config)
+
+export_pdf(config, "/<path>/export.pdf", allRecords=true)
+
+=#
