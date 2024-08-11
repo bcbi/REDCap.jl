@@ -20,14 +20,14 @@ Formatted response body
 function redcap_api(;
 	token::String=get(ENV, "REDCAP_API_TOKEN", ""),
 	url::String=get(ENV, "REDCAP_API_URL", ""),
-	method::String="",
+	action::String="",
 	content::String="",
 	data::String="",
 	file_loc::String="",
 	kwargs...)
 
 	fields = Dict("token" => token,
-		"action" => method,
+		"action" => action,
 		"content" => content,
 	)
 
