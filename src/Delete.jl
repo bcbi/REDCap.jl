@@ -1,21 +1,3 @@
-""" 
-	delete_events(events::Array) 
-
-Delete Events from project. Removing all but one event reverts the project into a non-longitudinal project.
-
-#### NOTE: This only works for longitudinal projects. 
-
-#### Parameters:
-* `events` - Array of event names to delete
-
-#### Returns:
-Number of successfully deleted events
-"""
-function delete_events(events::Array)
-	return redcap_api("delete", "event", config, events=events)
-end
-
-
 """
 	delete_file(record::String, field::String, event::String; repeat_instance::Integer=1, returnFormat::String="json") 
 

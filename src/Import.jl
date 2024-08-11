@@ -95,24 +95,6 @@ end
 
 
 """
-	import_events(data; override::Int=0, format::String="json")
-
-Update/import Events into a project.
-
-#### Parameters:
-* `data` - Data to be imported - pass as a file location to import from disk
-* `override` - 0 (false) 1 (true) - overwrites existing events
-* `format` - "json", "xml", "csv", or "odm". declares format of imported data
-
-#### Returns:
-Number of successfully imported events
-"""
-function import_events(data; override::Int=0, format::String="json")
-	return redcap_api("import", "event", data = import_file_checker(data, format), override=override, format=format)
-end
-
-
-"""
 	import_records(data::Any; format::String="json", dtype::String="flat", overwriteBehavior::String="normal", forceAutoNumber::Bool=false, dateFormat::String="YMD", returnContent::String="count")
 
 Import a set of records for a project.

@@ -11,6 +11,11 @@ test_sets = Dict(
 		:(import_metadata(data="data")),
 		:(export_metadata()),
 	],
+	"Events" => [
+		:(delete_events(events)),
+		:(export_events()),
+		:(import_events(data)),
+	],
 	"Metadata" => [
 		:(import_metadata(data="data")),
 		:(export_metadata()),
@@ -21,7 +26,6 @@ test_sets = Dict(
 	#=
 	"Delete" => [
 		:(delete_arms(arms)),
-		:(delete_events(events)),
 		:(delete_file(record, field, event)),
 		:(delete_records(records)),
 	],
@@ -30,7 +34,6 @@ test_sets = Dict(
 		:(import_project_information(data)),
 		:(import_users(data)),
 		:(import_arms(data)),
-		:(import_events(data)),
 		:(import_records(data)),
 		:(import_instrument_event_mappings(data)),
 		:(import_file(record, field, event, file)),
@@ -45,7 +48,6 @@ test_sets = Dict(
 		:(export_users()),
 		:(export_version()),
 		:(export_arms()),
-		:(export_events()),
 		:(export_pdf("./X.pdf")),
 		:(export_project()),
 		:(export_records()),
