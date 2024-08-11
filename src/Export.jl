@@ -1,6 +1,5 @@
 export_field_names(field) = redcap_api("export", "exportFieldNames", field)
 export_instruments() = redcap_api("export", "instrument")
-export_metadata() = redcap_api("export", "metadata")
 export_project_information() = redcap_api("export", "project")
 export_users() = redcap_api("export", "user")
 export_version() = redcap_api("export", "version")

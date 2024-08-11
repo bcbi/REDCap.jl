@@ -1,7 +1,6 @@
 """
 	redcap_api(mode::String, content::String; returnFormat::String="", file_loc::String="", kwargs...)
 
-Pass the type of api call, the config struct, and any needed kwargs for that api call.
 
 API documentation found here:
 https://<your-redcap-site.com>/redcap/api/help/
@@ -16,16 +15,19 @@ https://<your-redcap-site.com>/redcap/api/help/
 #### Returns:
 Formatted response body
 """
-function redcap_api(mode::String, content::String; format::String="", file_loc::String="", kwargs...)
-	#TODO: bytes |> HTTP.Sniff.isjson |> first to determine if data needs to be converted
-	config = get_redcap_user_config()
-	if isnothing(config)
-		@error("Invalid REDCap credentials")
-		return
-	end
+function redcap_api(;
+	token::String=get(ENV, "REDCAP_API_TOKEN", ""),
+	url::String=get(ENV, "REDCAP_API_URL", ""),
+	method::String="",
+	content::String="",
+	data::String="",
+	format::String="",
+	returnFormat::String="",
+	file_loc::String="",
+	kwargs...)
 
-	fields = Dict{String, Any}("token" => config.key,
-		"action" => mode,
+	fields = Dict("token" => token,
+		"action" => method,
 		"content" => content,
 		"format" => format
 	)
@@ -45,7 +47,7 @@ for (k,v) in kwargs
 		end
 	end
 
-	return HTTP.post(config.url; body=fields, require_ssl_verification=config.ssl).body |> String 
+	return HTTP.post(url; body=fields, require_ssl_verification=true).body |> String 
 
 
 end
