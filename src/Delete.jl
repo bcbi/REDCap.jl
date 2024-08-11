@@ -1,22 +1,4 @@
 """ 
-	delete_arms(arms::Array) 
-
-Delete Arms from project. Removing all arms reverts the project into a non-longitudinal project.
-
-#### NOTE: This only works for longitudinal projects. 
-
-#### Parameters:
-* `arms` - Array of arm names to delete
-
-#### Returns:
-Number of succesfully deleted arms
-"""
-function delete_arms(arms::Array)
-	return redcap_api("delete", "arm", arms=arms)
-end
-
-
-""" 
 	delete_events(events::Array) 
 
 Delete Events from project. Removing all but one event reverts the project into a non-longitudinal project.

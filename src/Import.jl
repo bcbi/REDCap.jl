@@ -93,59 +93,6 @@ function import_users(data; format::String="json")
 	return redcap_api("import", "user", data = import_file_checker(data, format), format=format)
 end
 
-#=
-No longer modifies users! Can add them wholesale, not modify them after???
-
-=#
-
-
-"""
-	import_arms(data; override::Int=0, format::String="json")
-
-Update/import Arms into a project.
-
-#### Parameters:
-* `data` - Data to be imported - pass as a file location to import from disk
-* `override` - 0 (false) 1 (true) - overwrites existing arms
-* `format` - "json", "xml", "csv", or "odm". declares format of imported data
-
-#### Returns:
-Number of successfully imported arms
-"""
-###BROKEN###
-function import_arms(data; override::Int=0, format::String="json")
-	return redcap_api("import", "arm", data = import_file_checker(data, format), override=override, format=format)
-end
-
-#=
-julia> arms = export_arms()
-POSTing
-POSTd
-1-element Array{Any,1}:
- Dict{String,Any}(Pair{String,Any}("name", "Arm 1"),Pair{String,Any}("arm_num", 1))
-
-julia> newarm
-Dict{String,Any} with 2 entries:
-  "name"    => "Arm 1"
-  "arm_num" => 1
-
-julia> push!(arms, newarm)
-2-element Array{Any,1}:
- Dict{String,Any}(Pair{String,Any}("name", "Arm 1"),Pair{String,Any}("arm_num", "1"))
- Dict{String,Any}(Pair{String,Any}("name", "Arm 2"),Pair{String,Any}("arm_num", "2"))
-
-julia> import_arms(arms)
-POSTing
-POSTd
-2	<- this should indicate 2 arms added.
-
-julia> export_arms()
-POSTing
-POSTd
-1-element Array{Any,1}:
- Dict{String,Any}(Pair{String,Any}("name", "Arm 1"),Pair{String,Any}("arm_num", 1))
-
-=#
 
 """
 	import_events(data; override::Int=0, format::String="json")

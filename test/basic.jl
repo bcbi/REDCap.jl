@@ -2,8 +2,12 @@ using REDCap
 using Test
 
 test_sets = Dict(
-
-	"Metadata" => [
+	"arms" => [
+		:(delete_arms(arms="arms")),
+		:(export_arms()),
+		:(import_arms(data="data")),
+	],
+	"metadata" => [
 		:(import_metadata(data="data")),
 		:(export_metadata()),
 	],

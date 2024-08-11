@@ -1,3 +1,5 @@
+export redcap_api
+
 """
 	redcap_api(mode::String, content::String; returnFormat::String="", file_loc::String="", kwargs...)
 
@@ -21,15 +23,12 @@ function redcap_api(;
 	method::String="",
 	content::String="",
 	data::String="",
-	format::String="",
-	returnFormat::String="",
 	file_loc::String="",
 	kwargs...)
 
 	fields = Dict("token" => token,
 		"action" => method,
 		"content" => content,
-		"format" => format
 	)
 
 for (k,v) in kwargs
