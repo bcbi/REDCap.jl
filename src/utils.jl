@@ -92,7 +92,11 @@ for (k,v) in kwargs
 	end
 	=#
 
-	return HTTP.post(url; body=api_data_fields, require_ssl_verification=true).body |> String 
+	#try
+		return HTTP.post(url; body=api_data_fields, require_ssl_verification=true).body |> String 
+	#catch
+		#return
+	#end
 
 
 end
@@ -143,34 +147,4 @@ function export_to_file(file_loc::String, data)
 		@error("File could not be opened:\n$file_loc")
 	end
 end
-
-function get_valid_token()
-	token = get(ENV, "REDCAP_API_TOKEN", "")
-	if occursin(r"^[0-9A-F]{32}([0-9A-F]{32})?$", token)
-		return token
-	else
-		@error("No valid REDCap API token found")
-		throw(ArgumentError)
-	end
-end
-
-function get_valid_url()
-	url = get(ENV, "REDCAP_API_URL", "")
-	if occursin(r"^https:\/\/.*\/api\/?$", url)
-		return url
-	else
-		@error("No valid REDCap API URL found")
-		throw(ArgumentError)
-	end
-end
-
-function get_valid_format(format)
-	if format ∈ ["csv", "json", "xml"]
-		return format
-	else
-		@error("Invalid REDCap API parameter")
-		throw(ArgumentError)
-	end
-end
-
 
