@@ -1,3 +1,4 @@
+#TODO: AssertionError
 
 function get_valid_token()
 	token = get(ENV, "REDCAP_API_TOKEN", "")

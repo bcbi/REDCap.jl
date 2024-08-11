@@ -92,11 +92,13 @@ for (k,v) in kwargs
 	end
 	=#
 
-	#try
-		return HTTP.post(url; body=api_data_fields, require_ssl_verification=true).body |> String 
-	#catch
-		#return
-	#end
+	return HTTP.post(
+		url;
+		body=api_data_fields,
+		require_ssl_verification=true,
+		status_exception=false,
+	).body |> String 
+	#HTTP.iserror(r)
 
 
 end
