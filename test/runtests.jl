@@ -15,13 +15,11 @@ test_sets = Dict(
 		:(import_user_DAG_assignment()),
 		:(switch_DAG()),
 	],
-		 #=
 	"Events" => [
-		:(delete_events(events)),
+		:(delete_events()),
 		:(export_events()),
-		:(import_events(data)),
+		:(import_events()),
 	],
-	=#
 	"Metadata" => [
 		:(import_metadata()),
 		:(export_metadata()),

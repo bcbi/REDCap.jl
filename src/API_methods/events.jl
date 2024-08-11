@@ -1,7 +1,38 @@
-export delete_events
+export delete_events,
 	import_events,
-	export_events,
+	export_events
 
-delete_events(events::Array; kwargs...) = redcap_api(action="delete", content="event", config, events=events)
-export_events(; kwargs...) = redcap_api(; content="event", kwargs...)
-import_events(data; kwargs...) = redcap_api(action="import", content="event", data=data; kwargs...)
+function delete_events(;events=nothing)
+	redcap_api(;
+		url=get_valid_url(),
+		token=get_valid_token(),
+		content="event",
+		action="import",
+		events=events,
+	)
+end
+
+function export_events(;format="xml",arms=nothing,returnFormat=nothing)
+	redcap_api(;
+		url=get_valid_url(),
+		token=get_valid_token(),
+		content="event",
+		format=get_valid_format(format),
+		arms=arms,
+		returnFormat=isnothing(returnFormat) ? format : "xml",
+	)
+end
+
+function import_events(;format="xml",data=nothing,override=0,returnFormat=nothing)
+	redcap_api(;
+		url=get_valid_url(),
+		token=get_valid_token(),
+		content="event",
+		action="import",
+		override=override,
+		format=get_valid_format(format),
+		data=data,
+		returnFormat=isnothing(returnFormat) ? format : "xml",
+	)
+end
+

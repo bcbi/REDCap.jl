@@ -31,6 +31,7 @@ function redcap_api(;
 	override=nothing,
 	dags=nothing,
 	dag=nothing,
+	events=nothing,
 	
 )
 
