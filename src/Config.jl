@@ -4,7 +4,7 @@
 Struct to hold api url and key/superkey.
 `APIConfigObj = Config("http...","ABCD...")`
 
-This will be passed to all function calls to both orient and authorize the api_pusher() function. The REDCap API cannot
+This will be passed to all function calls to both orient and authorize the redcap_api() function. The REDCap API cannot
 be accessed without this config object properly set-up. Always test your config object before automating a project. 
 
 #### NOTE: SSL should always be on by default.

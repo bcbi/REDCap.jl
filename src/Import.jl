@@ -12,7 +12,7 @@ NOTE: Only for projects in development
 Number of successfully imported values
 """
 function import_project_information(data; format::String="json")
-	return api_pusher("import", "project_settings", data = import_file_checker(data, format), format=format)
+	return redcap_api("import", "project_settings", data = import_file_checker(data, format), format=format)
 end
 
 
@@ -31,7 +31,7 @@ Number of successfully imported fields
 """
 ###BROKEN(?)###
 function import_metadata(data)
-	return api_pusher("import", "metadata", data = data)
+	return redcap_api("import", "metadata", data = data)
 end
 #=
 Breaks on JSON, XML, 
@@ -90,7 +90,7 @@ Number of succesfully added/modified users.
 """
 ###BROKEN###
 function import_users(data; format::String="json")
-	return api_pusher("import", "user", data = import_file_checker(data, format), format=format)
+	return redcap_api("import", "user", data = import_file_checker(data, format), format=format)
 end
 
 #=
@@ -114,7 +114,7 @@ Number of successfully imported arms
 """
 ###BROKEN###
 function import_arms(data; override::Int=0, format::String="json")
-	return api_pusher("import", "arm", data = import_file_checker(data, format), override=override, format=format)
+	return redcap_api("import", "arm", data = import_file_checker(data, format), override=override, format=format)
 end
 
 #=
@@ -161,7 +161,7 @@ Update/import Events into a project.
 Number of successfully imported events
 """
 function import_events(data; override::Int=0, format::String="json")
-	return api_pusher("import", "event", data = import_file_checker(data, format), override=override, format=format)
+	return redcap_api("import", "event", data = import_file_checker(data, format), override=override, format=format)
 end
 
 
@@ -185,7 +185,7 @@ Import a set of records for a project.
 Specified by returnContent
 """
 function import_records(data; format::String="json", dtype::String="flat", overwriteBehavior::String="normal", forceAutoNumber::Bool=false, dateFormat::String="YMD", returnContent::String="count")
-	return api_pusher("import", "record", data = import_file_checker(data, format), format=format, dtype=dtype, overwriteBehavior=overwriteBehavior, forceAutoNumber=forceAutoNumber, dateFormat=dateFormat, returnContent=returnContent)
+	return redcap_api("import", "record", data = import_file_checker(data, format), format=format, dtype=dtype, overwriteBehavior=overwriteBehavior, forceAutoNumber=forceAutoNumber, dateFormat=dateFormat, returnContent=returnContent)
 end
 
 
@@ -205,7 +205,7 @@ Number of successfully imported inst-event mappings
 """
 ###BROKEN(?)###
 function import_instrument_event_mappings(data; format::String="json")
-	return api_pusher("import", "formEventMapping", data = import_file_checker(data, format), format=format)
+	return redcap_api("import", "formEventMapping", data = import_file_checker(data, format), format=format)
 end
 
 
@@ -226,7 +226,7 @@ Nothing/errors
 """
 ###BROKEN###
 function import_file(record::String, field::String, event::String, file::String; repeat_instance::Int=1)
-	return api_pusher("import", "file", record=record, field=field, event=event, file=open(file), repeat_instance=repeat_instance)
+	return redcap_api("import", "file", record=record, field=field, event=event, file=open(file), repeat_instance=repeat_instance)
 end
 #=
 No longer properly passes files- REDCap returns an error of invalid file.
@@ -262,8 +262,8 @@ function create_project(project_title::String, purpose::Integer; format::String=
 													"is_longitudinal" => is_longitudinal,
 													"surveys_enabled" => surveys_enabled,
 													"record_autonumbering_enabled" => record_autonumbering_enabled)], "import")
-		#Send through api_pusher NOT poster
-		response = api_pusher("import", "project", format=format, data=data, odm=odm)
+		#Send through redcap_api NOT poster
+		response = redcap_api("import", "project", format=format, data=data, odm=odm)
 		return Config(config.url, response; ssl=config.ssl) #inherit all settings except the newly generated key
 	else
 		@error("Please use a config object that contains a properly entered Super API key.\n$(config.key) is an invalid Super-API key.")

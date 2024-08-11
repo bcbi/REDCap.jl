@@ -1,5 +1,5 @@
 """
-	api_pusher(mode::String, content::String; returnFormat::String="", file_loc::String="", kwargs...)
+	redcap_api(mode::String, content::String; returnFormat::String="", file_loc::String="", kwargs...)
 
 Pass the type of api call, the config struct, and any needed kwargs for that api call.
 
@@ -16,7 +16,7 @@ https://<your-redcap-site.com>/redcap/api/help/
 #### Returns:
 Formatted response body
 """
-function api_pusher(mode::String, content::String; format::String="", file_loc::String="", kwargs...)
+function redcap_api(mode::String, content::String; format::String="", file_loc::String="", kwargs...)
 	#TODO: bytes |> HTTP.Sniff.isjson |> first to determine if data needs to be converted
 	config = get_redcap_user_config()
 	if isnothing(config)

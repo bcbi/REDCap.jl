@@ -12,7 +12,7 @@ Delete Arms from project. Removing all arms reverts the project into a non-longi
 Number of succesfully deleted arms
 """
 function delete_arms(arms::Array)
-	return api_pusher("delete", "arm", arms=arms)
+	return redcap_api("delete", "arm", arms=arms)
 end
 
 
@@ -30,7 +30,7 @@ Delete Events from project. Removing all but one event reverts the project into 
 Number of successfully deleted events
 """
 function delete_events(events::Array)
-	return api_pusher("delete", "event", config, events=events)
+	return redcap_api("delete", "event", config, events=events)
 end
 
 
@@ -50,7 +50,7 @@ Delete document attached to record.
 Nothing/error
 """
 function delete_file(record::String, field::String, event::String; repeat_instance::Integer=1, returnFormat::String="json")
-	return api_pusher("delete", "file", config, record=record, field=field, event=event, repeat_instance=repeat_instance, returnFormat=returnFormat)
+	return redcap_api("delete", "file", config, record=record, field=field, event=event, repeat_instance=repeat_instance, returnFormat=returnFormat)
 end
 
 
@@ -68,8 +68,8 @@ Number of records successfully deleted
 """
 function delete_records(records::Array; arm::Integer=-1)
 	if arm != -1	#REDCap treats the request differently if arm is sent as a field
-		return api_pusher("delete", "record", records=records, arm=arm)
+		return redcap_api("delete", "record", records=records, arm=arm)
 	else
-		return api_pusher("delete", "record", records=records)
+		return redcap_api("delete", "record", records=records)
 	end
 end

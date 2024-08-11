@@ -20,7 +20,8 @@ include("Export.jl")
 include("Import.jl")
 include("Delete.jl")
 
-export export_field_names,
+export redcap_api,
+       export_field_names,
 		export_instruments,
 		export_metadata,
 		export_project_information,
