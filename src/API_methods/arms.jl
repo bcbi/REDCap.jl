@@ -2,7 +2,12 @@ export delete_arms,
 	export_arms,
 	import_arms
 
-delete_arms(arms; kwargs...) = redcap_api(; action="delete", content="arm", arms=arms, kwargs...)
+delete_arms(arms) = redcap_api(;
+	REDCap.@content("arm"),
+	REDCap.@action("delete"),
+	REDCap.@arms(arms)
+)
+
 export_arms(; kwargs...) = redcap_api(; content="arm", kwargs...)
 import_arms(; kwargs) = redcap_api(; action="import", content="arm", kwargs...)
 

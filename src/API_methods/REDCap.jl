@@ -1,4 +1,5 @@
 export export_version
 
-export_version() = redcap_api(; content="version")
-
+export_version(format="xml") = redcap_api(;
+	REDCap.@content("version"),
+	REDCap.@format(format)
