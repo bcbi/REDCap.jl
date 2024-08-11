@@ -2,10 +2,6 @@ module REDCap
 
 using HTTP
 using JSON
-using LightXML
-using CSV
-using DataStructures
-using DataFrames
 
 include("Utils.jl")
 include("metadata.jl")
