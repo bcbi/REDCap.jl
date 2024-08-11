@@ -2,12 +2,16 @@ using REDCap
 using Test
 
 test_sets = Dict(
-	"arms" => [
+	"Arms" => [
 		:(delete_arms(arms="arms")),
 		:(export_arms()),
 		:(import_arms(data="data")),
 	],
-	"metadata" => [
+	"Data Access Groups" => [
+		:(import_metadata(data="data")),
+		:(export_metadata()),
+	],
+	"Metadata" => [
 		:(import_metadata(data="data")),
 		:(export_metadata()),
 	],
@@ -56,7 +60,7 @@ test_sets = Dict(
 	       =#
 )
 
-@testset "User-facing functions" begin
+@testset "API Method Groups" begin
 	for test_set_name in keys(test_sets)
 		@testset "$test_set_name" begin
 			for function_call in test_sets[test_set_name]
