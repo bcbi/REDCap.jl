@@ -14,11 +14,12 @@ using CSV
 using DataStructures
 using DataFrames
 
-include("Config.jl")
 include("Utils.jl")
 include("Export.jl")
 include("Import.jl")
 include("Delete.jl")
+
+include("Metadata.jl")
 
 export redcap_api,
        export_field_names,
