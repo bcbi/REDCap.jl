@@ -2,14 +2,39 @@ export delete_arms,
 	export_arms,
 	import_arms
 
-delete_arms(arms) = redcap_api(;
-	REDCap.@content("arm"),
-	REDCap.@action("delete"),
-	REDCap.@arms(arms)
-)
+function delete_arms(;arms=nothing)
+	redcap_api(;
+		url=get_valid_url(),
+		token=get_valid_token(),
+		content="arm",
+		action="import",
+		arms=arms,
+	)
+end
 
-export_arms(; kwargs...) = redcap_api(; content="arm", kwargs...)
-import_arms(; kwargs) = redcap_api(; action="import", content="arm", kwargs...)
+function export_arms(;format="xml",arms=nothing,returnFormat=nothing)
+	redcap_api(;
+		url=get_valid_url(),
+		token=get_valid_token(),
+		content="arm",
+		format=get_valid_format(format),
+		arms=arms,
+		returnFormat=isnothing(returnFormat) ? format : "xml",
+	)
+end
+
+function import_arms(;format="xml",data=nothing,override=0,returnFormat=nothing)
+	redcap_api(;
+		url=get_valid_url(),
+		token=get_valid_token(),
+		content="arm",
+		override=override,
+		action="import",
+		format=get_valid_format(format),
+		data=data,
+		returnFormat=isnothing(returnFormat) ? format : "xml",
+	)
+end
 
 #=
 julia> arms = export_arms()

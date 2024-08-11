@@ -27,6 +27,9 @@ function redcap_api(;
 	returnFormat=nothing,
 	fields=nothing,
 	forms=nothing,
+	arms=nothing,
+	override=nothing,
+	
 )
 
 	fields = Dict("token" => token,

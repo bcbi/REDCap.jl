@@ -12,14 +12,14 @@ function export_metadata(;format="xml",fields=nothing,forms=nothing)
 	)
 end
 
-function import_metadata(;format="xml",data=nothing)
+function import_metadata(;format="xml",data=nothing,returnFormat=nothing)
 	redcap_api(;
 		url=get_valid_url(),
 		token=get_valid_token(),
 		content="metadata",
 		format=get_valid_format(format),
 		data=data,
-		returnFormat=get_valid_format(format),
+		returnFormat=isnothing(returnFormat) ? format : "xml",
 	)
 end
 
