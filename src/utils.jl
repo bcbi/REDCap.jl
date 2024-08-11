@@ -13,6 +13,10 @@ function redcap_api(;
 	override=nothing,
 	dag=nothing,
 	field=nothing,
+	record=nothing,
+	event=nothing,
+	repeat_instance=nothing,
+	file=nothing,
 	arms=nothing,
 	dags=nothing,
 	events=nothing,
@@ -44,6 +48,15 @@ function redcap_api(;
 	end
 	if(!isnothing(dag))		
 		api_data_fields["dag"] = String(dag)
+	end
+	if(!isnothing(event))		
+		api_data_fields["event"] = String(event)
+	end
+	if(!isnothing(repeat_instance))		
+		api_data_fields["repeat_instance"] = String(repeat_instance)
+	end
+	if(!isnothing(file))		
+		api_data_fields["file"] = String(file)
 	end
 	if(!isnothing(arms))		
 		for (i, item) in enumerate(arms)

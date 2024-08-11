@@ -23,6 +23,11 @@ test_sets = Dict(
 	"Field Names" => [
 		:(export_list_of_export_field_names),
 	],
+	"Files" => [
+		:(delete_file()),
+		:(export_file()),
+		:(import_file()),
+	],
 	"Metadata" => [
 		:(import_metadata()),
 		:(export_metadata()),
