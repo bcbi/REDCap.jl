@@ -12,6 +12,7 @@ function redcap_api(;
 	forms=nothing,
 	override=nothing,
 	dag=nothing,
+	field=nothing,
 	arms=nothing,
 	dags=nothing,
 	events=nothing,
@@ -28,6 +29,9 @@ function redcap_api(;
 	end
 	if(!isnothing(data))		
 		api_data_fields["data"] = String(data)
+	end
+	if(!isnothing(fields))
+		api_data_fields["fields"] = String(fields)
 	end
 	if(!isnothing(fields))		
 		api_data_fields["fields"] = String(fields)

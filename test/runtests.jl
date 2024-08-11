@@ -20,6 +20,9 @@ test_sets = Dict(
 		:(export_events()),
 		:(import_events()),
 	],
+	"Field Names" => [
+		:(export_list_of_export_field_names),
+	],
 	"Metadata" => [
 		:(import_metadata()),
 		:(export_metadata()),
