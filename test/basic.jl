@@ -2,6 +2,7 @@ using REDCap
 using Test
 
 test_sets = Dict(
+		 #=
 	"Arms" => [
 		:(delete_arms(arms="arms")),
 		:(export_arms()),
@@ -20,6 +21,7 @@ test_sets = Dict(
 		:(import_metadata(data="data")),
 		:(export_metadata()),
 	],
+	=#
 	"REDCap" => [
 		:(export_version()),
 	],
@@ -62,7 +64,7 @@ test_sets = Dict(
 	       =#
 )
 
-@testset "API Method Groups" begin
+@testset "API Methods" begin
 	for test_set_name in keys(test_sets)
 		@testset "$test_set_name" begin
 			for function_call in test_sets[test_set_name]

@@ -18,19 +18,25 @@ https://<your-redcap-site.com>/redcap/api/help/
 Formatted response body
 """
 function redcap_api(;
-	token::String=get(ENV, "REDCAP_API_TOKEN", ""),
-	url::String=get(ENV, "REDCAP_API_URL", ""),
-	action::String="",
-	content::String="",
-	data::String="",
-	file_loc::String="",
-	kwargs...)
+	token="",
+	url="",
+	content="",
+	action=nothing,
+	data=nothing,
+	format=nothing,
+)
 
 	fields = Dict("token" => token,
-		"action" => action,
 		"content" => content,
 	)
+	if(!isnothing(action))		
+		fields["action"] = action
+	end
+	if(!isnothing(data))		
+		fields["data"] = IOBuffer(v)
+	end
 
+#=
 for (k,v) in kwargs
 		k=String(k) #k is a Symbol, make easier to handle
 		if mode=="import" && isequal(k, "data") #Turn all imported data into an IOBuffer so HTTP won't mess with it OR turn filterLogic data into a buffer because it uses []'s and REDCap can't understand URI encoding
@@ -45,6 +51,7 @@ for (k,v) in kwargs
 			fields[k]=string(v)
 		end
 	end
+	=#
 
 	return HTTP.post(url; body=fields, require_ssl_verification=true).body |> String 
 
@@ -95,5 +102,25 @@ function export_to_file(file_loc::String, data)
 		end
 	catch
 		@error("File could not be opened:\n$file_loc")
+	end
+end
+
+function get_valid_token()
+	token = get(ENV, "REDCAP_API_TOKEN", "")
+	if occursin(r"^[0-9A-F]{32}([0-9A-F]{32})?$", token)
+		return token
+	else
+		@error("No valid REDCap API token found")
+		throw(ArgumentError)
+	end
+end
+
+function get_valid_url()
+	url = get(ENV, "REDCAP_API_URL", "")
+	if occursin(r"^https:\/\/.*\/api\/?$", url)
+		return url
+	else
+		@error("No valid REDCap API URL found")
+		throw(ArgumentError)
 	end
 end
