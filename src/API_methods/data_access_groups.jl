@@ -57,7 +57,7 @@ function import_user_DAG_assignment(;format="xml",data=nothing,returnFormat=noth
 	)
 end
 
-function switch_DAG(;dags=nothing)
+function switch_DAG(;dag=nothing)
 	redcap_api(;
 		url=get_valid_url(),
 		token=get_valid_token(),

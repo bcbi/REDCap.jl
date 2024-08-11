@@ -1,68 +1,81 @@
 export redcap_api
 
-"""
-	redcap_api(mode::String, content::String; returnFormat::String="", file_loc::String="", kwargs...)
-
-
-API documentation found here:
-https://<your-redcap-site.com>/redcap/api/help/
-
-#### Parameters:
-* `mode` - "import", "export", or "delete"
-* `content` - Passed by calling modules to indicate what data to access
-* `format` - "json", "xml", "csv", or "odm". decides format of returned data
-* `file_loc` - Location of file
-* `kwargs...` - Any addtl. arguments passed by the calling module
-
-#### Returns:
-Formatted response body
-"""
 function redcap_api(;
 	token="",
 	url="",
 	content="",
+	format="",
+	returnFormat="",
 	action=nothing,
 	data=nothing,
-	format=nothing,
-	returnFormat=nothing,
 	fields=nothing,
 	forms=nothing,
-	arms=nothing,
 	override=nothing,
-	dags=nothing,
 	dag=nothing,
+	arms=nothing,
+	dags=nothing,
 	events=nothing,
 	
 )
 
-	fields = Dict("token" => token,
+	api_data_fields = Dict("token" => token,
 		"content" => content,
+		"format" => format,
+		"returnFormat" => returnFormat,
 	)
 	if(!isnothing(action))		
-		fields["action"] = action
+		api_data_fields["action"] = action
 	end
 	if(!isnothing(data))		
-		fields["data"] = IOBuffer(v)
+		api_data_fields["data"] = String(data)
 	end
+	if(!isnothing(fields))		
+		api_data_fields["fields"] = String(fields)
+	end
+	if(!isnothing(forms))		
+		api_data_fields["forms"] = String(forms)
+	end
+	if(!isnothing(override))		
+		api_data_fields["override"] = "$override"
+	end
+	if(!isnothing(dag))		
+		api_data_fields["dag"] = String(dag)
+	end
+	if(!isnothing(arms))		
+		for (i, item) in enumerate(arms)
+			api_data_fields["arms[$(i-1)]"]=String(item)
+		end
+	end
+	if(!isnothing(dags))		
+		for (i, item) in enumerate(dags)
+			api_data_fields["dags[$(i-1)]"]=String(item)
+		end
+	end
+	if(!isnothing(events))		
+		for (i, item) in enumerate(events)
+			api_data_fields["events[$(i-1)]"]=String(item)
+		end
+	end
+
 
 #=
 for (k,v) in kwargs
 		k=String(k) #k is a Symbol, make easier to handle
 		if mode=="import" && isequal(k, "data") #Turn all imported data into an IOBuffer so HTTP won't mess with it OR turn filterLogic data into a buffer because it uses []'s and REDCap can't understand URI encoding
-			fields[k]=IOBuffer(v)
+			api_data_fields[k]=IOBuffer(v)
 		elseif isa(v, Array) #Turn arrays into specially URI encoded arrays
 			for (i, item) in enumerate(v)
-			    fields["$k[$(i-1)]"]=String(item)
+			    api_data_fields["$k[$(i-1)]"]=String(item)
 			end
 		elseif isequal(k, "filterLogic") && v != ""
-			fields[k]=IOBuffer(v)
+			api_data_fields[k]=IOBuffer(v)
 		else
-			fields[k]=string(v)
+			api_data_fields[k]=string(v)
 		end
 	end
 	=#
 
-	return HTTP.post(url; body=fields, require_ssl_verification=true).body |> String 
+	return HTTP.post(url; body=api_data_fields, require_ssl_verification=true).body |> String 
 
 
 end
