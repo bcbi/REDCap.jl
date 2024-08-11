@@ -11,6 +11,9 @@ test_sets = Dict(
 		:(import_metadata(data="data")),
 		:(export_metadata()),
 	],
+	"REDCap" => [
+		:(export_version()),
+	],
 	#=
 	"Delete" => [
 		:(delete_arms(arms)),
