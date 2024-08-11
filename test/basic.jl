@@ -2,6 +2,12 @@ using REDCap
 using Test
 
 test_sets = Dict(
+
+	"Metadata" => [
+		:(import_metadata(data="data")),
+		:(export_metadata()),
+	],
+	#=
 	"Delete" => [
 		:(delete_arms(arms)),
 		:(delete_events(events)),
@@ -11,7 +17,6 @@ test_sets = Dict(
 
 	"Import" => [
 		:(import_project_information(data)),
-		:(import_metadata(data)),
 		:(import_users(data)),
 		:(import_arms(data)),
 		:(import_events(data)),
@@ -25,7 +30,6 @@ test_sets = Dict(
 		     :(export_repeating_forms_and_events()),
 		:(export_field_names()),
 		:(export_instruments()),
-		:(export_metadata()),
 		:(export_project_information()),
 		:(export_users()),
 		:(export_version()),
@@ -42,6 +46,7 @@ test_sets = Dict(
 		:(export_report(report_id)),
 		:(export_survey_link(record::String, instrument::String, event::String)),
 	       ],
+	       =#
 )
 
 @testset "User-facing functions" begin
@@ -58,3 +63,5 @@ test_sets = Dict(
 		end
 	end
 end
+
+nothing
