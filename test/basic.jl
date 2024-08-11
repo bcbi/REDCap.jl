@@ -22,6 +22,7 @@ test_sets = Dict(
 	],
 
 	"Export" => [
+		     :(export_repeating_forms_and_events()),
 		:(export_field_names()),
 		:(export_instruments()),
 		:(export_metadata()),

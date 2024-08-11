@@ -6,6 +6,7 @@ export_users() = api_pusher("export", "user")
 export_version() = api_pusher("export", "version")
 export_arms() = api_pusher("export", "arm")
 export_events() = api_pusher("export", "event")
+export_repeating_forms_and_events() = api_pusher("export", "repeatingFormsEvents")
 
 
 """
