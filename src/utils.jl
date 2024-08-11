@@ -29,6 +29,8 @@ function redcap_api(;
 	forms=nothing,
 	arms=nothing,
 	override=nothing,
+	dags=nothing,
+	dag=nothing,
 	
 )
 

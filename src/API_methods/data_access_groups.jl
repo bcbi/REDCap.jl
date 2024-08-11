@@ -5,9 +5,66 @@ export delete_DAGs,
 	import_user_DAG_assignment,
 	switch_DAG
 
-delete_DAGs(dags; kwargs...) = redcap_api(; action="delete", content="dag", dags=dags, kwargs...)
-export_DAGs(; kwargs...) = redcap_api(; content="dag", kwargs...)
-export_user_DAG_assignment(; kwargs...) = redcap_api(; content="userDagMapping", kwargs...)
-import_DAGs(; kwargs...) = redcap_api(; action="import", content="dag", kwargs...)
-import_user_DAG_assignment(data; kwargs...) = redcap_api(; action="import", content="userDagMapping", data=data, kwargs...)
-switch_DAG(dag; kwargs...) = redcap_api(; action="switch", content="dag", dag=dag, kwargs...)
+function delete_DAGs(;dags=nothing)
+	redcap_api(;
+		url=get_valid_url(),
+		token=get_valid_token(),
+		content="dag",
+		action="delete",
+		dags=dags,
+	)
+end
+
+function export_DAGs(;format="xml",returnFormat=nothing)
+	redcap_api(;
+		url=get_valid_url(),
+		token=get_valid_token(),
+		content="dag",
+		format=get_valid_format(format),
+		returnFormat=isnothing(returnFormat) ? format : "xml",
+	)
+end
+
+function export_user_DAG_assignment(;format="xml")
+	redcap_api(;
+		url=get_valid_url(),
+		token=get_valid_token(),
+		content="userDagMapping",
+		format=get_valid_format(format),
+	)
+end
+
+function import_DAGs(;format="xml",data=nothing,returnFormat=nothing)
+	redcap_api(;
+		url=get_valid_url(),
+		token=get_valid_token(),
+		content="dag",
+		action="import",
+		format=get_valid_format(format),
+		data=data,
+		returnFormat=isnothing(returnFormat) ? format : "xml",
+	)
+end
+
+function import_user_DAG_assignment(;format="xml",data=nothing,returnFormat=nothing)
+	redcap_api(;
+		url=get_valid_url(),
+		token=get_valid_token(),
+		content="userDagMapping",
+		format=get_valid_format(format),
+		data=data,
+		returnFormat=isnothing(returnFormat) ? format : "xml",
+	)
+end
+
+function switch_DAG(;dags=nothing)
+	redcap_api(;
+		url=get_valid_url(),
+		token=get_valid_token(),
+		content="dag",
+		action="switch",
+		dag=dag,
+	)
+end
+
+

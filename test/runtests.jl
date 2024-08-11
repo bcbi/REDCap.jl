@@ -7,11 +7,15 @@ test_sets = Dict(
 		:(export_arms()),
 		:(import_arms()),
 	],
-		 #=
 	"Data Access Groups" => [
-		:(import_metadata(data="data")),
-		:(export_metadata()),
+		:(delete_DAGs()),
+		:(export_DAGs()),
+		:(export_user_DAG_assignment()),
+		:(import_DAGs()),
+		:(import_user_DAG_assignment()),
+		:(switch_DAG()),
 	],
+		 #=
 	"Events" => [
 		:(delete_events(events)),
 		:(export_events()),
