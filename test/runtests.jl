@@ -67,14 +67,13 @@ test_sets = Dict(
 )
 
 @testset "API Methods" begin
-	for test_set_name in keys(test_sets)
-		@testset "$test_set_name" begin
-			for function_call in test_sets[test_set_name]
-				@testset "$function_call" begin
-					@test begin
-						eval(function_call)
-						true
-					end
+	name_width = maximum(length.(keys(test_sets)))
+	for method_type in keys(test_sets)
+		for function_call in test_sets[method_type]
+			@testset "$(rpad(method_type, name_width, '.')): $function_call" begin
+				@test begin
+					eval(function_call)
+					true
 				end
 			end
 		end
