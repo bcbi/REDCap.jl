@@ -7,8 +7,8 @@ using CSV
 using DataStructures
 using DataFrames
 
-include("Metadata.jl")
 include("Utils.jl")
+include("metadata.jl")
 
 export redcap_api,
 	export_metadata,
