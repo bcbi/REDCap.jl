@@ -24,6 +24,9 @@ function redcap_api(;
 	action=nothing,
 	data=nothing,
 	format=nothing,
+	returnFormat=nothing,
+	fields=nothing,
+	forms=nothing,
 )
 
 	fields = Dict("token" => token,
@@ -124,3 +127,14 @@ function get_valid_url()
 		throw(ArgumentError)
 	end
 end
+
+function get_valid_format(format)
+	if format ∈ ["csv", "json", "xml"]
+		return format
+	else
+		@error("Invalid REDCap API parameter")
+		throw(ArgumentError)
+	end
+end
+
+

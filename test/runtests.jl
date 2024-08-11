@@ -17,11 +17,11 @@ test_sets = Dict(
 		:(export_events()),
 		:(import_events(data)),
 	],
+	=#
 	"Metadata" => [
-		:(import_metadata(data="data")),
+		:(import_metadata()),
 		:(export_metadata()),
 	],
-	=#
 	"REDCap" => [
 		:(export_version()),
 	],
