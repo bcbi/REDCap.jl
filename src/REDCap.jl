@@ -4,10 +4,9 @@ using HTTP
 using JSON
 
 include("Utils.jl")
-include("arms.jl")
-include("metadata.jl")
-
-export export_version
-export_version(;kwargs...) = redcap_api(;content="version", kwargs...)
+include("API_Methods/arms.jl")
+include("API_Methods/data_access_groups.jl")
+include("API_Methods/metadata.jl")
+include("API_Methods/REDCap.jl")
 
 end
