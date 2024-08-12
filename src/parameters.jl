@@ -1,6 +1,6 @@
 #TODO: AssertionError
 
-function get_valid_token()
+function assert_valid_token()
 	if !haskey(ENV, "REDCAP_API_TOKEN")
 		@error("No REDCap API token found")
 		throw(ArgumentError)
@@ -16,7 +16,7 @@ function get_valid_token()
 	return token
 end
 
-function get_valid_super_token()
+function assert_valid_super_token()
 	if !haskey(ENV, "REDCAP_API_TOKEN")
 		@error("No REDCap API token found")
 		throw(ArgumentError)
@@ -32,7 +32,7 @@ function get_valid_super_token()
 	return token
 end
 
-function get_valid_url()
+function assert_valid_url()
 	if !haskey(ENV, "REDCAP_API_URL")
 		@error("No REDCap API URL found")
 		throw(ArgumentError)
@@ -48,7 +48,7 @@ function get_valid_url()
 	return url
 end
 
-function get_valid_format(format)
+function assert_valid_format(format)
 	if !isnothing(format) && format ∈ ["csv", "json", "xml"]
 		return format
 	else
@@ -59,7 +59,7 @@ end
 
 #TODO: could use some work
 #=
-function get_valid_folder_name(name)
+function assert_valid_folder_name(name)
 	if isa(name, String) && length(name) ≤ 150
 		return name
 	else

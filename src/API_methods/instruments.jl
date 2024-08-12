@@ -5,10 +5,10 @@ export export_instrument_event_mappings,
 
 function export_instrument_event_mappings(;format="xml",arms=nothing,returnFormat=nothing)
 	redcap_api(;
-		url=get_valid_url(),
-		token=get_valid_token(),
+		url=assert_valid_url(),
+		token=assert_valid_token(),
 		content="formEventMapping",
-		format=get_valid_format(format),
+		format=assert_valid_format(format),
 		arms=arms,
 		returnFormat=isnothing(returnFormat) ? format : "xml",
 	)
@@ -16,17 +16,17 @@ end
 
 function export_instruments(;format="xml")
 	redcap_api(;
-		url=get_valid_url(),
-		token=get_valid_token(),
+		url=assert_valid_url(),
+		token=assert_valid_token(),
 		content="instrument",
-		format=get_valid_format(format),
+		format=assert_valid_format(format),
 	)
 end
 
 function export_PDF_of_instruments(;record=nothing,event=nothing,instrument=nothing,repeat_instance=1,allRecords=nothing,compactDisplay="FALSE",returnFormat="xml")
 	redcap_api(;
-		url=get_valid_url(),
-		token=get_valid_token(),
+		url=assert_valid_url(),
+		token=assert_valid_token(),
 		content="pdf",
 		record=record,
 		event=event,
@@ -34,7 +34,7 @@ function export_PDF_of_instruments(;record=nothing,event=nothing,instrument=noth
 		repeat_instance=repeat_instance,
 		allRecords=allRecords, #passed vs. value #TODO
 		compactDisplay=compactDisplay,
-		returnFormat=get_valid_format(returnFormat),
+		returnFormat=assert_valid_format(returnFormat),
 	)
 end
 
@@ -42,10 +42,10 @@ function import_instrument_event_mappings(;format="xml",data=nothing,returnForma
 	#TODO: Here and throughout, enforce that this function cannot 
 	#behave like an export, since the API calls are similar
 	redcap_api(;
-		url=get_valid_url(),
-		token=get_valid_token(),
+		url=assert_valid_url(),
+		token=assert_valid_token(),
 		content="formEventMapping",
-		format=get_valid_format(format),
+		format=assert_valid_format(format),
 		data=data,
 		returnFormat=isnothing(returnFormat) ? format : "xml",
 	)

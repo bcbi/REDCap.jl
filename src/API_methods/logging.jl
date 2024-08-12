@@ -2,10 +2,10 @@ export export_logging
 
 function export_logging(;format="xml",returnFormat=nothing,logtype=nothing,user=nothing,record=nothing,dag=nothing,beginTime=nothing,endTime=nothing)
 	redcap_api(;
-		url=get_valid_url(),
-		token=get_valid_token(),
+		url=assert_valid_url(),
+		token=assert_valid_token(),
 		content="log",
-		format=get_valid_format(format),
+		format=assert_valid_format(format),
 		returnFormat=isnothing(returnFormat) ? format : "xml",
 		logtype=logtype,
 		user=user,
