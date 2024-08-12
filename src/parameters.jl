@@ -1,23 +1,51 @@
 #TODO: AssertionError
 
 function get_valid_token()
-	token = get(ENV, "REDCAP_API_TOKEN", "")
-	if occursin(r"^[0-9A-F]{32}([0-9A-F]{32})?$", token)
-		return token
-	else
-		@error("No valid REDCap API token found")
+	if !haskey(ENV, "REDCAP_API_TOKEN")
+		@error("No REDCap API token found")
 		throw(ArgumentError)
 	end
+
+	token = ENV["REDCAP_API_TOKEN"]
+
+	if !occursin(r"^[0-9A-F]{32}([0-9A-F]{32})?$", token)
+		@error("REDCap API token is invalid")
+		throw(AssertionError)
+	end
+
+	return token
+end
+
+function get_valid_super_token()
+	if !haskey(ENV, "REDCAP_API_TOKEN")
+		@error("No REDCap API token found")
+		throw(ArgumentError)
+	end
+
+	token = ENV["REDCAP_API_TOKEN"]
+
+	if !occursin(r"^[0-9A-F]{64}$", token)
+		@error("REDCap API token is invalid")
+		throw(AssertionError)
+	end
+
+	return token
 end
 
 function get_valid_url()
-	url = get(ENV, "REDCAP_API_URL", "")
-	if occursin(r"^https:\/\/.*\/api\/?$", url)
-		return url
-	else
-		@error("No valid REDCap API URL found")
+	if !haskey(ENV, "REDCAP_API_URL")
+		@error("No REDCap API URL found")
 		throw(ArgumentError)
 	end
+
+	url = ENV["REDCAP_API_URL"]
+
+	if !occursin(r"^https:\/\/.*\/api\/?$", url)
+		@error("REDCap API URL is invalid")
+		throw(AssertionError)
+	end
+
+	return url
 end
 
 function get_valid_format(format)
