@@ -1,6 +1,6 @@
 #TODO: AssertionError
 
-function assert_valid_token()
+function get_valid_token()
 	if !haskey(ENV, "REDCAP_API_TOKEN")
 		@error("No REDCap API token found")
 		throw(ArgumentError)
@@ -32,7 +32,7 @@ function assert_valid_super_token()
 	return token
 end
 
-function assert_valid_url()
+function get_valid_url()
 	if !haskey(ENV, "REDCAP_API_URL")
 		@error("No REDCap API URL found")
 		throw(ArgumentError)
