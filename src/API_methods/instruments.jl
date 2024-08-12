@@ -4,7 +4,7 @@ export export_instrument_event_mappings,
        import_instrument_event_mappings
 
 function export_instrument_event_mappings(;format="xml",arms=nothing,returnFormat=nothing)
-	redcap_api(;
+	request(;
 		url=get_valid_url(),
 		token=get_valid_token(),
 		content="formEventMapping",
@@ -15,7 +15,7 @@ function export_instrument_event_mappings(;format="xml",arms=nothing,returnForma
 end
 
 function export_instruments(;format="xml")
-	redcap_api(;
+	request(;
 		url=get_valid_url(),
 		token=get_valid_token(),
 		content="instrument",
@@ -24,7 +24,7 @@ function export_instruments(;format="xml")
 end
 
 function export_PDF_of_instruments(;record=nothing,event=nothing,instrument=nothing,repeat_instance=1,allRecords=nothing,compactDisplay="FALSE",returnFormat="xml")
-	redcap_api(;
+	request(;
 		url=get_valid_url(),
 		token=get_valid_token(),
 		content="pdf",
@@ -41,7 +41,7 @@ end
 function import_instrument_event_mappings(;format="xml",data=nothing,returnFormat=nothing)
 	#TODO: Here and throughout, enforce that this function cannot 
 	#behave like an export, since the API calls are similar
-	redcap_api(;
+	request(;
 		url=get_valid_url(),
 		token=get_valid_token(),
 		content="formEventMapping",

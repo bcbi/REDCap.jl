@@ -6,7 +6,7 @@ export delete_DAGs,
 	switch_DAG
 
 function delete_DAGs(;dags=nothing)
-	redcap_api(;
+	request(;
 		url=get_valid_url(),
 		token=get_valid_token(),
 		content="dag",
@@ -16,7 +16,7 @@ function delete_DAGs(;dags=nothing)
 end
 
 function export_DAGs(;format="xml",returnFormat=nothing)
-	redcap_api(;
+	request(;
 		url=get_valid_url(),
 		token=get_valid_token(),
 		content="dag",
@@ -26,7 +26,7 @@ function export_DAGs(;format="xml",returnFormat=nothing)
 end
 
 function export_user_DAG_assignment(;format="xml")
-	redcap_api(;
+	request(;
 		url=get_valid_url(),
 		token=get_valid_token(),
 		content="userDagMapping",
@@ -35,7 +35,7 @@ function export_user_DAG_assignment(;format="xml")
 end
 
 function import_DAGs(;format="xml",data=nothing,returnFormat=nothing)
-	redcap_api(;
+	request(;
 		url=get_valid_url(),
 		token=get_valid_token(),
 		content="dag",
@@ -47,7 +47,7 @@ function import_DAGs(;format="xml",data=nothing,returnFormat=nothing)
 end
 
 function import_user_DAG_assignment(;format="xml",data=nothing,returnFormat=nothing)
-	redcap_api(;
+	request(;
 		url=get_valid_url(),
 		token=get_valid_token(),
 		content="userDagMapping",
@@ -58,7 +58,7 @@ function import_user_DAG_assignment(;format="xml",data=nothing,returnFormat=noth
 end
 
 function switch_DAG(;dag=nothing)
-	redcap_api(;
+	request(;
 		url=get_valid_url(),
 		token=get_valid_token(),
 		content="dag",

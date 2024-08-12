@@ -1,7 +1,7 @@
 export delete_file, export_file, import_file
 
 function delete_file(;record=nothing,field=nothing,event=nothing,repeat_instance=nothing,returnFormat="xml")
-	redcap_api(;
+	request(;
 		url=get_valid_url(),
 		token=get_valid_token(),
 		content="file",
@@ -15,7 +15,7 @@ function delete_file(;record=nothing,field=nothing,event=nothing,repeat_instance
 end
 
 function export_file(;record=nothing,field=nothing,event=nothing,repeat_instance=nothing,returnFormat="xml")
-	redcap_api(;
+	request(;
 		url=get_valid_url(),
 		token=get_valid_token(),
 		content="file",
@@ -29,7 +29,7 @@ function export_file(;record=nothing,field=nothing,event=nothing,repeat_instance
 end
 
 function import_file(;record=nothing,field=nothing,event=nothing,repeat_instance=nothing,file=nothing,returnFormat="xml")
-	redcap_api(;
+	request(;
 		url=get_valid_url(),
 		token=get_valid_token(),
 		content="file",

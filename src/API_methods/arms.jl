@@ -3,7 +3,7 @@ export delete_arms,
 	import_arms
 
 function delete_arms(;arms=nothing)
-	redcap_api(;
+	request(;
 		url=get_valid_url(),
 		token=get_valid_token(),
 		content="arm",
@@ -13,7 +13,7 @@ function delete_arms(;arms=nothing)
 end
 
 function export_arms(;format="xml",arms=nothing,returnFormat=nothing)
-	redcap_api(;
+	request(;
 		url=get_valid_url(),
 		token=get_valid_token(),
 		content="arm",
@@ -24,7 +24,7 @@ function export_arms(;format="xml",arms=nothing,returnFormat=nothing)
 end
 
 function import_arms(;format="xml",data=nothing,override=0,returnFormat=nothing)
-	redcap_api(;
+	request(;
 		url=get_valid_url(),
 		token=get_valid_token(),
 		content="arm",

@@ -1,7 +1,7 @@
 export export_metadata,	import_metadata
 
 function export_metadata(;format="xml",fields=nothing,forms=nothing)
-	redcap_api(
+	request(
 		url=get_valid_url(),
 		token=get_valid_token(),
 		content="metadata",
@@ -13,7 +13,7 @@ function export_metadata(;format="xml",fields=nothing,forms=nothing)
 end
 
 function import_metadata(;format="xml",data=nothing,returnFormat=nothing)
-	redcap_api(;
+	request(;
 		url=get_valid_url(),
 		token=get_valid_token(),
 		content="metadata",

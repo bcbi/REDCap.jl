@@ -1,6 +1,4 @@
-export redcap_api
-
-function redcap_api(;token="",url="",kwargs...)
+function request(;token="",url="",kwargs...)
 	#TODO: each of the user-facing method functions should be 
 	#responsible for formatting and asserting their own args
 	#This function should just accept anything and everything
