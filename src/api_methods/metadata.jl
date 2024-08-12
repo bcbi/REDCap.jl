@@ -8,7 +8,7 @@ function export_metadata(;format="xml",fields=nothing,forms=nothing)
 		format=assert_valid_format(format),
 		fields=fields,
 		forms=forms,
-		returnFormat=assert_valid_format(format),
+		returnFormat=assert_valid_format(returnFormat),
 	)
 end
 

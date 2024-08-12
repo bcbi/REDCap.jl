@@ -7,7 +7,7 @@ function export_reports(;report_id=nothing,format="xml",returnFormat=nothing,raw
 		content="report",
 		report_id=report_id,
 		format=format, # format can include odm
-		returnFormat=assert_valid_format(format),
+		returnFormat=isnothing(returnFormat) ? format : "xml",
 		rawOrLabel=rawOrLabel,
 		rawOrLabelHeaders=rawOrLabelHeaders,
 		exportCheckboxLabel=exportCheckboxLabel,
