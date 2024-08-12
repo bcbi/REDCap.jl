@@ -1,7 +1,11 @@
 export redcap_api
 
-function redcap_api(;
+function redcap_api(;token="",url="",kwargs...)
+	#TODO: each of the user-facing method functions should be 
+	#responsible for formatting and asserting their own args
+	#This function should just accept anything and everything
 	#Arguments that are always present
+	#=
 	token="",
 	url="",
 	content="",
@@ -41,7 +45,10 @@ function redcap_api(;
 	allRecords=nothing,
 	
 )
+=#
 
+
+#=
 	api_data_fields = Dict("token" => token,
 		"content" => content,
 		"format" => format,
@@ -131,6 +138,7 @@ function redcap_api(;
 			api_data_fields["events[$(i-1)]"]=String(item)
 		end
 	end
+	=#
 
 
 #=
@@ -149,10 +157,17 @@ for (k,v) in kwargs
 		end
 	end
 	=#
+	
+	body = Dict()
+	for (k,v) in kwargs
+		if !isnothing(v)
+			body[String(k)] = "$v"
+		end
+	end
 
 	return HTTP.post(
 		url;
-		body=api_data_fields,
+		body=body,
 		require_ssl_verification=true,
 		status_exception=false,
 	).body |> String 
