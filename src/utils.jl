@@ -21,12 +21,16 @@ function redcap_api(;
 	folder_id=nothing,
 	forms=nothing,
 	instrument=nothing,
+	logtype=nothing,
 	name=nothing,
 	override=nothing,
 	record=nothing,
 	repeat_instance=nothing,
 	role_id=nothing,
 	compactDisplay=nothing,
+	user=nothing,
+	beginTime=nothing,
+	endTime=nothing,
 
 	# Arrays
 	arms=nothing,
@@ -94,7 +98,20 @@ function redcap_api(;
 	if(!isnothing(instrument))		
 		api_data_fields["instrument"] = String(instrument)
 	end
+	if(!isnothing(logtype))		
+		api_data_fields["logtype"] = String(logtype)
+	end
+	if(!isnothing(user))		
+		api_data_fields["user"] = String(user)
+	end
+	if(!isnothing(beginTime))		
+		api_data_fields["beginTime"] = String(beginTime)
+	end
+	if(!isnothing(endTime))		
+		api_data_fields["endTime"] = String(endTime)
+	end
 
+	# Value doesn't matter
 	if(!isnothing(allRecords))		
 		api_data_fields["allRecords"] = ""
 	end

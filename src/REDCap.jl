@@ -12,6 +12,7 @@ include("API_methods/field_names.jl")
 include("API_methods/files.jl")
 include("API_methods/file_repository.jl")
 include("API_methods/instruments.jl")
+include("API_methods/logging.jl")
 include("API_methods/metadata.jl")
 include("API_methods/REDCap.jl")
 
