@@ -1,12 +1,14 @@
 export redcap_api
 
 function redcap_api(;
+	#Arguments that are always present
 	token="",
 	url="",
 	content="",
 	format="",
 	returnFormat="",
 
+	#Arguments that are often absent
 	action=nothing,
 	dag=nothing,
 	dag_id=nothing,
@@ -18,15 +20,21 @@ function redcap_api(;
 	file=nothing,
 	folder_id=nothing,
 	forms=nothing,
+	instrument=nothing,
 	name=nothing,
 	override=nothing,
 	record=nothing,
 	repeat_instance=nothing,
 	role_id=nothing,
+	compactDisplay=nothing,
 
+	# Arrays
 	arms=nothing,
 	dags=nothing,
 	events=nothing,
+
+	# Value is ignored, but passing the parameter has an effect
+	allRecords=nothing,
 	
 )
 
@@ -60,7 +68,7 @@ function redcap_api(;
 		api_data_fields["event"] = String(event)
 	end
 	if(!isnothing(repeat_instance))		
-		api_data_fields["repeat_instance"] = String(repeat_instance)
+		api_data_fields["repeat_instance"] = "$repeat_instance"
 	end
 	if(!isnothing(file))		
 		api_data_fields["file"] = String(file)
@@ -79,6 +87,16 @@ function redcap_api(;
 	end
 	if(!isnothing(role_id))		
 		api_data_fields["role_id"] = String(role_id)
+	end
+	if(!isnothing(compactDisplay))		
+		api_data_fields["compactDisplay"] = String(compactDisplay)
+	end
+	if(!isnothing(instrument))		
+		api_data_fields["instrument"] = String(instrument)
+	end
+
+	if(!isnothing(allRecords))		
+		api_data_fields["allRecords"] = ""
 	end
 
 	if(!isnothing(arms))		

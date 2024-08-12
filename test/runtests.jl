@@ -35,6 +35,12 @@ test_sets = Dict(
 		:(export_list_of_folders()),
 		:(import_file_from_file_repository()),
 	],
+	"Instruments" => [
+		:(export_instrument_event_mappings()),
+		:(export_instruments()),
+		:(export_PDF_of_instruments()),
+		:(import_instrument_event_mappings()),
+	],
 	"Metadata" => [
 		:(import_metadata()),
 		:(export_metadata()),
