@@ -68,6 +68,9 @@ test_sets = Dict(
 		:(export_repeating_instruments_and_events()),
 		:(import_repeating_instruments_and_events()),
 	],
+	"Reports" => [
+		:(export_reports()),
+	],
 	#=
 	"Delete" => [
 		:(delete_arms(arms)),

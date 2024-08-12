@@ -18,5 +18,6 @@ include("api_methods/projects.jl")
 include("api_methods/records.jl")
 include("api_methods/redcap.jl")
 include("api_methods/repeating_instruments_and_events.jl")
+include("api_methods/reports.jl")
 
 end
