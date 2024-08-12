@@ -5,7 +5,7 @@ export create_new_folder,
 	import_file_from_file_repository
 
 function create_new_folder(;name=nothing,format="xml",folder_id=nothing,dag_id=nothing,role_id=nothing,returnFormat="xml")
-	request(;
+	REDCap.request(;
 		url=get_valid_url(),
 		token=get_valid_token(),
 		content="fileRepository",
@@ -20,7 +20,7 @@ function create_new_folder(;name=nothing,format="xml",folder_id=nothing,dag_id=n
 end
 
 function delete_file_from_file_repository(;name=nothing,format="xml",doc_id=nothing,returnFormat="xml")
-	request(;
+	REDCap.request(;
 		url=get_valid_url(),
 		token=get_valid_token(),
 		content="fileRepository",
@@ -31,7 +31,7 @@ function delete_file_from_file_repository(;name=nothing,format="xml",doc_id=noth
 end
 
 function export_file_from_file_repository(;name=nothing,format="xml",doc_id=nothing,returnFormat="xml")
-	request(;
+	REDCap.request(;
 		url=get_valid_url(),
 		token=get_valid_token(),
 		content="fileRepository",
@@ -42,7 +42,7 @@ function export_file_from_file_repository(;name=nothing,format="xml",doc_id=noth
 end
 
 function export_list_of_folders(;name=nothing,format="xml",folder_id=nothing,returnFormat="xml")
-	request(;
+	REDCap.request(;
 		url=get_valid_url(),
 		token=get_valid_token(),
 		content="fileRepository",
@@ -55,7 +55,7 @@ function export_list_of_folders(;name=nothing,format="xml",folder_id=nothing,ret
 end
 
 function import_file_from_file_repository(;name=nothing,format="xml",file=nothing,folder_id=nothing,returnFormat="xml")
-	request(;
+	REDCap.request(;
 		url=get_valid_url(),
 		token=get_valid_token(),
 		content="fileRepository",

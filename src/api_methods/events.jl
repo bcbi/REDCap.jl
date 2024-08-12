@@ -3,7 +3,7 @@ export delete_events,
 	export_events
 
 function delete_events(;events=nothing)
-	request(;
+	REDCap.request(;
 		url=get_valid_url(),
 		token=get_valid_token(),
 		content="event",
@@ -13,7 +13,7 @@ function delete_events(;events=nothing)
 end
 
 function export_events(;format="xml",arms=nothing,returnFormat=nothing)
-	request(;
+	REDCap.request(;
 		url=get_valid_url(),
 		token=get_valid_token(),
 		content="event",
@@ -24,7 +24,7 @@ function export_events(;format="xml",arms=nothing,returnFormat=nothing)
 end
 
 function import_events(;format="xml",data=nothing,override=0,returnFormat=nothing)
-	request(;
+	REDCap.request(;
 		url=get_valid_url(),
 		token=get_valid_token(),
 		content="event",

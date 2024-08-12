@@ -1,7 +1,7 @@
 export export_version
 
 function export_version(;format="xml")
-	request(;
+	REDCap.request(;
 		url=get_valid_url(),
 		token=get_valid_token(),
 		content="version",

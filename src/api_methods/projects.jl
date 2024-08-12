@@ -4,7 +4,7 @@ export create_new_project,
 	import_project_info
 
 function create_new_project(;name=nothing,format="xml",data=nothing,returnFormat="xml",odm=nothing)
-	request(;
+	REDCap.request(;
 		url=get_valid_url(), 
 		token=get_valid_token(), #TODO: check for super token
 		content="project",
@@ -16,7 +16,7 @@ function create_new_project(;name=nothing,format="xml",data=nothing,returnFormat
 end
 
 function export_project_info(;name=nothing,format="xml",returnFormat="xml")
-	request(;
+	REDCap.request(;
 		url=get_valid_url(), 
 		token=get_valid_token(),
 		content="project",
@@ -26,7 +26,7 @@ function export_project_info(;name=nothing,format="xml",returnFormat="xml")
 end
 
 function export_project_XML(;returnMetadataOnly=false,records=nothing,fields=nothing,events=nothing,returnFormat="xml",exportSurveyFields=false,exportDataAccessGroups=false,filterLogic=nothing,exportFiles=false)
-	request(;
+	REDCap.request(;
 		url=get_valid_url(), 
 		token=get_valid_token(),
 		content="project_xml",
@@ -43,7 +43,7 @@ function export_project_XML(;returnMetadataOnly=false,records=nothing,fields=not
 end
 
 function import_project_info(;name=nothing,format="xml",data=nothing,)
-	request(;
+	REDCap.request(;
 		url=get_valid_url(), 
 		token=get_valid_token(),
 		content="project_settings",
