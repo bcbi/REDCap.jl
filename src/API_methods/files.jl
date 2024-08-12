@@ -1,6 +1,5 @@
 export delete_file, export_file, import_file
 
-#TODO: REDCap API isn't clear on the format fields here
 function delete_file(;record=nothing,field=nothing,event=nothing,repeat_instance=nothing,returnFormat="xml")
 	redcap_api(;
 		url=get_valid_url(),

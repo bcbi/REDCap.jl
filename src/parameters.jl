@@ -21,7 +21,7 @@ function get_valid_url()
 end
 
 function get_valid_format(format)
-	if format ∈ ["csv", "json", "xml"]
+	if !isnothing(format) && format ∈ ["csv", "json", "xml"]
 		return format
 	else
 		@error("Invalid REDCap API parameter")
@@ -29,13 +29,16 @@ function get_valid_format(format)
 	end
 end
 
+#TODO: could use some work
+#=
 function get_valid_folder_name(name)
-	if length(name) ≤ 150
+	if isa(name, String) && length(name) ≤ 150
 		return name
 	else
 		@error("Invalid REDCap API parameter")
 		throw(ArgumentError)
 	end
 end
+=#
 
 

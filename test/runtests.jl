@@ -28,6 +28,13 @@ test_sets = Dict(
 		:(export_file()),
 		:(import_file()),
 	],
+	"File Repository" => [
+		:(create_new_folder()),
+		:(delete_file_from_file_repository()),
+		:(export_file_from_file_repository()),
+		:(export_list_of_folders()),
+		:(import_file_from_file_repository()),
+	],
 	"Metadata" => [
 		:(import_metadata()),
 		:(export_metadata()),

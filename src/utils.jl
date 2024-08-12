@@ -6,17 +6,24 @@ function redcap_api(;
 	content="",
 	format="",
 	returnFormat="",
+
 	action=nothing,
-	data=nothing,
-	fields=nothing,
-	forms=nothing,
-	override=nothing,
 	dag=nothing,
-	field=nothing,
-	record=nothing,
+	dag_id=nothing,
+	doc_id=nothing,
+	data=nothing,
 	event=nothing,
-	repeat_instance=nothing,
+	field=nothing,
+	fields=nothing,
 	file=nothing,
+	folder_id=nothing,
+	forms=nothing,
+	name=nothing,
+	override=nothing,
+	record=nothing,
+	repeat_instance=nothing,
+	role_id=nothing,
+
 	arms=nothing,
 	dags=nothing,
 	events=nothing,
@@ -58,6 +65,22 @@ function redcap_api(;
 	if(!isnothing(file))		
 		api_data_fields["file"] = String(file)
 	end
+	if(!isnothing(name))		
+		api_data_fields["name"] = String(name)
+	end
+	if(!isnothing(doc_id))		
+		api_data_fields["doc_id"] = String(doc_id)
+	end
+	if(!isnothing(dag_id))		
+		api_data_fields["dag_id"] = String(dag_id)
+	end
+	if(!isnothing(folder_id))		
+		api_data_fields["folder_id"] = String(folder_id)
+	end
+	if(!isnothing(role_id))		
+		api_data_fields["role_id"] = String(role_id)
+	end
+
 	if(!isnothing(arms))		
 		for (i, item) in enumerate(arms)
 			api_data_fields["arms[$(i-1)]"]=String(item)
