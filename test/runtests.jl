@@ -48,6 +48,12 @@ test_sets = Dict(
 		:(import_metadata()),
 		:(export_metadata()),
 	],
+	"Projects" => [
+		:(create_new_project()),
+		:(export_project_info()),
+		:(export_project_XML()),
+		:(import_project_info()),
+	],
 	"REDCap" => [
 		:(export_version()),
 	],
