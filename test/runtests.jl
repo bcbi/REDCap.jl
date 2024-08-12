@@ -57,6 +57,13 @@ test_sets = Dict(
 	"REDCap" => [
 		:(export_version()),
 	],
+	"Records" => [
+	:(delete_records()),
+	:(export_records()),
+	:(generate_next_record_name()),
+	:(import_records()),
+	:(rename_record()),
+	],
 	#=
 	"Delete" => [
 		:(delete_arms(arms)),
