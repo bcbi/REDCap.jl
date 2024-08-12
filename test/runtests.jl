@@ -58,11 +58,11 @@ test_sets = Dict(
 		:(export_version()),
 	],
 	"Records" => [
-	:(delete_records()),
-	:(export_records()),
-	:(generate_next_record_name()),
-	:(import_records()),
-	:(rename_record()),
+		:(delete_records()),
+		:(export_records()),
+		:(generate_next_record_name()),
+		:(import_records()),
+		:(rename_record()),
 	],
 	"Repeating Instruments and Events" => [
 		:(export_repeating_instruments_and_events()),
@@ -70,6 +70,12 @@ test_sets = Dict(
 	],
 	"Reports" => [
 		:(export_reports()),
+	],
+	"Surveys" => [
+		:(export_survey_link()),
+		:(export_survey_participants()),
+		:(export_survey_queue_link()),
+		:(export_survey_return_code()),
 	],
 	#=
 	"Delete" => [
