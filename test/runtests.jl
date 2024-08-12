@@ -64,6 +64,10 @@ test_sets = Dict(
 	:(import_records()),
 	:(rename_record()),
 	],
+	"Repeating Instruments and Events" => [
+		:(export_repeating_instruments_and_events()),
+		:(import_repeating_instruments_and_events()),
+	],
 	#=
 	"Delete" => [
 		:(delete_arms(arms)),
