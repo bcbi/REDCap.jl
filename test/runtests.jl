@@ -77,6 +77,12 @@ test_sets = Dict(
 		:(export_survey_queue_link()),
 		:(export_survey_return_code()),
 	],
+	"Users" => [
+		:(export_users()),
+		:(import_users()),
+		:(delete_users()),
+	],
+
 	#=
 	"Delete" => [
 		:(delete_arms(arms)),
