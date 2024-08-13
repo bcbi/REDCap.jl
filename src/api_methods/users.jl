@@ -18,7 +18,7 @@ function export_users(;format="xml",returnFormat=nothing)
 		token=get_valid_token(),
 		content="user",
 		format=assert_valid_format(format),
-		returnFormat=assert_valid_format(returnFormat),
+		returnFormat=isnothing(returnFormat) ? format : "xml",
 	)
 end
 
@@ -30,7 +30,7 @@ function import_users(;format="xml",data=nothing,returnFormat=nothing)
 		content="user",
 		format=assert_valid_format(format),
 		data=data,
-		returnFormat=assert_valid_format(returnFormat),
+		returnFormat=isnothing(returnFormat) ? format : "xml",
 	)
 end
 

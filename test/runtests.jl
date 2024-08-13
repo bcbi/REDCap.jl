@@ -82,6 +82,14 @@ test_sets = Dict(
 		:(import_users()),
 		:(delete_users()),
 	],
+	"User Roles" => [
+	:(export_user_roles()),
+	:(import_user_roles()),
+	:(delete_user_roles()),
+	:(export_user_role_assignment()),
+	:(import_user_role_assignment()),
+	],
+
 
 	#=
 	"Delete" => [
