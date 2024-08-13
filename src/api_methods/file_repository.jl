@@ -1,10 +1,10 @@
-export create_new_folder,
+export create_folder,
 	delete_file_from_file_repository,
 	export_file_from_file_repository,
 	export_list_of_folders,
 	import_file_from_file_repository
 
-function create_new_folder(;name=nothing,format="xml",folder_id=nothing,dag_id=nothing,role_id=nothing,returnFormat="xml")
+function create_folder(;name=nothing,format="xml",folder_id=nothing,dag_id=nothing,role_id=nothing,returnFormat="xml")
 	REDCap.request(;
 		content="fileRepository",
 		action="createFolder",

@@ -29,7 +29,7 @@ test_sets = Dict(
 		:(import_file()),
 	],
 	"File Repository" => [
-		:(create_new_folder()),
+		:(create_folder()),
 		:(delete_file_from_file_repository()),
 		:(export_file_from_file_repository()),
 		:(export_list_of_folders()),
@@ -49,7 +49,7 @@ test_sets = Dict(
 		:(export_metadata()),
 	],
 	"Projects" => [
-		:(create_new_project()),
+		:(create_project()),
 		:(export_project_info()),
 		:(export_project_XML()),
 		:(import_project_info()),

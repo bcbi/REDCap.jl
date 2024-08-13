@@ -1,9 +1,9 @@
-export create_new_project,
+export create_project,
 	export_project_info,
 	export_project_XML,
 	import_project_info
 
-function create_new_project(;name=nothing,format="xml",data=nothing,returnFormat="xml",odm=nothing)
+function create_project(;name=nothing,format="xml",data=nothing,returnFormat="xml",odm=nothing)
 	REDCap.request(;
 		content="project",
 		format=assert_valid_format(format),
