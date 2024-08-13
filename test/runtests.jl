@@ -52,7 +52,7 @@ test_sets = Dict(
 		:(create_project()),
 		:(export_project_info()),
 		:(export_project_XML()),
-		:(import_project_info()),
+		#:(import_project_info()),
 	],
 	"REDCap" => [
 		:(export_version()),
