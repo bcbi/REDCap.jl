@@ -1,6 +1,6 @@
 export export_instrument_event_mappings,
        export_instruments,
-       export_PDF_of_instruments,
+       export_PDF,
        import_instrument_event_mappings
 
 function export_instrument_event_mappings(;format="xml",arms=nothing,returnFormat=nothing)
@@ -19,7 +19,7 @@ function export_instruments(;format="xml")
 	)
 end
 
-function export_PDF_of_instruments(;record=nothing,event=nothing,instrument=nothing,repeat_instance=1,allRecords=nothing,compactDisplay="FALSE",returnFormat="xml")
+function export_PDF(;record=nothing,event=nothing,instrument=nothing,repeat_instance=1,allRecords=nothing,compactDisplay="FALSE",returnFormat="xml")
 	REDCap.request(;
 		content="pdf",
 		record=record,

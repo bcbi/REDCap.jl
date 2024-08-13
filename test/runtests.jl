@@ -38,7 +38,7 @@ test_sets = Dict(
 	"Instruments" => [
 		:(export_instrument_event_mappings()),
 		:(export_instruments()),
-		:(export_PDF_of_instruments()),
+		:(export_PDF()),
 		:(import_instrument_event_mappings()),
 	],
 	"logging" => [
