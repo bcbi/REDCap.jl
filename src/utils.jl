@@ -22,14 +22,12 @@ for (k,v) in kwargs
 	=#
 	
 	body = Dict()
+	body["x-forwarded-proto"] = "https"
 	for (k,v) in kwargs
 		if !isnothing(v)
 			body[String(k)] = "$v"
 		end
 	end
-
-	println(url)
-	println(body)
 
 	return HTTP.post(
 		url;
