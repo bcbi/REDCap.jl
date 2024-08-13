@@ -1,4 +1,4 @@
-function request(;url="",kwargs...)
+function request(;content="",kwargs...)
 	#TODO: each of the user-facing method functions should be 
 	#responsible for formatting and asserting their own args
 	#This function should just accept anything and everything
@@ -23,6 +23,8 @@ for (k,v) in kwargs
 	
 	body = Dict()
 	body["x-forwarded-proto"] = "https"
+	body["token"] = get_valid_token()
+	body["content"] = content
 	for (k,v) in kwargs
 		if !isnothing(v)
 			body[String(k)] = "$v"
@@ -30,7 +32,7 @@ for (k,v) in kwargs
 	end
 
 	return HTTP.post(
-		url;
+		get_valid_url();
 		body=body,
 		require_ssl_verification=true,
 		status_exception=false,

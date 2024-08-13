@@ -4,8 +4,6 @@ export delete_events,
 
 function delete_events(;events=nothing)
 	REDCap.request(;
-		url=get_valid_url(),
-		token=get_valid_token(),
 		content="event",
 		action="import",
 		events=events,
@@ -14,8 +12,6 @@ end
 
 function export_events(;format="xml",arms=nothing,returnFormat=nothing)
 	REDCap.request(;
-		url=get_valid_url(),
-		token=get_valid_token(),
 		content="event",
 		format=assert_valid_format(format),
 		arms=arms,
@@ -25,8 +21,6 @@ end
 
 function import_events(;format="xml",data=nothing,override=0,returnFormat=nothing)
 	REDCap.request(;
-		url=get_valid_url(),
-		token=get_valid_token(),
 		content="event",
 		action="import",
 		override=override,

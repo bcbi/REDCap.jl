@@ -4,8 +4,6 @@ export delete_arms,
 
 function delete_arms(;arms=nothing)
 	REDCap.request(;
-		url=get_valid_url(),
-		token=get_valid_token(),
 		content="arm",
 		action="import",
 		arms=arms,
@@ -14,8 +12,6 @@ end
 
 function export_arms(;format="xml",arms=nothing,returnFormat=nothing)
 	REDCap.request(;
-		url=get_valid_url(),
-		token=get_valid_token(),
 		content="arm",
 		format=assert_valid_format(format),
 		arms=arms,
@@ -25,8 +21,6 @@ end
 
 function import_arms(;format="xml",data=nothing,override=0,returnFormat=nothing)
 	REDCap.request(;
-		url=get_valid_url(),
-		token=get_valid_token(),
 		content="arm",
 		override=override,
 		action="import",

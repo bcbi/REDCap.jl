@@ -5,8 +5,6 @@ export_survey_return_code
 
 function export_survey_link(;record=nothing,instrument=nothing,event=nothing,repeat_instance=nothing,returnFormat="xml")
 	REDCap.request(
-		url=get_valid_url(),
-		token=get_valid_token(),
 		content="surveyLink",
 		record=record,
 		instrument=instrument,
@@ -18,8 +16,6 @@ end
 
 function export_survey_participants(;instrument=nothing,event=nothing,repeat_instance=nothing,format="xml",returnFormat=nothing)
 	REDCap.request(
-		url=get_valid_url(),
-		token=get_valid_token(),
 		content="participantList",
 		instrument=instrument,
 		event=event,
@@ -31,8 +27,6 @@ end
 
 function export_survey_queue_link(;record=nothing,returnFormat="xml")
 	REDCap.request(
-		url=get_valid_url(),
-		token=get_valid_token(),
 		content="surveyQueueLink",
 		record=record,
 		returnFormat=assert_valid_format(returnFormat),
@@ -41,8 +35,6 @@ end
 
 function export_survey_return_code(;record=nothing,instrument=nothing,event=nothing,repeat_instance=nothing,returnFormat="xml")
 	REDCap.request(
-		url=get_valid_url(),
-		token=get_valid_token(),
 		content="surveyLink",
 		record=record,
 		instrument=instrument,
