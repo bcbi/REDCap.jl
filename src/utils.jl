@@ -1,143 +1,8 @@
-function request(;token="",url="",kwargs...)
+function request(;url="",kwargs...)
 	#TODO: each of the user-facing method functions should be 
 	#responsible for formatting and asserting their own args
 	#This function should just accept anything and everything
 	#Arguments that are always present
-	#=
-	token="",
-	url="",
-	content="",
-	format="",
-	returnFormat="",
-
-	#Arguments that are often absent
-	action=nothing,
-	dag=nothing,
-	dag_id=nothing,
-	doc_id=nothing,
-	data=nothing,
-	event=nothing,
-	field=nothing,
-	fields=nothing,
-	file=nothing,
-	folder_id=nothing,
-	forms=nothing,
-	instrument=nothing,
-	logtype=nothing,
-	name=nothing,
-	override=nothing,
-	record=nothing,
-	repeat_instance=nothing,
-	role_id=nothing,
-	compactDisplay=nothing,
-	user=nothing,
-	beginTime=nothing,
-	endTime=nothing,
-
-	# Arrays
-	arms=nothing,
-	dags=nothing,
-	events=nothing,
-
-	# Value is ignored, but passing the parameter has an effect
-	allRecords=nothing,
-	
-)
-=#
-
-
-#=
-	api_data_fields = Dict("token" => token,
-		"content" => content,
-		"format" => format,
-		"returnFormat" => returnFormat,
-	)
-	if(!isnothing(action))		
-		api_data_fields["action"] = action
-	end
-	if(!isnothing(data))		
-		api_data_fields["data"] = String(data)
-	end
-	if(!isnothing(fields))
-		api_data_fields["fields"] = String(fields)
-	end
-	if(!isnothing(fields))		
-		api_data_fields["fields"] = String(fields)
-	end
-	if(!isnothing(forms))		
-		api_data_fields["forms"] = String(forms)
-	end
-	if(!isnothing(override))		
-		api_data_fields["override"] = "$override"
-	end
-	if(!isnothing(dag))		
-		api_data_fields["dag"] = String(dag)
-	end
-	if(!isnothing(event))		
-		api_data_fields["event"] = String(event)
-	end
-	if(!isnothing(repeat_instance))		
-		api_data_fields["repeat_instance"] = "$repeat_instance"
-	end
-	if(!isnothing(file))		
-		api_data_fields["file"] = String(file)
-	end
-	if(!isnothing(name))		
-		api_data_fields["name"] = String(name)
-	end
-	if(!isnothing(doc_id))		
-		api_data_fields["doc_id"] = String(doc_id)
-	end
-	if(!isnothing(dag_id))		
-		api_data_fields["dag_id"] = String(dag_id)
-	end
-	if(!isnothing(folder_id))		
-		api_data_fields["folder_id"] = String(folder_id)
-	end
-	if(!isnothing(role_id))		
-		api_data_fields["role_id"] = String(role_id)
-	end
-	if(!isnothing(compactDisplay))		
-		api_data_fields["compactDisplay"] = String(compactDisplay)
-	end
-	if(!isnothing(instrument))		
-		api_data_fields["instrument"] = String(instrument)
-	end
-	if(!isnothing(logtype))		
-		api_data_fields["logtype"] = String(logtype)
-	end
-	if(!isnothing(user))		
-		api_data_fields["user"] = String(user)
-	end
-	if(!isnothing(beginTime))		
-		api_data_fields["beginTime"] = String(beginTime)
-	end
-	if(!isnothing(endTime))		
-		api_data_fields["endTime"] = String(endTime)
-	end
-
-	# Value doesn't matter
-	if(!isnothing(allRecords))		
-		api_data_fields["allRecords"] = ""
-	end
-
-	if(!isnothing(arms))		
-		for (i, item) in enumerate(arms)
-			api_data_fields["arms[$(i-1)]"]=String(item)
-		end
-	end
-	if(!isnothing(dags))		
-		for (i, item) in enumerate(dags)
-			api_data_fields["dags[$(i-1)]"]=String(item)
-		end
-	end
-	if(!isnothing(events))		
-		for (i, item) in enumerate(events)
-			api_data_fields["events[$(i-1)]"]=String(item)
-		end
-	end
-	=#
-
 
 #=
 for (k,v) in kwargs
@@ -162,6 +27,9 @@ for (k,v) in kwargs
 			body[String(k)] = "$v"
 		end
 	end
+
+	println(url)
+	println(body)
 
 	return HTTP.post(
 		url;
