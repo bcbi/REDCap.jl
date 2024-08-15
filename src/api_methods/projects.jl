@@ -6,21 +6,23 @@ export create_project,
 function create_project(;
 	url=get_valid_url(),
 	token=get_valid_token(),	
-	project_title,
-	purpose,
+	data=nothing,
+	format="xml",
+	returnFormat=nothing,
+	odm=nothing,
+	project_title=nothing,
+	purpose=nothing,
 	purpose_other=nothing,
 	project_notes=nothing,
 	is_longitudinal=false,
 	surveys_enabled=nothing,
-	record_autonumbering_enabled=nothing,
-	format="xml",
-	#returnFormat=nothing,
-	odm=nothing)
+	record_autonumbering_enabled=nothing,)
 
-	REDCap.request(;
-		content="project",
-		format=assert_valid_format(format),
-		#returnFormat=assert_valid_format(returnFormat),
+	if isnothing(returnFormat)
+		returnFormat=isnothing(format) ? "xml" : format
+	end
+
+	if isnothing(data)
 		data=assemble_data_parameter(;
 			project_title=project_title,
 			purpose=purpose,
@@ -29,7 +31,15 @@ function create_project(;
 			is_longitudinal=is_longitudinal,
 			surveys_enabled=surveys_enabled,
 			record_autonumbering_enabled=record_autonumbering_enabled,
-			),
+			)
+		format = "json"
+	end
+
+	REDCap.request(;
+		content="project",
+		format=assert_valid_format(format),
+		returnFormat=assert_valid_format(returnFormat),
+		data=data,
 		url=url,
 		token=token,
 		odm=odm,

@@ -1,11 +1,15 @@
 #TODO: AssertionError
 
+is_valid_token(token) = occursin(r"^[0-9A-F]{32}([0-9A-F]{32})?$", token)
+is_valid_super_token(token) = occursin(r"^[0-9A-F]{64}$", token)
+
 function assert_valid_token(token)
-	if !occursin(r"^[0-9A-F]{32}([0-9A-F]{32})?$", token)
+	if is_valid_token(token)
+		return token
+	else
 		@error("REDCap API token is invalid")
 		throw(AssertionError)
 	end
-	return token
 end
 
 function get_valid_token()
@@ -18,11 +22,12 @@ function get_valid_token()
 end
 
 function assert_valid_super_token(token)
-	if !occursin(r"^[0-9A-F]{64}$", token)
-		@error("REDCap API token is not a valid super token")
+	if is_valid_super_token(token)
+		return token
+	else
+		@error("REDCap API token is invalid")
 		throw(AssertionError)
 	end
-	return token
 end
 
 function get_valid_url()
