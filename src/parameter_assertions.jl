@@ -1,34 +1,27 @@
 #TODO: AssertionError
 
+function assert_valid_token(token)
+	if !occursin(r"^[0-9A-F]{32}([0-9A-F]{32})?$", token)
+		@error("REDCap API token is invalid")
+		throw(AssertionError)
+	end
+	return token
+end
+
 function get_valid_token()
 	if !haskey(ENV, "REDCAP_API_TOKEN")
 		@error("No REDCap API token found")
 		throw(ArgumentError)
 	end
 
-	token = ENV["REDCAP_API_TOKEN"]
-
-	if !occursin(r"^[0-9A-F]{32}([0-9A-F]{32})?$", token)
-		@error("REDCap API token is invalid")
-		throw(AssertionError)
-	end
-
-	return token
+	return assert_valid_token(ENV["REDCAP_API_TOKEN"])
 end
 
-function assert_valid_super_token()
-	if !haskey(ENV, "REDCAP_API_TOKEN")
-		@error("No REDCap API token found")
-		throw(ArgumentError)
-	end
-
-	token = ENV["REDCAP_API_TOKEN"]
-
+function assert_valid_super_token(token)
 	if !occursin(r"^[0-9A-F]{64}$", token)
-		@error("REDCap API token is invalid")
+		@error("REDCap API token is not a valid super token")
 		throw(AssertionError)
 	end
-
 	return token
 end
 
