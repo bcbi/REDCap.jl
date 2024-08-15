@@ -1,7 +1,12 @@
 export export_logging
 
-function export_logging(;format="xml",returnFormat=nothing,logtype=nothing,user=nothing,record=nothing,dag=nothing,beginTime=nothing,endTime=nothing)
+function export_logging(;
+	url=get_valid_url(),
+	token=get_valid_token(),	
+		format="xml",returnFormat=nothing,logtype=nothing,user=nothing,record=nothing,dag=nothing,beginTime=nothing,endTime=nothing)
 	REDCap.request(;
+		       url=url,
+		       token=token,
 		content="log",
 		format=assert_valid_format(format),
 		returnFormat=isnothing(returnFormat) ? format : "xml",
