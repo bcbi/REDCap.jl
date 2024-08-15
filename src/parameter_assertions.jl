@@ -1,4 +1,6 @@
 #TODO: AssertionError
+#TODO: Eventually, each function should check for the proper type of token
+# super tokens are for project creation, and most other functions work only with a project-level token
 
 is_valid_token(token) = occursin(r"^[0-9A-F]{32}([0-9A-F]{32})?$", token)
 is_valid_super_token(token) = occursin(r"^[0-9A-F]{64}$", token)

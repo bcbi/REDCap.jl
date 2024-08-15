@@ -1,7 +1,12 @@
 export export_metadata,	import_metadata
 
-function export_metadata(;format="xml",fields=nothing,forms=nothing,returnFormat=nothing)
+function export_metadata(;
+	url=get_valid_url(),
+	token=get_valid_token(),	
+		format="xml",fields=nothing,forms=nothing,returnFormat=nothing)
 	REDCap.request(
+		       url=url,
+		       token=token,
 		content="metadata",
 		format=assert_valid_format(format),
 		fields=fields,
@@ -10,8 +15,13 @@ function export_metadata(;format="xml",fields=nothing,forms=nothing,returnFormat
 	)
 end
 
-function import_metadata(;format="xml",data=nothing,returnFormat=nothing)
+function import_metadata(;
+	url=get_valid_url(),
+	token=get_valid_token(),	
+		format="xml",data=nothing,returnFormat=nothing)
 	REDCap.request(;
+		       url=url,
+		       token=token,
 		content="metadata",
 		format=assert_valid_format(format),
 		data=data,

@@ -10,6 +10,9 @@ using Dates
 	token = create_project(project_title="$(now())",purpose=0)
 	export_project_XML(token=token)
 	export_project_info(token=token)
+
+	export_metadata(token=token)
+
 	import_project_info(token=token) == "1"
 
 end
