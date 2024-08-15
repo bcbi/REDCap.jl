@@ -3,12 +3,27 @@ export create_project,
 	export_project_XML,
 	import_project_info
 
-function create_project(;name=nothing,format="xml",data=nothing,returnFormat="xml",odm=nothing)
+function create_project(;
+	url=get_valid_url(),
+	token=get_valid_token(),	
+	project_title,
+	purpose,
+	purpose_other=nothing,
+	project_notes=nothing,
+	is_longitudinal=false,
+	surveys_enabled=nothing,
+	record_autonumbering_enabled=nothing,
+	format="xml",
+	#returnFormat=nothing,
+	odm=nothing)
+
 	REDCap.request(;
 		content="project",
 		format=assert_valid_format(format),
-		data=data,
-		returnFormat=assert_valid_format(returnFormat),
+		#returnFormat=assert_valid_format(returnFormat),
+		data="[" * JSON.json(Dict("project_title"=>"$project_title","purpose"=>"$purpose"))  * "]" ,#, #purpose_other, project_notes, is_longitudinal, surveys_enabled, record_autonumbering_enabled),
+		url=url,
+		token=token,
 		odm=odm,
 	)
 end

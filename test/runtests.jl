@@ -1,10 +1,14 @@
 using REDCap
+using JSON
 using Test
+using Dates
 
 @test export_version() == "13.7.31"
-
+@test create_project(project_title="$(now())",purpose=0,format="json") |> length == 32
 
 #TODO: Add sensible arguments and expected return values
+
+#=
 test_sets = Dict(
 	"Arms" => [
 		:(delete_arms()),
@@ -110,3 +114,4 @@ test_sets = Dict(
 end
 
 nothing
+=#

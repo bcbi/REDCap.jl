@@ -1,7 +1,7 @@
-function request(;content="",kwargs...)
+function request(;url,token,content,kwargs...)
 	body = Dict()
 	body["x-forwarded-proto"] = "https"
-	body["token"] = get_valid_token()
+	body["token"] = token
 	body["content"] = content
 	for (k,v) in kwargs
 		if !isnothing(v)
@@ -15,8 +15,11 @@ function request(;content="",kwargs...)
 		end
 	end
 
+	#return body
+
 	return HTTP.post(
-		get_valid_url();
+		url;
+		#get_valid_url();
 		body=body,
 		require_ssl_verification=true,
 		#verbose = 3,
