@@ -34,6 +34,7 @@ function assemble_html_body(;kwargs...)
 	return body
 end
 
+#TODO: condense these to 1 function after making sure they work for both data attributes and html body parameters
 function assemble_data_parameter(;kwargs...)
 	data = Dict()
 	if !isempty(kwargs)
