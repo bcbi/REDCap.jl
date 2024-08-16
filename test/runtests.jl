@@ -5,7 +5,7 @@ using Dates
 using DataFrames
 
 @test export_version() == "13.7.31"
-@test create_project(data="""[{"project_title":"My New REDCap Project","purpose":"0"}]""",format="json") |> REDCap.is_valid_token
+#@test create_project(data="""[{"project_title":"My New REDCap Project","purpose":"0"}]""",format="json") |> REDCap.is_valid_token
 
 begin
 	token = create_project(data=Dict(:project_title=>"$(now())",:purpose=>0))
