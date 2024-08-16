@@ -28,7 +28,7 @@ function export_records(;format="xml",type="flat",records=nothing,fields=nothing
 		rawOrLabel=rawOrLabel,
 		rawOrLabelHeaders=rawOrLabelHeaders,
 		exportCheckboxLabel=exportCheckboxLabel,
-		returnFormat=isnothing(returnFormat) ? format : "xml",
+		returnFormat=returnFormat,
 		exportSurveyFields=exportSurveyFields,
 		exportDataAccessGroups=exportDataAccessGroups,
 		filterLogic=filterLogic,
@@ -59,7 +59,7 @@ function import_records(;format="xml",type="flat",overwriteBehavior="normal",for
 		dateFormat=dateFormat,
 		csvDelimiter=csvDelimiter,
 		returnContent=returnContent,
-		returnFormat=isnothing(returnFormat) ? format : "xml",
+		returnFormat=returnFormat,
 		)
 end
 

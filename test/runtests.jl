@@ -16,7 +16,7 @@ begin
 
 
 	@assert "1" == import_project_info(token=token,data=Dict(:project_title=>"$(now())",:purpose=>0))
-	export_logging(token=token, format="json") |>JSON.parse |> DataFrame
+	export_logging(token=token, format=:json) |>JSON.parse |> DataFrame
 
 	@test true
 end

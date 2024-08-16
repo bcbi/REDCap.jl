@@ -12,7 +12,7 @@ function import_repeating_instruments_and_events(;format="xml",data=nothing,retu
 	REDCap.request(
 		content="repeatingFormsEvents",
 		format=format,
-		returnFormat=isnothing(returnFormat) ? format : "xml",
+		returnFormat=returnFormat,
 	)
 end
 

@@ -17,7 +17,7 @@ function export_user_roles(;format="xml",returnFormat=nothing)
 	REDCap.request(
 		content="userRole",
 		format=format,
-		returnFormat=isnothing(returnFormat) ? format : "xml",
+		returnFormat=returnFormat,
 	)
 end
 
@@ -27,7 +27,7 @@ function import_user_roles(;format="xml",data=nothing,returnFormat=nothing)
 		content="userRole",
 		format=format,
 		data=data,
-		returnFormat=isnothing(returnFormat) ? format : "xml",
+		returnFormat=returnFormat,
 	)
 end
 
@@ -36,7 +36,7 @@ function export_user_role_assignment(;format="xml",returnFormat=nothing)
 	REDCap.request(
 		content="userRoleMapping",
 		format=format,
-		returnFormat=isnothing(returnFormat) ? format : "xml",
+		returnFormat=returnFormat,
 	)
 end
 
@@ -46,6 +46,6 @@ function import_user_role_assignment(;format="xml",data=nothing,returnFormat=not
 		content="userRoleMapping",
 		format=format,
 		data=data,
-		returnFormat=isnothing(returnFormat) ? format : "xml",
+		returnFormat=returnFormat,
 	)
 end

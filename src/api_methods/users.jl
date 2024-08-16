@@ -14,7 +14,7 @@ function export_users(;format="xml",returnFormat=nothing)
 	REDCap.request(
 		content="user",
 		format=format,
-		returnFormat=isnothing(returnFormat) ? format : "xml",
+		returnFormat=returnFormat,
 	)
 end
 
@@ -24,7 +24,7 @@ function import_users(;format="xml",data=nothing,returnFormat=nothing)
 		content="user",
 		format=format,
 		data=data,
-		returnFormat=isnothing(returnFormat) ? format : "xml",
+		returnFormat=returnFormat,
 	)
 end
 

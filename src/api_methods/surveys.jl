@@ -21,7 +21,7 @@ function export_survey_participants(;instrument=nothing,event=nothing,repeat_ins
 		event=event,
 		repeat_instance=repeat_instance,
 		format=format,
-		returnFormat=isnothing(returnFormat) ? format : "xml",
+		returnFormat=returnFormat,
 	)
 end
 

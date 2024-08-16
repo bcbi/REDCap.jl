@@ -15,7 +15,7 @@ function export_arms(;format="xml",arms=nothing,returnFormat=nothing)
 		content="arm",
 		format=format,
 		arms=arms,
-		returnFormat=isnothing(returnFormat) ? format : "xml",
+		returnFormat=returnFormat,
 	)
 end
 
@@ -26,7 +26,7 @@ function import_arms(;format="xml",data=nothing,override=0,returnFormat=nothing)
 		action="import",
 		format=format,
 		data=data,
-		returnFormat=isnothing(returnFormat) ? format : "xml",
+		returnFormat=returnFormat,
 	)
 end
 

@@ -8,7 +8,7 @@ function export_instrument_event_mappings(;format="xml",arms=nothing,returnForma
 		content="formEventMapping",
 		format=format,
 		arms=arms,
-		returnFormat=isnothing(returnFormat) ? format : "xml",
+		returnFormat=returnFormat,
 	)
 end
 
@@ -39,6 +39,6 @@ function import_instrument_event_mappings(;format="xml",data=nothing,returnForma
 		content="formEventMapping",
 		format=format,
 		data=data,
-		returnFormat=isnothing(returnFormat) ? format : "xml",
+		returnFormat=returnFormat,
 	)
 end

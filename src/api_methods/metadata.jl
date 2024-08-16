@@ -1,31 +1,40 @@
 export export_metadata,	import_metadata
 
 function export_metadata(;
-	url=get_valid_url(),
-	token=get_valid_token(),	
-		format="xml",fields=nothing,forms=nothing,returnFormat=nothing)
+	url::redcap_url_parameter=get_valid_url(),
+	token::redcap_token_parameter=get_valid_token(),	
+	format::redcap_formatter=nothing,
+	fields::redcap_array=nothing,
+	forms::redcap_array=nothing,
+	returnFormat::redcap_formatter=nothing,
+	)
+
 	REDCap.request(
-		       url=url,
-		       token=token,
-		content="metadata",
+	       url=url,
+	       token=token,
+		content=:metadata,
 		format=format,
 		fields=fields,
 		forms=forms,
-		returnFormat=isnothing(returnFormat) ? format : "xml",
+		returnFormat=returnFormat,
 	)
 end
 
 function import_metadata(;
-	url=get_valid_url(),
-	token=get_valid_token(),	
-		format="xml",data=nothing,returnFormat=nothing)
+	url::redcap_url_parameter=get_valid_url(),
+	token::redcap_token_parameter=get_valid_token(),	
+	format::redcap_formatter=nothing,
+	data::redcap_data_parameter,
+	returnFormat::redcap_formatter=nothing,
+	)
+
 	REDCap.request(;
-		       url=url,
-		       token=token,
-		content="metadata",
+	       url=url,
+	       token=token,
+		content=:metadata,
 		format=format,
 		data=data,
-		returnFormat=isnothing(returnFormat) ? format : "xml",
+		returnFormat=returnFormat,
 	)
 end
 

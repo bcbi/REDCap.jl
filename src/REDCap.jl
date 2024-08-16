@@ -1,9 +1,11 @@
 module REDCap
 
+using Dates
 using HTTP
 using JSON
 
 include("parameter_assertions.jl")
+include("types.jl")
 include("utils.jl")
 #include("api_methods/arms.jl")
 #include("api_methods/data_access_groups.jl")
