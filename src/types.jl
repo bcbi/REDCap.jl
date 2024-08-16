@@ -1,5 +1,5 @@
-#redcap_action_parameter = Symbol
-#redcap_content_parameter = Symbol
+redcap_action_parameter = Union{Symbol, Nothing}
+redcap_content_parameter = Union{Symbol, Nothing}
 
 redcap_data_parameter = Union{Dict, String}
 redcap_filterLogic_parameter = Union{String, Nothing}

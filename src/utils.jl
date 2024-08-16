@@ -1,4 +1,9 @@
-function request(;debug=false,url,token,content,kwargs...)
+function request(;
+	debug=false,
+	url::redcap_url_parameter,
+	token::redcap_token_parameter,
+	content::redcap_content_parameter,
+	kwargs...)
 
 	html_request_body = assemble_html_body(;kwargs...)
 	html_request_body["x-forwarded-proto"] = "https"
