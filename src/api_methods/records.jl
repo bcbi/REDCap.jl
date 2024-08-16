@@ -5,8 +5,19 @@ export delete_records,
 	rename_record
 
 
-function delete_records(;format=:xml,records=nothing,arm=nothing,instrument=nothing,event=nothing,repeat_instance=nothing)
+function delete_records(;
+	url::redcap_url_parameter=get_valid_url(),
+	token::redcap_token_parameter=get_valid_token(),	
+	records::redcap_array, #TODO: required?
+	arm::redcap_generic_parameter=nothing,
+	instrument::redcap_generic_parameter=nothing,
+	event::redcap_generic_parameter=nothing,
+	repeat_instance::redcap_generic_parameter=nothing,
+	)
+
 	REDCap.request(
+		url=url,
+		token=token,
 		content=:record,
 		action=:delete,
 		records=records,
@@ -17,8 +28,32 @@ function delete_records(;format=:xml,records=nothing,arm=nothing,instrument=noth
 		)
 end
 
-function export_records(;format=:xml,type="flat",records=nothing,fields=nothing,forms=nothing,events=nothing,rawOrLabel="raw",rawOrLabelHeaders="raw",exportCheckboxLabel=false,returnFormat=nothing,exportSurveyFields=false,exportDataAccessGroups=false,filterLogic=nothing,dateRangeBegin=nothing,dateRangeEnd=nothing,csvDelimiter=",",decimalCharacter=".",exportBlankForGrayFormStatus=false)
+function export_records(;
+	data::redcap_data_parameter,
+	url::redcap_url_parameter=get_valid_url(),
+	token::redcap_token_parameter=get_valid_token(),	
+	format::redcap_formatter=nothing,
+	type::redcap_generic_parameter=nothing,
+	records::redcap_array=nothing,
+	fields::redcap_array=nothing,
+	forms::redcap_array=nothing,
+	events::redcap_array=nothing,
+	rawOrLabel::redcap_generic_parameter=nothing,
+	rawOrLabelHeaders::redcap_generic_parameter=nothing,
+	exportCheckboxLabel::redcap_bool=false,
+	returnFormat::redcap_generic_parameter=nothing,
+	exportSurveyFields::redcap_bool=false,
+	exportDataAccessGroups::redcap_bool=false,
+	filterLogic::redcap_filterLogic_parameter=nothing,
+	dateRangeBegin::redcap_timestamp=nothing,
+	dateRangeEnd::redcap_timestamp=nothing,
+	csvDelimiter::redcap_generic_parameter=nothing,
+	decimalCharacter::redcap_generic_parameter=nothing,
+	exportBlankForGrayFormStatus::redcap_bool=nothing
+	)
 	REDCap.request(
+		data=data,
+		url=url,
 		content=:record,
 		format=format, #allows odm, unlike most other format args
 		type=type,
@@ -41,21 +76,41 @@ function export_records(;format=:xml,type="flat",records=nothing,fields=nothing,
 end
 
 #if data == nothing, this is an export request
-function generate_next_record_name()
+function generate_next_record_name(
+	url::redcap_url_parameter=get_valid_url(),
+	token::redcap_token_parameter=get_valid_token(),	
+	)
+
 	REDCap.request(
+		data=data,
+		url=url,
 		content=:generateNextRecordName,
 		)
 end
 
 #if data == nothing, this is an export request
-function import_records(;format=:xml,type="flat",overwriteBehavior="normal",forceAutoNumber=false,data=nothing,dateFormat=nothing,csvDelimiter=",",returnContent="count",returnFormat=nothing)
+function import_records(;
+	url::redcap_url_parameter=get_valid_url(),
+	token::redcap_token_parameter=get_valid_token(),	
+	format::redcap_formatter=nothing,
+	returnFormat::redcap_formatter=nothing,
+	type::redcap_generic_parameter=nothing,
+	overwriteBehavior::redcap_bool=nothing,
+	forceAutoNumber=nothing,
+	data::redcap_data_parameter=nothing,
+	dateFormat::redcap_generic_parameter=nothing,
+	csvDelimiter::redcap_generic_parameter=nothing,
+	returnContent::redcap_formatter=nothing,
+)
+
 	REDCap.request(
+		data=data,
+		url=url,
 		content=:record,
 		format=format, #allows odm, unlike most other format args
 		type=type,
 		overwriteBehavior=overwriteBehavior,
 		forceAutoNumber=forceAutoNumber,
-		data=data,
 		dateFormat=dateFormat,
 		csvDelimiter=csvDelimiter,
 		returnContent=returnContent,
@@ -63,8 +118,17 @@ function import_records(;format=:xml,type="flat",overwriteBehavior="normal",forc
 		)
 end
 
-function rename_record(;record=nothing,new_record_name=nothing,arm=nothing)
+function rename_record(;
+	url::redcap_url_parameter=get_valid_url(),
+	token::redcap_token_parameter=get_valid_token(),	
+	record::redcap_generic_parameter,
+	new_record_name::redcap_generic_parameter,
+	arm::redcap_generic_parameter=nothing,
+	)
+
 	REDCap.request(
+		data=data,
+		url=url,
 		content=:record,
 		action=:rename,
 		record=record,

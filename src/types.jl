@@ -13,3 +13,4 @@ redcap_formatter = Union{Symbol, Nothing}
 redcap_symbol = Union{Symbol, Nothing}
 redcap_timestamp = Union{DateTime, Nothing} #TODO: YYYY-MM-DD HH:MM
 
+redcap_generic_parameter = Any
