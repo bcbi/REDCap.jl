@@ -5,9 +5,9 @@ export delete_records,
 	rename_record
 
 
-function delete_records(;format="xml",records=nothing,arm=nothing,instrument=nothing,event=nothing,repeat_instance=nothing)
+function delete_records(;format=:xml,records=nothing,arm=nothing,instrument=nothing,event=nothing,repeat_instance=nothing)
 	REDCap.request(
-		content="record",
+		content=:record,
 		action=:delete,
 		records=records,
 		arm=arm,
@@ -17,9 +17,9 @@ function delete_records(;format="xml",records=nothing,arm=nothing,instrument=not
 		)
 end
 
-function export_records(;format="xml",type="flat",records=nothing,fields=nothing,forms=nothing,events=nothing,rawOrLabel="raw",rawOrLabelHeaders="raw",exportCheckboxLabel=false,returnFormat=nothing,exportSurveyFields=false,exportDataAccessGroups=false,filterLogic=nothing,dateRangeBegin=nothing,dateRangeEnd=nothing,csvDelimiter=",",decimalCharacter=".",exportBlankForGrayFormStatus=false)
+function export_records(;format=:xml,type="flat",records=nothing,fields=nothing,forms=nothing,events=nothing,rawOrLabel="raw",rawOrLabelHeaders="raw",exportCheckboxLabel=false,returnFormat=nothing,exportSurveyFields=false,exportDataAccessGroups=false,filterLogic=nothing,dateRangeBegin=nothing,dateRangeEnd=nothing,csvDelimiter=",",decimalCharacter=".",exportBlankForGrayFormStatus=false)
 	REDCap.request(
-		content="record",
+		content=:record,
 		format=format, #allows odm, unlike most other format args
 		type=type,
 		records=records,
@@ -43,14 +43,14 @@ end
 #if data == nothing, this is an export request
 function generate_next_record_name()
 	REDCap.request(
-		content="generateNextRecordName",
+		content=:generateNextRecordName,
 		)
 end
 
 #if data == nothing, this is an export request
-function import_records(;format="xml",type="flat",overwriteBehavior="normal",forceAutoNumber=false,data=nothing,dateFormat=nothing,csvDelimiter=",",returnContent="count",returnFormat=nothing)
+function import_records(;format=:xml,type="flat",overwriteBehavior="normal",forceAutoNumber=false,data=nothing,dateFormat=nothing,csvDelimiter=",",returnContent="count",returnFormat=nothing)
 	REDCap.request(
-		content="record",
+		content=:record,
 		format=format, #allows odm, unlike most other format args
 		type=type,
 		overwriteBehavior=overwriteBehavior,
@@ -65,7 +65,7 @@ end
 
 function rename_record(;record=nothing,new_record_name=nothing,arm=nothing)
 	REDCap.request(
-		content="record",
+		content=:record,
 		action=:rename,
 		record=record,
 		new_record_name=new_record_name,

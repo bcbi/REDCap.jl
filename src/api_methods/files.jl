@@ -1,8 +1,8 @@
 export delete_file, export_file, import_file
 
-function delete_file(;record=nothing,field=nothing,event=nothing,repeat_instance=nothing,returnFormat="xml")
+function delete_file(;record=nothing,field=nothing,event=nothing,repeat_instance=nothing,returnFormat=:xml)
 	REDCap.request(;
-		content="file",
+		content=:file,
 		action=:delete,
 		record=record,
 		field=field,
@@ -12,9 +12,9 @@ function delete_file(;record=nothing,field=nothing,event=nothing,repeat_instance
 	)
 end
 
-function export_file(;record=nothing,field=nothing,event=nothing,repeat_instance=nothing,returnFormat="xml")
+function export_file(;record=nothing,field=nothing,event=nothing,repeat_instance=nothing,returnFormat=:xml)
 	REDCap.request(;
-		content="file",
+		content=:file,
 		action=:export,
 		record=record,
 		field=field,
@@ -24,9 +24,9 @@ function export_file(;record=nothing,field=nothing,event=nothing,repeat_instance
 	)
 end
 
-function import_file(;record=nothing,field=nothing,event=nothing,repeat_instance=nothing,file=nothing,returnFormat="xml")
+function import_file(;record=nothing,field=nothing,event=nothing,repeat_instance=nothing,file=nothing,returnFormat=:xml)
 	REDCap.request(;
-		content="file",
+		content=:file,
 		action=:import,
 		record=record,
 		field=field,

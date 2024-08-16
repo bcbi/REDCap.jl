@@ -4,24 +4,24 @@ export delete_events,
 
 function delete_events(;events=nothing)
 	REDCap.request(;
-		content="event",
+		content=:event,
 		action=:import,
 		events=events,
 	)
 end
 
-function export_events(;format="xml",arms=nothing,returnFormat=nothing)
+function export_events(;format=:xml,arms=nothing,returnFormat=nothing)
 	REDCap.request(;
-		content="event",
+		content=:event,
 		format=format,
 		arms=arms,
 		returnFormat=returnFormat,
 	)
 end
 
-function import_events(;format="xml",data=nothing,override=0,returnFormat=nothing)
+function import_events(;format=:xml,data=nothing,override=0,returnFormat=nothing)
 	REDCap.request(;
-		content="event",
+		content=:event,
 		action=:import,
 		override=override,
 		format=format,

@@ -7,30 +7,30 @@ export delete_DAGs,
 
 function delete_DAGs(;dags=nothing)
 	REDCap.request(;
-		content="dag",
+		content=:dag,
 		action=:delete,
 		dags=dags,
 	)
 end
 
-function export_DAGs(;format="xml",returnFormat=nothing)
+function export_DAGs(;format=:xml,returnFormat=nothing)
 	REDCap.request(;
-		content="dag",
+		content=:dag,
 		format=format,
 		returnFormat=returnFormat,
 	)
 end
 
-function export_user_DAG_assignment(;format="xml")
+function export_user_DAG_assignment(;format=:xml)
 	REDCap.request(;
-		content="userDagMapping",
+		content=:userDagMapping,
 		format=format,
 	)
 end
 
-function import_DAGs(;format="xml",data=nothing,returnFormat=nothing)
+function import_DAGs(;format=:xml,data=nothing,returnFormat=nothing)
 	REDCap.request(;
-		content="dag",
+		content=:dag,
 		action=:import,
 		format=format,
 		data=data,
@@ -38,9 +38,9 @@ function import_DAGs(;format="xml",data=nothing,returnFormat=nothing)
 	)
 end
 
-function import_user_DAG_assignment(;format="xml",data=nothing,returnFormat=nothing)
+function import_user_DAG_assignment(;format=:xml,data=nothing,returnFormat=nothing)
 	REDCap.request(;
-		content="userDagMapping",
+		content=:userDagMapping,
 		format=format,
 		data=data,
 		returnFormat=returnFormat,
@@ -49,7 +49,7 @@ end
 
 function switch_DAG(;dag=nothing)
 	REDCap.request(;
-		content="dag",
+		content=:dag,
 		action=:switch,
 		dag=dag,
 	)

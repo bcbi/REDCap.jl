@@ -1,8 +1,8 @@
 export export_reports
 
-function export_reports(;report_id=nothing,format="xml",returnFormat=nothing,rawOrLabel="raw",rawOrLabelHeaders="raw",exportCheckboxLabel=false,csvDelimiter=',',decimalCharacter=".")
+function export_reports(;report_id=nothing,format=:xml,returnFormat=nothing,rawOrLabel="raw",rawOrLabelHeaders="raw",exportCheckboxLabel=false,csvDelimiter=',',decimalCharacter=".")
 	REDCap.request(
-		content="report",
+		content=:report,
 		report_id=report_id,
 		format=format, # format can include odm
 		returnFormat=returnFormat,

@@ -4,9 +4,9 @@ export create_folder,
 	export_list_of_folders,
 	import_file_from_file_repository
 
-function create_folder(;name=nothing,format="xml",folder_id=nothing,dag_id=nothing,role_id=nothing,returnFormat="xml")
+function create_folder(;name=nothing,format=:xml,folder_id=nothing,dag_id=nothing,role_id=nothing,returnFormat=:xml)
 	REDCap.request(;
-		content="fileRepository",
+		content=:fileRepository,
 		action=:createFolder,
 		name=name,
 		format=format,
@@ -17,27 +17,27 @@ function create_folder(;name=nothing,format="xml",folder_id=nothing,dag_id=nothi
 	)
 end
 
-function delete_file_from_file_repository(;name=nothing,format="xml",doc_id=nothing,returnFormat="xml")
+function delete_file_from_file_repository(;name=nothing,format=:xml,doc_id=nothing,returnFormat=:xml)
 	REDCap.request(;
-		content="fileRepository",
+		content=:fileRepository,
 		action=:delete,
 		doc_id=doc_id,
 		returnFormat=returnFormat,
 	)
 end
 
-function export_file_from_file_repository(;name=nothing,format="xml",doc_id=nothing,returnFormat="xml")
+function export_file_from_file_repository(;name=nothing,format=:xml,doc_id=nothing,returnFormat=:xml)
 	REDCap.request(;
-		content="fileRepository",
+		content=:fileRepository,
 		action=:export,
 		doc_id=doc_id,
 		returnFormat=returnFormat,
 	)
 end
 
-function export_list_of_folders(;name=nothing,format="xml",folder_id=nothing,returnFormat="xml")
+function export_list_of_folders(;name=nothing,format=:xml,folder_id=nothing,returnFormat=:xml)
 	REDCap.request(;
-		content="fileRepository",
+		content=:fileRepository,
 		action=:list,
 		name=name,
 		format=format,
@@ -46,9 +46,9 @@ function export_list_of_folders(;name=nothing,format="xml",folder_id=nothing,ret
 	)
 end
 
-function import_file_from_file_repository(;name=nothing,format="xml",file=nothing,folder_id=nothing,returnFormat="xml")
+function import_file_from_file_repository(;name=nothing,format=:xml,file=nothing,folder_id=nothing,returnFormat=:xml)
 	REDCap.request(;
-		content="fileRepository",
+		content=:fileRepository,
 		action=:import,
 		file=file,
 		folder_id=folder_id,

@@ -3,25 +3,25 @@ export export_instrument_event_mappings,
        export_PDF,
        import_instrument_event_mappings
 
-function export_instrument_event_mappings(;format="xml",arms=nothing,returnFormat=nothing)
+function export_instrument_event_mappings(;format=:xml,arms=nothing,returnFormat=nothing)
 	REDCap.request(;
-		content="formEventMapping",
+		content=:formEventMapping,
 		format=format,
 		arms=arms,
 		returnFormat=returnFormat,
 	)
 end
 
-function export_instruments(;format="xml")
+function export_instruments(;format=:xml)
 	REDCap.request(;
-		content="instrument",
+		content=:instrument,
 		format=format,
 	)
 end
 
-function export_PDF(;record=nothing,event=nothing,instrument=nothing,repeat_instance=1,allRecords=nothing,compactDisplay="FALSE",returnFormat="xml")
+function export_PDF(;record=nothing,event=nothing,instrument=nothing,repeat_instance=1,allRecords=nothing,compactDisplay="FALSE",returnFormat=:xml)
 	REDCap.request(;
-		content="pdf",
+		content=:pdf,
 		record=record,
 		event=event,
 		instrument=instrument,
@@ -32,11 +32,11 @@ function export_PDF(;record=nothing,event=nothing,instrument=nothing,repeat_inst
 	)
 end
 
-function import_instrument_event_mappings(;format="xml",data=nothing,returnFormat=nothing)
+function import_instrument_event_mappings(;format=:xml,data=nothing,returnFormat=nothing)
 	#TODO: Here and throughout, enforce that this function cannot 
 	#behave like an export, since the API calls are similar
 	REDCap.request(;
-		content="formEventMapping",
+		content=:formEventMapping,
 		format=format,
 		data=data,
 		returnFormat=returnFormat,

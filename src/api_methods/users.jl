@@ -1,6 +1,6 @@
 export export_users,
-import_users,
-delete_users
+	import_users,
+	delete_users
 
 function delete_users(;
 	url::redcap_url_parameter=get_valid_url(),
@@ -24,15 +24,14 @@ function export_users(;
 	)
 
 	REDCap.request(
-	       url=url,
-	       token=token,
+		url=url,
+		token=token,
 		content=:user,
 		format=format,
 		returnFormat=returnFormat,
 	)
 end
 
-#TODO: Without data, this becomes an export statement
 function import_users(;
 	url::redcap_url_parameter=get_valid_url(),
 	token::redcap_token_parameter=get_valid_token(),	
