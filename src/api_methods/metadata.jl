@@ -8,7 +8,7 @@ function export_metadata(;
 		       url=url,
 		       token=token,
 		content="metadata",
-		format=assert_valid_format(format),
+		format=format,
 		fields=fields,
 		forms=forms,
 		returnFormat=isnothing(returnFormat) ? format : "xml",
@@ -23,7 +23,7 @@ function import_metadata(;
 		       url=url,
 		       token=token,
 		content="metadata",
-		format=assert_valid_format(format),
+		format=format,
 		data=data,
 		returnFormat=isnothing(returnFormat) ? format : "xml",
 	)

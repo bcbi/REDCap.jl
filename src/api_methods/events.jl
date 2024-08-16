@@ -13,7 +13,7 @@ end
 function export_events(;format="xml",arms=nothing,returnFormat=nothing)
 	REDCap.request(;
 		content="event",
-		format=assert_valid_format(format),
+		format=format,
 		arms=arms,
 		returnFormat=isnothing(returnFormat) ? format : "xml",
 	)
@@ -24,7 +24,7 @@ function import_events(;format="xml",data=nothing,override=0,returnFormat=nothin
 		content="event",
 		action="import",
 		override=override,
-		format=assert_valid_format(format),
+		format=format,
 		data=data,
 		returnFormat=isnothing(returnFormat) ? format : "xml",
 	)

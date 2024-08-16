@@ -4,47 +4,23 @@ export create_project,
 	import_project_info
 
 function create_project(;
+	data,
 	url=get_valid_url(),
 	token=get_valid_token(),	
-	data=nothing,
-	format="xml",
+	format=nothing,
 	returnFormat=nothing,
-	odm=nothing,
-	project_title=nothing,
-	purpose=nothing,
-	purpose_other=nothing,
-	project_notes=nothing,
-	is_longitudinal=nothing,
-	surveys_enabled=nothing,
-	record_autonumbering_enabled=nothing,)
+	odm=nothing,)
 
-	if isnothing(returnFormat)
-		returnFormat=isnothing(format) ? "xml" : format
-	end
-
-	if isnothing(data)
-		data=assemble_data_parameter(;
-			project_title=project_title,
-			purpose=purpose,
-			purpose_other=purpose_other,
-			project_notes=project_notes,
-			is_longitudinal= isnothing(is_longitudinal) ? false : is_longitudinal,
-			surveys_enabled=surveys_enabled,
-			record_autonumbering_enabled=record_autonumbering_enabled,
-			)
-		format = "json"
-	end
-
-	if isempty(data)
-		#TODO: Without data or attributes, this would act as export project info
-		# However, notice we always populate data with something, if needed.
-		throw(ArgumentError)
+	if isa(data,Dict)
+		@assert keys(data) ⊆ [:project_title, :purpose, :purpose_other, :project_notes, :is_longitudinal, :surveys_enabled, :record_autonumbering_enabled,]
+		data="[$(JSON.json(data))]"
+		format=:json
 	end
 
 	REDCap.request(;
 		content="project",
-		format=assert_valid_format(format),
-		returnFormat=assert_valid_format(returnFormat),
+		format=format,
+		returnFormat=returnFormat,
 		data=data,
 		url=url,
 		token=token,
@@ -61,7 +37,7 @@ function export_project_info(;
 		content="project",
 		url=url,
 		token=token,
-		returnFormat=assert_valid_format(returnFormat),
+		returnFormat=returnFormat,
 	)
 end
 
@@ -81,36 +57,18 @@ function export_project_XML(;
 		exportDataAccessGroups=exportDataAccessGroups,
 		filterLogic=filterLogic,
 		exportFiles=exportFiles,
-		returnFormat=assert_valid_format(returnFormat),
+		returnFormat=returnFormat,
 	)
 end
 
-function import_project_info(;name=nothing,format="xml",data=nothing,
+function import_project_info(;name=nothing,format=nothing,data,
 	url=get_valid_url(),
-	token=get_valid_token(),	
-		project_title=nothing, project_language=nothing, purpose=nothing, purpose_other=nothing, project_notes=nothing, custom_record_label=nothing, secondary_unique_field=nothing, is_longitudinal=nothing, surveys_enabled=nothing, scheduling_enabled=nothing, record_autonumbering_enabled=nothing, randomization_enabled=nothing, project_irb_number=nothing, project_grant_number=nothing, project_pi_firstname=nothing, project_pi_lastname=nothing, display_today_now_button=nothing, bypass_branching_erase_field_prompt=nothing)
+	token=get_valid_token(),	)
 
-	if isnothing(data)
-		data=assemble_data_parameter(;
-project_language=project_language,
-purpose=purpose,
-purpose_other=purpose_other,
-project_notes=project_notes,
-custom_record_label=custom_record_label,
-secondary_unique_field=secondary_unique_field,
-is_longitudinal=is_longitudinal,
-surveys_enabled=surveys_enabled,
-scheduling_enabled=scheduling_enabled,
-record_autonumbering_enabled=record_autonumbering_enabled,
-randomization_enabled=randomization_enabled,
-project_irb_number=project_irb_number,
-project_grant_number=project_grant_number,
-project_pi_firstname=project_pi_firstname,
-project_pi_lastname=project_pi_lastname,
-display_today_now_button=display_today_now_button,
-bypass_branching_erase_field_prompt=bypass_branching_erase_field_prompt,
-			)
-		format = "json"
+	if isa(data,Dict)
+		@assert keys(data) ⊆ [:project_title, :project_language, :purpose, :purpose_other, :project_notes, :custom_record_label, :secondary_unique_field, :is_longitudinal, :surveys_enabled, :scheduling_enabled, :record_autonumbering_enabled, :randomization_enabled, :project_irb_number, :project_grant_number, :project_pi_firstname, :project_pi_lastname, :display_today_now_button, :bypass_branching_erase_field_prompt]
+		data="[$(JSON.json(data))]"
+		format=:json
 	end
 
 	REDCap.request(;

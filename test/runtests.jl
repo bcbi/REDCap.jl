@@ -5,17 +5,17 @@ using Dates
 using DataFrames
 
 @test export_version() == "13.7.31"
-#@test create_project(data="""[{"project_title":"My New REDCap Project","purpose":"0"}]""",format="json") |> REDCap.is_valid_token
+@test create_project(data="""[{"project_title":"My New REDCap Project","purpose":"0"}]""",format="json") |> REDCap.is_valid_token
 
 begin
-	token = create_project(project_title="$(now())",purpose=0)
+	token = create_project(data=Dict(:project_title=>"$(now())",:purpose=>0))
 	export_project_XML(token=token)
 	export_project_info(token=token)
 
 	export_metadata(token=token)
 
-	@assert import_project_info(token=token) == "1"
 
+	@assert "1" == import_project_info(token=token,data=Dict(:project_title=>"$(now())",:purpose=>0))
 	export_logging(token=token, format="json") |>JSON.parse |> DataFrame
 
 	@test true

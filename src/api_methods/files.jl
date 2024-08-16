@@ -8,7 +8,7 @@ function delete_file(;record=nothing,field=nothing,event=nothing,repeat_instance
 		field=field,
 		event=event,
 		repeat_instance=repeat_instance,
-		returnFormat=assert_valid_format(returnFormat),
+		returnFormat=returnFormat,
 	)
 end
 
@@ -20,7 +20,7 @@ function export_file(;record=nothing,field=nothing,event=nothing,repeat_instance
 		field=field,
 		event=event,
 		repeat_instance=repeat_instance,
-		returnFormat=assert_valid_format(returnFormat),
+		returnFormat=returnFormat,
 	)
 end
 
@@ -33,6 +33,6 @@ function import_file(;record=nothing,field=nothing,event=nothing,repeat_instance
 		event=event,
 		repeat_instance=repeat_instance,
 		file=file,
-		returnFormat=assert_valid_format(returnFormat),
+		returnFormat=returnFormat,
 	)
 end

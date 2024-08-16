@@ -8,7 +8,7 @@ function export_logging(;
 		       url=url,
 		       token=token,
 		content="log",
-		format=assert_valid_format(format),
+		format=format,
 		returnFormat=isnothing(returnFormat) ? format : "xml",
 		logtype=logtype,
 		user=user,

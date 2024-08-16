@@ -16,7 +16,7 @@ end
 function export_DAGs(;format="xml",returnFormat=nothing)
 	REDCap.request(;
 		content="dag",
-		format=assert_valid_format(format),
+		format=format,
 		returnFormat=isnothing(returnFormat) ? format : "xml",
 	)
 end
@@ -24,7 +24,7 @@ end
 function export_user_DAG_assignment(;format="xml")
 	REDCap.request(;
 		content="userDagMapping",
-		format=assert_valid_format(format),
+		format=format,
 	)
 end
 
@@ -32,7 +32,7 @@ function import_DAGs(;format="xml",data=nothing,returnFormat=nothing)
 	REDCap.request(;
 		content="dag",
 		action="import",
-		format=assert_valid_format(format),
+		format=format,
 		data=data,
 		returnFormat=isnothing(returnFormat) ? format : "xml",
 	)
@@ -41,7 +41,7 @@ end
 function import_user_DAG_assignment(;format="xml",data=nothing,returnFormat=nothing)
 	REDCap.request(;
 		content="userDagMapping",
-		format=assert_valid_format(format),
+		format=format,
 		data=data,
 		returnFormat=isnothing(returnFormat) ? format : "xml",
 	)

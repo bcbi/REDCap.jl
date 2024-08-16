@@ -13,7 +13,7 @@ end
 function export_users(;format="xml",returnFormat=nothing)
 	REDCap.request(
 		content="user",
-		format=assert_valid_format(format),
+		format=format,
 		returnFormat=isnothing(returnFormat) ? format : "xml",
 	)
 end
@@ -22,7 +22,7 @@ end
 function import_users(;format="xml",data=nothing,returnFormat=nothing)
 	REDCap.request(
 		content="user",
-		format=assert_valid_format(format),
+		format=format,
 		data=data,
 		returnFormat=isnothing(returnFormat) ? format : "xml",
 	)

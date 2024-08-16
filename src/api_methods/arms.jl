@@ -13,7 +13,7 @@ end
 function export_arms(;format="xml",arms=nothing,returnFormat=nothing)
 	REDCap.request(;
 		content="arm",
-		format=assert_valid_format(format),
+		format=format,
 		arms=arms,
 		returnFormat=isnothing(returnFormat) ? format : "xml",
 	)
@@ -24,7 +24,7 @@ function import_arms(;format="xml",data=nothing,override=0,returnFormat=nothing)
 		content="arm",
 		override=override,
 		action="import",
-		format=assert_valid_format(format),
+		format=format,
 		data=data,
 		returnFormat=isnothing(returnFormat) ? format : "xml",
 	)
