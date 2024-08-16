@@ -23,8 +23,8 @@ end
 function import_metadata(;
 	url::redcap_url_parameter=get_valid_url(),
 	token::redcap_token_parameter=get_valid_token(),	
-	format::redcap_formatter=nothing,
-	data::redcap_data_parameter,
+	format::redcap_formatter,
+	data::redcap_data_parameter=nothing,
 	returnFormat::redcap_formatter=nothing,
 	)
 

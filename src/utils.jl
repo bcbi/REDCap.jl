@@ -1,8 +1,9 @@
 function request(;
-	debug=false,
-	url::redcap_url_parameter,
-	token::redcap_token_parameter,
-	content::redcap_content_parameter,
+	dry_run=false,
+	#url::redcap_url_parameter,
+	#token::redcap_token_parameter,
+	#content::redcap_content_parameter,
+	url,token,content,
 	kwargs...)
 
 	html_request_body = assemble_html_body(;kwargs...)
@@ -10,7 +11,7 @@ function request(;
 	html_request_body["token"] = token
 	html_request_body["content"] = content
 
-	return debug ? html_request_body : HTTP.post(
+	return dry_run ? html_request_body : HTTP.post(
 		url;
 		#get_valid_url();
 		body=html_request_body,

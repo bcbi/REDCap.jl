@@ -4,7 +4,7 @@ export create_project,
 	import_project_info
 
 function create_project(;
-	data::redcap_data_parameter,
+	data::redcap_data_parameter=nothing,
 	url::redcap_url_parameter=get_valid_url(),
 	token::redcap_token_parameter=get_valid_token(),	
 	format::redcap_formatter=nothing,
