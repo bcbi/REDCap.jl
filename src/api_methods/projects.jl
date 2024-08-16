@@ -13,7 +13,8 @@ function create_project(;
 
 	if isa(data,Dict)
 		@assert keys(data) ⊆ [:project_title, :purpose, :purpose_other, :project_notes, :is_longitudinal, :surveys_enabled, :record_autonumbering_enabled,]
-		data="[$(JSON.json(data))]"
+		data="[$(JSON.json(data))]" #TODO: best way to avoid type change? 
+		# maybe function to map (Dict,String) to (String,String)
 		format=:json
 	end
 

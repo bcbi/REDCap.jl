@@ -1,10 +1,10 @@
-redcap_data_parameter = Union{AbstractDict, AbstractString}
-redcap_filterLogic_parameter = Union{AbstractString, Nothing}
-redcap_odm_parameter = Union{AbstractString, Nothing}
-redcap_token_parameter = Union{AbstractString, Nothing}
-redcap_url_parameter = Union{AbstractString, Nothing}
+redcap_data_parameter = Union{Dict, String}
+redcap_filterLogic_parameter = Union{String, Nothing}
+redcap_odm_parameter = Union{String, Nothing}
+redcap_token_parameter = Union{String, Nothing}
+redcap_url_parameter = Union{String, Nothing}
 
-redcap_array = Union{AbstractArray, Nothing}
+redcap_array = Union{Array, Nothing}
 redcap_bool = Union{Bool, Nothing}
 redcap_formatter = Union{Symbol, Nothing}
 redcap_symbol = Union{Symbol, Nothing}
