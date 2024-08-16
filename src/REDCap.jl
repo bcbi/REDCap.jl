@@ -22,7 +22,7 @@ include("api_methods/redcap.jl")
 #include("api_methods/repeating_instruments_and_events.jl")
 #include("api_methods/reports.jl")
 #include("api_methods/surveys.jl")
-#include("api_methods/users.jl")
+include("api_methods/users.jl")
 #include("api_methods/user_roles.jl")
 
 end

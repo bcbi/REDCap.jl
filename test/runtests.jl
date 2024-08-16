@@ -18,6 +18,26 @@ begin
 	@assert "1" == import_project_info(token=token,data=Dict(:project_title=>"$(now())",:purpose=>0))
 	export_logging(token=token, format=:json) |>JSON.parse |> DataFrame
 
+	import_users(token=token,format=:xml,data="""<?xml version="1.0" encoding="UTF-8" ?>
+       <users>
+          <item>
+             <username>harrispa</username>
+             <expiration>2015-12-07</expiration>
+             <user_rights>1</user_rights>
+             <design>0</design>
+             <forms>
+                <demographics>1</demographics>
+                <day_3>2</day_3>
+                <other>0</other>
+             </forms>
+             <forms_export>
+                <demographics>1</demographics>
+                <day_3>0</day_3>
+                <other>2</other>
+             </forms_export>
+          </item>
+       </users>""")
+
 	@test true
 end
 
