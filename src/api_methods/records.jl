@@ -8,7 +8,7 @@ export delete_records,
 function delete_records(;format="xml",records=nothing,arm=nothing,instrument=nothing,event=nothing,repeat_instance=nothing)
 	REDCap.request(
 		content="record",
-		action="delete",
+		action=:delete,
 		records=records,
 		arm=arm,
 		instrument=instrument,
@@ -66,7 +66,7 @@ end
 function rename_record(;record=nothing,new_record_name=nothing,arm=nothing)
 	REDCap.request(
 		content="record",
-		action="rename",
+		action=:rename,
 		record=record,
 		new_record_name=new_record_name,
 		arm=arm,

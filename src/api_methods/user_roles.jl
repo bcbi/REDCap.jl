@@ -7,7 +7,7 @@ import_user_role_assignment
 function delete_user_roles(;roles=nothing)
 	REDCap.request(
 		content="userRole",
-		action="delete",
+		action=:delete,
 		roles=roles,
 	)
 end
