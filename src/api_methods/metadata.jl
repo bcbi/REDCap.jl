@@ -10,7 +10,7 @@ function export_metadata(;
 	)
 
 	REDCap.request(
-	       url=url,
+	       url=URI(url),
 	       token=assert_valid(:token,token),
 		content=:metadata,
 		format=format,
@@ -29,7 +29,7 @@ function import_metadata(;
 	)
 
 	REDCap.request(;
-	       url=url,
+	       url=URI(url),
 	       token=assert_valid(:token,token),
 		content=:metadata,
 		format=format,

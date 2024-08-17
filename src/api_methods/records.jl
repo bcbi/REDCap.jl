@@ -16,7 +16,7 @@ function delete_records(;
 	)
 
 	REDCap.request(
-		url=url,
+		url=URI(url),
 		token=assert_valid(:token,token),
 		content=:record,
 		action=:delete,
@@ -53,7 +53,7 @@ function export_records(;
 	)
 	REDCap.request(
 		data=data,
-		url=url,
+		url=URI(url),
 		token=assert_valid(:token,token),
 		content=:record,
 		format=format, #allows odm, unlike most other format args
@@ -84,7 +84,7 @@ function generate_next_record_name(
 
 	REDCap.request(
 		data=data,
-		url=url,
+		url=URI(url),
 		token=assert_valid(:token,token),
 		content=:generateNextRecordName,
 		)
@@ -107,7 +107,7 @@ function import_records(;
 
 	REDCap.request(
 		data=data,
-		url=url,
+		url=URI(url),
 		token=assert_valid(:token,token),
 		content=:record,
 		format=format, #allows odm, unlike most other format args
@@ -131,7 +131,7 @@ function rename_record(;
 
 	REDCap.request(
 		data=data,
-		url=url,
+		url=URI(url),
 		token=assert_valid(:token,token),
 		content=:record,
 		action=:rename,

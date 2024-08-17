@@ -23,7 +23,7 @@ function create_project(;
 		format=format,
 		returnFormat=returnFormat,
 		data=data,
-		url=url,
+		url=URI(url),
 		token=assert_valid(:super_token,token),
 		odm=odm,
 	)
@@ -37,7 +37,7 @@ function export_project_info(;
 
 	REDCap.request(;
 		content=:project,
-		url=url,
+		url=URI(url),
 		token=assert_valid(:token,token),
 		returnFormat=returnFormat,
 	)
@@ -58,7 +58,7 @@ function export_project_XML(;
 	exportFiles::redcap_bool=nothing,
 	)
 	REDCap.request(;
-		url=url,
+		url=URI(url),
 		token=assert_valid(:token,token),
 		content=:project_xml,
 		returnMetadataOnly=returnMetadataOnly,
@@ -84,7 +84,7 @@ function import_project_info(;name=nothing,format=nothing,data,
 	end
 
 	REDCap.request(;
-		url=url,
+		url=URI(url),
 		token=assert_valid(:token,token),
 		content=:project_settings,
 		format=format,
