@@ -23,11 +23,22 @@ Base.print(x::REDCap_super_token) = print(x.id) #TODO: just define once on a sup
 struct REDCap_url
        id::String
        function REDCap_url(id)
-       is_valid(id) ? new(id) : @error("Invalid REDCap token")
+       is_valid(id) ? new(id) : @error("Invalid REDCap URL")
        end
 	is_valid(url) = occursin(r"^https:\/\/.*\/api\/?$", url)
 end
 Base.print(x::REDCap_url) = print(x.id)
+
+#TODO: actually use this struct (WIP)
+#TODO: add another for content
+struct REDCap_format
+       id::Symbol
+       function REDCap_format(id)
+       is_valid(id) ? new(id) : @error("Invalid REDCap format")
+       end
+       is_valid(format) = format ∈ [:csv,:json,:xml]
+       end
+Base.print(x::REDCap_format) = print(x.id)
 
 redcap_action_parameter = Union{Symbol, Nothing}
 redcap_content_parameter = Union{Symbol, Nothing}
