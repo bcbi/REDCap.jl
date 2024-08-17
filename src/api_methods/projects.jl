@@ -6,7 +6,7 @@ export create_project,
 function create_project(;
 	data::redcap_data_parameter=nothing,
 	url::redcap_url_parameter=get_valid_url(),
-	token::redcap_super_token_parameter=get_valid_token(),	
+	token::redcap_super_token_parameter=get_valid_super_token(),	
 	format::redcap_formatter=nothing,
 	returnFormat::redcap_formatter=nothing,
 	odm::redcap_odm_parameter=nothing,)

@@ -8,11 +8,11 @@ function request(;
 
 	html_request_body = assemble_html_body(;kwargs...)
 	html_request_body["x-forwarded-proto"] = "https"
-	html_request_body["token"] = token
+	html_request_body["token"] = REDCap_token(token)
 	html_request_body["content"] = content
 
 	return dry_run ? html_request_body : HTTP.post(
-		url;
+		URI(url);
 		#get_valid_url();
 		body=html_request_body,
 		require_ssl_verification=true,
