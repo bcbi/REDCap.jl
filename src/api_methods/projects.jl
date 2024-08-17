@@ -5,8 +5,8 @@ export create_project,
 
 function create_project(;
 	data::redcap_data_parameter=nothing,
-	url::redcap_url_parameter=get_valid_url(),
-	token::redcap_super_token_parameter=get_valid_super_token(),	
+	url::redcap_url_parameter=get_url(),
+	token::redcap_super_token_parameter=get_token(),	
 	format::redcap_formatter=nothing,
 	returnFormat::redcap_formatter=nothing,
 	odm::redcap_odm_parameter=nothing,)
@@ -24,28 +24,28 @@ function create_project(;
 		returnFormat=returnFormat,
 		data=data,
 		url=url,
-		token=token,
+		token=assert_valid(:super_token,token),
 		odm=odm,
 	)
 end
 
 function export_project_info(;
-	url::redcap_url_parameter=get_valid_url(),
-	token::redcap_token_parameter=get_valid_token(),	
+	url::redcap_url_parameter=get_url(),
+	token::REDCap_token=get_token(),	
 	returnFormat::redcap_formatter=nothing,
 	)
 
 	REDCap.request(;
 		content=:project,
 		url=url,
-		token=token,
+		token=assert_valid(:token,token),
 		returnFormat=returnFormat,
 	)
 end
 
 function export_project_XML(;
-	url::redcap_url_parameter=get_valid_url(),
-	token::redcap_token_parameter=get_valid_token(),	
+	url::redcap_url_parameter=get_url(),
+	token::REDCap_token=get_token(),	
 	returnFormat::redcap_formatter=nothing,
 
 	returnMetadataOnly::redcap_bool=nothing,
@@ -59,7 +59,7 @@ function export_project_XML(;
 	)
 	REDCap.request(;
 		url=url,
-		token=token,
+		token=assert_valid(:token,token),
 		content=:project_xml,
 		returnMetadataOnly=returnMetadataOnly,
 		records=records,
@@ -74,8 +74,8 @@ function export_project_XML(;
 end
 
 function import_project_info(;name=nothing,format=nothing,data,
-	url::redcap_url_parameter=get_valid_url(),
-	token::redcap_token_parameter=get_valid_token(),	)
+	url::redcap_url_parameter=get_url(),
+	token::REDCap_token=get_token(),	)
 
 	if isa(data,Dict)
 		@assert keys(data) ⊆ [:project_title, :project_language, :purpose, :purpose_other, :project_notes, :custom_record_label, :secondary_unique_field, :is_longitudinal, :surveys_enabled, :scheduling_enabled, :record_autonumbering_enabled, :randomization_enabled, :project_irb_number, :project_grant_number, :project_pi_firstname, :project_pi_lastname, :display_today_now_button, :bypass_branching_erase_field_prompt]
@@ -85,7 +85,7 @@ function import_project_info(;name=nothing,format=nothing,data,
 
 	REDCap.request(;
 		url=url,
-		token=token,
+		token=assert_valid(:token,token),
 		content=:project_settings,
 		format=format,
 		data=data,

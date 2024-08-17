@@ -1,8 +1,8 @@
 export export_logging
 
 function export_logging(;
-	url::redcap_url_parameter=get_valid_url(),
-	token::redcap_token_parameter=get_valid_token(),	
+	url::redcap_url_parameter=get_url(),
+	token::REDCap_token=get_token(),	
 	format::redcap_formatter=nothing,
 	returnFormat::redcap_formatter=nothing,
 	logtype=nothing,
@@ -14,7 +14,7 @@ function export_logging(;
 	)
 	REDCap.request(;
 	       url=url,
-	       token=token,
+	       token=assert_valid(:token,token),
 		content=:log,
 		format=format,
 		returnFormat=returnFormat,

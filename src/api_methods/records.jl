@@ -6,8 +6,8 @@ export delete_records,
 
 
 function delete_records(;
-	url::redcap_url_parameter=get_valid_url(),
-	token::redcap_token_parameter=get_valid_token(),	
+	url::redcap_url_parameter=get_url(),
+	token::REDCap_token=get_token(),	
 	records::redcap_array, #TODO: required?
 	arm::redcap_generic_parameter=nothing,
 	instrument::redcap_generic_parameter=nothing,
@@ -17,7 +17,7 @@ function delete_records(;
 
 	REDCap.request(
 		url=url,
-		token=token,
+		token=assert_valid(:token,token),
 		content=:record,
 		action=:delete,
 		records=records,
@@ -30,8 +30,8 @@ end
 
 function export_records(;
 	data::redcap_data_parameter,
-	url::redcap_url_parameter=get_valid_url(),
-	token::redcap_token_parameter=get_valid_token(),	
+	url::redcap_url_parameter=get_url(),
+	token::REDCap_token=get_token(),	
 	format::redcap_formatter=nothing,
 	type::redcap_generic_parameter=nothing,
 	records::redcap_array=nothing,
@@ -54,7 +54,7 @@ function export_records(;
 	REDCap.request(
 		data=data,
 		url=url,
-		token=token,
+		token=assert_valid(:token,token),
 		content=:record,
 		format=format, #allows odm, unlike most other format args
 		type=type,
@@ -78,22 +78,22 @@ end
 
 #if data == nothing, this is an export request
 function generate_next_record_name(
-	url::redcap_url_parameter=get_valid_url(),
-	token::redcap_token_parameter=get_valid_token(),	
+	url::redcap_url_parameter=get_url(),
+	token::REDCap_token=get_token(),	
 	)
 
 	REDCap.request(
 		data=data,
 		url=url,
-		token=token,
+		token=assert_valid(:token,token),
 		content=:generateNextRecordName,
 		)
 end
 
 #if data == nothing, this is an export request
 function import_records(;
-	url::redcap_url_parameter=get_valid_url(),
-	token::redcap_token_parameter=get_valid_token(),	
+	url::redcap_url_parameter=get_url(),
+	token::REDCap_token=get_token(),	
 	format::redcap_formatter=nothing,
 	returnFormat::redcap_formatter=nothing,
 	type::redcap_generic_parameter=nothing,
@@ -108,7 +108,7 @@ function import_records(;
 	REDCap.request(
 		data=data,
 		url=url,
-		token=token,
+		token=assert_valid(:token,token),
 		content=:record,
 		format=format, #allows odm, unlike most other format args
 		type=type,
@@ -122,8 +122,8 @@ function import_records(;
 end
 
 function rename_record(;
-	url::redcap_url_parameter=get_valid_url(),
-	token::redcap_token_parameter=get_valid_token(),	
+	url::redcap_url_parameter=get_url(),
+	token::REDCap_token=get_token(),	
 	record::redcap_generic_parameter,
 	new_record_name::redcap_generic_parameter,
 	arm::redcap_generic_parameter=nothing,
@@ -132,7 +132,7 @@ function rename_record(;
 	REDCap.request(
 		data=data,
 		url=url,
-		token=token,
+		token=assert_valid(:token,token),
 		content=:record,
 		action=:rename,
 		record=record,

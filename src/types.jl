@@ -1,3 +1,16 @@
+const REDCap_token = String
+const REDCap_super_token = String
+function assert_valid(s::Symbol, x::String)
+	return if s == :token
+		occursin(r"^[0-9A-F]{32}([0-9A-F]{32})?$", x) ? x : throw(ArgumentError("Invalid REDCap token"))
+	elseif s==:super_token
+		occursin(r"^[0-9A-F]{64}$", x) ? x : throw(ArgumentError("Invalid REDCap super token"))
+	else
+		throw(ArgumentError)
+	end
+end
+
+#=
 struct REDCap_token <: AbstractString
        id::String
        function REDCap_token(id)
@@ -11,10 +24,12 @@ URIs.escapeuri(key::String, value::REDCap.REDCap_token) = URIs.escapeuri(key, va
 Base.show(io::IO, token::REDCap_token) = print(io, token.id)
 String(x::REDCap_token) = x.id
 #macro redcap_token_str(t); REDCap_token(t) ; end #TODO: Is this macro even helpful in any way?
+=#
 
 #TODO: add type assertions for all the kwargs somewhere?
 # Or make sure they're on the list
 
+#=
 struct REDCap_super_token <: AbstractString
        id::String
        function REDCap_super_token(id)
@@ -22,11 +37,12 @@ struct REDCap_super_token <: AbstractString
        end
 	is_valid(token) = occursin(r"^[0-9A-F]{64}$", token)
 end
-REDCap_token(x::REDCap_super_token) = x #TODO: improve name - this could be confusing
+#REDCap_token(x::REDCap_super_token) = x #TODO: improve name - this could be confusing
 Base.print(x::REDCap_super_token) = print(x.id) #TODO: just define once on a supertype?
 URIs.escapeuri(key::String, value::REDCap.REDCap_super_token) = URIs.escapeuri(key, value.id)
 String(x::REDCap_super_token) = x.id
 
+=#
 #=
 struct REDCap_url
        id::String

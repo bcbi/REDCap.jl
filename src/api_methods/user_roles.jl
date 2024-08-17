@@ -5,14 +5,14 @@ export export_user_roles,
 	import_user_role_assignments
 
 function delete_user_roles(;
-	url::redcap_url_parameter=get_valid_url(),
-	token::redcap_token_parameter=get_valid_token(),	
+	url::redcap_url_parameter=get_url(),
+	token::REDCap_token=get_token(),	
 	users::redcap_array=nothing,
 	)
 
 	REDCap.request(
 		url=url,
-		token=token,
+		token=assert_valid(:token,token),
 		content=:userRole,
 		action=:delete,
 		roles=roles,
@@ -21,15 +21,15 @@ end
 
 
 function export_user_roles(;
-	url::redcap_url_parameter=get_valid_url(),
-	token::redcap_token_parameter=get_valid_token(),	
+	url::redcap_url_parameter=get_url(),
+	token::REDCap_token=get_token(),	
 	format::redcap_formatter=nothing,
 	returnFormat::redcap_formatter=nothing,
 	)
 
 	REDCap.request(
 		url=url,
-		token=token,
+		token=assert_valid(:token,token),
 		content=:userRole,
 		format=format,
 		returnFormat=returnFormat,
@@ -37,8 +37,8 @@ function export_user_roles(;
 end
 
 function import_user_roles(;
-	url::redcap_url_parameter=get_valid_url(),
-	token::redcap_token_parameter=get_valid_token(),	
+	url::redcap_url_parameter=get_url(),
+	token::REDCap_token=get_token(),	
 	format::redcap_formatter=nothing,
 	returnFormat::redcap_formatter=nothing,
 	data::redcap_data_parameter,
@@ -46,7 +46,7 @@ function import_user_roles(;
 	)
 	REDCap.request(
 		url=url,
-		token=token,
+		token=assert_valid(:token,token),
 		content=:userRole,
 		format=format,
 		data=data,
@@ -56,15 +56,15 @@ end
 
 
 function export_user_role_assignments(;
-	url::redcap_url_parameter=get_valid_url(),
-	token::redcap_token_parameter=get_valid_token(),	
+	url::redcap_url_parameter=get_url(),
+	token::REDCap_token=get_token(),	
 	format::redcap_formatter=nothing,
 	returnFormat::redcap_formatter=nothing,
 	)
 
 	REDCap.request(
 		url=url,
-		token=token,
+		token=assert_valid(:token,token),
 		content=:userRoleMapping,
 		format=format,
 		returnFormat=returnFormat,
@@ -72,8 +72,8 @@ function export_user_role_assignments(;
 end
 
 function import_user_role_assignments(;
-	url::redcap_url_parameter=get_valid_url(),
-	token::redcap_token_parameter=get_valid_token(),	
+	url::redcap_url_parameter=get_url(),
+	token::REDCap_token=get_token(),	
 	format::redcap_formatter=nothing,
 	returnFormat::redcap_formatter=nothing,
 	data::redcap_data_parameter,
@@ -81,7 +81,7 @@ function import_user_role_assignments(;
 
 	REDCap.request(
 		url=url,
-		token=token,
+		token=assert_valid(:token,token),
 		content=:userRoleMapping,
 		format=format,
 		data=data,

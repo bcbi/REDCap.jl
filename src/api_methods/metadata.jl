@@ -1,8 +1,8 @@
 export export_metadata,	import_metadata
 
 function export_metadata(;
-	url::redcap_url_parameter=get_valid_url(),
-	token::redcap_token_parameter=get_valid_token(),	
+	url::redcap_url_parameter=get_url(),
+	token::REDCap_token=get_token(),	
 	format::redcap_formatter=nothing,
 	fields::redcap_array=nothing,
 	forms::redcap_array=nothing,
@@ -11,7 +11,7 @@ function export_metadata(;
 
 	REDCap.request(
 	       url=url,
-	       token=token,
+	       token=assert_valid(:token,token),
 		content=:metadata,
 		format=format,
 		fields=fields,
@@ -21,8 +21,8 @@ function export_metadata(;
 end
 
 function import_metadata(;
-	url::redcap_url_parameter=get_valid_url(),
-	token::redcap_token_parameter=get_valid_token(),	
+	url::redcap_url_parameter=get_url(),
+	token::REDCap_token=get_token(),	
 	format::redcap_formatter,
 	data::redcap_data_parameter=nothing,
 	returnFormat::redcap_formatter=nothing,
@@ -30,7 +30,7 @@ function import_metadata(;
 
 	REDCap.request(;
 	       url=url,
-	       token=token,
+	       token=assert_valid(:token,token),
 		content=:metadata,
 		format=format,
 		data=data,

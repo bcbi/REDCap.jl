@@ -5,7 +5,6 @@ using HTTP
 using JSON
 using URIs
 
-include("parameter_assertions.jl")
 include("types.jl")
 include("utils.jl")
 #include("api_methods/arms.jl")

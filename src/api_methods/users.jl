@@ -3,13 +3,13 @@ export export_users,
 	delete_users
 
 function delete_users(;
-	url::redcap_url_parameter=get_valid_url(),
-	token::redcap_token_parameter=get_valid_token(),	
+	url::redcap_url_parameter=get_url(),
+	token::REDCap_token=get_token(),	
 	users::redcap_array=nothing,
 	)
 	REDCap.request(
 	       url=url,
-	       token=token,
+	       token=assert_valid(:token,token),
 		content=:user,
 		action=:delete,
 		users=users,
@@ -17,15 +17,15 @@ function delete_users(;
 end
 
 function export_users(;
-	url::redcap_url_parameter=get_valid_url(),
-	token::redcap_token_parameter=get_valid_token(),	
+	url::redcap_url_parameter=get_url(),
+	token::REDCap_token=get_token(),	
 	format::redcap_formatter=nothing,
 	returnFormat::redcap_formatter=nothing,
 	)
 
 	REDCap.request(
 		url=url,
-		token=token,
+		token=assert_valid(:token,token),
 		content=:user,
 		format=format,
 		returnFormat=returnFormat,
@@ -33,8 +33,8 @@ function export_users(;
 end
 
 function import_users(;
-	url::redcap_url_parameter=get_valid_url(),
-	token::redcap_token_parameter=get_valid_token(),	
+	url::redcap_url_parameter=get_url(),
+	token::REDCap_token=get_token(),	
 	format::redcap_formatter=nothing,
 	returnFormat::redcap_formatter=nothing,
 	data::redcap_data_parameter,
@@ -48,7 +48,7 @@ function import_users(;
 
 	REDCap.request(
 	       url=url,
-	       token=token,
+	       token=assert_valid(:token,token),
 		content=:user,
 		format=format,
 		data=data,
