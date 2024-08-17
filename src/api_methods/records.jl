@@ -54,6 +54,7 @@ function export_records(;
 	REDCap.request(
 		data=data,
 		url=url,
+		token=token,
 		content=:record,
 		format=format, #allows odm, unlike most other format args
 		type=type,
@@ -84,6 +85,7 @@ function generate_next_record_name(
 	REDCap.request(
 		data=data,
 		url=url,
+		token=token,
 		content=:generateNextRecordName,
 		)
 end
@@ -106,6 +108,7 @@ function import_records(;
 	REDCap.request(
 		data=data,
 		url=url,
+		token=token,
 		content=:record,
 		format=format, #allows odm, unlike most other format args
 		type=type,
@@ -129,6 +132,7 @@ function rename_record(;
 	REDCap.request(
 		data=data,
 		url=url,
+		token=token,
 		content=:record,
 		action=:rename,
 		record=record,
