@@ -22,12 +22,13 @@ function request(;
 end
 
 function assemble_html_body(;kwargs...)
-	body = Dict{String, String}()
+	body = Dict{String, String}() #TODO: Any way to use limited strings here? Anything with constant size?
 	if !isempty(kwargs)
 		for (parameter,value) in kwargs
 			if !isnothing(value)
 				if isa(value, Array)
 					for (i, item) in enumerate(value)
+						#TODO: define print functions for custom internal types
 						body["$parameter[$(i-1)]"] = "$item"
 					end
 				else

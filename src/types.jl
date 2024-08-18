@@ -1,5 +1,7 @@
+#TODO: use value types?
 const REDCap_token = String
 const REDCap_super_token = String
+#TODO: rewrite as separate methods if these get their own types (not aliases)
 function assert_valid(s::Symbol, x::String)
 	return if s == :token
 		occursin(r"^[0-9A-F]{32}([0-9A-F]{32})?$", x) ? x : throw(ArgumentError("Invalid REDCap token"))
