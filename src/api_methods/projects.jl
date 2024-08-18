@@ -31,7 +31,7 @@ end
 
 function export_project_info(;
 	url::redcap_url_parameter=get_url(),
-	token::REDCap_token=get_token(),	
+	token::redcap_token_parameter=get_token(),	
 	returnFormat::redcap_formatter=nothing,
 	)
 
@@ -45,7 +45,7 @@ end
 
 function export_project_XML(;
 	url::redcap_url_parameter=get_url(),
-	token::REDCap_token=get_token(),	
+	token::redcap_token_parameter=get_token(),	
 	returnFormat::redcap_formatter=nothing,
 
 	returnMetadataOnly::redcap_bool=nothing,
@@ -75,7 +75,7 @@ end
 
 function import_project_info(;name=nothing,format=nothing,data,
 	url::redcap_url_parameter=get_url(),
-	token::REDCap_token=get_token(),	)
+	token::redcap_token_parameter=get_token(),	)
 
 	if isa(data,Dict)
 		@assert keys(data) ⊆ [:project_title, :project_language, :purpose, :purpose_other, :project_notes, :custom_record_label, :secondary_unique_field, :is_longitudinal, :surveys_enabled, :scheduling_enabled, :record_autonumbering_enabled, :randomization_enabled, :project_irb_number, :project_grant_number, :project_pi_firstname, :project_pi_lastname, :display_today_now_button, :bypass_branching_erase_field_prompt]

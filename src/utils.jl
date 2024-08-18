@@ -1,14 +1,14 @@
 function request(;
 	dry_run=false,
 	url::redcap_url_parameter,
-	token::redcap_either_token,
+	token::redcap_token_parameter,
 	content::redcap_content_parameter,
 	kwargs...)
 
 	#TODO: replace interpolation with string()?
 	html_request_body = assemble_html_body(;kwargs...)
 	html_request_body["x-forwarded-proto"] = "https"
-	html_request_body["token"] = REDCap_token(token)
+	html_request_body["token"] = token
 	html_request_body["content"] = "$content"
 
 	return dry_run ? html_request_body : HTTP.post(

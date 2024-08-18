@@ -2,7 +2,7 @@ export export_logging
 
 function export_logging(;
 	url::redcap_url_parameter=get_url(),
-	token::REDCap_token=get_token(),	
+	token::redcap_token_parameter=get_token(),	
 	format::redcap_formatter=nothing,
 	returnFormat::redcap_formatter=nothing,
 	logtype=nothing,

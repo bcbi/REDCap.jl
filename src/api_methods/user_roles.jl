@@ -6,7 +6,7 @@ export export_user_roles,
 
 function delete_user_roles(;
 	url::redcap_url_parameter=get_url(),
-	token::REDCap_token=get_token(),	
+	token::redcap_token_parameter=get_token(),	
 	users::redcap_array=nothing,
 	)
 
@@ -22,7 +22,7 @@ end
 
 function export_user_roles(;
 	url::redcap_url_parameter=get_url(),
-	token::REDCap_token=get_token(),	
+	token::redcap_token_parameter=get_token(),	
 	format::redcap_formatter=nothing,
 	returnFormat::redcap_formatter=nothing,
 	)
@@ -38,7 +38,7 @@ end
 
 function import_user_roles(;
 	url::redcap_url_parameter=get_url(),
-	token::REDCap_token=get_token(),	
+	token::redcap_token_parameter=get_token(),	
 	format::redcap_formatter=nothing,
 	returnFormat::redcap_formatter=nothing,
 	data::redcap_data_parameter,
@@ -57,7 +57,7 @@ end
 
 function export_user_role_assignments(;
 	url::redcap_url_parameter=get_url(),
-	token::REDCap_token=get_token(),	
+	token::redcap_token_parameter=get_token(),	
 	format::redcap_formatter=nothing,
 	returnFormat::redcap_formatter=nothing,
 	)
@@ -73,7 +73,7 @@ end
 
 function import_user_role_assignments(;
 	url::redcap_url_parameter=get_url(),
-	token::REDCap_token=get_token(),	
+	token::redcap_token_parameter=get_token(),	
 	format::redcap_formatter=nothing,
 	returnFormat::redcap_formatter=nothing,
 	data::redcap_data_parameter,

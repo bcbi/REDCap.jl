@@ -4,7 +4,7 @@ export export_users,
 
 function delete_users(;
 	url::redcap_url_parameter=get_url(),
-	token::REDCap_token=get_token(),	
+	token::redcap_token_parameter=get_token(),	
 	users::redcap_array=nothing,
 	)
 	REDCap.request(
@@ -18,7 +18,7 @@ end
 
 function export_users(;
 	url::redcap_url_parameter=get_url(),
-	token::REDCap_token=get_token(),	
+	token::redcap_token_parameter=get_token(),	
 	format::redcap_formatter=nothing,
 	returnFormat::redcap_formatter=nothing,
 	)
@@ -34,7 +34,7 @@ end
 
 function import_users(;
 	url::redcap_url_parameter=get_url(),
-	token::REDCap_token=get_token(),	
+	token::redcap_token_parameter=get_token(),	
 	format::redcap_formatter=nothing,
 	returnFormat::redcap_formatter=nothing,
 	data::redcap_data_parameter,

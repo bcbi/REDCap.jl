@@ -7,7 +7,7 @@ export delete_records,
 
 function delete_records(;
 	url::redcap_url_parameter=get_url(),
-	token::REDCap_token=get_token(),	
+	token::redcap_token_parameter=get_token(),	
 	records::redcap_array, #TODO: required?
 	arm::redcap_generic_parameter=nothing,
 	instrument::redcap_generic_parameter=nothing,
@@ -31,7 +31,7 @@ end
 function export_records(;
 	data::redcap_data_parameter,
 	url::redcap_url_parameter=get_url(),
-	token::REDCap_token=get_token(),	
+	token::redcap_token_parameter=get_token(),	
 	format::redcap_formatter=nothing,
 	type::redcap_generic_parameter=nothing,
 	records::redcap_array=nothing,
@@ -79,7 +79,7 @@ end
 #if data == nothing, this is an export request
 function generate_next_record_name(
 	url::redcap_url_parameter=get_url(),
-	token::REDCap_token=get_token(),	
+	token::redcap_token_parameter=get_token(),	
 	)
 
 	REDCap.request(
@@ -93,7 +93,7 @@ end
 #if data == nothing, this is an export request
 function import_records(;
 	url::redcap_url_parameter=get_url(),
-	token::REDCap_token=get_token(),	
+	token::redcap_token_parameter=get_token(),	
 	format::redcap_formatter=nothing,
 	returnFormat::redcap_formatter=nothing,
 	type::redcap_generic_parameter=nothing,
@@ -123,7 +123,7 @@ end
 
 function rename_record(;
 	url::redcap_url_parameter=get_url(),
-	token::REDCap_token=get_token(),	
+	token::redcap_token_parameter=get_token(),	
 	record::redcap_generic_parameter,
 	new_record_name::redcap_generic_parameter,
 	arm::redcap_generic_parameter=nothing,
