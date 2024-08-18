@@ -67,24 +67,24 @@ end
 Base.print(x::REDCap_format) = print(x.id)
 String(x::REDCap_format) = x.id
 
-redcap_action_parameter = Union{Symbol, Nothing}
-redcap_content_parameter = Union{Symbol, Nothing}
-redcap_data_parameter = Union{Dict, String, Nothing} #TODO: this can be nothing in REDCap.request(), but must be mandatory wherever it is a method parameter. Otherwise, it changes the method behavior, which would contradict the guarantee of the function name
-redcap_filterLogic_parameter = Union{String, Nothing}
-redcap_odm_parameter = Union{String, Nothing}
+const redcap_action_parameter = Union{Symbol, Nothing}
+const redcap_content_parameter = Union{Symbol, Nothing}
+const redcap_data_parameter = Union{Dict, String, Nothing} #TODO: this can be nothing in REDCap.request(), but must be mandatory wherever it is a method parameter. Otherwise, it changes the method behavior, which would contradict the guarantee of the function name
+const redcap_filterLogic_parameter = Union{String, Nothing}
+const redcap_odm_parameter = Union{String, Nothing}
 
-redcap_super_token_parameter = Union{REDCap_super_token, String}
-redcap_token_parameter = Union{REDCap_token, REDCap_super_token, String}
-redcap_either_token = Union{redcap_token_parameter, redcap_super_token_parameter}
-redcap_url_parameter = Union{REDCap_url,String}
+const redcap_super_token_parameter = Union{REDCap_super_token, String}
+const redcap_token_parameter = Union{REDCap_token, REDCap_super_token, String}
+const redcap_either_token = Union{redcap_token_parameter, redcap_super_token_parameter}
+const redcap_url_parameter = Union{REDCap_url,String}
 
-redcap_array = Union{Array, Nothing}
-redcap_bool = Union{Bool, Nothing}
-redcap_formatter = Union{Symbol, Nothing}
-redcap_symbol = Union{Symbol, Nothing}
-redcap_timestamp = Union{DateTime, Nothing} #TODO: YYYY-MM-DD HH:MM
+const redcap_array = Union{Array, Nothing}
+const redcap_bool = Union{Bool, Nothing}
+const redcap_formatter = Union{Symbol, Nothing}
+const redcap_symbol = Union{Symbol, Nothing}
+const redcap_timestamp = Union{DateTime, Nothing} #TODO: YYYY-MM-DD HH:MM
 
-redcap_generic_parameter = Any
+const redcap_generic_parameter = Any
 
 #URIs.URI(x::REDCap.REDCap_url) = URIs.URI(x.id)
 #Base.iterate(x::REDCap.REDCap_token) = Base.iterate(x.id)
