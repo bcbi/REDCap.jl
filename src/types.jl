@@ -1,19 +1,34 @@
-#TODO: use value types?
-const REDCap_token = String
-const REDCap_super_token = String
-#TODO: rewrite as separate methods if these get their own types (not aliases)
-function assert_valid(s::Symbol, x::String)
-	return if s == :token
-		occursin(r"^[0-9A-F]{32}([0-9A-F]{32})?$", x) ? x : throw(ArgumentError("Invalid REDCap token"))
-	elseif s==:super_token
-		occursin(r"^[0-9A-F]{64}$", x) ? x : throw(ArgumentError("Invalid REDCap super token"))
-	#TODO: currently not used
-	elseif s==:format
-		x ∈ [:csv,:json,:xml] ? x : throw(ArgumentError("Invalid format parameter"))
-	else
-		throw(ArgumentError)
-	end
+
+struct REDCap_format
+	id::redcap_format_parameter
+	REDCap_format(id::Symbol) = id ∈ [:csv,:json,:xml] ? new(id) : throw(ArgumentError("Invalid format parameter"))
+	REDCap_format(id::string) = id ∈ ["csv","json","xml"] ? new(id) : throw(ArgumentError("Invalid format parameter"))
+	REDCap_format(id::Nothing) = nothing
 end
+Base.display(x::REDCap_format) = Base.display(x.id)
+Base.string(x::REDCap_format) = Base.string(x.id)
+
+struct REDCap_token
+	id::String
+	REDCap_token(id) = occursin(r"^[0-9A-F]{32}([0-9A-F]{32})?$", id) ? new(id) : throw(ArgumentError("Invalid REDCap token"))
+end
+Base.display(x::REDCap_token) = Base.display(x.id)
+Base.string(x::REDCap_token) = Base.string(x.id)
+
+struct REDCap_super_token
+	id::String
+	REDCap_super_token(id) = occursin(r"^[0-9A-F]{64}$", id) ? new(id) : throw(ArgumentError("Invalid REDCap super token"))
+end
+Base.display(x::REDCap_super_token) = Base.display(x.id)
+Base.string(x::REDCap_super_token) = Base.string(x.id)
+
+
+
+
+
+
+
+
 
 #=
 struct REDCap_token <: AbstractString
@@ -87,6 +102,7 @@ const redcap_url_parameter = Union{REDCap_url,String}
 
 const redcap_array = Union{Array, Nothing}
 const redcap_bool = Union{Bool, Nothing}
+const redcap_format_parameter = Union{String, Symbol, Nothing}
 const redcap_formatter = Union{Symbol, Nothing}
 const redcap_symbol = Union{Symbol, Nothing}
 const redcap_timestamp = Union{DateTime, Nothing} #TODO: YYYY-MM-DD HH:MM

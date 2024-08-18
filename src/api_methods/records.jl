@@ -17,7 +17,7 @@ function delete_records(;
 
 	REDCap.request(
 		url=URI(url),
-		token=assert_valid(:token,token),
+		token=REDCap_token(token),
 		content=:record,
 		action=:delete,
 		records=records,
@@ -54,9 +54,9 @@ function export_records(;
 	REDCap.request(
 		data=data,
 		url=URI(url),
-		token=assert_valid(:token,token),
+		token=REDCap_token(token),
 		content=:record,
-		format=format, #allows odm, unlike most other format args
+		format=REDCap_format(format), #allows odm, unlike most other format args
 		type=type,
 		records=records,
 		forms=forms,
@@ -64,7 +64,7 @@ function export_records(;
 		rawOrLabel=rawOrLabel,
 		rawOrLabelHeaders=rawOrLabelHeaders,
 		exportCheckboxLabel=exportCheckboxLabel,
-		returnFormat=returnFormat,
+		returnFormat=REDCap_format(returnFormat),
 		exportSurveyFields=exportSurveyFields,
 		exportDataAccessGroups=exportDataAccessGroups,
 		filterLogic=filterLogic,
@@ -85,7 +85,7 @@ function generate_next_record_name(
 	REDCap.request(
 		data=data,
 		url=URI(url),
-		token=assert_valid(:token,token),
+		token=REDCap_token(token),
 		content=:generateNextRecordName,
 		)
 end
@@ -108,16 +108,16 @@ function import_records(;
 	REDCap.request(
 		data=data,
 		url=URI(url),
-		token=assert_valid(:token,token),
+		token=REDCap_token(token),
 		content=:record,
-		format=format, #allows odm, unlike most other format args
+		format=REDCap_format(format), #allows odm, unlike most other format args
 		type=type,
 		overwriteBehavior=overwriteBehavior,
 		forceAutoNumber=forceAutoNumber,
 		dateFormat=dateFormat,
 		csvDelimiter=csvDelimiter,
 		returnContent=returnContent,
-		returnFormat=returnFormat,
+		returnFormat=REDCap_format(returnFormat),
 		)
 end
 
@@ -132,7 +132,7 @@ function rename_record(;
 	REDCap.request(
 		data=data,
 		url=URI(url),
-		token=assert_valid(:token,token),
+		token=REDCap_token(token),
 		content=:record,
 		action=:rename,
 		record=record,

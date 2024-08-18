@@ -4,8 +4,8 @@ function export_reports(;report_id=nothing,format=:xml,returnFormat=nothing,rawO
 	REDCap.request(
 		content=:report,
 		report_id=report_id,
-		format=format, # format can include odm
-		returnFormat=returnFormat,
+		format=REDCap_format(format), # format can include odm
+		returnFormat=REDCap_format(returnFormat),
 		rawOrLabel=rawOrLabel,
 		rawOrLabelHeaders=rawOrLabelHeaders,
 		exportCheckboxLabel=exportCheckboxLabel,

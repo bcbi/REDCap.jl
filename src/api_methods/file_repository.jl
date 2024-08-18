@@ -9,11 +9,11 @@ function create_folder(;name=nothing,format=:xml,folder_id=nothing,dag_id=nothin
 		content=:fileRepository,
 		action=:createFolder,
 		name=name,
-		format=format,
+		format=REDCap_format(format),
 		folder_id=folder_id,
 		dag_id=dag_id,
 		role_id=role_id,
-		returnFormat=returnFormat,
+		returnFormat=REDCap_format(returnFormat),
 	)
 end
 
@@ -22,7 +22,7 @@ function delete_file_from_file_repository(;name=nothing,format=:xml,doc_id=nothi
 		content=:fileRepository,
 		action=:delete,
 		doc_id=doc_id,
-		returnFormat=returnFormat,
+		returnFormat=REDCap_format(returnFormat),
 	)
 end
 
@@ -31,7 +31,7 @@ function export_file_from_file_repository(;name=nothing,format=:xml,doc_id=nothi
 		content=:fileRepository,
 		action=:export,
 		doc_id=doc_id,
-		returnFormat=returnFormat,
+		returnFormat=REDCap_format(returnFormat),
 	)
 end
 
@@ -40,9 +40,9 @@ function export_list_of_folders(;name=nothing,format=:xml,folder_id=nothing,retu
 		content=:fileRepository,
 		action=:list,
 		name=name,
-		format=format,
+		format=REDCap_format(format),
 		folder_id=folder_id,
-		returnFormat=returnFormat,
+		returnFormat=REDCap_format(returnFormat),
 	)
 end
 
@@ -52,6 +52,6 @@ function import_file_from_file_repository(;name=nothing,format=:xml,file=nothing
 		action=:import,
 		file=file,
 		folder_id=folder_id,
-		returnFormat=returnFormat,
+		returnFormat=REDCap_format(returnFormat),
 	)
 end

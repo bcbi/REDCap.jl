@@ -6,16 +6,16 @@ export export_instrument_event_mappings,
 function export_instrument_event_mappings(;format=:xml,arms=nothing,returnFormat=nothing)
 	REDCap.request(;
 		content=:formEventMapping,
-		format=format,
+		format=REDCap_format(format),
 		arms=arms,
-		returnFormat=returnFormat,
+		returnFormat=REDCap_format(returnFormat),
 	)
 end
 
 function export_instruments(;format=:xml)
 	REDCap.request(;
 		content=:instrument,
-		format=format,
+		format=REDCap_format(format),
 	)
 end
 
@@ -28,7 +28,7 @@ function export_PDF(;record=nothing,event=nothing,instrument=nothing,repeat_inst
 		repeat_instance=repeat_instance,
 		allRecords=allRecords, #passed vs. value #TODO
 		compactDisplay=compactDisplay,
-		returnFormat=returnFormat,
+		returnFormat=REDCap_format(returnFormat),
 	)
 end
 
@@ -37,8 +37,8 @@ function import_instrument_event_mappings(;format=:xml,data=nothing,returnFormat
 	#behave like an export, since the API calls are similar
 	REDCap.request(;
 		content=:formEventMapping,
-		format=format,
+		format=REDCap_format(format),
 		data=data,
-		returnFormat=returnFormat,
+		returnFormat=REDCap_format(returnFormat),
 	)
 end

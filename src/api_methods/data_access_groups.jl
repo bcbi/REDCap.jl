@@ -16,15 +16,15 @@ end
 function export_DAGs(;format=:xml,returnFormat=nothing)
 	REDCap.request(;
 		content=:dag,
-		format=format,
-		returnFormat=returnFormat,
+		format=REDCap_format(format),
+		returnFormat=REDCap_format(returnFormat),
 	)
 end
 
 function export_user_DAG_assignment(;format=:xml)
 	REDCap.request(;
 		content=:userDagMapping,
-		format=format,
+		format=REDCap_format(format),
 	)
 end
 
@@ -32,18 +32,18 @@ function import_DAGs(;format=:xml,data=nothing,returnFormat=nothing)
 	REDCap.request(;
 		content=:dag,
 		action=:import,
-		format=format,
+		format=REDCap_format(format),
 		data=data,
-		returnFormat=returnFormat,
+		returnFormat=REDCap_format(returnFormat),
 	)
 end
 
 function import_user_DAG_assignment(;format=:xml,data=nothing,returnFormat=nothing)
 	REDCap.request(;
 		content=:userDagMapping,
-		format=format,
+		format=REDCap_format(format),
 		data=data,
-		returnFormat=returnFormat,
+		returnFormat=REDCap_format(returnFormat),
 	)
 end
 

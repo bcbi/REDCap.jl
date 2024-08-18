@@ -13,9 +13,9 @@ end
 function export_arms(;format=:xml,arms=nothing,returnFormat=nothing)
 	REDCap.request(;
 		content=:arm,
-		format=format,
+		format=REDCap_format(format),
 		arms=arms,
-		returnFormat=returnFormat,
+		returnFormat=REDCap_format(returnFormat),
 	)
 end
 
@@ -24,9 +24,9 @@ function import_arms(;format=:xml,data=nothing,override=0,returnFormat=nothing)
 		content=:arm,
 		override=override,
 		action=:import,
-		format=format,
+		format=REDCap_format(format),
 		data=data,
-		returnFormat=returnFormat,
+		returnFormat=REDCap_format(returnFormat),
 	)
 end
 

@@ -6,7 +6,7 @@ function export_version(;
 	)
 	REDCap.request(;
 		url=URI(url),
-		token=assert_valid(:token,token),
+		token=REDCap_token(token),
 		content=:version,
 	)
 end

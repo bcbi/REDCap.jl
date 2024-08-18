@@ -13,9 +13,9 @@ end
 function export_events(;format=:xml,arms=nothing,returnFormat=nothing)
 	REDCap.request(;
 		content=:event,
-		format=format,
+		format=REDCap_format(format),
 		arms=arms,
-		returnFormat=returnFormat,
+		returnFormat=REDCap_format(returnFormat),
 	)
 end
 
@@ -24,9 +24,9 @@ function import_events(;format=:xml,data=nothing,override=0,returnFormat=nothing
 		content=:event,
 		action=:import,
 		override=override,
-		format=format,
+		format=REDCap_format(format),
 		data=data,
-		returnFormat=returnFormat,
+		returnFormat=REDCap_format(returnFormat),
 	)
 end
 

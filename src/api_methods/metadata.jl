@@ -11,12 +11,12 @@ function export_metadata(;
 
 	REDCap.request(
 	url=URI(url),
-	token=assert_valid(:token,token),
+	token=REDCap_token(token),
 		content=:metadata,
-		format=format,
+		format=REDCap_format(format),
 		fields=fields,
 		forms=forms,
-		returnFormat=returnFormat,
+		returnFormat=REDCap_format(returnFormat),
 	)
 end
 
@@ -30,11 +30,11 @@ function import_metadata(;
 
 	REDCap.request(;
 	url=URI(url),
-	token=assert_valid(:token,token),
+	token=REDCap_token(token),
 		content=:metadata,
-		format=format,
+		format=REDCap_format(format),
 		data=data,
-		returnFormat=returnFormat,
+		returnFormat=REDCap_format(returnFormat),
 	)
 end
 

@@ -14,10 +14,10 @@ function export_logging(;
 	)
 	REDCap.request(;
 	url=URI(url),
-	token=assert_valid(:token,token),
+	token=REDCap_token(token),
 		content=:log,
-		format=format,
-		returnFormat=returnFormat,
+		format=REDCap_format(format),
+		returnFormat=REDCap_format(returnFormat),
 		logtype=logtype,
 		user=user,
 		record=record,
