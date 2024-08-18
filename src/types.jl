@@ -7,6 +7,9 @@ function assert_valid(s::Symbol, x::String)
 		occursin(r"^[0-9A-F]{32}([0-9A-F]{32})?$", x) ? x : throw(ArgumentError("Invalid REDCap token"))
 	elseif s==:super_token
 		occursin(r"^[0-9A-F]{64}$", x) ? x : throw(ArgumentError("Invalid REDCap super token"))
+	#TODO: currently not used
+	elseif s==:format
+		x ∈ [:csv,:json,:xml] ? x : throw(ArgumentError("Invalid format parameter"))
 	else
 		throw(ArgumentError)
 	end
@@ -59,6 +62,7 @@ REDCap_url = URIs.URI
 
 #TODO: actually use this struct (WIP)
 #TODO: add another for content
+#=
 struct REDCap_format
 id::Symbol
 function REDCap_format(id)
@@ -68,6 +72,7 @@ is_valid(format) = format ∈ [:csv,:json,:xml]
 end
 Base.print(x::REDCap_format) = print(x.id)
 String(x::REDCap_format) = x.id
+=#
 
 const redcap_action_parameter = Union{Symbol, Nothing}
 const redcap_content_parameter = Union{Symbol, Nothing}
