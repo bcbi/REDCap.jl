@@ -10,8 +10,8 @@ function export_metadata(;
 	)
 
 	REDCap.request(
-	       url=URI(url),
-	       token=assert_valid(:token,token),
+	url=URI(url),
+	token=assert_valid(:token,token),
 		content=:metadata,
 		format=format,
 		fields=fields,
@@ -29,8 +29,8 @@ function import_metadata(;
 	)
 
 	REDCap.request(;
-	       url=URI(url),
-	       token=assert_valid(:token,token),
+	url=URI(url),
+	token=assert_valid(:token,token),
 		content=:metadata,
 		format=format,
 		data=data,

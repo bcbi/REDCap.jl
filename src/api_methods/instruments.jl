@@ -1,7 +1,7 @@
 export export_instrument_event_mappings,
-       export_instruments,
-       export_PDF,
-       import_instrument_event_mappings
+	export_instruments,
+	export_PDF,
+	import_instrument_event_mappings
 
 function export_instrument_event_mappings(;format=:xml,arms=nothing,returnFormat=nothing)
 	REDCap.request(;

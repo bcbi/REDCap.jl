@@ -8,8 +8,8 @@ function delete_users(;
 	users::redcap_array=nothing,
 	)
 	REDCap.request(
-	       url=URI(url),
-	       token=assert_valid(:token,token),
+	url=URI(url),
+	token=assert_valid(:token,token),
 		content=:user,
 		action=:delete,
 		users=users,
@@ -47,8 +47,8 @@ function import_users(;
 	end
 
 	REDCap.request(
-	       url=URI(url),
-	       token=assert_valid(:token,token),
+	url=URI(url),
+	token=assert_valid(:token,token),
 		content=:user,
 		format=format,
 		data=data,

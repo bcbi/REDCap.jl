@@ -12,10 +12,10 @@ end
 
 #=
 struct REDCap_token <: AbstractString
-       id::String
-       function REDCap_token(id)
-       is_valid(id) ? new(id) : @error("Invalid REDCap token")
-       end
+id::String
+function REDCap_token(id)
+is_valid(id) ? new(id) : @error("Invalid REDCap token")
+end
 	is_valid(token) = occursin(r"^[0-9A-F]{32}([0-9A-F]{32})?$", token)
 end
 REDCap_token(x::REDCap_token) = x
@@ -31,10 +31,10 @@ String(x::REDCap_token) = x.id
 
 #=
 struct REDCap_super_token <: AbstractString
-       id::String
-       function REDCap_super_token(id)
-       is_valid(id) ? new(id) : @error("Invalid REDCap super-token")
-       end
+id::String
+function REDCap_super_token(id)
+is_valid(id) ? new(id) : @error("Invalid REDCap super-token")
+end
 	is_valid(token) = occursin(r"^[0-9A-F]{64}$", token)
 end
 #REDCap_token(x::REDCap_super_token) = x #TODO: improve name - this could be confusing
@@ -45,10 +45,10 @@ String(x::REDCap_super_token) = x.id
 =#
 #=
 struct REDCap_url
-       id::String
-       function REDCap_url(id)
-       is_valid(id) ? new(id) : @error("Invalid REDCap URL")
-       end
+id::String
+function REDCap_url(id)
+is_valid(id) ? new(id) : @error("Invalid REDCap URL")
+end
 	is_valid(url) = occursin(r"^https:\/\/.*\/api\/?$", url)
 end
 Base.print(x::REDCap_url) = print(x.id)
@@ -58,12 +58,12 @@ REDCap_url = URIs.URI
 #TODO: actually use this struct (WIP)
 #TODO: add another for content
 struct REDCap_format
-       id::Symbol
-       function REDCap_format(id)
-       is_valid(id) ? new(id) : @error("Invalid REDCap format")
-       end
-       is_valid(format) = format ∈ [:csv,:json,:xml]
-       end
+id::Symbol
+function REDCap_format(id)
+is_valid(id) ? new(id) : @error("Invalid REDCap format")
+end
+is_valid(format) = format ∈ [:csv,:json,:xml]
+end
 Base.print(x::REDCap_format) = print(x.id)
 String(x::REDCap_format) = x.id
 
