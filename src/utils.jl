@@ -1,7 +1,6 @@
 function request(;
-	dry_run=false,
-	url::redcap_url_parameter,
-	token::redcap_token_parameter,
+	url::REDCap_url,
+	token::Union{REDCap_token, REDCap_super_token},
 	content::redcap_content_parameter,
 	kwargs...)
 
@@ -11,7 +10,7 @@ function request(;
 	html_request_body["token"] = token
 	html_request_body["content"] = "$content"
 
-	return dry_run ? html_request_body : HTTP.post(
+	return HTTP.post(
 		URI(url);
 		#get_valid_url();
 		body=html_request_body,
@@ -23,7 +22,7 @@ function request(;
 end
 
 function assemble_html_body(;kwargs...)
-	body = Dict{String, String}() #TODO: Any way to use limited strings here? Anything with constant size?
+	body = Dict{String, String}()
 	if !isempty(kwargs)
 		for (parameter,value) in kwargs
 			if !isnothing(value)
