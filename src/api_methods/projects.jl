@@ -7,8 +7,8 @@ function create_project(;
 	data::redcap_data_parameter=nothing,
 	url::redcap_url_parameter=get_url(),
 	token::redcap_super_token_parameter=get_token(),	
-	format::redcap_formatter=nothing,
-	returnFormat::redcap_formatter=nothing,
+	format::redcap_format_parameter=nothing,
+	returnFormat::redcap_returnFormat_parameter=nothing,
 	odm::redcap_odm_parameter=nothing,)
 
 	if isa(data,Dict)
@@ -32,7 +32,7 @@ end
 function export_project_info(;
 	url::redcap_url_parameter=get_url(),
 	token::redcap_token_parameter=get_token(),	
-	returnFormat::redcap_formatter=nothing,
+	returnFormat::redcap_returnFormat_parameter=nothing,
 	)
 
 	REDCap.request(;
@@ -46,7 +46,7 @@ end
 function export_project_XML(;
 	url::redcap_url_parameter=get_url(),
 	token::redcap_token_parameter=get_token(),	
-	returnFormat::redcap_formatter=nothing,
+	returnFormat::redcap_returnFormat_parameter=nothing,
 
 	returnMetadataOnly::redcap_bool=nothing,
 	records::redcap_array=nothing,

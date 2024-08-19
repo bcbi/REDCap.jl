@@ -32,7 +32,7 @@ function export_records(;
 	data::redcap_data_parameter,
 	url::redcap_url_parameter=get_url(),
 	token::redcap_token_parameter=get_token(),	
-	format::redcap_formatter=nothing,
+	format::redcap_format_parameter=nothing,
 	type::redcap_generic_parameter=nothing,
 	records::redcap_array=nothing,
 	fields::redcap_array=nothing,
@@ -94,15 +94,15 @@ end
 function import_records(;
 	url::redcap_url_parameter=get_url(),
 	token::redcap_token_parameter=get_token(),	
-	format::redcap_formatter=nothing,
-	returnFormat::redcap_formatter=nothing,
+	format::redcap_format_parameter=nothing,
+	returnFormat::redcap_returnFormat_parameter=nothing,
 	type::redcap_generic_parameter=nothing,
 	overwriteBehavior::redcap_bool=nothing,
 	forceAutoNumber=nothing,
 	data::redcap_data_parameter=nothing,
 	dateFormat::redcap_generic_parameter=nothing,
 	csvDelimiter::redcap_generic_parameter=nothing,
-	returnContent::redcap_formatter=nothing,
+	returnContent=nothing,
 )
 
 	REDCap.request(

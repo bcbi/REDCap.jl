@@ -11,7 +11,8 @@ const redcap_odm_parameter = Union{String, Nothing}
 const redcap_array = Union{Array, Nothing}
 const redcap_bool = Union{Bool, Nothing}
 const redcap_format_parameter = Union{String, Symbol, Nothing}
-const redcap_formatter = Union{Symbol, Nothing}
+const redcap_returnFormat_parameter = redcap_format_parameter
+#const redcap_formatter = Union{Symbol, Nothing}
 const redcap_symbol = Union{Symbol, Nothing}
 const redcap_timestamp = Union{DateTime, Nothing} #TODO: YYYY-MM-DD HH:MM
 
@@ -24,7 +25,7 @@ redcap_generic_parameter = Union{
 	redcap_array,
 	redcap_bool,
 	redcap_format_parameter,
-	redcap_formatter,
+	#redcap_formatter,
 	redcap_symbol,
 	redcap_timestamp,
 	}

@@ -19,8 +19,8 @@ end
 function export_users(;
 	url::redcap_url_parameter=get_url(),
 	token::redcap_token_parameter=get_token(),	
-	format::redcap_formatter=nothing,
-	returnFormat::redcap_formatter=nothing,
+	format::redcap_format_parameter=nothing,
+	returnFormat::redcap_returnFormat_parameter=nothing,
 	)
 
 	REDCap.request(
@@ -35,8 +35,8 @@ end
 function import_users(;
 	url::redcap_url_parameter=get_url(),
 	token::redcap_token_parameter=get_token(),	
-	format::redcap_formatter=nothing,
-	returnFormat::redcap_formatter=nothing,
+	format::redcap_format_parameter=nothing,
+	returnFormat::redcap_returnFormat_parameter=nothing,
 	data::redcap_data_parameter,
 	)
 

@@ -3,8 +3,8 @@ export export_logging
 function export_logging(;
 	url::redcap_url_parameter=get_url(),
 	token::redcap_token_parameter=get_token(),	
-	format::redcap_formatter=nothing,
-	returnFormat::redcap_formatter=nothing,
+	format::redcap_format_parameter=nothing,
+	returnFormat::redcap_returnFormat_parameter=nothing,
 	logtype=nothing,
 	user=nothing,
 	record=nothing,
