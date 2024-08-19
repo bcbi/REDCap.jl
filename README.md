@@ -1,50 +1,40 @@
-# RedCap
-
-<p>
-<a href="https://app.bors.tech/repositories/12274"><img alt="Bors enabled" src="https://bors.tech/images/badge_small.svg"></a>
-<a href="https://travis-ci.org/bcbi/REDCap.jl/branches"><img alt="Travis build status" src="https://travis-ci.org/bcbi/REDCap.jl.svg?branch=master"></a>
-<a href="http://codecov.io/github/bcbi/REDCap.jl?branch=master"><img src="http://codecov.io/github/bcbi/REDCap.jl/coverage.svg?branch=master"></a>
-</p>
-
-## Overview
-
-A Julia frontend for the REDCap API. REDCap.jl supports both importing and exporting records, as well as deletion from the REDCap Database. It also includes functions for surveys and report generation. 
-
-Available under the MIT license.
+# REDCap.jl
 
 [![](https://img.shields.io/badge/docs-stable-blue.svg)](https://bcbi.github.io/REDCap.jl/stable)
 [![](https://img.shields.io/badge/docs-latest-blue.svg)](https://bcbi.github.io/REDCap.jl/latest)
+[![](https://travis-ci.org/bcbi/REDCap.jl.svg?branch=master)](https://travis-ci.org/bcbi/REDCap.jl/branches)
+[![](http://codecov.io/github/bcbi/REDCap.jl/coverage.svg?branch=master)](http://codecov.io/github/bcbi/REDCap.jl?branch=master)
 
+A Julia frontend for the REDCap API
 
-## Getting Started 
+## Examples
+```julia
+using REDCap, CSV, JSON
 
+export_version()
 
-### Installing
+import_records(
+  data=CSV.File("example.csv") |> JSON.json,
+  format="json")
 
-Julia can be found using the standard package manager, and installed like any other package.
+delete_records(records=[2,3])
 
-```bash
-add REDCap
+export_logging()
 ```
 
-## Tests 
-
-Tests can be run using the Julia package manager
-```bash
-test REDCap
+## Notes
+Your REDCap token and you institution's REDCap API URL are read from Julia's environment variables.
+You can make them avaiable to REDCap.jl by putting the following lines in [your local Julia startup file](https://docs.julialang.org/en/v1/manual/command-line-interface/#Startup-file) (probably `~/.julia/config/startup.jl`):
+```julia
+ENV["REDCAP_API_TOKEN"] = "C0FFEEC0AC0AC0DEC0FFEEC0AC0AC0DE"
+ENV["REDCAP_API_URL"] = "http://example.com/redcap/api/"
+```
+Otherwise, all REDCap parameters are passed to REDCap.jl functions as named arguments, and these take values that are natural Julian types (Strings, Ints, Bools, DatesTimes, and Arrays).
+Each REDCap API method is available as a named function that supplies required parameters and checks user inputs for validity.
+If you need greater control over the parameters (due to REDCap version differences, for example), you could try calling the underlying `REDCap.request()` function directly:
+```julia
+REDCap.request(content="version")
 ```
 
-Due to the nature of the API, the API-Key and URL must be set in the users `.juliarc` file:
-```bash
-ENV["REDCAP_SUPER_API"] = "<super-key>"
-ENV["REDCAP_API"] = "<key>"
-ENV["REDCAP_URL"] = "<url>"
-```
-If a super-key is not provided, project creation will not be tested. Otherwise, a project will be created, and verified.
-
-### NOTE:
-Testing must be performed on the users own REDCap environment. If you are unable to access your own REDCap environment, testing will also fail.
-Projects are tested according to a rough template. Several tests may fail if your project deviates from this template such as record contents and users.
-
-## Release History
-- 1.0 - Initial Release - compatible with Julia 1.0 and REDCap 8.1.0
+## Acknowledgments
+The contributors are grateful for the support of Mary McGrath, Paul Stey, Fernando Gelin, the Brown Data Science Institute, the Brown Center for Biomedical Informatics, and the Tufts CTSI Informatics core.

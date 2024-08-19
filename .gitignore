@@ -4,6 +4,7 @@
 *.txt
 *.csv
 *.json
+*.swp
 *.xml
 *.pdf
 docs/site/
