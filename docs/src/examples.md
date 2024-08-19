@@ -2,74 +2,69 @@
 CurrentModule = REDCap
 ```
 # Examples
-
-
-## Basic Usage
-
-A basic project can be created and accessed like so:
+Some example function calls:
 ```julia
-using REDCap
+export_version()
 
-#create config object for project creation
-super_config = REDCap.Config("<URL>", "<S-API>")
+export_metadata()
 
-config = create_project(super_config, "Test Project", 1; purpose_other="Testing REDCap.jl Functionality", project_notes="This is not an actual REDCap Database.")
+export_logging(format=:json) |> JSON.parse |> DataFrame
 
+# Add ability to delete records
+import_users(
+       data=Dict(
+		:username => "userName",
+		:record_delete => 1
+       )
+)
 
-#Importing- NOTE: Records may be incomplete. Only provided fields will be updated
-record=[Dict("sex"=>"0",
-	  "age"=>"56",
-	  "address"=>"168 Anderson Blvd. Quincy MA 01227",
-	  "height"=>"80",
-	  "dob"=>"1962-04-08",
-	  "record_id"=>"1",
-	  "bmi"=>"125",
-	  "comments"=>"Randomly Generated - Demographics",
-	  "email"=>"ALin@aol.com",
-	  "first_name"=>"Alexia",
-	  "demographics_complete"=>"0",
-	  "telephone"=>"(617) 882-6049",
-	  "weight"=>"80",
-	  "last_name"=>"Lin",
-	  "ethnicity"=>"1",
-	  "race"=>"1")]
-
-import_records(config, record)
-
-#create new user with basic import/export permissions
-user=[Dict("username" => "john_smith@email.com",
-		 "email" => "john_smith@email.com",
-		 "lastname" => "Smith",
-		 "api_export"=>"1",
-		 "api_import"=>"1")]
-
-import_users(config, user)
-
-#Exporting
-records = export_records(config)
-
-#Edit project info to remove development status
-final_proj_info=Dict("project_title" => "RC Production",
-				  	 "in_production" => "1")
-import_project_information(config, final_proj_info)
-
-#pdf summary of the project
-export_pdf(config, "/<path>/export.pdf", allRecords=true)
+delete_records(
+       records=["TM22-15374","TM22-16931","TM22-21015"]
+)
 ```
 
-
-## File Handling
-
-Records and other project information can be loaded directly from a `.csv`, `.xml`, or `.odm`. Likewise, exported information can be saved directly to a specified file.
+The following example is a more realistic workflow that creates a new project from an existing project XML (data dictionary) and uploads large CSV data files into it in segments.
 
 ```julia
-#Exporting - file_loc must be provided as the save path
-export_records(config, file_loc="<path>/records.xml", format="xml")
+using Dates
+using REDCap
+using ProgressMeter
 
-export_users(config, file_loc="<path>/users.csv", format="csv")
+function main()
+println("Working...")
 
-#Importing - data passed as a file-path is loaded directly into the API
-import_records(config, "<path>/records.xml", format="xml") #NOTE: The format must match the file format you are uploading
+project_token = create_project(
+       data=Dict(
+		:project_title => "Workflow test v$(now())",
+		:purpose => 3,
+	),
+       odm=read("project.xml",String),
+)
 
-import_users(config, "<path>/users.csv", format="csv")
+chunk_size = 100
+for file in [
+"table_1.csv",
+"table_2.csv",
+"table_3.csv",
+]
+
+	# Measure progress
+	number_of_lines = parse(Int, read(`wc -l $file`,String) |> split |> first)
+	number_of_uploads = number_of_lines ÷ chunk_size + 1
+	prog = Progress(number_of_uploads, desc = file)
+
+	(header, rows) = Iterators.peel(  eachline(file ) )
+	for block in Iterators.partition( rows, chunk_size)
+		import_records(
+			token=project_token,
+			format=:csv,
+			data=header * '\n' * join(block, '\n')
+		)
+		next!(prog)
+	end
+	finish!(prog)
+end
+
+end
+main()
 ```
