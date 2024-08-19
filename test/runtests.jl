@@ -44,6 +44,8 @@ begin
           </item>
        </users>""")
 
+	CSV.read(export_users(format=:csv) |> IOBuffer, DataFrame )
+
 	@test true
 end
 
