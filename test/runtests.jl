@@ -4,6 +4,11 @@ using Test
 using Dates
 using DataFrames
 
+if (get(ENV, "REDCAP_API_URL", "")) |> isempty && (get(ENV, "REDCAP_API_TOKEN", "")) |> isempty
+	@info("To run these tests, add values for REDCAP_API_URL and REDCAP_API_TOKEN to your Julia startup file")
+	@test true
+else
+
 @test export_version() == "13.7.31"
 #@test create_project(data="""[{"project_title":"My New REDCap Project","purpose":"0"}]""",format="json") |> REDCap.is_valid_token
 #TODO: account for running test without token in ENV
@@ -151,3 +156,5 @@ end
 
 nothing
 =#
+
+end
