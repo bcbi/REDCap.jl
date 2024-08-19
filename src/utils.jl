@@ -6,7 +6,6 @@ function request(;
 
 	#TODO: replace interpolation with string()?
 	html_request_body = assemble_html_body(;kwargs...)
-	html_request_body["x-forwarded-proto"] = "https"
 	html_request_body["token"] = token
 	html_request_body["content"] = "$content"
 
