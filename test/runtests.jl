@@ -13,6 +13,15 @@ else
 #@test create_project(data="""[{"project_title":"My New REDCap Project","purpose":"0"}]""",format="json") |> REDCap.is_valid_token
 #TODO: account for running test without token in ENV
 
+#TODO: more tests like this, checking the API's return value
+#=
+write("users.csv", export_users(format=:csv))
+import_users(data=read("small.json",String), format=:json, returnFormat=:xml)
+import_users(data=Dict(:username => "userName"))
+import_users(data="""[{"username":"userName"}]""", format=:json)
+import_users(data="""username\naharris""", format=:csv)
+=#
+
 begin
 	token = create_project(data=Dict(:project_title=>"$(now())",:purpose=>0))
 	export_project_XML(token=token)

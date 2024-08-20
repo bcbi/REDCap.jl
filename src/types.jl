@@ -4,7 +4,8 @@ const redcap_token_parameter = String
 const redcap_super_token_parameter = String
 const redcap_action_parameter = Union{Symbol, Nothing}
 const redcap_content_parameter = Union{Symbol, Nothing}
-const redcap_data_parameter = Union{Dict, String, Nothing} #TODO: this can be nothing in REDCap.request(), but must be mandatory wherever it is a method parameter. Otherwise, it changes the method behavior, which would contradict the guarantee of the function name
+const redcap_data_parameter = Any
+#const redcap_data_parameter = Union{IOStream, Dict, String, Nothing} #TODO: this can be nothing in REDCap.request(), but must be mandatory wherever it is a method parameter. Otherwise, it changes the method behavior, which would contradict the guarantee of the function name
 const redcap_filterLogic_parameter = Union{String, Nothing}
 const redcap_odm_parameter = Union{String, Nothing}
 

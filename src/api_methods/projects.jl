@@ -12,7 +12,7 @@ function create_project(;
 	odm::redcap_odm_parameter=nothing,)
 
 	if isa(data,Dict)
-		@assert keys(data) ⊆ [:project_title, :purpose, :purpose_other, :project_notes, :is_longitudinal, :surveys_enabled, :record_autonumbering_enabled,]
+		@assert Symbol.(keys(data)) ⊆ [:project_title, :purpose, :purpose_other, :project_notes, :is_longitudinal, :surveys_enabled, :record_autonumbering_enabled,]
 		data="[$(JSON.json(data))]" #TODO: best way to avoid type change? 
 		# maybe function to map (Dict,String) to (String,String)
 		format=:json
@@ -78,7 +78,7 @@ function import_project_info(;name=nothing,format=nothing,data,
 	token::redcap_token_parameter=get_token(),	)
 
 	if isa(data,Dict)
-		@assert keys(data) ⊆ [:project_title, :project_language, :purpose, :purpose_other, :project_notes, :custom_record_label, :secondary_unique_field, :is_longitudinal, :surveys_enabled, :scheduling_enabled, :record_autonumbering_enabled, :randomization_enabled, :project_irb_number, :project_grant_number, :project_pi_firstname, :project_pi_lastname, :display_today_now_button, :bypass_branching_erase_field_prompt]
+		@assert Symbol.(keys(data)) ⊆ [:project_title, :project_language, :purpose, :purpose_other, :project_notes, :custom_record_label, :secondary_unique_field, :is_longitudinal, :surveys_enabled, :scheduling_enabled, :record_autonumbering_enabled, :randomization_enabled, :project_irb_number, :project_grant_number, :project_pi_firstname, :project_pi_lastname, :display_today_now_button, :bypass_branching_erase_field_prompt]
 		data="[$(JSON.json(data))]"
 		format=:json
 	end
