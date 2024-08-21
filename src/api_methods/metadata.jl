@@ -12,7 +12,7 @@ function export_metadata(;
 	REDCap.request(
 		url=URI(url),
 		token=REDCap_token(token),
-		content=:metadata,
+		content=REDCap_content(:metadata),
 		format=REDCap_format(format),
 		fields=fields,
 		forms=forms,
@@ -31,7 +31,7 @@ function import_metadata(;
 	REDCap.request(;
 		url=URI(url),
 		token=REDCap_token(token),
-		content=:metadata,
+		content=REDCap_content(:metadata),
 		format=REDCap_format(format),
 		data=data,
 		returnFormat=REDCap_format(returnFormat),

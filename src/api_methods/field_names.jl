@@ -11,7 +11,7 @@ function export_list_of_export_field_names(;
 	REDCap.request(;
 		url=URI(url),
 		token=REDCap_token(token),
-		content=:exportFieldNames,
+		content=REDCap_content(:exportFieldNames),
 		format=REDCap_format(format),
 		field=field, #TODO: This could be a single entry or an array
 		returnFormat=REDCap_format(returnFormat),

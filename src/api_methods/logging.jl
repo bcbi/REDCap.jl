@@ -15,7 +15,7 @@ function export_logging(;
 	REDCap.request(;
 	url=URI(url),
 	token=REDCap_token(token),
-		content=:log,
+	content=REDCap_content(:log),
 		format=REDCap_format(format),
 		returnFormat=REDCap_format(returnFormat),
 		logtype=logtype,

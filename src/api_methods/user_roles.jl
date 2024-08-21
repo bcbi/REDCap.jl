@@ -13,7 +13,7 @@ function delete_user_roles(;
 	REDCap.request(
 		url=URI(url),
 		token=REDCap_token(token),
-		content=:userRole,
+		content=REDCap_content(:userRole),
 		action=:delete,
 		roles=roles,
 	)
@@ -30,7 +30,7 @@ function export_user_roles(;
 	REDCap.request(
 		url=URI(url),
 		token=REDCap_token(token),
-		content=:userRole,
+		content=REDCap_content(:userRole),
 		format=REDCap_format(format),
 		returnFormat=REDCap_format(returnFormat),
 	)
@@ -47,7 +47,7 @@ function import_user_roles(;
 	REDCap.request(
 		url=URI(url),
 		token=REDCap_token(token),
-		content=:userRole,
+		content=REDCap_content(:userRole),
 		format=REDCap_format(format),
 		data=data,
 		returnFormat=REDCap_format(returnFormat),
@@ -65,7 +65,7 @@ function export_user_role_assignments(;
 	REDCap.request(
 		url=URI(url),
 		token=REDCap_token(token),
-		content=:userRoleMapping,
+		content=REDCap_content(:userRoleMapping),
 		format=REDCap_format(format),
 		returnFormat=REDCap_format(returnFormat),
 	)
@@ -82,7 +82,7 @@ function import_user_role_assignments(;
 	REDCap.request(
 		url=URI(url),
 		token=REDCap_token(token),
-		content=:userRoleMapping,
+		content=REDCap_content(:userRoleMapping),
 		format=REDCap_format(format),
 		data=data,
 		returnFormat=REDCap_format(returnFormat),

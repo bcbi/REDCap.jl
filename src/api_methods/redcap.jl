@@ -7,6 +7,6 @@ function export_version(;
 	REDCap.request(;
 		url=URI(url),
 		token=REDCap_token(token),
-		content=:version,
+		content=REDCap_content(:version),
 	)
 end

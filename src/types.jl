@@ -1,9 +1,16 @@
+struct REDCap_content 
+	id::Symbol
+	REDCap_format(id) = id ∈ [:arm,:dag,:userDagMapping,:event,:exportFieldNames,:fileRepository,:file,:formEventMapping,:instrument,:pdf,:log,:metadata,:project,:project_xml,:record,:generateNextRecordName,:record,:version,:repeatingFormsEvents,:report,:surveyLink,:participantList,:surveyQueueLink,:userRole,:userRoleMapping,:user,] ? new(id) : throw(ArgumentError("Invalid content parameter"))
+end
+Base.display(x::REDCap_content) = Base.display(x.id)
+Base.string(x::REDCap_content) = Base.string(x.id)
+Base.convert(String,x::REDCap_content) = string(x)
+
 const REDCap_url = URIs.URI
 const redcap_url_parameter = Union{REDCap_url,String}
 const redcap_token_parameter = String
 const redcap_super_token_parameter = String
 const redcap_action_parameter = Union{Symbol, Nothing}
-const redcap_content_parameter = Union{Symbol, Nothing}
 const redcap_data_parameter = Any
 #const redcap_data_parameter = Union{IOStream, Dict, String, Nothing} #TODO: this can be nothing in REDCap.request(), but must be mandatory wherever it is a method parameter. Otherwise, it changes the method behavior, which would contradict the guarantee of the function name
 const redcap_filterLogic_parameter = Union{String, Nothing}
@@ -19,7 +26,6 @@ const redcap_timestamp = Union{DateTime, Nothing} #TODO: YYYY-MM-DD HH:MM
 
 redcap_generic_parameter = Union{
 	redcap_action_parameter,
-	redcap_content_parameter,
 	redcap_data_parameter,
 	redcap_filterLogic_parameter,
 	redcap_odm_parameter,

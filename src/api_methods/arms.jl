@@ -4,7 +4,7 @@ export delete_arms,
 
 function delete_arms(;arms=nothing)
 	REDCap.request(;
-		content=:arm,
+		       content=REDCap_content(:arm),
 		action=:import,
 		arms=arms,
 	)
@@ -12,7 +12,7 @@ end
 
 function export_arms(;format=:xml,arms=nothing,returnFormat=nothing)
 	REDCap.request(;
-		content=:arm,
+		       content=REDCap_content(:arm),
 		format=REDCap_format(format),
 		arms=arms,
 		returnFormat=REDCap_format(returnFormat),
@@ -21,7 +21,7 @@ end
 
 function import_arms(;format=:xml,data=nothing,override=0,returnFormat=nothing)
 	REDCap.request(;
-		content=:arm,
+		       content=REDCap_content(:arm),
 		override=override,
 		action=:import,
 		format=REDCap_format(format),
