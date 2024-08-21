@@ -2,7 +2,7 @@ export export_reports
 
 function export_reports(;report_id=nothing,format=:xml,returnFormat=nothing,rawOrLabel="raw",rawOrLabelHeaders="raw",exportCheckboxLabel=false,csvDelimiter=',',decimalCharacter=".")
 	REDCap.request(
-		content=:report,
+		       content=REDCap_content(:report),
 		report_id=report_id,
 		format=REDCap_format(format), # format can include odm
 		returnFormat=REDCap_format(returnFormat),

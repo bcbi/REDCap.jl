@@ -9,9 +9,18 @@ if (get(ENV, "REDCAP_API_URL", "")) |> isempty && (get(ENV, "REDCAP_API_TOKEN", 
 	@test true
 else
 
-@test export_version() == "13.7.31"
+@test export_version() == "14.5.8"
 #@test create_project(data="""[{"project_title":"My New REDCap Project","purpose":"0"}]""",format="json") |> REDCap.is_valid_token
 #TODO: account for running test without token in ENV
+
+#TODO: more tests like this, checking the API's return value
+#=
+write("users.csv", export_users(format=:csv))
+import_users(data=read("small.json",String), format=:json, returnFormat=:xml)
+import_users(data=Dict(:username => "userName"))
+import_users(data="""[{"username":"userName"}]""", format=:json)
+import_users(data="""username\naharris""", format=:csv)
+=#
 
 begin
 	token = create_project(data=Dict(:project_title=>"$(now())",:purpose=>0))
@@ -43,6 +52,8 @@ begin
              </forms_export>
           </item>
        </users>""")
+
+	#CSV.read(export_users(format=:csv) |> IOBuffer, DataFrame )
 
 	@test true
 end

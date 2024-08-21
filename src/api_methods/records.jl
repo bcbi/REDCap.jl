@@ -18,7 +18,7 @@ function delete_records(;
 	REDCap.request(
 		url=URI(url),
 		token=REDCap_token(token),
-		content=:record,
+		content=REDCap_content(:record),
 		action=:delete,
 		records=records,
 		arm=arm,
@@ -32,7 +32,7 @@ function export_records(;
 	data::redcap_data_parameter,
 	url::redcap_url_parameter=get_url(),
 	token::redcap_token_parameter=get_token(),	
-	format::redcap_formatter=nothing,
+	format::redcap_format_parameter=nothing,
 	type::redcap_generic_parameter=nothing,
 	records::redcap_array=nothing,
 	fields::redcap_array=nothing,
@@ -55,7 +55,7 @@ function export_records(;
 		data=data,
 		url=URI(url),
 		token=REDCap_token(token),
-		content=:record,
+		content=REDCap_content(:record),
 		format=REDCap_format(format), #allows odm, unlike most other format args
 		type=type,
 		records=records,
@@ -86,7 +86,7 @@ function generate_next_record_name(
 		data=data,
 		url=URI(url),
 		token=REDCap_token(token),
-		content=:generateNextRecordName,
+		content=REDCap_content(:generateNextRecordName),
 		)
 end
 
@@ -94,22 +94,22 @@ end
 function import_records(;
 	url::redcap_url_parameter=get_url(),
 	token::redcap_token_parameter=get_token(),	
-	format::redcap_formatter=nothing,
-	returnFormat::redcap_formatter=nothing,
+	format::redcap_format_parameter=nothing,
+	returnFormat::redcap_returnFormat_parameter=nothing,
 	type::redcap_generic_parameter=nothing,
 	overwriteBehavior::redcap_bool=nothing,
 	forceAutoNumber=nothing,
 	data::redcap_data_parameter=nothing,
 	dateFormat::redcap_generic_parameter=nothing,
 	csvDelimiter::redcap_generic_parameter=nothing,
-	returnContent::redcap_formatter=nothing,
+	returnContent=nothing,
 )
 
 	REDCap.request(
 		data=data,
 		url=URI(url),
 		token=REDCap_token(token),
-		content=:record,
+		content=REDCap_content(:record),
 		format=REDCap_format(format), #allows odm, unlike most other format args
 		type=type,
 		overwriteBehavior=overwriteBehavior,
@@ -133,7 +133,7 @@ function rename_record(;
 		data=data,
 		url=URI(url),
 		token=REDCap_token(token),
-		content=:record,
+		content=REDCap_content(:record),
 		action=:rename,
 		record=record,
 		new_record_name=new_record_name,

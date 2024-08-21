@@ -6,7 +6,7 @@ export create_folder,
 
 function create_folder(;name=nothing,format=:xml,folder_id=nothing,dag_id=nothing,role_id=nothing,returnFormat=:xml)
 	REDCap.request(;
-		content=:fileRepository,
+		       content=REDCap_content(:fileRepository),
 		action=:createFolder,
 		name=name,
 		format=REDCap_format(format),
@@ -19,7 +19,7 @@ end
 
 function delete_file_from_file_repository(;name=nothing,format=:xml,doc_id=nothing,returnFormat=:xml)
 	REDCap.request(;
-		content=:fileRepository,
+		       content=REDCap_content(:fileRepository),
 		action=:delete,
 		doc_id=doc_id,
 		returnFormat=REDCap_format(returnFormat),
@@ -28,7 +28,7 @@ end
 
 function export_file_from_file_repository(;name=nothing,format=:xml,doc_id=nothing,returnFormat=:xml)
 	REDCap.request(;
-		content=:fileRepository,
+		       content=REDCap_content(:fileRepository),
 		action=:export,
 		doc_id=doc_id,
 		returnFormat=REDCap_format(returnFormat),
@@ -37,7 +37,7 @@ end
 
 function export_list_of_folders(;name=nothing,format=:xml,folder_id=nothing,returnFormat=:xml)
 	REDCap.request(;
-		content=:fileRepository,
+		       content=REDCap_content(:fileRepository),
 		action=:list,
 		name=name,
 		format=REDCap_format(format),
@@ -48,7 +48,7 @@ end
 
 function import_file_from_file_repository(;name=nothing,format=:xml,file=nothing,folder_id=nothing,returnFormat=:xml)
 	REDCap.request(;
-		content=:fileRepository,
+		       content=REDCap_content(:fileRepository),
 		action=:import,
 		file=file,
 		folder_id=folder_id,

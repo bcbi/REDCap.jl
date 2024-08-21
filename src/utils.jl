@@ -1,7 +1,7 @@
 function request(;
 	url::REDCap_url,
 	token::Union{REDCap_token, REDCap_super_token},
-	content::redcap_content_parameter,
+	content::REDCap_content,
 	kwargs...)
 
 	#TODO: replace interpolation with string()?
@@ -21,10 +21,12 @@ function request(;
 end
 
 function assemble_html_body(;kwargs...)
-	body = Dict{String, String}()
+	body = Dict{String, Union{String, IOBuffer}}()
 	if !isempty(kwargs)
 		for (parameter,value) in kwargs
 			if !isnothing(value)
+				#if parameter ∈ [:data, :filterLogic]
+					#body["$parameter"] = IOBuffer(string(value))
 				if isa(value, Array)
 					for (i, item) in enumerate(value)
 						#TODO: define print functions for custom internal types

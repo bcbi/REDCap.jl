@@ -13,7 +13,7 @@ function delete_user_roles(;
 	REDCap.request(
 		url=URI(url),
 		token=REDCap_token(token),
-		content=:userRole,
+		content=REDCap_content(:userRole),
 		action=:delete,
 		roles=roles,
 	)
@@ -23,14 +23,14 @@ end
 function export_user_roles(;
 	url::redcap_url_parameter=get_url(),
 	token::redcap_token_parameter=get_token(),	
-	format::redcap_formatter=nothing,
-	returnFormat::redcap_formatter=nothing,
+	format::redcap_format_parameter=nothing,
+	returnFormat::redcap_returnFormat_parameter=nothing,
 	)
 
 	REDCap.request(
 		url=URI(url),
 		token=REDCap_token(token),
-		content=:userRole,
+		content=REDCap_content(:userRole),
 		format=REDCap_format(format),
 		returnFormat=REDCap_format(returnFormat),
 	)
@@ -39,15 +39,15 @@ end
 function import_user_roles(;
 	url::redcap_url_parameter=get_url(),
 	token::redcap_token_parameter=get_token(),	
-	format::redcap_formatter=nothing,
-	returnFormat::redcap_formatter=nothing,
+	format::redcap_format_parameter=nothing,
+	returnFormat::redcap_returnFormat_parameter=nothing,
 	data::redcap_data_parameter,
 
 	)
 	REDCap.request(
 		url=URI(url),
 		token=REDCap_token(token),
-		content=:userRole,
+		content=REDCap_content(:userRole),
 		format=REDCap_format(format),
 		data=data,
 		returnFormat=REDCap_format(returnFormat),
@@ -58,14 +58,14 @@ end
 function export_user_role_assignments(;
 	url::redcap_url_parameter=get_url(),
 	token::redcap_token_parameter=get_token(),	
-	format::redcap_formatter=nothing,
-	returnFormat::redcap_formatter=nothing,
+	format::redcap_format_parameter=nothing,
+	returnFormat::redcap_returnFormat_parameter=nothing,
 	)
 
 	REDCap.request(
 		url=URI(url),
 		token=REDCap_token(token),
-		content=:userRoleMapping,
+		content=REDCap_content(:userRoleMapping),
 		format=REDCap_format(format),
 		returnFormat=REDCap_format(returnFormat),
 	)
@@ -74,15 +74,15 @@ end
 function import_user_role_assignments(;
 	url::redcap_url_parameter=get_url(),
 	token::redcap_token_parameter=get_token(),	
-	format::redcap_formatter=nothing,
-	returnFormat::redcap_formatter=nothing,
+	format::redcap_format_parameter=nothing,
+	returnFormat::redcap_returnFormat_parameter=nothing,
 	data::redcap_data_parameter,
 	)
 
 	REDCap.request(
 		url=URI(url),
 		token=REDCap_token(token),
-		content=:userRoleMapping,
+		content=REDCap_content(:userRoleMapping),
 		format=REDCap_format(format),
 		data=data,
 		returnFormat=REDCap_format(returnFormat),
