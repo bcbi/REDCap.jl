@@ -11,7 +11,7 @@ function delete_users(;
 	url=URI(url),
 	token=REDCap_token(token),
 	content=REDCap_content(:user),
-		action=:delete,
+	action=REDCap_action(:delete),
 		users=users,
 	)
 end

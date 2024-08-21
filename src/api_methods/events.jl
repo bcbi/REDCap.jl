@@ -5,7 +5,7 @@ export delete_events,
 function delete_events(;events=nothing)
 	REDCap.request(;
 		       content=REDCap_content(:event),
-		action=:import,
+		       action=REDCap_action(:import),
 		events=events,
 	)
 end
@@ -22,7 +22,7 @@ end
 function import_events(;format=:xml,data=nothing,override=0,returnFormat=nothing)
 	REDCap.request(;
 		       content=REDCap_content(:event),
-		action=:import,
+		       action=REDCap_action(:import),
 		override=override,
 		format=REDCap_format(format),
 		data=data,

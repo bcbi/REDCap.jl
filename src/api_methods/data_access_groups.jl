@@ -8,7 +8,7 @@ export delete_DAGs,
 function delete_DAGs(;dags=nothing)
 	REDCap.request(;
 		content=REDCap_content(:dag),
-		action=:delete,
+		action=REDCap_action(:delete),
 		dags=dags,
 	)
 end
@@ -31,7 +31,7 @@ end
 function import_DAGs(;format=:xml,data=nothing,returnFormat=nothing)
 	REDCap.request(;
 		       content=REDCap_content(:dag),
-		action=:import,
+		       action=REDCap_action(:import),
 		format=REDCap_format(format),
 		data=data,
 		returnFormat=REDCap_format(returnFormat),
@@ -50,7 +50,7 @@ end
 function switch_DAG(;dag=nothing)
 	REDCap.request(;
 		       content=REDCap_content(:dag),
-		action=:switch,
+		       action=REDCap_action(:switch),
 		dag=dag,
 	)
 end

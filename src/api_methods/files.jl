@@ -10,7 +10,7 @@ function delete_file(;
 
 	REDCap.request(;
 	       content=REDCap_content(:file),
-		action=:delete,
+	       action=REDCap_action(:delete),
 		record=record,
 		field=field,
 		event=event,
@@ -28,7 +28,7 @@ function export_file(;
 
 	REDCap.request(;
 	       content=REDCap_content(:file),
-		action=:export,
+	       action=REDCap_action(:export),
 		record=record,
 		field=field,
 		event=event,
@@ -47,7 +47,7 @@ function import_file(;
 
 	REDCap.request(;
 	       content=REDCap_content(:file),
-		action=:import,
+	       action=REDCap_action(:import),
 		record=record,
 		field=field,
 		event=event,

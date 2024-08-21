@@ -14,7 +14,7 @@ function delete_user_roles(;
 		url=URI(url),
 		token=REDCap_token(token),
 		content=REDCap_content(:userRole),
-		action=:delete,
+		action=REDCap_action(:delete),
 		roles=roles,
 	)
 end
