@@ -8,7 +8,7 @@ using URIs
 include("types.jl")
 include("utils.jl")
 include("api_methods/arms.jl")
-#include("api_methods/data_access_groups.jl")
+include("api_methods/data_access_groups.jl")
 #include("api_methods/events.jl")
 include("api_methods/field_names.jl")
 include("api_methods/files.jl")

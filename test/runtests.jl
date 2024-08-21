@@ -33,6 +33,13 @@ begin
 	@assert "1" == import_project_info(token=token,data=Dict(:project_title=>"$(now())",:purpose=>0))
 	export_logging(token=token, format=:json) |>JSON.parse |> DataFrame
 
+	#TODO: for CSV inputs, use triple quotes, and add a comma at the end if the last inner character is also a quote
+	# Can this always be done, or only when the last column is blank?
+	import_DAGs(token=t,format=:csv,data="""data_access_group_name,unique_group_name
+       "CA Site",
+       "FL Site",
+       "New Site",""")
+
 	import_users(token=token,format=:xml,data="""<?xml version="1.0" encoding="UTF-8" ?>
        <users>
           <item>

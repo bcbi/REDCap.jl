@@ -4,7 +4,7 @@ export create_project,
 	import_project_info
 
 function create_project(;
-	data::redcap_data_parameter=nothing,
+	data::redcap_data_parameter,
 	url::redcap_url_parameter=get_url(),
 	token::redcap_super_token_parameter=get_token(),	
 	format::redcap_format_parameter=nothing,
@@ -13,10 +13,13 @@ function create_project(;
 
 	if isa(data,Dict)
 		@assert Symbol.(keys(data)) ⊆ [:project_title, :purpose, :purpose_other, :project_notes, :is_longitudinal, :surveys_enabled, :record_autonumbering_enabled,]
+		#TODO: check when data isn't a Dict?
+		if [:project_title, :purpose] ⊈ Symbol.(keys(data)); throw(ArgumentError("The data field must include a project title and purpose")) end
 		data="[$(JSON.json(data))]" #TODO: best way to avoid type change? 
 		# maybe function to map (Dict,String) to (String,String)
 		format=:json
 	end
+
 
 	REDCap.request(;
 		       content=REDCap_content(:project),
