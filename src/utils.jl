@@ -1,7 +1,7 @@
 function request(;
 	url::REDCap_url,
 	token::Union{REDCap_token, REDCap_super_token},
-	content::redcap_content_parameter,
+	content::REDCap_content,
 	kwargs...)
 
 	#TODO: replace interpolation with string()?

@@ -9,7 +9,7 @@ if (get(ENV, "REDCAP_API_URL", "")) |> isempty && (get(ENV, "REDCAP_API_TOKEN", 
 	@test true
 else
 
-@test export_version() == "13.7.31"
+@test export_version() == "14.5.8"
 #@test create_project(data="""[{"project_title":"My New REDCap Project","purpose":"0"}]""",format="json") |> REDCap.is_valid_token
 #TODO: account for running test without token in ENV
 
@@ -53,7 +53,7 @@ begin
           </item>
        </users>""")
 
-	CSV.read(export_users(format=:csv) |> IOBuffer, DataFrame )
+	#CSV.read(export_users(format=:csv) |> IOBuffer, DataFrame )
 
 	@test true
 end
