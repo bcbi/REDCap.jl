@@ -9,15 +9,31 @@ function request(;
 	html_request_body["token"] = token
 	html_request_body["content"] = "$content"
 
-	return HTTP.post(
+	response = HTTP.post(
 		URI(url);
 		#get_valid_url();
 		body=html_request_body,
 		require_ssl_verification=true,
 		#verbose = 3,
 		status_exception=false,
-	).body |> String 
+	)
+
 	#HTTP.iserror(r)
+	
+	status_codes_message = Dict(
+		200 => "OK: Success!",
+		400 => "Bad Request: The request was invalid.",
+		401 => "Unauthorized: API token was missing or incorrect.",
+		403 => "Forbidden: You do not have permissions to use the API.",
+		404 => "Not Found: The URI you requested is invalid or the resource does not exist.",
+		406 => "Not Acceptable: The data being imported was formatted incorrectly.",
+		500 => "Internal Server Error: The server encountered an error processing your request.",
+		501 => "Not Implemented: The requested method is not implemented.",
+		)
+
+	@info("HTTP response $(response.status), $(get(status_codes_message,response.status,"Unknown"))")
+
+	return response.body|> String 
 end
 
 function assemble_html_body(;kwargs...)
