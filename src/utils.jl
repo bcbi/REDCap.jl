@@ -31,7 +31,7 @@ function request(;
 		501 => "Not Implemented: The requested method is not implemented.",
 		)
 
-	@info("HTTP response $(response.status), $(get(status_codes_message,response.status,"Unknown"))")
+	@debug("HTTP response $(response.status), $(get(status_codes_message,response.status,"Unknown"))")
 
 	return response.body|> String 
 end
