@@ -8,7 +8,7 @@ function export_repeating_instruments_and_events(;
 	)
 
 	REDCap.request(
-		url=URI(url),
+		url=REDCap_url(url),
 		token=REDCap_token(token),
 		content=REDCap_content(:repeatingFormsEvents),
 		format=REDCap_format(format),
@@ -27,7 +27,7 @@ function import_repeating_instruments_and_events(;
 
 	REDCap.request(
 		content=REDCap_content(:repeatingFormsEvents),
-		url=URI(url),
+		url=REDCap_url(url),
 		token=REDCap_token(token),
 		format=REDCap_format(format),
 		returnFormat=REDCap_format(returnFormat),

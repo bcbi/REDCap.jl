@@ -9,7 +9,7 @@ function delete_events(;
 		)
 
 	REDCap.request(;
-		url=URI(url),
+		url=REDCap_url(url),
 		token=REDCap_token(token),
 		       content=REDCap_content(:event),
 		       action=REDCap_action(:import),
@@ -26,7 +26,7 @@ function export_events(;
 		)
 
 	REDCap.request(;
-		url=URI(url),
+		url=REDCap_url(url),
 		token=REDCap_token(token),
 		format=REDCap_format(format),
 		returnFormat=REDCap_format(returnFormat),
@@ -45,7 +45,7 @@ function import_events(;
 		)
 
 	REDCap.request(;
-		url=URI(url),
+		url=REDCap_url(url),
 		token=REDCap_token(token),
 		format=REDCap_format(format),
 		returnFormat=REDCap_format(returnFormat),

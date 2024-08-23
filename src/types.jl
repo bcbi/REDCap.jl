@@ -14,8 +14,10 @@ Base.display(x::REDCap_content) = Base.display(x.id)
 Base.string(x::REDCap_content) = Base.string(x.id)
 Base.convert(String,x::REDCap_content) = string(x)
 
-const REDCap_url = URIs.URI
-const redcap_url_parameter = Union{REDCap_url,String}
+const redcap_url_parameter = String
+#TODO: help users fix formatting errors - I left out the final slash and had trouble debugging
+REDCap_url(x::redcap_url_parameter) = occursin(r"^https:\/\/.*\/api\/$", x) ? URIs.URI(x) : throw(ArgumentError("Invalid REDCap url"))
+
 const redcap_token_parameter = String
 const redcap_super_token_parameter = String
 #const redcap_action_parameter = Union{Symbol, Nothing}

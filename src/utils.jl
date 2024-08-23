@@ -1,5 +1,5 @@
 function request(;
-	url::REDCap_url,
+	url::URI,
 	token::Union{REDCap_token, REDCap_super_token},
 	content::REDCap_content,
 	kwargs...)

@@ -9,7 +9,7 @@ function export_list_of_export_field_names(;
 	)
 
 	REDCap.request(;
-		url=URI(url),
+		url=REDCap_url(url),
 		token=REDCap_token(token),
 		content=REDCap_content(:exportFieldNames),
 		format=REDCap_format(format),

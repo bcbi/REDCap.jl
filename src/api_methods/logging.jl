@@ -13,7 +13,7 @@ function export_logging(;
 	endTime::redcap_timestamp=nothing,
 	)
 	REDCap.request(;
-	url=URI(url),
+	url=REDCap_url(url),
 	token=REDCap_token(token),
 	content=REDCap_content(:log),
 		format=REDCap_format(format),

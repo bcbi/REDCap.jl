@@ -11,7 +11,7 @@ function delete_file(;
 	)
 
 	REDCap.request(;
-		url=URI(url),
+		url=REDCap_url(url),
 		token=REDCap_token(token),
 	       content=REDCap_content(:file),
 	       action=REDCap_action(:delete),
@@ -34,7 +34,7 @@ function export_file(;
 	)
 
 	REDCap.request(;
-		url=URI(url),
+		url=REDCap_url(url),
 		token=REDCap_token(token),
 	       content=REDCap_content(:file),
 	       action=REDCap_action(:export),
@@ -58,7 +58,7 @@ function import_file(;
 	)
 
 	REDCap.request(;
-		url=URI(url),
+		url=REDCap_url(url),
 		token=REDCap_token(token),
 	       content=REDCap_content(:file),
 	       action=REDCap_action(:import),
