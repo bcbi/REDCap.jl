@@ -3,8 +3,8 @@ export delete_arms,
 	import_arms
 
 function delete_arms(;
-	url::redcap_url_parameter=get_url(),
-	token::redcap_token_parameter=get_token(),	
+	url::redcap_url_input=get_url(),
+	token::redcap_token_input=get_token(),	
 	arms=nothing,
 	)
 
@@ -18,10 +18,10 @@ function delete_arms(;
 end
 
 function export_arms(;
-	url::redcap_url_parameter=get_url(),
-	token::redcap_token_parameter=get_token(),	
-	format::redcap_format_parameter=nothing,
-	returnFormat::redcap_returnFormat_parameter=nothing,
+	url::redcap_url_input=get_url(),
+	token::redcap_token_input=get_token(),	
+	format::redcap_format_input=nothing,
+	returnFormat::redcap_returnFormat_input=nothing,
 	arms=nothing,
 	)
 
@@ -36,11 +36,11 @@ function export_arms(;
 end
 
 function import_arms(;
-	url::redcap_url_parameter=get_url(),
-	token::redcap_token_parameter=get_token(),	
-	format::redcap_format_parameter=nothing,
-	data::redcap_data_parameter=nothing,
-	returnFormat::redcap_returnFormat_parameter=nothing,
+	url::redcap_url_input=get_url(),
+	token::redcap_token_input=get_token(),	
+	format::redcap_format_input=nothing,
+	data::redcap_data_input=nothing,
+	returnFormat::redcap_returnFormat_input=nothing,
 	override=0,
 	)
 

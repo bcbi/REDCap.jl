@@ -5,12 +5,12 @@ export
 	import_project_info #TODO: not working, and there's no official API example... are we supposed to just pass this data in create_project?
 
 function create_project(;
-	data::redcap_data_parameter,
-	url::redcap_url_parameter=get_url(),
-	token::redcap_super_token_parameter=get_token(),	
-	format::redcap_format_parameter=nothing,
-	returnFormat::redcap_returnFormat_parameter=nothing,
-	odm::redcap_odm_parameter=nothing,
+	data::redcap_data_input,
+	url::redcap_url_input=get_url(),
+	token::redcap_super_token_input=get_token(),	
+	format::redcap_format_input=nothing,
+	returnFormat::redcap_returnFormat_input=nothing,
+	odm::redcap_odm_input=nothing,
 	)
 	REDCap.request(;
 		       content=REDCap_content(:project),
@@ -27,11 +27,11 @@ end
 #=
 
 function create_project(data::Dict;
-	url::redcap_url_parameter=get_url(),
-	token::redcap_super_token_parameter=get_token(),	
-	format::redcap_format_parameter=nothing,
-	returnFormat::redcap_returnFormat_parameter=nothing,
-	odm::redcap_odm_parameter=nothing,)
+	url::redcap_url_input=get_url(),
+	token::redcap_super_token_input=get_token(),	
+	format::redcap_format_input=nothing,
+	returnFormat::redcap_returnFormat_input=nothing,
+	odm::redcap_odm_input=nothing,)
 
 	#TODO: what is backgroundProcess=true
 
@@ -57,11 +57,11 @@ function create_project(data::Dict;
 end
 
 function create_project(data::String;
-	url::redcap_url_parameter=get_url(),
-	token::redcap_super_token_parameter=get_token(),	
-	format::redcap_format_parameter=nothing,
-	returnFormat::redcap_returnFormat_parameter=nothing,
-	odm::redcap_odm_parameter=nothing,)
+	url::redcap_url_input=get_url(),
+	token::redcap_super_token_input=get_token(),	
+	format::redcap_format_input=nothing,
+	returnFormat::redcap_returnFormat_input=nothing,
+	odm::redcap_odm_input=nothing,)
 
 	REDCap.request(;
 		       content=REDCap_content(:project),
@@ -76,9 +76,9 @@ end
 =#
 
 function export_project_info(;
-	url::redcap_url_parameter=get_url(),
-	token::redcap_token_parameter=get_token(),	
-	returnFormat::redcap_returnFormat_parameter=nothing,
+	url::redcap_url_input=get_url(),
+	token::redcap_token_input=get_token(),	
+	returnFormat::redcap_returnFormat_input=nothing,
 	)
 
 	REDCap.request(;
@@ -91,18 +91,18 @@ end
 
 #TODO: should this write to a file?
 function export_project_XML(;
-	url::redcap_url_parameter=get_url(),
-	token::redcap_token_parameter=get_token(),	
-	returnFormat::redcap_returnFormat_parameter=nothing,
+	url::redcap_url_input=get_url(),
+	token::redcap_token_input=get_token(),	
+	returnFormat::redcap_returnFormat_input=nothing,
 
-	returnMetadataOnly::redcap_bool=nothing,
-	records::redcap_array=nothing,
-	fields::redcap_array=nothing,
-	events::redcap_array=nothing,
-	exportSurveyFields::redcap_bool=nothing,
-	exportDataAccessGroups::redcap_bool=nothing,
-	filterLogic::redcap_filterLogic_parameter=nothing,
-	exportFiles::redcap_bool=nothing,
+	returnMetadataOnly::redcap_bool_input=nothing,
+	records::redcap_array_input=nothing,
+	fields::redcap_array_input=nothing,
+	events::redcap_array_input=nothing,
+	exportSurveyFields::redcap_bool_input=nothing,
+	exportDataAccessGroups::redcap_bool_input=nothing,
+	filterLogic::redcap_filterLogic_input=nothing,
+	exportFiles::redcap_bool_input=nothing,
 	)
 	REDCap.request(;
 		url=REDCap_url(url),
@@ -122,8 +122,8 @@ end
 
 function import_project_info(;
 		format=nothing,data,
-	url::redcap_url_parameter=get_url(),
-	token::redcap_token_parameter=get_token(),
+	url::redcap_url_input=get_url(),
+	token::redcap_token_input=get_token(),
 	)
 
 	#import_project_info(data; token=token, url=url, format=format)
@@ -139,8 +139,8 @@ end
 #=
 function import_project_info(data::Dict;
 		format=nothing,
-	url::redcap_url_parameter=get_url(),
-	token::redcap_token_parameter=get_token(),	)
+	url::redcap_url_input=get_url(),
+	token::redcap_token_input=get_token(),	)
 	@assert Symbol.(keys(data)) ⊆ [:project_title, :project_language, :purpose, :purpose_other, :project_notes, :custom_record_label, :secondary_unique_field, :is_longitudinal, :surveys_enabled, :scheduling_enabled, :record_autonumbering_enabled, :randomization_enabled, :project_irb_number, :project_grant_number, :project_pi_firstname, :project_pi_lastname, :display_today_now_button, :bypass_branching_erase_field_prompt]
 
 	REDCap.request(;
@@ -155,8 +155,8 @@ end
 #TODO: only the CSV version works here?
 function import_project_info(data::String;
 		format=nothing,
-	url::redcap_url_parameter=get_url(),
-	token::redcap_token_parameter=get_token(),	)
+	url::redcap_url_input=get_url(),
+	token::redcap_token_input=get_token(),	)
 
 	REDCap.request(;
 		url=REDCap_url(url),

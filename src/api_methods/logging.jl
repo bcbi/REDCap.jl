@@ -3,16 +3,16 @@ export export_logging
 #TODO: why does the returnFormat parameter not work?
 #TODO: What permissible values for logtype?
 function export_logging(;
-	url::redcap_url_parameter=get_url(),
-	token::redcap_token_parameter=get_token(),	
-	format::redcap_format_parameter=nothing,
-	returnFormat::redcap_returnFormat_parameter=nothing,
+	url::redcap_url_input=get_url(),
+	token::redcap_token_input=get_token(),	
+	format::redcap_format_input=nothing,
+	returnFormat::redcap_returnFormat_input=nothing,
 	logtype=nothing,
 	user=nothing,
 	record=nothing,
 	dag=nothing,
-	beginTime::redcap_timestamp=nothing,
-	endTime::redcap_timestamp=nothing,
+	beginTime::redcap_timestamp_input=nothing,
+	endTime::redcap_timestamp_input=nothing,
 	)
 	REDCap.request(;
 	url=REDCap_url(url),

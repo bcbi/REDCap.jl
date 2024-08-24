@@ -6,8 +6,8 @@ export delete_DAGs,
 	switch_DAG
 
 function delete_DAGs(;
-	url::redcap_url_parameter=get_url(),
-	token::redcap_token_parameter=get_token(),	
+	url::redcap_url_input=get_url(),
+	token::redcap_token_input=get_token(),	
 	dags=nothing)
 
 	REDCap.request(;
@@ -20,9 +20,9 @@ function delete_DAGs(;
 end
 
 function export_DAGs(;
-	url::redcap_url_parameter=get_url(),
-	token::redcap_token_parameter=get_token(),	
-	format::redcap_format_parameter=nothing,
+	url::redcap_url_input=get_url(),
+	token::redcap_token_input=get_token(),	
+	format::redcap_format_input=nothing,
 	#TODO: This is one of those ones that only take a format parameter
 	)
 
@@ -36,9 +36,9 @@ function export_DAGs(;
 end
 
 function export_user_DAG_assignment(;
-	url::redcap_url_parameter=get_url(),
-	token::redcap_token_parameter=get_token(),	
-	format::redcap_format_parameter=nothing,
+	url::redcap_url_input=get_url(),
+	token::redcap_token_input=get_token(),	
+	format::redcap_format_input=nothing,
 	)
 
 	REDCap.request(;
@@ -50,11 +50,11 @@ function export_user_DAG_assignment(;
 end
 
 function import_DAGs(;
-	url::redcap_url_parameter=get_url(),
-	token::redcap_token_parameter=get_token(),	
-	data::redcap_data_parameter=nothing, #TODO: It would be great to support a Dict here
-	format::redcap_format_parameter=nothing,
-	returnFormat::redcap_returnFormat_parameter=nothing,
+	url::redcap_url_input=get_url(),
+	token::redcap_token_input=get_token(),	
+	data::redcap_data_input=nothing, #TODO: It would be great to support a Dict here
+	format::redcap_format_input=nothing,
+	returnFormat::redcap_returnFormat_input=nothing,
 	)
 
 	REDCap.request(;
@@ -69,11 +69,11 @@ function import_DAGs(;
 end
 
 function import_user_DAG_assignment(;
-	url::redcap_url_parameter=get_url(),
-	token::redcap_token_parameter=get_token(),	
-	data::redcap_data_parameter=nothing,
-	format::redcap_format_parameter=nothing,
-	returnFormat::redcap_returnFormat_parameter=nothing,
+	url::redcap_url_input=get_url(),
+	token::redcap_token_input=get_token(),	
+	data::redcap_data_input=nothing,
+	format::redcap_format_input=nothing,
+	returnFormat::redcap_returnFormat_input=nothing,
 	)
 
 	REDCap.request(;
@@ -87,8 +87,8 @@ function import_user_DAG_assignment(;
 end
 
 function switch_DAG(;
-	data::redcap_data_parameter=nothing,
-	url::redcap_url_parameter=get_url(),
+	data::redcap_data_input=nothing,
+	url::redcap_url_input=get_url(),
 		dag=nothing)
 	REDCap.request(;
 		url=REDCap_url(url),

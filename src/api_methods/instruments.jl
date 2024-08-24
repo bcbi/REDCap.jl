@@ -4,10 +4,10 @@ export export_instrument_event_mappings,
 	import_instrument_event_mappings
 
 function export_instrument_event_mappings(;
-	url::redcap_url_parameter=get_url(),
-	token::redcap_token_parameter=get_token(),	
-	format::redcap_format_parameter=nothing,
-	returnFormat::redcap_returnFormat_parameter=nothing,
+	url::redcap_url_input=get_url(),
+	token::redcap_token_input=get_token(),	
+	format::redcap_format_input=nothing,
+	returnFormat::redcap_returnFormat_input=nothing,
 	arms=nothing,
 	)
 
@@ -36,9 +36,9 @@ function export_instruments(;
 end
 
 function export_PDF(;
-	url::redcap_url_parameter=get_url(),
-	token::redcap_token_parameter=get_token(),	
-	returnFormat::redcap_returnFormat_parameter=nothing,
+	url::redcap_url_input=get_url(),
+	token::redcap_token_input=get_token(),	
+	returnFormat::redcap_returnFormat_input=nothing,
 		record=nothing,
 	event=nothing,
 	instrument=nothing,
@@ -61,10 +61,10 @@ function export_PDF(;
 end
 
 function import_instrument_event_mappings(;
-	url::redcap_url_parameter=get_url(),
-	token::redcap_token_parameter=get_token(),	
-	format::redcap_format_parameter=nothing,
-	returnFormat::redcap_returnFormat_parameter=nothing,
+	url::redcap_url_input=get_url(),
+	token::redcap_token_input=get_token(),	
+	format::redcap_format_input=nothing,
+	returnFormat::redcap_returnFormat_input=nothing,
 	data=nothing,
 	)
 

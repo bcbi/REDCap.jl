@@ -2,12 +2,12 @@ export export_metadata,	import_metadata
 
 #TODO: For most export functions, returnFormat seems to have no effect
 function export_metadata(;
-	url::redcap_url_parameter=get_url(),
-	token::redcap_token_parameter=get_token(),	
-	format::redcap_format_parameter=nothing,
-	fields::redcap_array=nothing,
-	forms::redcap_array=nothing,
-	returnFormat::redcap_returnFormat_parameter=nothing,
+	url::redcap_url_input=get_url(),
+	token::redcap_token_input=get_token(),	
+	format::redcap_format_input=nothing,
+	fields::redcap_array_input=nothing,
+	forms::redcap_array_input=nothing,
+	returnFormat::redcap_returnFormat_input=nothing,
 	)
 
 	REDCap.request(
@@ -22,11 +22,11 @@ function export_metadata(;
 end
 
 function import_metadata(;
-	data::redcap_data_parameter,
-	url::redcap_url_parameter=get_url(),
-	token::redcap_token_parameter=get_token(),	
-	format::redcap_format_parameter=nothing,
-	returnFormat::redcap_returnFormat_parameter=nothing,
+	data::redcap_data_input,
+	url::redcap_url_input=get_url(),
+	token::redcap_token_input=get_token(),	
+	format::redcap_format_input=nothing,
+	returnFormat::redcap_returnFormat_input=nothing,
 	)
 
 	#import_metadata(data; url=url, token=token, returnFormat=returnFormat)
@@ -42,10 +42,10 @@ end
 
 #=
 function import_metadata(data::Dict;
-	url::redcap_url_parameter=get_url(),
-	token::redcap_token_parameter=get_token(),	
-	format::redcap_format_parameter=nothing,
-	returnFormat::redcap_returnFormat_parameter=nothing,
+	url::redcap_url_input=get_url(),
+	token::redcap_token_input=get_token(),	
+	format::redcap_format_input=nothing,
+	returnFormat::redcap_returnFormat_input=nothing,
 	)
 	REDCap.request(;
 		url=REDCap_url(url),
@@ -58,10 +58,10 @@ function import_metadata(data::Dict;
 end
 
 function import_metadata(data::String;
-	url::redcap_url_parameter=get_url(),
-	token::redcap_token_parameter=get_token(),	
-	format::redcap_format_parameter=nothing,
-	returnFormat::redcap_returnFormat_parameter=nothing,
+	url::redcap_url_input=get_url(),
+	token::redcap_token_input=get_token(),	
+	format::redcap_format_input=nothing,
+	returnFormat::redcap_returnFormat_input=nothing,
 	)
 	REDCap.request(;
 		url=REDCap_url(url),
