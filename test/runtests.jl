@@ -11,7 +11,7 @@ else
 
 @test export_version() == "14.5.8"
 #@test create_project(data="""[{"project_title":"My New REDCap Project","purpose":"0"}]""",format="json") |> REDCap.is_valid_token
-#TODO: account for running test without token in ENV
+#TODO: account for running test without token in E
 
 #TODO: more tests like this, checking the API's return value
 #=
@@ -23,6 +23,8 @@ import_users(data="""username\naharris""", format=:csv)
 =#
 
 begin
+
+	@test create_project(data=Dict(:project_title=>"AAA","purpose"=>1)) == "{\"error\":\"You must provide some text for 'purpose_other' since you specified 'purpose' as '1' (Other).\"}"
 	token = create_project(data=Dict(:project_title=>"$(now())",:purpose=>0))
 	export_project_XML(token=token)
 	export_project_info(token=token)
