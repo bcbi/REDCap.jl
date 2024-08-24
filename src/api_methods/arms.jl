@@ -2,30 +2,56 @@ export delete_arms,
 	export_arms,
 	import_arms
 
-function delete_arms(;arms=nothing)
+function delete_arms(;
+	url::redcap_url_input=get_url(),
+	token::redcap_token_input=get_token(),	
+	arms=nothing,
+	)
+
 	REDCap.request(;
-		       content=REDCap_content(:arm),
-		action=:import,
+		url=REDCap_url(url),
+		token=REDCap_token(token),
+	       content=REDCap_content(:arm),
+	       action=REDCap_action(:import),
 		arms=arms,
 	)
 end
 
-function export_arms(;format=:xml,arms=nothing,returnFormat=nothing)
+function export_arms(;
+	url::redcap_url_input=get_url(),
+	token::redcap_token_input=get_token(),	
+	format::redcap_format_input=nothing,
+	returnFormat::redcap_returnFormat_input=nothing,
+	arms=nothing,
+	)
+
 	REDCap.request(;
-		       content=REDCap_content(:arm),
+		url=REDCap_url(url),
+		token=REDCap_token(token),
+	       content=REDCap_content(:arm),
 		format=REDCap_format(format),
 		arms=arms,
 		returnFormat=REDCap_format(returnFormat),
 	)
 end
 
-function import_arms(;format=:xml,data=nothing,override=0,returnFormat=nothing)
+function import_arms(;
+	url::redcap_url_input=get_url(),
+	token::redcap_token_input=get_token(),	
+	format::redcap_format_input=nothing,
+	data::redcap_data_input=nothing,
+	returnFormat::redcap_returnFormat_input=nothing,
+	override=0,
+	)
+
 	REDCap.request(;
-		       content=REDCap_content(:arm),
+		url=REDCap_url(url),
+		token=REDCap_token(token),
+	       content=REDCap_content(:arm),
 		override=override,
-		action=:import,
+		action=REDCap_action(:import),
 		format=REDCap_format(format),
-		data=data,
+		data=REDCap_data(data,REDCap_format(format)),
 		returnFormat=REDCap_format(returnFormat),
 	)
 end

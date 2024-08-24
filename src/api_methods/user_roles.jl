@@ -5,30 +5,30 @@ export export_user_roles,
 	import_user_role_assignments
 
 function delete_user_roles(;
-	url::redcap_url_parameter=get_url(),
-	token::redcap_token_parameter=get_token(),	
-	users::redcap_array=nothing,
+	url::redcap_url_input=get_url(),
+	token::redcap_token_input=get_token(),	
+	users::redcap_array_input=nothing,
 	)
 
 	REDCap.request(
-		url=URI(url),
+		url=REDCap_url(url),
 		token=REDCap_token(token),
 		content=REDCap_content(:userRole),
-		action=:delete,
+		action=REDCap_action(:delete),
 		roles=roles,
 	)
 end
 
 
 function export_user_roles(;
-	url::redcap_url_parameter=get_url(),
-	token::redcap_token_parameter=get_token(),	
-	format::redcap_format_parameter=nothing,
-	returnFormat::redcap_returnFormat_parameter=nothing,
+	url::redcap_url_input=get_url(),
+	token::redcap_token_input=get_token(),	
+	format::redcap_format_input=nothing,
+	returnFormat::redcap_returnFormat_input=nothing,
 	)
 
 	REDCap.request(
-		url=URI(url),
+		url=REDCap_url(url),
 		token=REDCap_token(token),
 		content=REDCap_content(:userRole),
 		format=REDCap_format(format),
@@ -37,33 +37,33 @@ function export_user_roles(;
 end
 
 function import_user_roles(;
-	url::redcap_url_parameter=get_url(),
-	token::redcap_token_parameter=get_token(),	
-	format::redcap_format_parameter=nothing,
-	returnFormat::redcap_returnFormat_parameter=nothing,
-	data::redcap_data_parameter,
+	url::redcap_url_input=get_url(),
+	token::redcap_token_input=get_token(),	
+	format::redcap_format_input=nothing,
+	returnFormat::redcap_returnFormat_input=nothing,
+	data::redcap_data_input,
 
 	)
 	REDCap.request(
-		url=URI(url),
+		url=REDCap_url(url),
 		token=REDCap_token(token),
 		content=REDCap_content(:userRole),
 		format=REDCap_format(format),
-		data=data,
+		data=REDCap_data(data,REDCap_format(format)),
 		returnFormat=REDCap_format(returnFormat),
 	)
 end
 
 
 function export_user_role_assignments(;
-	url::redcap_url_parameter=get_url(),
-	token::redcap_token_parameter=get_token(),	
-	format::redcap_format_parameter=nothing,
-	returnFormat::redcap_returnFormat_parameter=nothing,
+	url::redcap_url_input=get_url(),
+	token::redcap_token_input=get_token(),	
+	format::redcap_format_input=nothing,
+	returnFormat::redcap_returnFormat_input=nothing,
 	)
 
 	REDCap.request(
-		url=URI(url),
+		url=REDCap_url(url),
 		token=REDCap_token(token),
 		content=REDCap_content(:userRoleMapping),
 		format=REDCap_format(format),
@@ -72,19 +72,19 @@ function export_user_role_assignments(;
 end
 
 function import_user_role_assignments(;
-	url::redcap_url_parameter=get_url(),
-	token::redcap_token_parameter=get_token(),	
-	format::redcap_format_parameter=nothing,
-	returnFormat::redcap_returnFormat_parameter=nothing,
-	data::redcap_data_parameter,
+	url::redcap_url_input=get_url(),
+	token::redcap_token_input=get_token(),	
+	format::redcap_format_input=nothing,
+	returnFormat::redcap_returnFormat_input=nothing,
+	data::redcap_data_input,
 	)
 
 	REDCap.request(
-		url=URI(url),
+		url=REDCap_url(url),
 		token=REDCap_token(token),
 		content=REDCap_content(:userRoleMapping),
 		format=REDCap_format(format),
-		data=data,
+		data=REDCap_data(data,REDCap_format(format)),
 		returnFormat=REDCap_format(returnFormat),
 	)
 end

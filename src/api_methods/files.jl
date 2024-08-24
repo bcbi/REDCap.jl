@@ -1,9 +1,20 @@
 export delete_file, export_file, import_file
 
-function delete_file(;record=nothing,field=nothing,event=nothing,repeat_instance=nothing,returnFormat=:xml)
+function delete_file(;
+	url::redcap_url_input=get_url(),
+	token::redcap_token_input=get_token(),	
+	returnFormat::redcap_returnFormat_input=nothing,
+	record=nothing,
+	field=nothing,
+	event=nothing,
+	repeat_instance=nothing,
+	)
+
 	REDCap.request(;
-		       content=REDCap_content(:file),
-		action=:delete,
+		url=REDCap_url(url),
+		token=REDCap_token(token),
+	       content=REDCap_content(:file),
+	       action=REDCap_action(:delete),
 		record=record,
 		field=field,
 		event=event,
@@ -12,10 +23,21 @@ function delete_file(;record=nothing,field=nothing,event=nothing,repeat_instance
 	)
 end
 
-function export_file(;record=nothing,field=nothing,event=nothing,repeat_instance=nothing,returnFormat=:xml)
+function export_file(;
+	url::redcap_url_input=get_url(),
+	token::redcap_token_input=get_token(),	
+	returnFormat::redcap_returnFormat_input=nothing,
+	record=nothing,
+	field=nothing,
+	event=nothing,
+	repeat_instance=nothing,
+	)
+
 	REDCap.request(;
-		       content=REDCap_content(:file),
-		action=:export,
+		url=REDCap_url(url),
+		token=REDCap_token(token),
+	       content=REDCap_content(:file),
+	       action=REDCap_action(:export),
 		record=record,
 		field=field,
 		event=event,
@@ -24,10 +46,22 @@ function export_file(;record=nothing,field=nothing,event=nothing,repeat_instance
 	)
 end
 
-function import_file(;record=nothing,field=nothing,event=nothing,repeat_instance=nothing,file=nothing,returnFormat=:xml)
+function import_file(;
+	url::redcap_url_input=get_url(),
+	token::redcap_token_input=get_token(),	
+	returnFormat::redcap_returnFormat_input=nothing,
+	record=nothing,
+	field=nothing,
+	event=nothing,
+	repeat_instance=nothing,
+	file=nothing,
+	)
+
 	REDCap.request(;
-		       content=REDCap_content(:file),
-		action=:import,
+		url=REDCap_url(url),
+		token=REDCap_token(token),
+	       content=REDCap_content(:file),
+	       action=REDCap_action(:import),
 		record=record,
 		field=field,
 		event=event,

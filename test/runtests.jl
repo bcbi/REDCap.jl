@@ -9,9 +9,28 @@ if (get(ENV, "REDCAP_API_URL", "")) |> isempty && (get(ENV, "REDCAP_API_TOKEN", 
 	@test true
 else
 
+include("api_methods/arms.jl")
+include("api_methods/data_access_groups.jl")
+include("api_methods/events.jl")
+include("api_methods/field_names.jl")
+include("api_methods/file_repository.jl")
+include("api_methods/files.jl")
+include("api_methods/instruments.jl")
+include("api_methods/logging.jl")
+include("api_methods/metadata.jl")
+include("api_methods/projects.jl")
+include("api_methods/records.jl")
+include("api_methods/redcap.jl")
+include("api_methods/repeating_instruments_and_events.jl")
+include("api_methods/reports.jl")
+include("api_methods/surveys.jl")
+include("api_methods/user_roles.jl")
+include("api_methods/users.jl")
+
+
+
 @test export_version() == "14.5.8"
-#@test create_project(data="""[{"project_title":"My New REDCap Project","purpose":"0"}]""",format="json") |> REDCap.is_valid_token
-#TODO: account for running test without token in ENV
+#TODO: account for running test without token in E
 
 #TODO: more tests like this, checking the API's return value
 #=
@@ -23,17 +42,28 @@ import_users(data="""username\naharris""", format=:csv)
 =#
 
 begin
-	token = create_project(data=Dict(:project_title=>"$(now())",:purpose=>0))
-	export_project_XML(token=token)
-	export_project_info(token=token)
 
-	export_metadata(token=token)
+	#TODO: for now, put a :json format tag when using a Dict
+	project_token = create_project(format=:json,data=Dict(:project_title=>"$(now())",:purpose=>0))
+	export_project_XML(token=project_token)
+	export_project_info(token=project_token)
+
+	export_metadata(token=project_token)
 
 
-	@assert "1" == import_project_info(token=token,data=Dict(:project_title=>"$(now())",:purpose=>0))
-	export_logging(token=token, format=:json) |>JSON.parse |> DataFrame
+	@assert "1" == import_project_info(format=:json,token=project_token,data=Dict(:project_title=>"$(now())",:purpose=>0))
+	export_logging(token=project_token, format=:json) |>JSON.parse |> DataFrame
+	@test export_logging(token=project_token,format=:json, endTime="1999-01-01") |> JSON.parse |> DataFrame == DataFrame()
 
-	import_users(token=token,format=:xml,data="""<?xml version="1.0" encoding="UTF-8" ?>
+	#TODO: for CSV inputs, use triple quotes, and add a comma at the end if the last inner character is also a quote
+	# Can this always be done, or only when the last column is blank?
+#=
+	import_DAGs(token=project_token,format=:csv,data="""data_access_group_name,unique_group_name
+       "CA Site",
+       "FL Site",
+       "New Site",""")
+
+	import_users(token=project_token,format=:xml,data="""<?xml version="1.0" encoding="UTF-8" ?>
        <users>
           <item>
              <username>harrispa</username>
@@ -52,6 +82,7 @@ begin
              </forms_export>
           </item>
        </users>""")
+=#
 
 	#CSV.read(export_users(format=:csv) |> IOBuffer, DataFrame )
 
