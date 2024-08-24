@@ -45,6 +45,7 @@ function assemble_html_body(;kwargs...)
 	body = Dict{String, Union{String, IOBuffer}}()
 	if !isempty(kwargs)
 		for (parameter,value) in kwargs
+			value::redcap_generic_parameter
 			if !isnothing(value)
 				#if parameter ∈ [:data, :filterLogic]
 					#body["$parameter"] = IOBuffer(string(value))
