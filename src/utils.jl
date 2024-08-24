@@ -42,7 +42,7 @@ function request(;
 end
 
 function assemble_html_body(;kwargs...)
-	body = Dict{String, Union{String, IOBuffer}}()
+	body = Dict{String, String}()
 	if !isempty(kwargs)
 		for (parameter,value) in kwargs
 			value::redcap_generic_parameter

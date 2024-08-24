@@ -11,6 +11,7 @@ function create_project(;
 	returnFormat::redcap_returnFormat_parameter=nothing,
 	odm::redcap_odm_parameter=nothing,
 	)
+	#TODO: should format be inferred?
 	create_project(data;token=token,url=url,format=format,returnFormat=returnFormat,odm=odm)
 end	
 
@@ -20,6 +21,12 @@ function create_project(data::Dict;
 	format::redcap_format_parameter=nothing,
 	returnFormat::redcap_returnFormat_parameter=nothing,
 	odm::redcap_odm_parameter=nothing,)
+
+	#TODO: what is backgroundProcess=true
+
+	#TODO: maybe this isn't a priority - REDCap's error checking is fine here
+	# On the other hand, it's great to have this list visible...
+	# I guess put these in the documentation
 	@assert Symbol.(keys(data)) ⊆ [:project_title, :purpose, :purpose_other, :project_notes, :is_longitudinal, :surveys_enabled, :record_autonumbering_enabled,]
 	#TODO: check when data isn't a Dict?
 	if [:project_title, :purpose] ⊈ Symbol.(keys(data)); throw(ArgumentError("The data field must include a project title and purpose")) end
@@ -100,22 +107,42 @@ function export_project_XML(;
 	)
 end
 
-function import_project_info(;name=nothing,format=nothing,data,
+function import_project_info(;
+		format=nothing,data,
+	url::redcap_url_parameter=get_url(),
+	token::redcap_token_parameter=get_token(),
+	)
+
+	import_project_info(data; token=token, url=url, format=format)
+end
+
+function import_project_info(data::Dict;
+		format=nothing,
 	url::redcap_url_parameter=get_url(),
 	token::redcap_token_parameter=get_token(),	)
+	@assert Symbol.(keys(data)) ⊆ [:project_title, :project_language, :purpose, :purpose_other, :project_notes, :custom_record_label, :secondary_unique_field, :is_longitudinal, :surveys_enabled, :scheduling_enabled, :record_autonumbering_enabled, :randomization_enabled, :project_irb_number, :project_grant_number, :project_pi_firstname, :project_pi_lastname, :display_today_now_button, :bypass_branching_erase_field_prompt]
 
-	if isa(data,Dict)
-		@assert Symbol.(keys(data)) ⊆ [:project_title, :project_language, :purpose, :purpose_other, :project_notes, :custom_record_label, :secondary_unique_field, :is_longitudinal, :surveys_enabled, :scheduling_enabled, :record_autonumbering_enabled, :randomization_enabled, :project_irb_number, :project_grant_number, :project_pi_firstname, :project_pi_lastname, :display_today_now_button, :bypass_branching_erase_field_prompt]
-		data="[$(JSON.json(data))]"
-		format=:json
-	end
+	REDCap.request(;
+		url=REDCap_url(url),
+		token=REDCap_token(token),
+		content=REDCap_content(:project_settings),
+		format=REDCap_format(:json),
+	data="[$(JSON.json(data))]"
+	)
+end
+
+#TODO: only the CSV version works here?
+function import_project_info(data::String;
+		format=nothing,
+	url::redcap_url_parameter=get_url(),
+	token::redcap_token_parameter=get_token(),	)
 
 	REDCap.request(;
 		url=REDCap_url(url),
 		token=REDCap_token(token),
 		content=REDCap_content(:project_settings),
 		format=REDCap_format(format),
-		data=data,
+		data=read(data,String)
 	)
 end
 
