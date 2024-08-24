@@ -52,7 +52,7 @@ end
 function import_DAGs(;
 	url::redcap_url_input=get_url(),
 	token::redcap_token_input=get_token(),	
-	data::redcap_data_input=nothing, #TODO: It would be great to support a Dict here
+	data::redcap_data_input=nothing,
 	format::redcap_format_input=nothing,
 	returnFormat::redcap_returnFormat_input=nothing,
 	)

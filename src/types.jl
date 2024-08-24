@@ -77,8 +77,6 @@ Base.display(x::REDCap_super_token) = display(x.id)
 Base.string(x::REDCap_super_token) = string(x.id)
 Base.convert(String,x::REDCap_super_token) = string(x)
 
-#macro redcap_token_str(t); REDCap_token(t) ; end #TODO: Is this macro helpful in any way?
-
 redcap_generic_parameter = Union{
 	REDCap_format,
 	DateTime,

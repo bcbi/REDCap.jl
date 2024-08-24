@@ -1,3 +1,5 @@
+#TODO: add something to automatically break files into < 500kb chunks?
+
 function request(;
 	url::URI,
 	token::Union{REDCap_token, REDCap_super_token},
@@ -51,8 +53,7 @@ function assemble_html_body(;kwargs...)
 					#body["$parameter"] = IOBuffer(string(value))
 				if isa(value, Array)
 					for (i, item) in enumerate(value)
-						#TODO: define print functions for custom internal types
-						body["$parameter[$(i-1)]"] = "$item"
+						body["$parameter[$(i-1)]"] = string(item)
 					end
 				else
 					body["$parameter"] = "$value"
