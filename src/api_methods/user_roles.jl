@@ -49,7 +49,7 @@ function import_user_roles(;
 		token=REDCap_token(token),
 		content=REDCap_content(:userRole),
 		format=REDCap_format(format),
-		data=data,
+		data=REDCap_data(data),
 		returnFormat=REDCap_format(returnFormat),
 	)
 end
@@ -84,7 +84,7 @@ function import_user_role_assignments(;
 		token=REDCap_token(token),
 		content=REDCap_content(:userRoleMapping),
 		format=REDCap_format(format),
-		data=data,
+		data=REDCap_data(data),
 		returnFormat=REDCap_format(returnFormat),
 	)
 end

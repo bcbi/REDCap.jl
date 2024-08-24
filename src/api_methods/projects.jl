@@ -1,7 +1,8 @@
-export create_project,
+export 
+	create_project,
 	export_project_info,
 	export_project_XML,
-	import_project_info
+	import_project_info #TODO: not working, and there's no official API example... are we supposed to just pass this data in create_project?
 
 function create_project(;
 	data::redcap_data_parameter,
@@ -11,9 +12,19 @@ function create_project(;
 	returnFormat::redcap_returnFormat_parameter=nothing,
 	odm::redcap_odm_parameter=nothing,
 	)
+	REDCap.request(;
+		       content=REDCap_content(:project),
+		format=REDCap_format(format),
+		returnFormat=REDCap_format(returnFormat),
+	       data=REDCap_data(data),
+		url=REDCap_url(url),
+		token=REDCap_super_token(token),
+		odm=odm,
+	)
 	#TODO: should format be inferred?
-	create_project(data;token=token,url=url,format=format,returnFormat=returnFormat,odm=odm)
+	#create_project(data;token=token,url=url,format=format,returnFormat=returnFormat,odm=odm)
 end	
+#=
 
 function create_project(data::Dict;
 	url::redcap_url_parameter=get_url(),
@@ -36,7 +47,7 @@ function create_project(data::Dict;
 	#TODO: better to use xml, since this is the default format for returns?
 	REDCap.request(;
 		       content=REDCap_content(:project),
-		format=:json,
+		format=REDCap_format(:json),
 		returnFormat=REDCap_format(returnFormat),
 		data="[$(JSON.json(data))]",
 		url=REDCap_url(url),
@@ -62,6 +73,7 @@ function create_project(data::String;
 		odm=odm,
 	)
 end
+=#
 
 function export_project_info(;
 	url::redcap_url_parameter=get_url(),
@@ -114,9 +126,17 @@ function import_project_info(;
 	token::redcap_token_parameter=get_token(),
 	)
 
-	import_project_info(data; token=token, url=url, format=format)
+	#import_project_info(data; token=token, url=url, format=format)
+	REDCap.request(;
+		url=REDCap_url(url),
+		token=REDCap_token(token),
+		content=REDCap_content(:project_settings),
+		format=REDCap_format(format),
+		data=REDCap_data(data),
+	)
 end
 
+#=
 function import_project_info(data::Dict;
 		format=nothing,
 	url::redcap_url_parameter=get_url(),
@@ -147,3 +167,4 @@ function import_project_info(data::String;
 	)
 end
 
+=#

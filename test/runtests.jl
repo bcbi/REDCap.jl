@@ -24,26 +24,27 @@ import_users(data="""username\naharris""", format=:csv)
 
 begin
 
-	@test create_project(data=Dict(:project_title=>"AAA","purpose"=>1)) == "{\"error\":\"You must provide some text for 'purpose_other' since you specified 'purpose' as '1' (Other).\"}"
-	token = create_project(data=Dict(:project_title=>"$(now())",:purpose=>0))
-	export_project_XML(token=token)
-	export_project_info(token=token)
+	#TODO: for now, put a :json format tag when using a Dict
+	@test create_project(format=:json,data=Dict(:project_title=>"AAA","purpose"=>1)) == "{\"error\":\"You must provide some text for 'purpose_other' since you specified 'purpose' as '1' (Other).\"}"
+	project_token = create_project(format=:json,data=Dict(:project_title=>"$(now())",:purpose=>0))
+	export_project_XML(token=project_token)
+	export_project_info(token=project_token)
 
-	export_metadata(token=token)
+	export_metadata(token=project_token)
 
 
-	@assert "1" == import_project_info(token=token,data=Dict(:project_title=>"$(now())",:purpose=>0))
-	export_logging(token=token, format=:json) |>JSON.parse |> DataFrame
-	@test export_logging(token=token,format=:json, endTime="1999-01-01") |> JSON.parse |> DataFrame == DataFrame()
+	@assert "1" == import_project_info(format=:json,token=project_token,data=Dict(:project_title=>"$(now())",:purpose=>0))
+	export_logging(token=project_token, format=:json) |>JSON.parse |> DataFrame
+	@test export_logging(token=project_token,format=:json, endTime="1999-01-01") |> JSON.parse |> DataFrame == DataFrame()
 
 	#TODO: for CSV inputs, use triple quotes, and add a comma at the end if the last inner character is also a quote
 	# Can this always be done, or only when the last column is blank?
-	import_DAGs(token=t,format=:csv,data="""data_access_group_name,unique_group_name
+	import_DAGs(token=project_token,format=:csv,data="""data_access_group_name,unique_group_name
        "CA Site",
        "FL Site",
        "New Site",""")
 
-	import_users(token=token,format=:xml,data="""<?xml version="1.0" encoding="UTF-8" ?>
+	import_users(token=project_token,format=:xml,data="""<?xml version="1.0" encoding="UTF-8" ?>
        <users>
           <item>
              <username>harrispa</username>

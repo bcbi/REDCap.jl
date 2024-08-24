@@ -63,7 +63,7 @@ function import_DAGs(;
 		       content=REDCap_content(:dag),
 		       action=REDCap_action(:import),
 		format=REDCap_format(format),
-		data=data,
+		data=REDCap_data(data),
 		returnFormat=REDCap_format(returnFormat),
 	)
 end
@@ -81,7 +81,7 @@ function import_user_DAG_assignment(;
 		token=REDCap_token(token),
 		       content=REDCap_content(:userDagMapping),
 		format=REDCap_format(format),
-		data=data,
+		data=REDCap_data(data),
 		returnFormat=REDCap_format(returnFormat),
 	)
 end

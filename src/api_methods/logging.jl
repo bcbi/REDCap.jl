@@ -1,6 +1,7 @@
 export export_logging
 
 #TODO: why does the returnFormat parameter not work?
+#TODO: What permissible values for logtype?
 function export_logging(;
 	url::redcap_url_parameter=get_url(),
 	token::redcap_token_parameter=get_token(),	

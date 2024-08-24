@@ -52,7 +52,7 @@ function export_records(;
 	exportBlankForGrayFormStatus::redcap_bool=nothing
 	)
 	REDCap.request(
-		data=data,
+		data=REDCap_data(data),
 		url=REDCap_url(url),
 		token=REDCap_token(token),
 		content=REDCap_content(:record),
@@ -83,7 +83,7 @@ function generate_next_record_name(
 	)
 
 	REDCap.request(
-		data=data,
+		data=REDCap_data(data),
 		url=REDCap_url(url),
 		token=REDCap_token(token),
 		content=REDCap_content(:generateNextRecordName),
@@ -106,7 +106,7 @@ function import_records(;
 )
 
 	REDCap.request(
-		data=data,
+		data=REDCap_data(data),
 		url=REDCap_url(url),
 		token=REDCap_token(token),
 		content=REDCap_content(:record),
@@ -130,7 +130,7 @@ function rename_record(;
 	)
 
 	REDCap.request(
-		data=data,
+		data=REDCap_data(data),
 		url=REDCap_url(url),
 		token=REDCap_token(token),
 		content=REDCap_content(:record),
