@@ -4,6 +4,7 @@ function export_reports(;
 	url::redcap_url_parameter=get_url(),
 	token::redcap_token_parameter=get_token(),	
 	format::redcap_format_parameter=nothing,
+	returnFormat::redcap_format_parameter=nothing,
 	fields::redcap_array=nothing,
 	report_id=nothing,
 	rawOrLabel=nothing,
