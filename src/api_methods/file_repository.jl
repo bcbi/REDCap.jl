@@ -4,8 +4,20 @@ export create_folder,
 	export_list_of_folders,
 	import_file_from_file_repository
 
-function create_folder(;name=nothing,format=:xml,folder_id=nothing,dag_id=nothing,role_id=nothing,returnFormat=:xml)
+function create_folder(;
+	url::redcap_url_parameter=get_url(),
+	token::redcap_token_parameter=get_token(),	
+	format::redcap_format_parameter=nothing,
+	returnFormat::redcap_returnFormat_parameter=nothing,
+		name=nothing,
+folder_id=nothing,
+dag_id=nothing,
+role_id=nothing,
+)
+
 	REDCap.request(;
+		url=REDCap_url(url),
+		token=REDCap_token(token),
 		       content=REDCap_content(:fileRepository),
 		       action=REDCap_action(:createFolder),
 		name=name,
@@ -17,8 +29,18 @@ function create_folder(;name=nothing,format=:xml,folder_id=nothing,dag_id=nothin
 	)
 end
 
-function delete_file_from_file_repository(;name=nothing,format=:xml,doc_id=nothing,returnFormat=:xml)
+function delete_file_from_file_repository(;
+	url::redcap_url_parameter=get_url(),
+	token::redcap_token_parameter=get_token(),	
+	format::redcap_format_parameter=nothing,
+	returnFormat::redcap_returnFormat_parameter=nothing,
+		name=nothing,
+doc_id=nothing,
+)
+
 	REDCap.request(;
+		url=REDCap_url(url),
+		token=REDCap_token(token),
 		       content=REDCap_content(:fileRepository),
 		       action=REDCap_action(:delete),
 		doc_id=doc_id,
@@ -26,17 +48,38 @@ function delete_file_from_file_repository(;name=nothing,format=:xml,doc_id=nothi
 	)
 end
 
-function export_file_from_file_repository(;name=nothing,format=:xml,doc_id=nothing,returnFormat=:xml)
+function export_file_from_file_repository(;
+	url::redcap_url_parameter=get_url(),
+	token::redcap_token_parameter=get_token(),	
+	format::redcap_format_parameter=nothing,
+	returnFormat::redcap_returnFormat_parameter=nothing,
+		name=nothing,
+doc_id=nothing,
+)
+
 	REDCap.request(;
+		url=REDCap_url(url),
+		token=REDCap_token(token),
 		       content=REDCap_content(:fileRepository),
 		       action=REDCap_action(:export),
 		doc_id=doc_id,
+		format=REDCap_format(format),
 		returnFormat=REDCap_format(returnFormat),
 	)
 end
 
-function export_list_of_folders(;name=nothing,format=:xml,folder_id=nothing,returnFormat=:xml)
+function export_list_of_folders(;
+	url::redcap_url_parameter=get_url(),
+	token::redcap_token_parameter=get_token(),	
+	format::redcap_format_parameter=nothing,
+	returnFormat::redcap_returnFormat_parameter=nothing,
+		name=nothing,
+folder_id=nothing,
+)
+
 	REDCap.request(;
+		url=REDCap_url(url),
+		token=REDCap_token(token),
 		       content=REDCap_content(:fileRepository),
 		       action=REDCap_action(:list),
 		name=name,
@@ -46,8 +89,19 @@ function export_list_of_folders(;name=nothing,format=:xml,folder_id=nothing,retu
 	)
 end
 
-function import_file_from_file_repository(;name=nothing,format=:xml,file=nothing,folder_id=nothing,returnFormat=:xml)
+function import_file_from_file_repository(;
+	url::redcap_url_parameter=get_url(),
+	token::redcap_token_parameter=get_token(),	
+	format::redcap_format_parameter=nothing,
+	returnFormat::redcap_returnFormat_parameter=nothing,
+		name=nothing,
+file=nothing,
+folder_id=nothing,
+)
+
 	REDCap.request(;
+		url=REDCap_url(url),
+		token=REDCap_token(token),
 		       content=REDCap_content(:fileRepository),
 		       action=REDCap_action(:import),
 		file=file,
