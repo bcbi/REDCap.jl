@@ -75,7 +75,7 @@ function import_instrument_event_mappings(;
 		token=REDCap_token(token),
 		       content=REDCap_content(:formEventMapping),
 		format=REDCap_format(format),
-		data=REDCap_data(data),
+		data=REDCap_data(data,REDCap_format(format)),
 		returnFormat=REDCap_format(returnFormat),
 	)
 end

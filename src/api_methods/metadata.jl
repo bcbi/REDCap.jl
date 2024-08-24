@@ -35,7 +35,7 @@ function import_metadata(;
 		token=REDCap_token(token),
 		content=REDCap_content(:metadata),
 		format=REDCap_format(format),
-		data=REDCap_data(data),
+		data=REDCap_data(data,REDCap_format(format)),
 		returnFormat=REDCap_format(returnFormat),
 	)
 end

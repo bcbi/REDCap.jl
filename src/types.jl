@@ -1,9 +1,4 @@
 
-#TODO: consier passing data and format and converting data based on format
-const redcap_data_input = Union{String, Dict}
-REDCap_data(x::Dict)="[$(JSON.json(x))]"
-REDCap_data(x::String)=read(x, String)
-
 struct REDCap_action 
 	id::Symbol
 	REDCap_action(id) = id ∈ [:createFolder,:delete,:export,:import,:list,:rename,:switch] ? new(id) : throw(ArgumentError("Invalid action parameter"))
@@ -27,9 +22,9 @@ REDCap_url(x::redcap_url_input) = occursin(r"^https:\/\/.*\/api\/$", x) ? URIs.U
 
 const redcap_token_input = String
 const redcap_super_token_input = String
+const redcap_data_input = Union{String, Dict}
 const redcap_filterLogic_input = Union{String, Nothing}
 const redcap_odm_input = Union{String, Nothing}
-
 const redcap_array_input = Union{Array, Nothing}
 const redcap_bool_input = Union{Bool, Nothing}
 const redcap_format_input = Union{String, Symbol, Nothing}
@@ -60,6 +55,20 @@ end
 Base.display(x::REDCap_format) = Base.display(x.id)
 Base.string(x::REDCap_format) = Base.string(x.id)
 Base.convert(String,x::REDCap_format) = string(x)
+
+function REDCap_data(x::Dict, format::Union{REDCap_format, Nothing})
+	return if format == REDCap_format(:json)
+		"[$(JSON.json(x))]"
+	elseif format == REDCap_format(:csv)
+		join(keys(x),',') * "\n" * join(values(x),',')
+	else
+		"<?xml version=\"1.0\" encoding=\"UTF-8\" ?>"
+		"<item>" * 
+		join(["<$k>$v</$k>" for (k,v) in x]) *
+		"</item>"
+	end
+end
+REDCap_data(x::String, format::REDCap_format) = read(x, String)
 
 struct REDCap_token
 	id::String

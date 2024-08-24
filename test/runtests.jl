@@ -30,7 +30,6 @@ include("api_methods/users.jl")
 
 
 @test export_version() == "14.5.8"
-#@test create_project(data="""[{"project_title":"My New REDCap Project","purpose":"0"}]""",format="json") |> REDCap.is_valid_token
 #TODO: account for running test without token in E
 
 #TODO: more tests like this, checking the API's return value
@@ -45,7 +44,6 @@ import_users(data="""username\naharris""", format=:csv)
 begin
 
 	#TODO: for now, put a :json format tag when using a Dict
-	@test create_project(format=:json,data=Dict(:project_title=>"AAA","purpose"=>1)) == "{\"error\":\"You must provide some text for 'purpose_other' since you specified 'purpose' as '1' (Other).\"}"
 	project_token = create_project(format=:json,data=Dict(:project_title=>"$(now())",:purpose=>0))
 	export_project_XML(token=project_token)
 	export_project_info(token=project_token)

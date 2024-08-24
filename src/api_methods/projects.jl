@@ -16,7 +16,7 @@ function create_project(;
 		       content=REDCap_content(:project),
 		format=REDCap_format(format),
 		returnFormat=REDCap_format(returnFormat),
-	       data=REDCap_data(data),
+	       data=REDCap_data(data,REDCap_format(format)),
 		url=REDCap_url(url),
 		token=REDCap_super_token(token),
 		odm=odm,
@@ -132,7 +132,7 @@ function import_project_info(;
 		token=REDCap_token(token),
 		content=REDCap_content(:project_settings),
 		format=REDCap_format(format),
-		data=REDCap_data(data),
+		data=REDCap_data(data,REDCap_format(format)),
 	)
 end
 
