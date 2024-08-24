@@ -2,12 +2,17 @@ function request(;
 	url::URI,
 	token::Union{REDCap_token, REDCap_super_token},
 	content::REDCap_content,
+	data=nothing,
 	kwargs...)
 
 	#TODO: replace interpolation with string()?
 	html_request_body = assemble_html_body(;kwargs...)
 	html_request_body["token"] = token
 	html_request_body["content"] = "$content"
+	#TODO: Can't the data parameter be nothing and still hav an effect in at least 1 function?
+	if !isnothing(data); html_request_body["data"] = "$data" end
+
+	#println(html_request_body)
 
 	response = HTTP.post(
 		URI(url);

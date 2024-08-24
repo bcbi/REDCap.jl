@@ -9,23 +9,47 @@ function create_project(;
 	token::redcap_super_token_parameter=get_token(),	
 	format::redcap_format_parameter=nothing,
 	returnFormat::redcap_returnFormat_parameter=nothing,
+	odm::redcap_odm_parameter=nothing,
+	)
+	create_project(data;token=token,url=url,format=format,returnFormat=returnFormat,odm=odm)
+end	
+
+function create_project(data::Dict;
+	url::redcap_url_parameter=get_url(),
+	token::redcap_super_token_parameter=get_token(),	
+	format::redcap_format_parameter=nothing,
+	returnFormat::redcap_returnFormat_parameter=nothing,
 	odm::redcap_odm_parameter=nothing,)
+	@assert Symbol.(keys(data)) ⊆ [:project_title, :purpose, :purpose_other, :project_notes, :is_longitudinal, :surveys_enabled, :record_autonumbering_enabled,]
+	#TODO: check when data isn't a Dict?
+	if [:project_title, :purpose] ⊈ Symbol.(keys(data)); throw(ArgumentError("The data field must include a project title and purpose")) end
+	data= #TODO: best way to avoid type change? 
+	# maybe function to map (Dict,String) to (String,String)
 
-	if isa(data,Dict)
-		@assert Symbol.(keys(data)) ⊆ [:project_title, :purpose, :purpose_other, :project_notes, :is_longitudinal, :surveys_enabled, :record_autonumbering_enabled,]
-		#TODO: check when data isn't a Dict?
-		if [:project_title, :purpose] ⊈ Symbol.(keys(data)); throw(ArgumentError("The data field must include a project title and purpose")) end
-		data="[$(JSON.json(data))]" #TODO: best way to avoid type change? 
-		# maybe function to map (Dict,String) to (String,String)
-		format=:json
-	end
+	#TODO: better to use xml, since this is the default format for returns?
+	REDCap.request(;
+		       content=REDCap_content(:project),
+		format=:json,
+		returnFormat=REDCap_format(returnFormat),
+		data="[$(JSON.json(data))]",
+		url=REDCap_url(url),
+		token=REDCap_super_token(token),
+		odm=odm,
+	)
+end
 
+function create_project(data::String;
+	url::redcap_url_parameter=get_url(),
+	token::redcap_super_token_parameter=get_token(),	
+	format::redcap_format_parameter=nothing,
+	returnFormat::redcap_returnFormat_parameter=nothing,
+	odm::redcap_odm_parameter=nothing,)
 
 	REDCap.request(;
 		       content=REDCap_content(:project),
 		format=REDCap_format(format),
 		returnFormat=REDCap_format(returnFormat),
-		data=data,
+		data=read(data, String),
 		url=REDCap_url(url),
 		token=REDCap_super_token(token),
 		odm=odm,
