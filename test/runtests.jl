@@ -34,6 +34,7 @@ begin
 
 	@assert "1" == import_project_info(token=token,data=Dict(:project_title=>"$(now())",:purpose=>0))
 	export_logging(token=token, format=:json) |>JSON.parse |> DataFrame
+	@test export_logging(token=token,format=:json, endTime="1999-01-01") |> JSON.parse |> DataFrame == DataFrame()
 
 	#TODO: for CSV inputs, use triple quotes, and add a comma at the end if the last inner character is also a quote
 	# Can this always be done, or only when the last column is blank?

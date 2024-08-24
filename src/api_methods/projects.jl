@@ -77,6 +77,7 @@ function export_project_info(;
 	)
 end
 
+#TODO: should this write to a file?
 function export_project_XML(;
 	url::redcap_url_parameter=get_url(),
 	token::redcap_token_parameter=get_token(),	

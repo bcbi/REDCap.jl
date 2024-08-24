@@ -1,5 +1,6 @@
 export export_version
 
+#TODO: should this return a VersionInfo?
 function export_version(;
 	url::redcap_url_parameter=get_url(),
 	token::redcap_token_parameter=get_token(),	

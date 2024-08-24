@@ -1,5 +1,6 @@
 export export_logging
 
+#TODO: why does the returnFormat parameter not work?
 function export_logging(;
 	url::redcap_url_parameter=get_url(),
 	token::redcap_token_parameter=get_token(),	
@@ -22,7 +23,7 @@ function export_logging(;
 		user=user,
 		record=record,
 		dag=dag,
-		beginTime=beginTime,
-		endTime=endTime,
+		beginTime=REDCap_datetime(beginTime),
+		endTime=REDCap_datetime(endTime),
 	)
 end

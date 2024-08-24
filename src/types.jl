@@ -1,3 +1,6 @@
+
+
+#TODO: currently unused
 struct REDCap_data 
 	id::Symbol
 	REDCap_data(id) = id ∈ [:createFolder,:delete,:export,:import,:list,:rename,:switch] ? new(id) : throw(ArgumentError("Invalid data parameter"))
@@ -40,7 +43,18 @@ const redcap_format_parameter = Union{String, Symbol, Nothing}
 const redcap_returnFormat_parameter = redcap_format_parameter
 #const redcap_formatter = Union{Symbol, Nothing}
 const redcap_symbol = Union{Symbol, Nothing}
-const redcap_timestamp = Union{DateTime, Nothing} #TODO: YYYY-MM-DD HH:MM
+const redcap_timestamp = Union{Date, DateTime, String,Nothing} #TODO: YYYY-MM-DD HH:MM
+
+#TODO: currently unused
+REDCap_datetime(x::String) = DateTime(x,"yyyy-m-dd H:M")
+REDCap_datetime(x::Date) = DateTime(x)
+REDCap_datetime(x::DateTime) = x
+REDCap_datetime(x::Nothing) = nothing
+
+#TODO: add regex check occursin(r"^https:\/\/.*\/api\/$", x) ? URIs.URI(x) : throw(ArgumentError("Invalid REDCap url"))
+
+
+
 
 redcap_generic_parameter = Union{
 	#redcap_action_parameter,
