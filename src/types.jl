@@ -1,3 +1,11 @@
+struct REDCap_data 
+	id::Symbol
+	REDCap_data(id) = id ∈ [:createFolder,:delete,:export,:import,:list,:rename,:switch] ? new(id) : throw(ArgumentError("Invalid data parameter"))
+end
+Base.display(x::REDCap_data) = Base.display(x.id)
+Base.string(x::REDCap_data) = Base.string(x.id)
+Base.convert(String,x::REDCap_data) = string(x)
+
 struct REDCap_action 
 	id::Symbol
 	REDCap_action(id) = id ∈ [:createFolder,:delete,:export,:import,:list,:rename,:switch] ? new(id) : throw(ArgumentError("Invalid action parameter"))
