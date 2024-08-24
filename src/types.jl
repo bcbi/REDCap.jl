@@ -1,3 +1,31 @@
+#TODO: Should some of these functions be moved to src/utils.jl?
+#TODO: separate into modules
+
+# Any types that users may pass to a function named after a REDCap method
+const redcap_token_input = String
+const redcap_super_token_input = redcap_token_input 
+const redcap_data_input = Union{String, Dict} #TODO: there might be 1 REDCap method where Dict can be nothing, but passing it as an argument has an effect
+const redcap_filterLogic_input = Union{String, Nothing}
+const redcap_odm_input = Union{String, Nothing}
+const redcap_array_input = Union{Array, Nothing}
+const redcap_bool_input = Union{Bool, Nothing}
+const redcap_format_input = Union{String, Symbol, Nothing}
+const redcap_returnFormat_input = redcap_format_input
+const redcap_timestamp_input = Union{Date, DateTime, String,Nothing}
+
+const redcap_generic_input = Union{
+	redcap_data_input,
+	redcap_filterLogic_input,
+	redcap_odm_input,
+	redcap_array_input,
+	redcap_bool_input,
+	redcap_format_input,
+	redcap_timestamp_input,
+	}
+
+# Any types that are used internally by REDCap.jl
+# These are used primarily for coherency checks, so
+# any functions that fulfill this sort of role are included.
 
 struct REDCap_action 
 	id::Symbol
@@ -20,31 +48,10 @@ const redcap_url_input = String
 # Maybe a function that checks for common mistakes
 REDCap_url(x::redcap_url_input) = occursin(r"^https:\/\/.*\/api\/$", x) ? URIs.URI(x) : throw(ArgumentError("Invalid REDCap url"))
 
-const redcap_token_input = String
-const redcap_super_token_input = String
-const redcap_data_input = Union{String, Dict}
-const redcap_filterLogic_input = Union{String, Nothing}
-const redcap_odm_input = Union{String, Nothing}
-const redcap_array_input = Union{Array, Nothing}
-const redcap_bool_input = Union{Bool, Nothing}
-const redcap_format_input = Union{String, Symbol, Nothing}
-const redcap_returnFormat_input = redcap_format_input
-
-const redcap_timestamp_input = Union{Date, DateTime, String,Nothing}
 REDCap_datetime(x::String) = DateTime(x,"yyyy-m-dd H:M")
 REDCap_datetime(x::Date) = DateTime(x)
 REDCap_datetime(x::DateTime) = x
 REDCap_datetime(x::Nothing) = nothing
-
-redcap_generic_input = Union{
-	redcap_data_input,
-	redcap_filterLogic_input,
-	redcap_odm_input,
-	redcap_array_input,
-	redcap_bool_input,
-	redcap_format_input,
-	redcap_timestamp_input,
-	}
 
 struct REDCap_format
 	id::redcap_format_input
@@ -71,7 +78,7 @@ end
 REDCap_data(x::String, format::REDCap_format) = read(x, String)
 
 struct REDCap_token
-	id::String
+	id::redcap_token_input
 	REDCap_token(id) = occursin(r"^[0-9A-F]{32}([0-9A-F]{32})?$", id) ? new(id) : throw(ArgumentError("Invalid REDCap token"))
 end
 Base.display(x::REDCap_token) = display(x.id)
@@ -79,7 +86,7 @@ Base.string(x::REDCap_token) = string(x.id)
 Base.convert(String,x::REDCap_token) = string(x)
 
 struct REDCap_super_token
-	id::String
+	id::redcap_super_token_input
 	REDCap_super_token(id) = occursin(r"^[0-9A-F]{64}$", id) ? new(id) : throw(ArgumentError("Invalid REDCap super token"))
 end
 Base.display(x::REDCap_super_token) = display(x.id)

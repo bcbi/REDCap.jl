@@ -14,6 +14,9 @@ function request(;
 	#TODO: Can't the data parameter be nothing and still hav an effect in at least 1 function?
 	if !isnothing(data); html_request_body["data"] = "$data" end
 
+
+	#TODO: make this clear to users
+	#ENV["JULIA_DEBUG"] = REDCap
 	@debug(filter(x->(first(x)!="token"), html_request_body))
 
 	response = HTTP.post(
