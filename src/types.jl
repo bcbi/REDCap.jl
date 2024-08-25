@@ -70,7 +70,7 @@ function REDCap_data(x::Dict, format::Union{REDCap_format, Nothing})
 	elseif format == REDCap_format(:csv)
 		join(keys(x),',') * "\n" * join(values(x),',')
 	else
-		"<?xml version=\"1.0\" encoding=\"UTF-8\" ?>"
+		"<?xml version=\"1.0\" encoding=\"UTF-8\" ?>" *
 		"<item>" * 
 		join(["<$k>$v</$k>" for (k,v) in x]) *
 		"</item>"
@@ -97,9 +97,11 @@ Base.string(x::REDCap_super_token) = string(x.id)
 Base.convert(String,x::REDCap_super_token) = string(x)
 
 redcap_generic_parameter = Union{
+	REDCap_action,
 	REDCap_format,
 	DateTime,
 	String,
+	Integer,
 	Nothing,
 	}
 
