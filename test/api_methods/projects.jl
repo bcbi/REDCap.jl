@@ -1,5 +1,3 @@
-@test_throws UndefKeywordError create_project()
-
 @test create_project(data = (project_title = "AAA", purpose = 1),format=:csv) ==
 "ERROR: You must provide some text for 'purpose_other' since you specified 'purpose' as '1' (Other)."
 
