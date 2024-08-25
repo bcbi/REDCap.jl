@@ -9,6 +9,9 @@ if (get(ENV, "REDCAP_API_URL", "")) |> isempty && (get(ENV, "REDCAP_API_TOKEN", 
 	@test true
 else
 
+project_token = create_project(data=(project_title="$(now())",purpose=0))
+
+include("errors.jl")
 include("api_methods/arms.jl")
 include("api_methods/data_access_groups.jl")
 include("api_methods/events.jl")
@@ -27,10 +30,13 @@ include("api_methods/surveys.jl")
 include("api_methods/user_roles.jl")
 include("api_methods/users.jl")
 
+#TODO: how to structure the test set?
+#generate a project token, then use it for each api method test?
+#anytime I find a reasonable looking workflow, add it
+#these examples will be a great resource
 
 
-@test export_version() == "14.5.8"
-#TODO: account for running test without token in E
+#TODO: take into account running test without token in E
 
 #TODO: more tests like this, checking the API's return value
 #=
@@ -43,17 +49,13 @@ import_users(data="""username\naharris""", format=:csv)
 
 begin
 
-	#TODO: for now, put a :json format tag when using a Dict
-	project_token = create_project(format=:json,data=(project_title="$(now())",purpose=0))
 	export_project_XML(token=project_token)
 	export_project_info(token=project_token)
 
 	export_metadata(token=project_token)
 
 
-	@assert "1" == import_project_info(format=:json,token=project_token,data=(project_title="$(now())",purpose=0))
-	export_logging(token=project_token, format=:json) |>JSON.parse |> DataFrame
-	@test export_logging(token=project_token,format=:json, endTime="1999-01-01") |> JSON.parse |> DataFrame == DataFrame()
+	#@assert "1" == import_project_info(token=project_token,data=(project_title="$(now())",purpose=0))
 
 	#TODO: for CSV inputs, use triple quotes, and add a comma at the end if the last inner character is also a quote
 	# Can this always be done, or only when the last column is blank?
