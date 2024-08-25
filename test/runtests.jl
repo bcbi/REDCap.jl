@@ -6,12 +6,7 @@ using DataFrames
 
 #TODO: ensure tests are run from a certain directory?
 
-if (get(ENV, "REDCAP_API_URL", "")) |> isempty && (get(ENV, "REDCAP_API_TOKEN", "")) |> isempty
-	@info("To run these tests, add values for REDCAP_API_URL and REDCAP_API_TOKEN to your Julia startup file")
-	@test true
-else
-
-project_token = create_project(data=(project_title="$(now())",purpose=0))
+function run_all_tests()
 
 list_of_test_files = []
 function all_subfiles(dir)
@@ -26,11 +21,10 @@ end
 all_subfiles("test_files")
 
 @testset verbose=true "Full testset" begin
-	name_width = maximum(length.(list_of_test_files))
 	for test_file in list_of_test_files
 		@testset "$test_file" begin
 			begin
-				#eval(function_call)
+				global file_name, file_handle
 				include(test_file)
 			end
 		end
@@ -85,3 +79,15 @@ import_users(data="""username\naharris""", format=:csv)
 	#CSV.read(export_users(format=:csv) |> IOBuffer, DataFrame )
 
 end
+
+if (get(ENV, "REDCAP_API_URL", "")) |> isempty && (get(ENV, "REDCAP_API_TOKEN", "")) |> isempty
+	@info("To run these tests, add values for REDCAP_API_URL and REDCAP_API_TOKEN to your Julia startup file")
+	@test true
+else
+	const project_token = create_project(data=(project_title="$(now())",purpose=0))
+	const file_name = tempname() |> touch
+	const file_handle = open(file_name, "w+")
+	run_all_tests()
+end
+
+
