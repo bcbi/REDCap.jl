@@ -27,7 +27,6 @@ More examples can be found in the [documentation](https://docs.bcbi.brown.edu/RE
 
 ## Syntax
 Every REDCap API method is available as a function that supplies certain required parameters and checks user inputs for validity.
-Type and coherency checks are quite strict, which prevents certain user errors that can be difficult to diagnose with the REDCap's error messages.
 
 Function arguments are named after RECap method parameters.
 These are passed as named arguments and take values with intuitive types, with a few exceptions to note:
@@ -41,7 +40,7 @@ ENV["REDCAP_API_URL"] = "http://example.com/redcap/api/"
 ```
 
 ### Data
-The data parameter accepts either a filename, or a Julia `Dict`.
+The data parameter accepts either a filename, or a collection (Dict, NamedTuple, etc.).
 
 ## Acknowledgments
 The contributors are grateful for the support of Mary McGrath, Paul Stey, Fernando Gelin, the Brown Data Science Institute, the Brown Center for Biomedical Informatics, and the Tufts CTSI Informatics core.
