@@ -4,6 +4,8 @@ using Test
 using Dates
 using DataFrames
 
+#TODO: ensure tests are run from a certain directory?
+
 if (get(ENV, "REDCAP_API_URL", "")) |> isempty && (get(ENV, "REDCAP_API_TOKEN", "")) |> isempty
 	@info("To run these tests, add values for REDCAP_API_URL and REDCAP_API_TOKEN to your Julia startup file")
 	@test true

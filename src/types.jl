@@ -1,3 +1,5 @@
+#TODO: recommend users try different format parameters with Dict, etc. for degbugging
+#TODO: recommend turning on debug messages for debugging
 #TODO: Should some of these functions be moved to src/utils.jl?
 #TODO: separate into modules
 
@@ -5,7 +7,7 @@
 const redcap_token_input = String
 const redcap_super_token_input = redcap_token_input 
 #TODO: What about a NamedTuple? It might make sense to allow any type
-const redcap_data_input = Union{String, NamedTuple, Dict} #TODO: there might be 1 REDCap method where Dict can be nothing, but passing it as an argument has an effect
+const redcap_data_input = Union{String, Tuple, NamedTuple, Dict} #TODO: there might be 1 REDCap method where Dict can be nothing, but passing it as an argument has an effect
 const redcap_filterLogic_input = Union{String, Nothing}
 const redcap_odm_input = Union{String, Nothing}
 const redcap_array_input = Union{Array, Nothing}
@@ -64,6 +66,7 @@ Base.display(x::REDCap_format) = Base.display(x.id)
 Base.string(x::REDCap_format) = Base.string(x.id)
 Base.convert(String,x::REDCap_format) = string(x)
 
+#TODO: handle more complicated examples
 function REDCap_data(x::Dict, format::Union{REDCap_format, Nothing})
 	return if format == REDCap_format(:json)
 		"[$(JSON.json(x))]"
@@ -78,6 +81,7 @@ function REDCap_data(x::Dict, format::Union{REDCap_format, Nothing})
 end
 #TODO: ONly pairs is needed
 REDCap_data(x::NamedTuple, format::Union{REDCap_format, Nothing}) = REDCap_data(x |> pairs |> Dict, format)
+#TODO: maybe check for a file extension - if none, parse as input
 REDCap_data(x::String, format::Union{REDCap_format, Nothing}) = read(x, String)
 
 struct REDCap_token

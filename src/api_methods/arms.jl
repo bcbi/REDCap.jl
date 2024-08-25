@@ -35,6 +35,8 @@ function export_arms(;
 	)
 end
 
+#All examples use JSON
+#TODO: what is the proper format for multi-item XML? I can't find this anywhere...
 function import_arms(;
 	url::redcap_url_input=get_url(),
 	token::redcap_token_input=get_token(),	

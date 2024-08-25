@@ -19,6 +19,9 @@ function request(;
 	#ENV["JULIA_DEBUG"] = REDCap
 	@debug(filter(x->(first(x)!="token"), html_request_body))
 
+	#TODO: this could be a good location to divide input into chunks and iterate
+	#For that, maybe pass the argument as a file handle
+
 	response = HTTP.post(
 		URI(url);
 		#get_valid_url();
