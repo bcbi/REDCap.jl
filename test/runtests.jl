@@ -44,14 +44,14 @@ import_users(data="""username\naharris""", format=:csv)
 begin
 
 	#TODO: for now, put a :json format tag when using a Dict
-	project_token = create_project(format=:json,data=Dict(:project_title=>"$(now())",:purpose=>0))
+	project_token = create_project(format=:json,data=(project_title="$(now())",purpose=0))
 	export_project_XML(token=project_token)
 	export_project_info(token=project_token)
 
 	export_metadata(token=project_token)
 
 
-	@assert "1" == import_project_info(format=:json,token=project_token,data=Dict(:project_title=>"$(now())",:purpose=>0))
+	@assert "1" == import_project_info(format=:json,token=project_token,data=(project_title="$(now())",purpose=0))
 	export_logging(token=project_token, format=:json) |>JSON.parse |> DataFrame
 	@test export_logging(token=project_token,format=:json, endTime="1999-01-01") |> JSON.parse |> DataFrame == DataFrame()
 
