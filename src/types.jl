@@ -5,7 +5,7 @@
 const redcap_token_input = String
 const redcap_super_token_input = redcap_token_input 
 #TODO: What about a NamedTuple? It might make sense to allow any type
-const redcap_data_input = Any #Union{String, Dict} #TODO: there might be 1 REDCap method where Dict can be nothing, but passing it as an argument has an effect
+const redcap_data_input = Union{String, NamedTuple, Dict} #TODO: there might be 1 REDCap method where Dict can be nothing, but passing it as an argument has an effect
 const redcap_filterLogic_input = Union{String, Nothing}
 const redcap_odm_input = Union{String, Nothing}
 const redcap_array_input = Union{Array, Nothing}
@@ -76,7 +76,9 @@ function REDCap_data(x::Dict, format::Union{REDCap_format, Nothing})
 		"</item>"
 	end
 end
-REDCap_data(x::String, format::REDCap_format) = read(x, String)
+#TODO: ONly pairs is needed
+REDCap_data(x::NamedTuple, format::Union{REDCap_format, Nothing}) = REDCap_data(x |> pairs |> Dict, format)
+REDCap_data(x::String, format::Union{REDCap_format, Nothing}) = read(x, String)
 
 struct REDCap_token
 	id::redcap_token_input
