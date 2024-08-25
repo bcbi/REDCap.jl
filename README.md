@@ -27,6 +27,7 @@ More examples can be found in the [documentation](https://docs.bcbi.brown.edu/RE
 
 ## Syntax
 Every REDCap API method is available as a function that supplies certain required parameters and checks user inputs for validity.
+Return values and REDCap messages are returned directly, but the documentation shows how these can be parsed.
 
 Function arguments are named after RECap method parameters.
 These are passed as named arguments and take values with intuitive types, with a few exceptions to note:
@@ -40,7 +41,17 @@ ENV["REDCAP_API_URL"] = "http://example.com/redcap/api/"
 ```
 
 ### Data
-The data parameter accepts either a filename, or a collection (Dict, NamedTuple, etc.).
+The `data` parameter accepts either a filename, or a collection (Dict, NamedTuple, etc.).
+The presence of a `data` parameter is often the 
+
+### Format
+Generally, the `format` parameter designates user input and the `returnFormat` parameter applies to REDCap messages and return values.
+However, this is not consistent within REDCap.
+REDCap.jl functions are designed to not accept any parameters that have no effect on the result.
+
+## Content and Action
+The `content` and `action` parameters are what define each REDCap method, for the most part.
+These are passed internally in REDCap.jl and are never supplied by the user.
 
 ## Acknowledgments
 The contributors are grateful for the support of Mary McGrath, Paul Stey, Fernando Gelin, the Brown Data Science Institute, the Brown Center for Biomedical Informatics, and the Tufts CTSI Informatics core.
