@@ -78,14 +78,16 @@ end
 function export_project_info(;
 	url::redcap_url_input=get_url(),
 	token::redcap_token_input=get_token(),	
-	returnFormat::redcap_returnFormat_input=nothing,
+	format::redcap_returnFormat_input=nothing,
+	#returnFormat::redcap_returnFormat_input=nothing,
 	)
 
 	REDCap.request(;
 		       content=REDCap_content(:project),
 		url=REDCap_url(url),
 		token=REDCap_token(token),
-		returnFormat=REDCap_format(returnFormat),
+		format=REDCap_format(format),
+		#returnFormat=REDCap_format(returnFormat),
 	)
 end
 
