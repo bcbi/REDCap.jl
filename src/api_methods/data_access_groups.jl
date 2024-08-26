@@ -31,7 +31,7 @@ function export_DAGs(;
 		token=REDCap_token(token),
 		       content=REDCap_content(:dag),
 		format=REDCap_format(format),
-		returnFormat=REDCap_format(returnFormat),
+		#returnFormat=REDCap_format(returnFormat),
 	)
 end
 
