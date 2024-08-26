@@ -12,15 +12,20 @@ function request(;
 	html_request_body["token"] = token
 	html_request_body["content"] = "$content"
 	#TODO: Can't the data parameter be nothing and still hav an effect in at least 1 function?
-	if !isnothing(data); html_request_body["data"] = "$data" end
+
+	#TODO: Add chunking (but what is bakgroundProcess=true, new to REDCap 14?)
+	if !isnothing(data)
+		if endswith.(data,[".csv",".json",".xml"]) |> any
+			html_request_body["data"] = read(data,String)
+		else
+			html_request_body["data"] = "$data"
+		end
+	end
 
 
 	#TODO: make this clear to users
 	#ENV["JULIA_DEBUG"] = REDCap
 	@debug(filter(x->(first(x)!="token"), html_request_body))
-
-	#TODO: this could be a good location to divide input into chunks and iterate
-	#For that, maybe pass the argument as a file handle
 
 	response = HTTP.post(
 		URI(url);
