@@ -11,16 +11,9 @@ export_metadata()
 export_logging(format=:json) |> JSON.parse |> DataFrame
 
 # Add ability to delete records
-import_users(
-       data=Dict(
-		:username => "userName",
-		:record_delete => 1
-       )
-)
+import_users(data=(username = "userName",record_delete = 1))
 
-delete_records(
-       records=["TM22-15374","TM22-16931","TM22-21015"]
-)
+delete_records(records=["TM22-15374","TM22-16931","TM22-21015"])
 ```
 
 The following example is a more realistic workflow that creates a new project from an existing project XML (data dictionary) and uploads large CSV data files into it in segments.

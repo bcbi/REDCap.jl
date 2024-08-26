@@ -118,6 +118,7 @@ redcap_generic_parameter = Union{
 	DateTime,
 	String,
 	Integer,
+	Vector,
 	Nothing,
 	}
 
