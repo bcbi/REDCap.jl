@@ -53,7 +53,7 @@ function import_arms(;
 		override=override,
 		action=REDCap_action(:import),
 		format=REDCap_format(format),
-		data=REDCap_data(data,REDCap_format(format)),
+		data=REDCap_data(data,REDCap_format(format),xml_tag="arms"),
 		returnFormat=REDCap_format(returnFormat),
 	)
 end

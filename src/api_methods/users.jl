@@ -58,7 +58,7 @@ Other attribute values: 0=No Access, 1=Access.
 	token=REDCap_token(token),
 	content=REDCap_content(:user),
 		format=REDCap_format(format),
-		data=REDCap_data(data,REDCap_format(format)),
+		data=REDCap_data(data,REDCap_format(format),xml_tag="users"),
 		returnFormat=REDCap_format(returnFormat),
 	)
 end

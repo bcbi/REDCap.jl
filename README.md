@@ -42,7 +42,11 @@ ENV["REDCAP_API_URL"] = "http://example.com/redcap/api/"
 
 ### Data
 The `data` parameter accepts a collection (Dict, NamedTuple, etc.) or a String.
+A NamedTuple is the most elegant format, but it must contain at least one comma. 
+A Dict value is always accepted.
 String values are parsed - if they end with a .csv, .json, or .xml file extension, they are treated as a file name; otherwise, they are assumed to be a formatted string and are sent directly as part of the API request.
+As for collections, only collections of scalar entries are currently supported.
+So, a list of attributes and values is accepted, but a Dict containing multiple rows per column can only be read in from a file.
 
 In the REDCap API, The presence of a `data` parameter often changes the behavior of a method.
 For instance, most import methods are implemented as an export method with an added data parameter.
