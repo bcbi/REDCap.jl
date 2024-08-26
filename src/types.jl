@@ -68,7 +68,7 @@ Base.convert(String,x::REDCap_format) = string(x)
 ##TODO: There's no need to translate the data - I can leave it in its Julia type
 #TODO: if format is nothing, just pass the data unchanged
 ##TODO: account for capitalization - maybe make the internal id a string?
-function REDCap_data(x::Dict, format::Union{Nothing,REDCap_format}, xml_tag=nothing)
+function REDCap_data(x::Dict, format::Union{Nothing,REDCap_format}; xml_tag=nothing)
 	return if format == REDCap_format(:json)
 		"[$(JSON.json(x))]"
 	elseif format == REDCap_format(:csv)
@@ -92,9 +92,9 @@ end
 #REDCap_data(x::Dict, format::Nothing) = x #If there's no format tag, pass the data parameter unchanged
 #REDCap_data(x::NamedTuple, format::Nothing) = x |> pairs |> Dict |> x -> "$x"
 #TODO: ONly pairs is needed
-REDCap_data(x::NamedTuple, format::Union{REDCap_format,Nothing}) = REDCap_data(x |> pairs |> Dict, format)
+REDCap_data(x::NamedTuple, format::Union{REDCap_format,Nothing}; xml_tag=nothing) = REDCap_data(x |> pairs |> Dict, format, xml_tag=xml_tag)
 #TODO: Add file checking
-REDCap_data(x::String, format::Union{REDCap_format, Nothing}) = x
+REDCap_data(x::String, format::Union{REDCap_format, Nothing}; xml_tag=nothing) = x
 
 struct REDCap_token
 	id::redcap_token_input
