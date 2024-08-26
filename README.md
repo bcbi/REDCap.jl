@@ -7,6 +7,8 @@
 
 A Julia frontend for the REDCap API
 
+[REDCap](https://en.wikipedia.org/wiki/REDCap) is a data capture system for scientific research, especially clinical trials.
+
 ## Example
 ```julia
 using REDCap
@@ -26,10 +28,15 @@ export_logging(token=project_token)
 More examples can be found in the [documentation](https://docs.bcbi.brown.edu/REDCap.jl/latest/examples/).
 
 ## Syntax
-Every REDCap API method is available as a function that supplies certain required parameters and checks user inputs for validity.
-Return values and REDCap messages are returned directly, but the documentation shows how these can be parsed.
+Each REDCap method accepts a number of parameters that follow a shared naming convention.
+Generally, a parameter of a given name shares a similar role in all methods where it can be used.
+Parameters can hold various datatypes and might even be composed of multiple named attributes.
 
-Function arguments are named after RECap method parameters.
+REDCap.jl is designed to closely follow the design and syntax patterns of REDCap.
+Every REDCap API method is available as a function that supplies certain required parameters and checks user inputs for validity.
+Return values and REDCap messages are returned as Strings directly, but the documentation shows how these can be parsed in useful ways.
+
+Function arguments are named after REDCap method parameters.
 These are passed as named arguments and take values with intuitive types, with a few exceptions to note:
 
 ### Token and URL
@@ -40,27 +47,64 @@ ENV["REDCAP_API_TOKEN"] = "C0FFEEC0AC0AC0DEC0FFEEC0AC0AC0DE"
 ENV["REDCAP_API_URL"] = "http://example.com/redcap/api/"
 ```
 
-### Data
+### `data`
 The `data` parameter accepts a collection (Dict, NamedTuple, etc.) or a String.
-A NamedTuple is the most elegant format, but it must contain at least one comma. 
-A Dict value is always accepted.
+If you use a a collection, it will be translated internally into whatever `format` you use (xml by default).
+A NamedTuple is the most elegant format:
+```julia
+import_project_info(
+    data=(
+        project_title="New name",
+        project_notes="New notes"
+    ),
+    returnFormat=:csv,
+)
+```
+But please keep in mind that a NamedTuple must contain at least one comma:
+```julia
+import_project_info(
+    data=(
+        project_title="New name", # this comma is required
+    ),
+    returnFormat=:csv,
+)
+```
+A Dict value is fine as well.
+```julia
+import_project_info(data=Dict(:project_title=>"New name"), returnFormat=:csv)
+```
 String values are parsed - if they end with a .csv, .json, or .xml file extension, they are treated as a file name; otherwise, they are assumed to be a formatted string and are sent directly as part of the API request.
+```julia
+data_string = """
+    [{"data_access_group_name":"CA Site","unique_group_name":"ca_site"},
+    {"data_access_group_name":"FL Site","unique_group_name":"fl_site"},
+    {"data_access_group_name":"New Site","unique_group_name":""}]
+"""
+
+import_DAGs(token=t,data=data_string, format=:json)
+
+import_DAGs(token=t,data="file.csv",format=:csv)
+
+```
 As for collections, only collections of scalar entries are currently supported.
 So, a list of attributes and values is accepted, but a Dict containing multiple rows per column can only be read in from a file.
 
-In the REDCap API, The presence of a `data` parameter often changes the behavior of a method.
+In the REDCap API, the presence of a `data` parameter often changes the behavior of a method.
 For instance, most import methods are implemented as an export method with an added data parameter.
 In REDCap.jl, it would be considered a bug for `import_project_data` to ever act as `export_project_data`, so the data paramater is almost always required where it is present.
 
+### `format` and `returnFormat`
+Supported options are `:csv`, `:json`, `:xml` (the default value), and sometimes `:odm`.
+These values can be passed as Strings or Symbols.
 
-### Format
 Generally, the `format` parameter designates user input and the `returnFormat` parameter applies to REDCap messages and return values.
 However, this is not consistent within REDCap.
 REDCap.jl functions are designed to not accept any parameters that have no effect on the result.
 
-## Content and Action
+## `content` and `action`
 The `content` and `action` parameters are what define each REDCap method, for the most part.
-These are passed internally in REDCap.jl and are never supplied by the user.
+In REDCap.jl, these are passed internally and don't need to be supplied by the user.
+Instead, they're fixed for each function.
 
 ### Troubleshooting
 
