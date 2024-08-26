@@ -76,7 +76,7 @@ import_project_info(
     returnFormat=:csv,
 )
 ```
-A Dict value is fine as well.
+A `Dict` value is fine as well.
 ```julia
 import_project_info(data=Dict(:project_title=>"New name"), returnFormat=:csv)
 ```
@@ -87,10 +87,11 @@ data_string = """
     {"data_access_group_name":"FL Site","unique_group_name":"fl_site"},
     {"data_access_group_name":"New Site","unique_group_name":""}]
 """
+out = open("data_file.json","w"); write(out, data_string); close(out)
 
-import_DAGs(token=t,data=data_string, format=:json)
+import_DAGs(token=t,data=data_string, format=:json) # string is passed to the API
 
-import_DAGs(token=t,data="file.csv",format=:csv)
+import_DAGs(token=t, data="data_file.json", format=:json) # string is pattern-matched as a filename 
 
 ```
 As for collections, only collections of scalar entries are currently supported.
