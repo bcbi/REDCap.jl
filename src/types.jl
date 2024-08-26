@@ -67,20 +67,25 @@ Base.convert(String,x::REDCap_format) = string(x)
 #TODO: handle more complicated examples
 ##TODO: There's no need to translate the data - I can leave it in its Julia type
 #TODO: if format is nothing, just pass the data unchanged
-function REDCap_data(x::Dict, format::Union{REDCap_format, Nothing})
+##TODO: account for capitalization - maybe make the internal id a string?
+function REDCap_data(x::Dict, format::REDCap_format)
 	return if format == REDCap_format(:json)
 		"[$(JSON.json(x))]"
 	elseif format == REDCap_format(:csv)
 		join(keys(x),',') * "\n" * join(values(x),',')
-	else
+	else # default, assume XML
+	#elseif format == REDCap_format(:xml)
 		"<?xml version=\"1.0\" encoding=\"UTF-8\" ?>" *
 		"<item>" * 
 		join(["<$k>$v</$k>" for (k,v) in x]) *
 		"</item>"
 	end
 end
+#TODO: THese methods are a mess - fix the XML bug, then loop around to here...
+REDCap_data(x::Dict, format::Nothing) = x #If there's no format tag, pass the data parameter unchanged
+REDCap_data(x::NamedTuple, format::Nothing) = x |> pairs |> Dict |> x -> "$x"
 #TODO: ONly pairs is needed
-REDCap_data(x::NamedTuple, format::Union{REDCap_format, Nothing}) = REDCap_data(x |> pairs |> Dict, format)
+REDCap_data(x::NamedTuple, format::REDCap_format) = REDCap_data(x |> pairs |> Dict, format)
 #TODO: Add file checking
 REDCap_data(x::String, format::Union{REDCap_format, Nothing}) = x
 
