@@ -104,3 +104,8 @@ bypass_branching_erase_field_prompt=1
 @test export_project_info(token=project_token,format=:xml) |> JSON.parse |> x -> x["custom_record_label"] == "Q"
 
 export_project_info(token=project_token) 
+
+
+import_project_info(token=project_token,data=(project_title="NEWNAME"),format=:csv)
+@test export_project_info(token=project_token,format=:json) |> JSON.parse |> x -> x["project_title"] == "NEWNAME"
+

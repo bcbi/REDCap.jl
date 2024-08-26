@@ -67,6 +67,7 @@ Base.string(x::REDCap_format) = Base.string(x.id)
 Base.convert(String,x::REDCap_format) = string(x)
 
 #TODO: handle more complicated examples
+##TODO: There's no need to translate the data - I can leave it in its Julia type
 function REDCap_data(x::Dict, format::Union{REDCap_format, Nothing})
 	return if format == REDCap_format(:json)
 		"[$(JSON.json(x))]"
