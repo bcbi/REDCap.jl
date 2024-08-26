@@ -14,6 +14,8 @@ function request(;
 	#TODO: Can't the data parameter be nothing and still hav an effect in at least 1 function?
 
 	#TODO: Add chunking (but what is bakgroundProcess=true, new to REDCap 14?)
+	#Also, different formats have to be chunked differently.
+	#Maybe stick to creating an iterator outside REDCap...
 	if !isnothing(data)
 		if endswith.(data,[".csv",".json",".xml"]) |> any
 			html_request_body["data"] = read(data,String)
@@ -22,9 +24,6 @@ function request(;
 		end
 	end
 
-
-	#TODO: make this clear to users
-	#ENV["JULIA_DEBUG"] = REDCap
 	@debug(filter(x->(first(x)!="token"), html_request_body))
 
 	response = HTTP.post(

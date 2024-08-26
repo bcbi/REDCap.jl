@@ -14,8 +14,8 @@ using REDCap
 export_version()
 
 project_token = create_project(
-  data=Dict(:project_title => "Test Project",:purpose => 0),
-  odm="Data_Dictionary.xml")
+  data = (project_title = "Test Project", purpose = 0),
+  odm = "Data_Dictionary.xml")
 
 import_records(token=project_token, data="example.csv", format=:csv)
 
@@ -41,8 +41,13 @@ ENV["REDCAP_API_URL"] = "http://example.com/redcap/api/"
 ```
 
 ### Data
-The `data` parameter accepts either a filename, or a collection (Dict, NamedTuple, etc.).
-The presence of a `data` parameter is often the 
+The `data` parameter accepts a collection (Dict, NamedTuple, etc.) or a String.
+String values are parsed - if they end with a .csv, .json, or .xml file extension, they are treated as a file name; otherwise, they are assumed to be a formatted string and are sent directly as part of the API request.
+
+In the REDCap API, The presence of a `data` parameter often changes the behavior of a method.
+For instance, most import methods are implemented as an export method with an added data parameter.
+In REDCap.jl, it would be considered a bug for `import_project_data` to ever act as `export_project_data`, so the data paramater is almost always required where it is present.
+
 
 ### Format
 Generally, the `format` parameter designates user input and the `returnFormat` parameter applies to REDCap messages and return values.
@@ -52,6 +57,11 @@ REDCap.jl functions are designed to not accept any parameters that have no effec
 ## Content and Action
 The `content` and `action` parameters are what define each REDCap method, for the most part.
 These are passed internally in REDCap.jl and are never supplied by the user.
+
+### Troubleshooting
+
+If a function call doesn't produce the expected results, try making debug messages visible for this package by running `ENV["JULIA_DEBUG"] = REDCap`.
+Feel free to create an issue for any unexpected errors, or for feature requests.
 
 ## Acknowledgments
 The contributors are grateful for the support of Mary McGrath, Paul Stey, Fernando Gelin, the Brown Data Science Institute, the Brown Center for Biomedical Informatics, and the Tufts CTSI Informatics core.
