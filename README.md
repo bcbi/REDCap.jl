@@ -42,7 +42,8 @@ These are passed as named arguments and take values with intuitive types, with a
 ### Token and URL
 Almost all REDCap methods accept a token that is unique to the project and user.
 A super token can be used to generate a project and project-level token.
-The URL must exactly match this example: `https://example.example/redcap/api/`
+The URL must exactly match this example:
+```https://example.example/redcap/api/```
 
 Your REDCap token and your institution's REDCap API URL can be read by default from Julia's environment variables.
 You can make them avaiable to REDCap.jl by putting the following lines in [your local Julia startup file](https://docs.julialang.org/en/v1/manual/command-line-interface/#Startup-file) (probably `~/.julia/config/startup.jl`):
