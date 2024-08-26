@@ -5,6 +5,7 @@ function request(;
 	token::Union{REDCap_token, REDCap_super_token},
 	content::REDCap_content,
 	data=nothing,
+	odm=nothing,
 	kwargs...)
 
 	#TODO: replace interpolation with string()?
@@ -12,6 +13,10 @@ function request(;
 	html_request_body["token"] = token
 	html_request_body["content"] = "$content"
 	#TODO: Can't the data parameter be nothing and still hav an effect in at least 1 function?
+	
+	if !isnothing(odm)
+		html_request_body["odm"] = read(odm,String)
+	end
 
 	#TODO: Add chunking (but what is bakgroundProcess=true, new to REDCap 14?)
 	#Also, different formats have to be chunked differently.
