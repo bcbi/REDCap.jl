@@ -83,8 +83,7 @@ function REDCap_data(x::Dict, format::Union{REDCap_format, Nothing})
 end
 #TODO: ONly pairs is needed
 REDCap_data(x::NamedTuple, format::Union{REDCap_format, Nothing}) = REDCap_data(x |> pairs |> Dict, format)
-#TODO: maybe check for a file extension - if none, parse as input
-REDCap_data(x::String, format::Union{REDCap_format, Nothing}) = read(x, String)
+REDCap_data(x::String, format::Union{REDCap_format, Nothing}) = endswith.(x,[".csv",".json",".xml"]) |> any ? read(x, String) : x
 
 struct REDCap_token
 	id::redcap_token_input
