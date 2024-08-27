@@ -4,6 +4,10 @@ using Test
 using Dates
 using DataFrames
 
+#TODO: I have to rewrite these tests...
+# I can't just use a tempname, since the file handle gets parsed...
+# Maybe just add a method definition for file handles?
+# Is it bad practice to parse strings that way?
 #TODO: ensure tests are run from a certain directory?
 
 function run_all_tests()

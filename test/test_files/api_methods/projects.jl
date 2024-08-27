@@ -10,6 +10,7 @@
 @test create_project(data = (project_title = "AAA", purpose = 1)) ==
 "<?xml version=\"1.0\" encoding=\"UTF-8\" ?><hash><error>You must provide some text for 'purpose_other' since you specified 'purpose' as '1' (Other).</error></hash>"
 
+#Why do I get different values for different formats?
 @test "18" == 
 import_project_info(token=project_token,data=(
 project_title="ABCDEFG",

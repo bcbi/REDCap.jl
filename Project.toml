@@ -1,7 +1,7 @@
 name = "REDCap"
 uuid = "ba918724-fbf9-5e4a-a61c-87e95654e718"
 authors = ["Cory Cothrum", "Dilum Aluthge <dilum@aluthge.com>", "Ashlin Harris <ashlin_harris@brown.edu>"]
-version = "2.2.0-dev"
+version = "2.2.0"
 
 [deps]
 Dates = "ade2ca70-3891-5945-98fb-dc099432e06a"
