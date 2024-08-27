@@ -80,7 +80,7 @@ A `Dict` value is fine as well.
 ```julia
 import_project_info(data=Dict(:project_title=>"New name"), returnFormat=:csv)
 ```
-String values are parsed - if they end with a .csv, .json, or .xml file extension, they are treated as a file name; otherwise, they are assumed to be a formatted string and are sent directly as part of the API request.
+String values are accepted. If the string is a file name, the contents of the file are sent; otherwise, it is sent directly as part of the API request.
 ```julia
 data_string = """
     [{"data_access_group_name":"CA Site","unique_group_name":"ca_site"},
