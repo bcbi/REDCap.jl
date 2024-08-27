@@ -27,6 +27,9 @@ function request(;
 		#I would hate for a file to be sent against the user's intentions.
 		#Example: someone puts in a value just for testing and doesn't realize they have that file present?
 		#Maybe it is better to have no ambiguity - string gets sent, files are passed as file handles or something
+		##TODO: also, there's something unsettling about how a variable could be passed,
+		#and if that variable contains a file name, even by mistake, the contents of that file get sent.
+		#but this is so convenient, and any actual issue it could cause seems far-fetched
 		if !istoolong(data) && isfile(data)
 			html_request_body["data"] = read(data,String)
 		else
