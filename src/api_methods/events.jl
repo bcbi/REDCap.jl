@@ -52,7 +52,7 @@ function import_events(;
 		       content=REDCap_content(:event),
 		       action=REDCap_action(:import),
 		override=override,
-		data=REDCap_data(data,REDCap_format(format)),
+		data=REDCap_data(data,REDCap_format(format),xml_tag="events"),
 	)
 end
 

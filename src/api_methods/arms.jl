@@ -35,6 +35,8 @@ function export_arms(;
 	)
 end
 
+#All examples use JSON
+#TODO: what is the proper format for multi-item XML? I can't find this anywhere...
 function import_arms(;
 	url::redcap_url_input=get_url(),
 	token::redcap_token_input=get_token(),	
@@ -51,7 +53,7 @@ function import_arms(;
 		override=override,
 		action=REDCap_action(:import),
 		format=REDCap_format(format),
-		data=REDCap_data(data,REDCap_format(format)),
+		data=REDCap_data(data,REDCap_format(format),xml_tag="arms"),
 		returnFormat=REDCap_format(returnFormat),
 	)
 end

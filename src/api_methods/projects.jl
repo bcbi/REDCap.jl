@@ -16,7 +16,7 @@ function create_project(;
 		       content=REDCap_content(:project),
 		format=REDCap_format(format),
 		returnFormat=REDCap_format(returnFormat),
-	       data=REDCap_data(data,REDCap_format(format)),
+		data=REDCap_data(data,REDCap_format(format)),#xml_tag="items")
 		url=REDCap_url(url),
 		token=REDCap_super_token(token),
 		odm=odm,
@@ -78,14 +78,16 @@ end
 function export_project_info(;
 	url::redcap_url_input=get_url(),
 	token::redcap_token_input=get_token(),	
-	returnFormat::redcap_returnFormat_input=nothing,
+	format::redcap_returnFormat_input=nothing,
+	#returnFormat::redcap_returnFormat_input=nothing,
 	)
 
 	REDCap.request(;
 		       content=REDCap_content(:project),
 		url=REDCap_url(url),
 		token=REDCap_token(token),
-		returnFormat=REDCap_format(returnFormat),
+		format=REDCap_format(format),
+		#returnFormat=REDCap_format(returnFormat),
 	)
 end
 
@@ -132,7 +134,8 @@ function import_project_info(;
 		token=REDCap_token(token),
 		content=REDCap_content(:project_settings),
 		format=REDCap_format(format),
-		data=REDCap_data(data,REDCap_format(format)),
+		data=REDCap_data(data,REDCap_format(format),xml_tag="items"),
+		#project_title, project_language, purpose, purpose_other, project_notes, custom_record_label, secondary_unique_field, is_longitudinal, surveys_enabled, scheduling_enabled, record_autonumbering_enabled, randomization_enabled, project_irb_number, project_grant_number, project_pi_firstname, project_pi_lastname, display_today_now_button, bypass_branching_erase_field_prompt
 	)
 end
 

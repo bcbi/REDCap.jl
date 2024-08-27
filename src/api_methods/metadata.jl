@@ -21,6 +21,7 @@ function export_metadata(;
 	)
 end
 
+#TODO: there is no guidance on what the metadata should look like... is itbasically like the odm parameter in create_project?
 function import_metadata(;
 	data::redcap_data_input,
 	url::redcap_url_input=get_url(),

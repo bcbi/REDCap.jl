@@ -4,35 +4,37 @@ using Test
 using Dates
 using DataFrames
 
-if (get(ENV, "REDCAP_API_URL", "")) |> isempty && (get(ENV, "REDCAP_API_TOKEN", "")) |> isempty
-	@info("To run these tests, add values for REDCAP_API_URL and REDCAP_API_TOKEN to your Julia startup file")
-	@test true
-else
+#TODO: I have to rewrite these tests...
+# I can't just use a tempname, since the file handle gets parsed...
+# Maybe just add a method definition for file handles?
+# Is it bad practice to parse strings that way?
+#TODO: ensure tests are run from a certain directory?
 
-include("api_methods/arms.jl")
-include("api_methods/data_access_groups.jl")
-include("api_methods/events.jl")
-include("api_methods/field_names.jl")
-include("api_methods/file_repository.jl")
-include("api_methods/files.jl")
-include("api_methods/instruments.jl")
-include("api_methods/logging.jl")
-include("api_methods/metadata.jl")
-include("api_methods/projects.jl")
-include("api_methods/records.jl")
-include("api_methods/redcap.jl")
-include("api_methods/repeating_instruments_and_events.jl")
-include("api_methods/reports.jl")
-include("api_methods/surveys.jl")
-include("api_methods/user_roles.jl")
-include("api_methods/users.jl")
+function run_all_tests()
 
+list_of_test_files = []
+function all_subfiles(dir)
+	contents = readdir(dir, join=true)
+	for file in contents[@. !isdir(contents)]
+		if endswith(file, ".jl"); push!(list_of_test_files, file) end
+	end
+	for subdirectory in contents[@. isdir(contents)]
+		all_subfiles(subdirectory)
+	end
+end
+all_subfiles("test_files")
 
+@testset verbose=true "Full testset" begin
+	for test_file in list_of_test_files
+		@testset "$test_file" begin
+			begin
+				global file_name, file_handle
+				include(test_file)
+			end
+		end
+	end
+end
 
-@test export_version() == "14.5.8"
-#TODO: account for running test without token in E
-
-#TODO: more tests like this, checking the API's return value
 #=
 write("users.csv", export_users(format=:csv))
 import_users(data=read("small.json",String), format=:json, returnFormat=:xml)
@@ -41,19 +43,13 @@ import_users(data="""[{"username":"userName"}]""", format=:json)
 import_users(data="""username\naharris""", format=:csv)
 =#
 
-begin
 
-	#TODO: for now, put a :json format tag when using a Dict
-	project_token = create_project(format=:json,data=Dict(:project_title=>"$(now())",:purpose=>0))
-	export_project_XML(token=project_token)
-	export_project_info(token=project_token)
+	#export_project_XML(token=project_token)
+	#export_project_info(token=project_token)
 
-	export_metadata(token=project_token)
+	#export_metadata(token=project_token)
 
-
-	@assert "1" == import_project_info(format=:json,token=project_token,data=Dict(:project_title=>"$(now())",:purpose=>0))
-	export_logging(token=project_token, format=:json) |>JSON.parse |> DataFrame
-	@test export_logging(token=project_token,format=:json, endTime="1999-01-01") |> JSON.parse |> DataFrame == DataFrame()
+	#@assert "1" == import_project_info(token=project_token,data=(project_title="$(now())",purpose=0))
 
 	#TODO: for CSV inputs, use triple quotes, and add a comma at the end if the last inner character is also a quote
 	# Can this always be done, or only when the last column is blank?
@@ -86,117 +82,16 @@ begin
 
 	#CSV.read(export_users(format=:csv) |> IOBuffer, DataFrame )
 
+end
+
+if (get(ENV, "REDCAP_API_URL", "")) |> isempty && (get(ENV, "REDCAP_API_TOKEN", "")) |> isempty
+	@info("To run these tests, add values for REDCAP_API_URL and REDCAP_API_TOKEN to your Julia startup file")
 	@test true
+else
+	const project_token = create_project(data=(project_title="$(now())",purpose=0))
+	const file_name = tempname() |> touch
+	const file_handle = open(file_name, "w+")
+	run_all_tests()
 end
 
-#TODO: Add sensible arguments and expected return values
 
-#=
-test_sets = Dict(
-	"Arms" => [
-		:(delete_arms()),
-		:(export_arms()),
-		:(import_arms()),
-	],
-	"Data Access Groups" => [
-		:(delete_DAGs()),
-		:(export_DAGs()),
-		:(export_user_DAG_assignment()),
-		:(import_DAGs()),
-		:(import_user_DAG_assignment()),
-		:(switch_DAG()),
-	],
-	"Events" => [
-		:(delete_events()),
-		:(export_events()),
-		:(import_events()),
-	],
-	"Field Names" => [
-		:(export_list_of_export_field_names),
-	],
-	"Files" => [
-		:(delete_file()),
-		:(export_file()),
-		:(import_file()),
-	],
-	"File Repository" => [
-		:(create_folder()),
-		:(delete_file_from_file_repository()),
-		:(export_file_from_file_repository()),
-		:(export_list_of_folders()),
-		:(import_file_from_file_repository()),
-	],
-	"Instruments" => [
-		:(export_instrument_event_mappings()),
-		:(export_instruments()),
-		:(export_PDF()),
-		:(import_instrument_event_mappings()),
-	],
-	"logging" => [
-		:(export_logging()),
-	],
-	"Metadata" => [
-		:(import_metadata()),
-		:(export_metadata()),
-	],
-	"Projects" => [
-		:(create_project()),
-		:(export_project_info()),
-		:(export_project_XML()),
-		#:(import_project_info()),
-	],
-	"REDCap" => [
-		:(export_version()),
-	],
-	"Records" => [
-		:(delete_records()),
-		:(export_records()),
-		:(generate_next_record_name()),
-		:(import_records()),
-		:(rename_record()),
-	],
-	"Repeating Instruments and Events" => [
-		:(export_repeating_instruments_and_events()),
-		:(import_repeating_instruments_and_events()),
-	],
-	"Reports" => [
-		:(export_reports()),
-	],
-	"Surveys" => [
-		:(export_survey_link()),
-		:(export_survey_participants()),
-		:(export_survey_queue_link()),
-		:(export_survey_return_code()),
-	],
-	"Users" => [
-		:(export_users()),
-		:(import_users()),
-		:(delete_users()),
-	],
-	"User Roles" => [
-	:(export_user_roles()),
-	:(import_user_roles()),
-	:(delete_user_roles()),
-	:(export_user_role_assignment()),
-	:(import_user_role_assignment()),
-	],
-)
-
-@testset "API Methods" begin
-	name_width = maximum(length.(keys(test_sets)))
-	for method_type in keys(test_sets)
-		for function_call in test_sets[method_type]
-			@testset "$(rpad(method_type, name_width, '.')): $function_call" begin
-				@test begin
-					eval(function_call)
-					true
-				end
-			end
-		end
-	end
-end
-
-nothing
-=#
-
-end
