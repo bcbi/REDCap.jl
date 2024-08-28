@@ -22,9 +22,9 @@ function export_instrument_event_mappings(;
 end
 
 function export_instruments(;
-		url=REDCap_url(url),
-		token=REDCap_token(token),
-		format=REDCap_format(format),
+	url::redcap_url_input=get_url(),
+	token::redcap_token_input=get_token(),	
+	format::redcap_format_input=nothing,
 		)
 
 	REDCap.request(;
