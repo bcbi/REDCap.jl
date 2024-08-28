@@ -27,6 +27,7 @@ function export_instruments(;
 	format::redcap_format_input=nothing,
 		)
 
+	#TODO: mention in docs that certain permissions are needed for various commands
 	REDCap.request(;
 		url=REDCap_url(url),
 		token=REDCap_token(token),
