@@ -8,7 +8,7 @@ settings = export_users(token=project_token,format=:json) |> JSON.parse |> first
 @test import_users(token=project_token,data=(username=username,calendar=0,data_quality_create=0)) == "1"
 @test import_users(token=project_token,data=(username=username,email_logging=0),format=:json) == "1"
 settings = export_users(token=project_token,format=:json) |> JSON.parse |> first
-@test settings["calendar"] == settings["data_quality_create"] == settings["email_logging"] = 0
+@test settings["calendar"] == settings["data_quality_create"] == settings["email_logging"] == 0
 
 @test import_users(token=project_token,data=(username=:FAKE_USER_NAME,)) == "1"
 @test delete_users(token=project_token,users=[:FAKE_USER_NAME]) == 
