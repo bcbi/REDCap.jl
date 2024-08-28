@@ -80,7 +80,7 @@ end
 #TODO: this was that functino that took a data parameter with no value in data, right?
 # did that change in REDCap 14?
 #if data == nothing, this is an export request
-function generate_next_record_name(
+function generate_next_record_name(;
 	url::redcap_url_input=get_url(),
 	token::redcap_token_input=get_token(),	
 	)
