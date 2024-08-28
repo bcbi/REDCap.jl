@@ -120,4 +120,4 @@ If a function call doesn't produce the expected results, try making debug messag
 Feel free to create an issue for any unexpected errors, or for feature requests.
 
 ## Acknowledgments
-The contributors are grateful for the support of Mary McGrath, Paul Stey, Fernando Gelin, the Brown Data Science Institute, the Brown Center for Biomedical Informatics, and the Tufts CTSI Informatics core.
+The contributors are grateful for the support of Mary McGrath, Paul Stey, Fernando Gelin, the Brown Data Science Institute, the Brown Center for Biomedical Informatics, and the Tufts CTSI Informatics team.
