@@ -24,7 +24,7 @@ for i in 2:10
 	import_records(
 	       token=demography_token,
 		data=(
-			record_id= = generate_next_record_name(token=demography_token)
+			record_id = generate_next_record_name(token=demography_token)
 			first_name = "A",
 			last_name = "NotherPerson"))
 end

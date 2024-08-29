@@ -1,0 +1,387 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ODM xmlns="http://www.cdisc.org/ns/odm/v1.3" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:redcap="https://projectredcap.org" xsi:schemaLocation="http://www.cdisc.org/ns/odm/v1.3 schema/odm/ODM1-3-1.xsd" ODMVersion="1.3.1" FileOID="000-00-0000" FileType="Snapshot" Description="Repeating Instruments" AsOfDateTime="2024-08-29T19:16:22" CreationDateTime="2024-08-29T19:16:22" SourceSystem="REDCap" SourceSystemVersion="14.5.8">
+<Study OID="Project.RepeatingInstruments">
+<GlobalVariables>
+	<StudyName>Repeating Instruments</StudyName>
+	<StudyDescription>This file contains the metadata, events, and data for REDCap project "Repeating Instruments".</StudyDescription>
+	<ProtocolName>Repeating Instruments</ProtocolName>
+	<redcap:RecordAutonumberingEnabled>1</redcap:RecordAutonumberingEnabled>
+	<redcap:CustomRecordLabel></redcap:CustomRecordLabel>
+	<redcap:SecondaryUniqueField></redcap:SecondaryUniqueField>
+	<redcap:SecondaryUniqueFieldDisplayValue>1</redcap:SecondaryUniqueFieldDisplayValue>
+	<redcap:SecondaryUniqueFieldDisplayLabel>1</redcap:SecondaryUniqueFieldDisplayLabel>
+	<redcap:SchedulingEnabled>0</redcap:SchedulingEnabled>
+	<redcap:SurveysEnabled>0</redcap:SurveysEnabled>
+	<redcap:SurveyInvitationEmailField></redcap:SurveyInvitationEmailField>
+	<redcap:DisplayTodayNowButton>1</redcap:DisplayTodayNowButton>
+	<redcap:PreventBranchingEraseValues>0</redcap:PreventBranchingEraseValues>
+	<redcap:RequireChangeReason>0</redcap:RequireChangeReason>
+	<redcap:DataHistoryPopup>1</redcap:DataHistoryPopup>
+	<redcap:OrderRecordsByField></redcap:OrderRecordsByField>
+	<redcap:MyCapEnabled>0</redcap:MyCapEnabled>
+	<redcap:Purpose>0</redcap:Purpose>
+	<redcap:PurposeOther></redcap:PurposeOther>
+	<redcap:ProjectNotes></redcap:ProjectNotes>
+	<redcap:MissingDataCodes></redcap:MissingDataCodes>
+	<redcap:ProtectedEmailMode>0</redcap:ProtectedEmailMode>
+	<redcap:ProtectedEmailModeCustomText></redcap:ProtectedEmailModeCustomText>
+	<redcap:ProtectedEmailModeTrigger>ALL</redcap:ProtectedEmailModeTrigger>
+	<redcap:ProtectedEmailModeLogo></redcap:ProtectedEmailModeLogo>
+	<redcap:RepeatingInstrumentsAndEvents>
+		<redcap:RepeatingInstruments>
+			<redcap:RepeatingInstrument redcap:UniqueEventName="event_1_arm_1" redcap:RepeatInstrument="medications" redcap:CustomLabel="[medication_name] [dosage]mg"/>
+			<redcap:RepeatingInstrument redcap:UniqueEventName="event_1_arm_1" redcap:RepeatInstrument="family_members" redcap:CustomLabel="[family_member]"/>
+			<redcap:RepeatingInstrument redcap:UniqueEventName="event_1_arm_1" redcap:RepeatInstrument="visits" redcap:CustomLabel="[weight]kg ([visit_date])"/>
+			<redcap:RepeatingInstrument redcap:UniqueEventName="event_1_arm_1" redcap:RepeatInstrument="adverse_events" redcap:CustomLabel=""/>
+		</redcap:RepeatingInstruments>
+	</redcap:RepeatingInstrumentsAndEvents>
+</GlobalVariables>
+<MetaDataVersion OID="Metadata.RepeatingInstruments_2024-08-29_1916" Name="Repeating Instruments" redcap:RecordIdField="record_id">
+	<FormDef OID="Form.demographics" Name="Demographics" Repeating="No" redcap:FormName="demographics">
+		<ItemGroupRef ItemGroupOID="demographics.record_id" Mandatory="No"/>
+		<ItemGroupRef ItemGroupOID="demographics.demographics_complete" Mandatory="No"/>
+	</FormDef>
+	<FormDef OID="Form.medications" Name="Medications" Repeating="No" redcap:FormName="medications">
+		<ItemGroupRef ItemGroupOID="medications.medication_name" Mandatory="No"/>
+		<ItemGroupRef ItemGroupOID="medications.medications_complete" Mandatory="No"/>
+	</FormDef>
+	<FormDef OID="Form.family_members" Name="Family Members" Repeating="No" redcap:FormName="family_members">
+		<ItemGroupRef ItemGroupOID="family_members.family_member" Mandatory="No"/>
+		<ItemGroupRef ItemGroupOID="family_members.relation_to_patient" Mandatory="No"/>
+		<ItemGroupRef ItemGroupOID="family_members.family_members_complete" Mandatory="No"/>
+	</FormDef>
+	<FormDef OID="Form.visits" Name="Visits" Repeating="No" redcap:FormName="visits">
+		<ItemGroupRef ItemGroupOID="visits.visit_date" Mandatory="No"/>
+		<ItemGroupRef ItemGroupOID="visits.visits_complete" Mandatory="No"/>
+	</FormDef>
+	<FormDef OID="Form.adverse_events" Name="Adverse Events" Repeating="No" redcap:FormName="adverse_events">
+		<ItemGroupRef ItemGroupOID="adverse_events.aeyn" Mandatory="No"/>
+		<ItemGroupRef ItemGroupOID="adverse_events.adverse_events_complete" Mandatory="No"/>
+	</FormDef>
+	<ItemGroupDef OID="demographics.record_id" Name="Demographics" Repeating="No">
+		<ItemRef ItemOID="record_id" Mandatory="No" redcap:Variable="record_id"/>
+		<ItemRef ItemOID="first_name" Mandatory="No" redcap:Variable="first_name"/>
+		<ItemRef ItemOID="last_name" Mandatory="No" redcap:Variable="last_name"/>
+		<ItemRef ItemOID="sex" Mandatory="No" redcap:Variable="sex"/>
+		<ItemRef ItemOID="notes" Mandatory="No" redcap:Variable="notes"/>
+	</ItemGroupDef>
+	<ItemGroupDef OID="demographics.demographics_complete" Name="Form Status" Repeating="No">
+		<ItemRef ItemOID="demographics_complete" Mandatory="No" redcap:Variable="demographics_complete"/>
+	</ItemGroupDef>
+	<ItemGroupDef OID="medications.medication_name" Name="Medications" Repeating="No">
+		<ItemRef ItemOID="medication_name" Mandatory="No" redcap:Variable="medication_name"/>
+		<ItemRef ItemOID="dosage" Mandatory="No" redcap:Variable="dosage"/>
+	</ItemGroupDef>
+	<ItemGroupDef OID="medications.medications_complete" Name="Form Status" Repeating="No">
+		<ItemRef ItemOID="medications_complete" Mandatory="No" redcap:Variable="medications_complete"/>
+	</ItemGroupDef>
+	<ItemGroupDef OID="family_members.family_member" Name="Family member information" Repeating="No">
+		<ItemRef ItemOID="family_member" Mandatory="No" redcap:Variable="family_member"/>
+	</ItemGroupDef>
+	<ItemGroupDef OID="family_members.relation_to_patient" Name="Family Members" Repeating="No">
+		<ItemRef ItemOID="relation_to_patient" Mandatory="No" redcap:Variable="relation_to_patient"/>
+		<ItemRef ItemOID="age_of_family_member" Mandatory="No" redcap:Variable="age_of_family_member"/>
+	</ItemGroupDef>
+	<ItemGroupDef OID="family_members.family_members_complete" Name="Form Status" Repeating="No">
+		<ItemRef ItemOID="family_members_complete" Mandatory="No" redcap:Variable="family_members_complete"/>
+	</ItemGroupDef>
+	<ItemGroupDef OID="visits.visit_date" Name="Visits" Repeating="No">
+		<ItemRef ItemOID="visit_date" Mandatory="No" redcap:Variable="visit_date"/>
+		<ItemRef ItemOID="weight" Mandatory="No" redcap:Variable="weight"/>
+		<ItemRef ItemOID="other_visit_data" Mandatory="No" redcap:Variable="other_visit_data"/>
+	</ItemGroupDef>
+	<ItemGroupDef OID="visits.visits_complete" Name="Form Status" Repeating="No">
+		<ItemRef ItemOID="visits_complete" Mandatory="No" redcap:Variable="visits_complete"/>
+	</ItemGroupDef>
+	<ItemGroupDef OID="adverse_events.aeyn" Name="Adverse Events" Repeating="No">
+		<ItemRef ItemOID="aeyn" Mandatory="No" redcap:Variable="aeyn"/>
+		<ItemRef ItemOID="aespid" Mandatory="No" redcap:Variable="aespid"/>
+		<ItemRef ItemOID="aeterm" Mandatory="No" redcap:Variable="aeterm"/>
+		<ItemRef ItemOID="aeoccur" Mandatory="No" redcap:Variable="aeoccur"/>
+		<ItemRef ItemOID="aestdat" Mandatory="No" redcap:Variable="aestdat"/>
+		<ItemRef ItemOID="aesttim" Mandatory="No" redcap:Variable="aesttim"/>
+		<ItemRef ItemOID="aeongo" Mandatory="No" redcap:Variable="aeongo"/>
+		<ItemRef ItemOID="aeendat" Mandatory="No" redcap:Variable="aeendat"/>
+		<ItemRef ItemOID="aeentim" Mandatory="No" redcap:Variable="aeentim"/>
+		<ItemRef ItemOID="aesev" Mandatory="No" redcap:Variable="aesev"/>
+		<ItemRef ItemOID="aetoxgr" Mandatory="No" redcap:Variable="aetoxgr"/>
+		<ItemRef ItemOID="aeser" Mandatory="No" redcap:Variable="aeser"/>
+		<ItemRef ItemOID="aescong" Mandatory="No" redcap:Variable="aescong"/>
+		<ItemRef ItemOID="aesdisab" Mandatory="No" redcap:Variable="aesdisab"/>
+		<ItemRef ItemOID="aesdth" Mandatory="No" redcap:Variable="aesdth"/>
+		<ItemRef ItemOID="aeshosp" Mandatory="No" redcap:Variable="aeshosp"/>
+		<ItemRef ItemOID="aeslife" Mandatory="No" redcap:Variable="aeslife"/>
+		<ItemRef ItemOID="aesmie" Mandatory="No" redcap:Variable="aesmie"/>
+		<ItemRef ItemOID="aerel" Mandatory="No" redcap:Variable="aerel"/>
+		<ItemRef ItemOID="aeacn" Mandatory="No" redcap:Variable="aeacn"/>
+		<ItemRef ItemOID="aeacnoth" Mandatory="No" redcap:Variable="aeacnoth"/>
+		<ItemRef ItemOID="aeout" Mandatory="No" redcap:Variable="aeout"/>
+		<ItemRef ItemOID="aedis" Mandatory="No" redcap:Variable="aedis"/>
+	</ItemGroupDef>
+	<ItemGroupDef OID="adverse_events.adverse_events_complete" Name="Form Status" Repeating="No">
+		<ItemRef ItemOID="adverse_events_complete" Mandatory="No" redcap:Variable="adverse_events_complete"/>
+	</ItemGroupDef>
+	<ItemDef OID="record_id" Name="record_id" DataType="text" Length="999" redcap:Variable="record_id" redcap:FieldType="text">
+		<Question><TranslatedText>Study ID</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="first_name" Name="first_name" DataType="text" Length="999" redcap:Variable="first_name" redcap:FieldType="text" redcap:Identifier="y">
+		<Question><TranslatedText>First Name</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="last_name" Name="last_name" DataType="text" Length="999" redcap:Variable="last_name" redcap:FieldType="text" redcap:Identifier="y">
+		<Question><TranslatedText>Last Name</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="sex" Name="sex" DataType="text" Length="1" redcap:Variable="sex" redcap:FieldType="radio">
+		<Question><TranslatedText>Sex</TranslatedText></Question>
+		<CodeListRef CodeListOID="sex.choices"/>
+	</ItemDef>
+	<ItemDef OID="notes" Name="notes" DataType="text" Length="999" redcap:Variable="notes" redcap:FieldType="textarea">
+		<Question><TranslatedText>Notes</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="demographics_complete" Name="demographics_complete" DataType="text" Length="1" redcap:Variable="demographics_complete" redcap:FieldType="select" redcap:SectionHeader="Form Status">
+		<Question><TranslatedText>Complete?</TranslatedText></Question>
+		<CodeListRef CodeListOID="demographics_complete.choices"/>
+	</ItemDef>
+	<ItemDef OID="medication_name" Name="medication_name" DataType="text" Length="999" redcap:Variable="medication_name" redcap:FieldType="text">
+		<Question><TranslatedText>Medication name</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="dosage" Name="dosage" DataType="float" Length="999" SignificantDigits="1" redcap:Variable="dosage" redcap:FieldType="text" redcap:TextValidationType="float" redcap:FieldNote="mg">
+		<Question><TranslatedText>Dosage</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="medications_complete" Name="medications_complete" DataType="text" Length="1" redcap:Variable="medications_complete" redcap:FieldType="select" redcap:SectionHeader="Form Status">
+		<Question><TranslatedText>Complete?</TranslatedText></Question>
+		<CodeListRef CodeListOID="medications_complete.choices"/>
+	</ItemDef>
+	<ItemDef OID="family_member" Name="family_member" DataType="text" Length="999" redcap:Variable="family_member" redcap:FieldType="text" redcap:SectionHeader="Family member information">
+		<Question><TranslatedText>Name of family member</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="relation_to_patient" Name="relation_to_patient" DataType="text" Length="1" redcap:Variable="relation_to_patient" redcap:FieldType="select">
+		<Question><TranslatedText>Relation to patient</TranslatedText></Question>
+		<CodeListRef CodeListOID="relation_to_patient.choices"/>
+	</ItemDef>
+	<ItemDef OID="age_of_family_member" Name="age_of_family_member" DataType="integer" Length="999" redcap:Variable="age_of_family_member" redcap:FieldType="text" redcap:TextValidationType="int">
+		<Question><TranslatedText>Age of family member</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="family_members_complete" Name="family_members_complete" DataType="text" Length="1" redcap:Variable="family_members_complete" redcap:FieldType="select" redcap:SectionHeader="Form Status">
+		<Question><TranslatedText>Complete?</TranslatedText></Question>
+		<CodeListRef CodeListOID="family_members_complete.choices"/>
+	</ItemDef>
+	<ItemDef OID="visit_date" Name="visit_date" DataType="date" Length="999" redcap:Variable="visit_date" redcap:FieldType="text" redcap:TextValidationType="date_mdy" redcap:FieldAnnotation="@TODAY @READONLY">
+		<Question><TranslatedText>Date</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="weight" Name="weight" DataType="float" Length="999" SignificantDigits="1" redcap:Variable="weight" redcap:FieldType="text" redcap:TextValidationType="float">
+		<Question><TranslatedText>Weight</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="other_visit_data" Name="other_visit_data" DataType="text" Length="999" redcap:Variable="other_visit_data" redcap:FieldType="textarea">
+		<Question><TranslatedText>Other data</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="visits_complete" Name="visits_complete" DataType="text" Length="1" redcap:Variable="visits_complete" redcap:FieldType="select" redcap:SectionHeader="Form Status">
+		<Question><TranslatedText>Complete?</TranslatedText></Question>
+		<CodeListRef CodeListOID="visits_complete.choices"/>
+	</ItemDef>
+	<ItemDef OID="aeyn" Name="aeyn" DataType="text" Length="1" redcap:Variable="aeyn" redcap:FieldType="radio" redcap:FieldNote="Indicate if the subject experienced any adverse events.">
+		<Question><TranslatedText>Were any adverse events experienced?</TranslatedText></Question>
+		<CodeListRef CodeListOID="aeyn.choices"/>
+	</ItemDef>
+	<ItemDef OID="aespid" Name="aespid" DataType="text" Length="999" redcap:Variable="aespid" redcap:FieldType="text" redcap:FieldNote="Record unique identifier for each adverse event for this subject.&lt;br&gt;&lt;br&gt;Number sequence for all following forms should not duplicate existing numbers for the subject." redcap:BranchingLogic="[aeyn] = &quot;1&quot;">
+		<Question><TranslatedText>AE Identifier</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="aeterm" Name="aeterm" DataType="text" Length="999" redcap:Variable="aeterm" redcap:FieldType="text" redcap:FieldNote="Record only one diagnosis, sign or symptom per form (e.g., nausea and vomiting should not be recorded in the same entry, but as two separate entries).  See eCRF completion instruction for more information." redcap:BranchingLogic="[aeyn] = &quot;1&quot;">
+		<Question><TranslatedText>What is the adverse event term?</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="aeoccur" Name="aeoccur" DataType="text" Length="1" redcap:Variable="aeoccur" redcap:FieldType="radio" redcap:FieldNote="Please indicate if (specific adverse event) has occurred /is occurring by checking Yes or No." redcap:BranchingLogic="[aeyn] = &quot;1&quot;">
+		<Question><TranslatedText>Does the subject have (specific adverse event)?</TranslatedText></Question>
+		<CodeListRef CodeListOID="aeoccur.choices"/>
+	</ItemDef>
+	<ItemDef OID="aestdat" Name="aestdat" DataType="date" Length="999" redcap:Variable="aestdat" redcap:FieldType="text" redcap:TextValidationType="date_mdy" redcap:FieldNote="Record the start date of the adverse event using the MM-DD-YYYY format." redcap:BranchingLogic="[aeyn] = &quot;1&quot;">
+		<Question><TranslatedText>What is the date the adverse event started?</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="aesttim" Name="aesttim" DataType="partialTime" Length="999" redcap:Variable="aesttim" redcap:FieldType="text" redcap:TextValidationType="time" redcap:FieldNote="If appropriate, record the time the AE started using the HH:MM (24-hour clock) format." redcap:BranchingLogic="[aeyn] = &quot;1&quot;">
+		<Question><TranslatedText>At what time did the adverse event start?</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="aeongo" Name="aeongo" DataType="text" Length="1" redcap:Variable="aeongo" redcap:FieldType="radio" redcap:FieldNote="Select one." redcap:BranchingLogic="[aeyn] = &quot;1&quot;">
+		<Question><TranslatedText>Is the adverse event still ongoing?</TranslatedText></Question>
+		<CodeListRef CodeListOID="aeongo.choices"/>
+	</ItemDef>
+	<ItemDef OID="aeendat" Name="aeendat" DataType="date" Length="999" redcap:Variable="aeendat" redcap:FieldType="text" redcap:TextValidationType="date_mdy" redcap:FieldNote="Record the end date of the adverse event using the MM-DD-YYYY format." redcap:BranchingLogic="[aeongo] = &quot;0&quot;">
+		<Question><TranslatedText>What date did the adverse event end?</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="aeentim" Name="aeentim" DataType="partialTime" Length="999" redcap:Variable="aeentim" redcap:FieldType="text" redcap:TextValidationType="time" redcap:FieldNote="If appropriate, record the time the AE ended using the HH:MM (24-hour clock) format." redcap:BranchingLogic="[aeongo] = &quot;0&quot;">
+		<Question><TranslatedText>At what time did the adverse event end?</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="aesev" Name="aesev" DataType="text" Length="1" redcap:Variable="aesev" redcap:FieldType="radio" redcap:FieldNote="The reporting physician/healthcare professional will assess the severity of the event using the sponsor-defined categories. This assessment is subjective and the reporting physician/ healthcare professional should use medical judgment to compare the reported Adverse Event to similar type events observed in clinical practice. Severity is not equivalent to seriousness." redcap:BranchingLogic="[aeyn] = &quot;1&quot;">
+		<Question><TranslatedText>What was the severity of the adverse event?</TranslatedText></Question>
+		<CodeListRef CodeListOID="aesev.choices"/>
+	</ItemDef>
+	<ItemDef OID="aetoxgr" Name="aetoxgr" DataType="text" Length="1" redcap:Variable="aetoxgr" redcap:FieldType="radio" redcap:FieldNote="Severity CTCAE Grade&lt;br&gt;&lt;br&gt;The reporting physician/healthcare professional will assess the severity of the adverse event using the toxicity grades." redcap:BranchingLogic="[aeyn] = &quot;1&quot;">
+		<Question><TranslatedText>What is the toxicity grade of the adverse event?</TranslatedText></Question>
+		<CodeListRef CodeListOID="aetoxgr.choices"/>
+	</ItemDef>
+	<ItemDef OID="aeser" Name="aeser" DataType="text" Length="1" redcap:Variable="aeser" redcap:FieldType="radio" redcap:FieldNote="Assess if an adverse event should be classified as serious based on the serious criteria defined in the protocol." redcap:BranchingLogic="[aeyn] = &quot;1&quot;">
+		<Question><TranslatedText>Is the adverse event serious?</TranslatedText></Question>
+		<CodeListRef CodeListOID="aeser.choices"/>
+	</ItemDef>
+	<ItemDef OID="aescong" Name="aescong" DataType="text" Length="1" redcap:Variable="aescong" redcap:FieldType="radio" redcap:FieldNote="Record whether the serious adverse event was associated with congenital anomaly or birth defect." redcap:BranchingLogic="[aeser] = &quot;1&quot;">
+		<Question><TranslatedText>Is the adverse event associated with a congenital anomaly or birth defect?</TranslatedText></Question>
+		<CodeListRef CodeListOID="aescong.choices"/>
+	</ItemDef>
+	<ItemDef OID="aesdisab" Name="aesdisab" DataType="text" Length="1" redcap:Variable="aesdisab" redcap:FieldType="radio" redcap:FieldNote="Record whether the serious adverse event resulted in a persistent or significant disability or incapacity." redcap:BranchingLogic="[aeser] = &quot;1&quot;">
+		<Question><TranslatedText>Did the adverse event result in Persistent or significant disability or incapacity?</TranslatedText></Question>
+		<CodeListRef CodeListOID="aesdisab.choices"/>
+	</ItemDef>
+	<ItemDef OID="aesdth" Name="aesdth" DataType="text" Length="1" redcap:Variable="aesdth" redcap:FieldType="radio" redcap:FieldNote="Record whether the serious adverse event resulted in death." redcap:BranchingLogic="[aeser] = &quot;1&quot;">
+		<Question><TranslatedText>Did the adverse event result in death?</TranslatedText></Question>
+		<CodeListRef CodeListOID="aesdth.choices"/>
+	</ItemDef>
+	<ItemDef OID="aeshosp" Name="aeshosp" DataType="text" Length="1" redcap:Variable="aeshosp" redcap:FieldType="radio" redcap:FieldNote="Record whether the serious adverse event resulted in an initial or prolonged hospitalization." redcap:BranchingLogic="[aeser] = &quot;1&quot;">
+		<Question><TranslatedText>Did the adverse event result in initial or prolonged hospitalization for the subject?</TranslatedText></Question>
+		<CodeListRef CodeListOID="aeshosp.choices"/>
+	</ItemDef>
+	<ItemDef OID="aeslife" Name="aeslife" DataType="text" Length="1" redcap:Variable="aeslife" redcap:FieldType="radio" redcap:FieldNote="Record whether the serious adverse event is life threatening." redcap:BranchingLogic="[aeser] = &quot;1&quot;">
+		<Question><TranslatedText>Is the adverse event Life Threatening?</TranslatedText></Question>
+		<CodeListRef CodeListOID="aeslife.choices"/>
+	</ItemDef>
+	<ItemDef OID="aesmie" Name="aesmie" DataType="text" Length="1" redcap:Variable="aesmie" redcap:FieldType="radio" redcap:FieldNote="Record whether the serious adverse event is an important medical event, which may be defined in the protocol or in the Investigator Brochure." redcap:BranchingLogic="[aeser] = &quot;1&quot;">
+		<Question><TranslatedText>Is the adverse event a medically important event not covered by other ?serious? criteria?</TranslatedText></Question>
+		<CodeListRef CodeListOID="aesmie.choices"/>
+	</ItemDef>
+	<ItemDef OID="aerel" Name="aerel" DataType="text" Length="1" redcap:Variable="aerel" redcap:FieldType="radio" redcap:FieldNote="Indicate if the cause of the adverse event is related to the study treatment and cannot be reasonably explained by other factors (e.g., subject&#039;s clinical state, concomitant therapy, and/or other interventions)." redcap:BranchingLogic="[aeyn] = &quot;1&quot;">
+		<Question><TranslatedText>Is this event related to study treatment?</TranslatedText></Question>
+		<CodeListRef CodeListOID="aerel.choices"/>
+	</ItemDef>
+	<ItemDef OID="aeacn" Name="aeacn" DataType="text" Length="2" redcap:Variable="aeacn" redcap:FieldType="radio" redcap:FieldNote="Record changes made to the study treatment resulting from the adverse event." redcap:BranchingLogic="[aeyn] = &quot;1&quot;">
+		<Question><TranslatedText>What action was taken with study treatment?</TranslatedText></Question>
+		<CodeListRef CodeListOID="aeacn.choices"/>
+	</ItemDef>
+	<ItemDef OID="aeacnoth" Name="aeacnoth" DataType="text" Length="999" redcap:Variable="aeacnoth" redcap:FieldType="textarea" redcap:FieldNote="Record all action(s) taken resulting from the adverse event." redcap:BranchingLogic="[aeyn] = &quot;1&quot;">
+		<Question><TranslatedText>What other action was taken in response to this adverse event?</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="aeout" Name="aeout" DataType="text" Length="2" redcap:Variable="aeout" redcap:FieldType="radio" redcap:FieldNote="Record the appropriate outcome of the event in relation to the subject&#039;s status." redcap:BranchingLogic="[aeyn] = &quot;1&quot;">
+		<Question><TranslatedText>What was the outcome of this adverse event?</TranslatedText></Question>
+		<CodeListRef CodeListOID="aeout.choices"/>
+	</ItemDef>
+	<ItemDef OID="aedis" Name="aedis" DataType="text" Length="1" redcap:Variable="aedis" redcap:FieldType="radio" redcap:FieldNote="Record if the AE caused the subject to discontinue from the study." redcap:BranchingLogic="[aeyn] = &quot;1&quot;">
+		<Question><TranslatedText>Did the adverse event cause the subject to be discontinued from the study?</TranslatedText></Question>
+		<CodeListRef CodeListOID="aedis.choices"/>
+	</ItemDef>
+	<ItemDef OID="adverse_events_complete" Name="adverse_events_complete" DataType="text" Length="1" redcap:Variable="adverse_events_complete" redcap:FieldType="select" redcap:SectionHeader="Form Status">
+		<Question><TranslatedText>Complete?</TranslatedText></Question>
+		<CodeListRef CodeListOID="adverse_events_complete.choices"/>
+	</ItemDef>
+	<CodeList OID="sex.choices" Name="sex" DataType="text" redcap:Variable="sex">
+		<CodeListItem CodedValue="0"><Decode><TranslatedText>Female</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Male</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="demographics_complete.choices" Name="demographics_complete" DataType="text" redcap:Variable="demographics_complete">
+		<CodeListItem CodedValue="0"><Decode><TranslatedText>Incomplete</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Unverified</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="2"><Decode><TranslatedText>Complete</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="medications_complete.choices" Name="medications_complete" DataType="text" redcap:Variable="medications_complete">
+		<CodeListItem CodedValue="0"><Decode><TranslatedText>Incomplete</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Unverified</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="2"><Decode><TranslatedText>Complete</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="relation_to_patient.choices" Name="relation_to_patient" DataType="text" redcap:Variable="relation_to_patient">
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Sibling</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="2"><Decode><TranslatedText>Spouse</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="3"><Decode><TranslatedText>Parent</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="4"><Decode><TranslatedText>Child very long choice right here that is long</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="5"><Decode><TranslatedText>Other</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="family_members_complete.choices" Name="family_members_complete" DataType="text" redcap:Variable="family_members_complete">
+		<CodeListItem CodedValue="0"><Decode><TranslatedText>Incomplete</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Unverified</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="2"><Decode><TranslatedText>Complete</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="visits_complete.choices" Name="visits_complete" DataType="text" redcap:Variable="visits_complete">
+		<CodeListItem CodedValue="0"><Decode><TranslatedText>Incomplete</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Unverified</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="2"><Decode><TranslatedText>Complete</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="aeyn.choices" Name="aeyn" DataType="text" redcap:Variable="aeyn">
+		<CodeListItem CodedValue="0"><Decode><TranslatedText>No</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Yes</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="aeoccur.choices" Name="aeoccur" DataType="text" redcap:Variable="aeoccur">
+		<CodeListItem CodedValue="0"><Decode><TranslatedText>No</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Yes</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="aeongo.choices" Name="aeongo" DataType="text" redcap:Variable="aeongo">
+		<CodeListItem CodedValue="0"><Decode><TranslatedText>No</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Yes</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="aesev.choices" Name="aesev" DataType="text" redcap:Variable="aesev">
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Mild</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="2"><Decode><TranslatedText>Moderate</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="3"><Decode><TranslatedText>Severe</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="aetoxgr.choices" Name="aetoxgr" DataType="text" redcap:Variable="aetoxgr">
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Grade 1</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="2"><Decode><TranslatedText>Grade 2</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="3"><Decode><TranslatedText>Grade 3</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="4"><Decode><TranslatedText>Grade 4</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="5"><Decode><TranslatedText>Grade 5</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="aeser.choices" Name="aeser" DataType="text" redcap:Variable="aeser">
+		<CodeListItem CodedValue="0"><Decode><TranslatedText>No</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Yes</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="aescong.choices" Name="aescong" DataType="text" redcap:Variable="aescong">
+		<CodeListItem CodedValue="0"><Decode><TranslatedText>No</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Yes</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="aesdisab.choices" Name="aesdisab" DataType="text" redcap:Variable="aesdisab">
+		<CodeListItem CodedValue="0"><Decode><TranslatedText>No</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Yes</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="aesdth.choices" Name="aesdth" DataType="text" redcap:Variable="aesdth">
+		<CodeListItem CodedValue="0"><Decode><TranslatedText>No</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Yes</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="aeshosp.choices" Name="aeshosp" DataType="text" redcap:Variable="aeshosp">
+		<CodeListItem CodedValue="0"><Decode><TranslatedText>No</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Yes</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="aeslife.choices" Name="aeslife" DataType="text" redcap:Variable="aeslife">
+		<CodeListItem CodedValue="0"><Decode><TranslatedText>No</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Yes</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="aesmie.choices" Name="aesmie" DataType="text" redcap:Variable="aesmie">
+		<CodeListItem CodedValue="0"><Decode><TranslatedText>No</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Yes</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="aerel.choices" Name="aerel" DataType="text" redcap:Variable="aerel">
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Definitely</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="2"><Decode><TranslatedText>Probably</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="3"><Decode><TranslatedText>Possibly</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="4"><Decode><TranslatedText>Not Related</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="aeacn.choices" Name="aeacn" DataType="text" redcap:Variable="aeacn">
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Dose Increased</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="2"><Decode><TranslatedText>Dose Not Changed</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="3"><Decode><TranslatedText>Dose Reduced</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="4"><Decode><TranslatedText>Drug Interrupted</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="5"><Decode><TranslatedText>Drug Withdrawn</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="6"><Decode><TranslatedText>Not Applicable</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="99"><Decode><TranslatedText>Unknown</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="aeout.choices" Name="aeout" DataType="text" redcap:Variable="aeout">
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Fatal</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="2"><Decode><TranslatedText>Not recovered / Not resolved</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="3"><Decode><TranslatedText>Recovered / Resolved</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="4"><Decode><TranslatedText>Recovered / Resolved with sequelae</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="5"><Decode><TranslatedText>Recovering / Resolving</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="99"><Decode><TranslatedText>Unknown</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="aedis.choices" Name="aedis" DataType="text" redcap:Variable="aedis">
+		<CodeListItem CodedValue="0"><Decode><TranslatedText>No</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Yes</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="adverse_events_complete.choices" Name="adverse_events_complete" DataType="text" redcap:Variable="adverse_events_complete">
+		<CodeListItem CodedValue="0"><Decode><TranslatedText>Incomplete</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Unverified</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="2"><Decode><TranslatedText>Complete</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+</MetaDataVersion>
+</Study>
+</ODM>
