@@ -20,9 +20,7 @@ function import_repeating_instruments_and_events(;
 	token::redcap_any_token_input=get_token(),	
 	format::redcap_format_input=nothing,
 	returnFormat::redcap_returnFormat_input=nothing,
-	data::redcap_data_input, #TODO: the docs mention a super API token may be used here...?
-	#TODO: data parameter is essential to distringuish from an export
-	#TODO: does is make sense to define one method in terms of the other?
+	data::redcap_data_input,
 	)
 
 	REDCap.request(
