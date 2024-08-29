@@ -123,7 +123,8 @@ function export_project_XML(;
 end
 
 function import_project_info(;
-		format=nothing,data,
+		format=nothing,
+		data::redcap_data_parameter,
 	url::redcap_url_input=get_url(),
 	token::redcap_token_input=get_token(),
 	)

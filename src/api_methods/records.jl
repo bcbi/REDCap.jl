@@ -28,9 +28,7 @@ function delete_records(;
 		)
 end
 
-#TODO: Note, an export function with a data parameter
 function export_records(;
-	data::redcap_data_input,
 	url::redcap_url_input=get_url(),
 	token::redcap_token_input=get_token(),	
 	format::redcap_format_input=nothing,
@@ -77,16 +75,12 @@ function export_records(;
 		)
 end
 
-#TODO: this was that functino that took a data parameter with no value in data, right?
-# did that change in REDCap 14?
-#if data == nothing, this is an export request
 function generate_next_record_name(;
 	url::redcap_url_input=get_url(),
 	token::redcap_token_input=get_token(),	
 	)
 
 	REDCap.request(
-		#data=REDCap_data(data,REDCap_format(format),xml_tag="I have no clue"),
 		url=REDCap_url(url),
 		token=REDCap_token(token),
 		content=REDCap_content(:generateNextRecordName),
@@ -102,7 +96,8 @@ function import_records(;
 	type::redcap_generic_input=nothing,
 	overwriteBehavior::redcap_bool_input=nothing,
 	forceAutoNumber=nothing,
-	data::redcap_data_input=nothing,
+	backgroundProcess::redcap_bool_input=nothing,
+	data::redcap_data_input,
 	dateFormat::redcap_generic_input=nothing,
 	csvDelimiter::redcap_generic_input=nothing,
 	returnContent=nothing,
@@ -124,7 +119,6 @@ function import_records(;
 		)
 end
 
-#TODO: syntax may have changed between REDCap versions
 function rename_record(;
 	url::redcap_url_input=get_url(),
 	token::redcap_token_input=get_token(),	
@@ -134,7 +128,6 @@ function rename_record(;
 	)
 
 	REDCap.request(
-		#data=REDCap_data(data,REDCap_format(format),xml_tag="deprecated?"),
 		url=REDCap_url(url),
 		token=REDCap_token(token),
 		content=REDCap_content(:record),

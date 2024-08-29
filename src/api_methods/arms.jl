@@ -41,7 +41,7 @@ function import_arms(;
 	url::redcap_url_input=get_url(),
 	token::redcap_token_input=get_token(),	
 	format::redcap_format_input=nothing,
-	data::redcap_data_input=nothing,
+	data::redcap_data_input=nothing, #TODO: is this required, given the action parameter?
 	returnFormat::redcap_returnFormat_input=nothing,
 	override=0,
 	)
