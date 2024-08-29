@@ -124,7 +124,7 @@ end
 
 function import_project_info(;
 		format=nothing,
-		data::redcap_data_parameter,
+		data::redcap_data_input,
 	url::redcap_url_input=get_url(),
 	token::redcap_token_input=get_token(),
 	)
