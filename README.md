@@ -1,16 +1,9 @@
 # REDCap.jl
 
-[![](https://img.shields.io/badge/docs-stable-blue.svg)](https://bcbi.github.io/REDCap.jl/stable)
-[![](https://img.shields.io/badge/docs-latest-blue.svg)](https://bcbi.github.io/REDCap.jl/latest)
-[![](https://travis-ci.org/bcbi/REDCap.jl.svg?branch=master)](https://travis-ci.org/bcbi/REDCap.jl/branches)
-[![](http://codecov.io/github/bcbi/REDCap.jl/coverage.svg?branch=master)](http://codecov.io/github/bcbi/REDCap.jl?branch=master)
-
-A Julia frontend for the REDCap API
-
 [REDCap](https://en.wikipedia.org/wiki/REDCap) is a data capture system for scientific research, especially clinical trials.
 REDCap.jl is an API wrapper for REDCap v14, written in Julia.
 
-## Example
+## Examples
 ```julia
 using REDCap
 
@@ -26,7 +19,6 @@ delete_records(token=project_token, records=[2,3])
 
 export_logging(token=project_token)
 ```
-More examples can be found in the [documentation](https://docs.bcbi.brown.edu/REDCap.jl/latest/examples/).
 
 ## Syntax
 Each REDCap method accepts a number of parameters that follow a shared naming convention.
