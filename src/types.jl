@@ -5,11 +5,12 @@
 # Any types that users may pass to a function named after a REDCap method
 const redcap_token_input = String
 const redcap_super_token_input = redcap_token_input 
+const redcap_any_token_input = Union{redcap_token_input, redcap_super_token_input}
 const redcap_data_input = Union{String, Tuple, NamedTuple, Dict} #TODO: there might be 1 REDCap method where Dict can be nothing, but passing it as an argument has an effect
 const redcap_filterLogic_input = Union{String, Nothing}
 const redcap_odm_input = Union{String, Nothing}
 const redcap_array_input = Union{Array, Nothing}
-const redcap_bool_input = Union{Bool, Nothing}
+const redcap_bool_input = Union{Bool, Int, Nothing}
 const redcap_format_input = Union{String, Symbol, Nothing}
 const redcap_returnFormat_input = redcap_format_input
 const redcap_timestamp_input = Union{Date, DateTime, String,Nothing}

@@ -22,7 +22,15 @@ function request(;
 	#Also, different formats have to be chunked differently.
 	#Maybe stick to creating an iterator outside REDCap...
 	if !isnothing(data)
-		if endswith.(data,[".csv",".json",".xml"]) |> any
+		#if endswith.(data,[".csv",".json",".xml"]) |> any
+		#TODO: is there any chance that this causes an issue
+		#I would hate for a file to be sent against the user's intentions.
+		#Example: someone puts in a value just for testing and doesn't realize they have that file present?
+		#Maybe it is better to have no ambiguity - string gets sent, files are passed as file handles or something
+		##TODO: also, there's something unsettling about how a variable could be passed,
+		#and if that variable contains a file name, even by mistake, the contents of that file get sent.
+		#but this is so convenient, and any actual issue it could cause seems far-fetched
+		if !istoolong(data) && isfile(data)
 			html_request_body["data"] = read(data,String)
 		else
 			html_request_body["data"] = "$data"
@@ -96,4 +104,19 @@ function get_url()
 
 	return ENV["REDCAP_API_URL"]
 end
+
+#https://github.com/JuliaLang/julia/issues/39774#issuecomment-786797712
+function istoolong(filename)
+	try
+		stat(filename)
+		false
+	catch e
+		if isa(e, Base.IOError)
+			e.code == -36
+		else
+			rethrow()
+		end
+	end
+end
+
 

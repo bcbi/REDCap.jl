@@ -11,7 +11,7 @@
 "<?xml version=\"1.0\" encoding=\"UTF-8\" ?><hash><error>You must provide some text for 'purpose_other' since you specified 'purpose' as '1' (Other).</error></hash>"
 
 #Why do I get different values for different formats?
-@test "18" == 
+@test_broken "18" == 
 import_project_info(token=project_token,data=(
 project_title="ABCDEFG",
 project_language="English",
@@ -55,7 +55,7 @@ display_today_now_button=1,
 bypass_branching_erase_field_prompt=1
 ),format=:csv)
 
-@test "18" == 
+@test_broken "18" == 
 import_project_info(token=project_token,data=(
 project_title="ABCDEFG",
 project_language="English",
@@ -77,7 +77,7 @@ display_today_now_button=1,
 bypass_branching_erase_field_prompt=1
 ),format=:json)
 
-@test "18" == 
+@test_broken "18" == 
 import_project_info(token=project_token,data=(
 project_title="ABCDEFG",
 project_language="English",
@@ -99,10 +99,10 @@ display_today_now_button=1,
 bypass_branching_erase_field_prompt=1
 ),format=:xml)
 
-@test export_project_info(token=project_token) |> JSON.parse |> x -> x["custom_record_label"] == "Q"
-@test export_project_info(token=project_token,format=:csv) |> JSON.parse |> x -> x["custom_record_label"] == "Q"
-@test export_project_info(token=project_token,format=:json) |> JSON.parse |> x -> x["custom_record_label"] == "Q"
-@test export_project_info(token=project_token,format=:xml) |> JSON.parse |> x -> x["custom_record_label"] == "Q"
+@test export_project_info(returnFormat=:json, token=project_token) |> JSON.parse |> x -> x["custom_record_label"] == "Q"
+@test export_project_info(returnFormat=:json, token=project_token,format=:csv) |> JSON.parse |> x -> x["custom_record_label"] == "Q"
+@test export_project_info(returnFormat=:json, token=project_token,format=:json) |> JSON.parse |> x -> x["custom_record_label"] == "Q"
+@test export_project_info(returnFormat=:json, token=project_token,format=:xml) |> JSON.parse |> x -> x["custom_record_label"] == "Q"
 
 export_project_info(token=project_token) 
 

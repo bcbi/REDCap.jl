@@ -1,1 +1,1 @@
-@test export_version() |> VersionNumber ≥ v"13"
+@test export_version(token=project_token) |> VersionNumber ≥ v"13"

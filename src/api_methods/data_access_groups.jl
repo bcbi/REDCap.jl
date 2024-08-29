@@ -52,7 +52,7 @@ end
 function import_DAGs(;
 	url::redcap_url_input=get_url(),
 	token::redcap_token_input=get_token(),	
-	data::redcap_data_input=nothing,
+	data::redcap_data_input=nothing, # TODO: required?
 	format::redcap_format_input=nothing,
 	returnFormat::redcap_returnFormat_input=nothing,
 	)
@@ -71,7 +71,7 @@ end
 function import_user_DAG_assignment(;
 	url::redcap_url_input=get_url(),
 	token::redcap_token_input=get_token(),	
-	data::redcap_data_input=nothing,
+	data::redcap_data_input=nothing, # TODO: required?
 	format::redcap_format_input=nothing,
 	returnFormat::redcap_returnFormat_input=nothing,
 	)
@@ -87,7 +87,7 @@ function import_user_DAG_assignment(;
 end
 
 function switch_DAG(;
-	data::redcap_data_input=nothing,
+	data::redcap_data_input,
 	url::redcap_url_input=get_url(),
 		dag=nothing)
 	REDCap.request(;

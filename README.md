@@ -1,15 +1,9 @@
 # REDCap.jl
 
-[![](https://img.shields.io/badge/docs-stable-blue.svg)](https://bcbi.github.io/REDCap.jl/stable)
-[![](https://img.shields.io/badge/docs-latest-blue.svg)](https://bcbi.github.io/REDCap.jl/latest)
-[![](https://travis-ci.org/bcbi/REDCap.jl.svg?branch=master)](https://travis-ci.org/bcbi/REDCap.jl/branches)
-[![](http://codecov.io/github/bcbi/REDCap.jl/coverage.svg?branch=master)](http://codecov.io/github/bcbi/REDCap.jl?branch=master)
-
-A Julia frontend for the REDCap API
-
 [REDCap](https://en.wikipedia.org/wiki/REDCap) is a data capture system for scientific research, especially clinical trials.
+REDCap.jl is an API wrapper for REDCap v14, written in Julia.
 
-## Example
+## Examples
 ```julia
 using REDCap
 
@@ -25,7 +19,6 @@ delete_records(token=project_token, records=[2,3])
 
 export_logging(token=project_token)
 ```
-More examples can be found in the [documentation](https://docs.bcbi.brown.edu/REDCap.jl/latest/examples/).
 
 ## Syntax
 Each REDCap method accepts a number of parameters that follow a shared naming convention.
@@ -80,7 +73,7 @@ A `Dict` value is fine as well.
 ```julia
 import_project_info(data=Dict(:project_title=>"New name"), returnFormat=:csv)
 ```
-String values are parsed - if they end with a .csv, .json, or .xml file extension, they are treated as a file name; otherwise, they are assumed to be a formatted string and are sent directly as part of the API request.
+String values are accepted. If the string is a file name, the contents of the file are sent; otherwise, it is sent directly as part of the API request.
 ```julia
 data_string = """
     [{"data_access_group_name":"CA Site","unique_group_name":"ca_site"},
@@ -120,4 +113,4 @@ If a function call doesn't produce the expected results, try making debug messag
 Feel free to create an issue for any unexpected errors, or for feature requests.
 
 ## Acknowledgments
-The contributors are grateful for the support of Mary McGrath, Paul Stey, Fernando Gelin, the Brown Data Science Institute, the Brown Center for Biomedical Informatics, and the Tufts CTSI Informatics core.
+The contributors are grateful for the support of Mary McGrath, Paul Stey, Fernando Gelin, the Brown Data Science Institute, the Brown Center for Biomedical Informatics, and the Tufts CTSI Informatics team.

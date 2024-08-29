@@ -123,10 +123,15 @@ function export_project_XML(;
 end
 
 function import_project_info(;
-		format=nothing,data,
+		format=nothing,
+		data::redcap_data_input,
 	url::redcap_url_input=get_url(),
 	token::redcap_token_input=get_token(),
 	)
+
+	if REDCap_format(format) != REDCap_format(:csv)
+		throw(ArgumentError("Possibly a REDCap API issue... please use format=:csv"))
+	end
 
 	#import_project_info(data; token=token, url=url, format=format)
 	REDCap.request(;
@@ -134,7 +139,8 @@ function import_project_info(;
 		token=REDCap_token(token),
 		content=REDCap_content(:project_settings),
 		format=REDCap_format(format),
-		data=REDCap_data(data,REDCap_format(format),xml_tag="items"),
+		data=REDCap_data(data,REDCap_format(format), xml_tag="items") #TODO
+	# without this xml tag, the XML is misformatted, but even with it, it isn't parse correctly... only csv works here....
 		#project_title, project_language, purpose, purpose_other, project_notes, custom_record_label, secondary_unique_field, is_longitudinal, surveys_enabled, scheduling_enabled, record_autonumbering_enabled, randomization_enabled, project_irb_number, project_grant_number, project_pi_firstname, project_pi_lastname, display_today_now_button, bypass_branching_erase_field_prompt
 	)
 end

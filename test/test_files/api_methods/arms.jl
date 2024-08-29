@@ -1,42 +1,32 @@
 write(file_handle, """
-      <?xml version="1.0" encoding="UTF-8"?>
-<item>
-  <arm_num>1</arm_num>
-  <name>Arm 01</name>
-</item>
-<item>
-  <arm_num>2</arm_num>
-  <name>Arm 02</name>
-</item>
-<item>
-  <arm_num>3</arm_num>
-  <name>Arm 03</name>
-</item>
-<item>
-  <arm_num>4</arm_num>
-  <name>Arm 04</name>
-</item>
-<item>
-  <arm_num>5</arm_num>
-  <name>Arm 05</name>
-</item>
-<item>
-  <arm_num>6</arm_num>
-  <name>Arm 06</name>
-</item>
-<item>
-  <arm_num>7</arm_num>
-  <name>Arm 07</name>
-</item>
-<item>
-  <arm_num>8</arm_num>
-  <name>Arm 08</name>
-</item>
+      <?xml version="1.0" encoding="UTF-8" ?>
+<arms>
+   <item>
+      <arm_num>1</arm_num>
+      <name>Subset 1</name>
+   </item>
+   <item>
+      <arm_num>2</arm_num>
+      <name>Subset 2</name>
+   </item>
+   <item>
+      <arm_num>3</arm_num>
+      <name>Subset 3</name>
+   </item>
+   <item>
+      <arm_num>4</arm_num>
+      <name>Subset 4</name>
+   </item>
+   <item>
+      <arm_num>5</arm_num>
+      <name>Subset 5</name>
+   </item>
+</arms>
 """)
 seekstart(file_handle)
-@test import_arms(override=1,data=file_name,token=project_token,format=:xml) == "8"
+@test import_arms(override=1,data=file_name,token=project_token,format=:xml) == "5"
 seekstart(file_handle)
-@test import_arms(override=1,data=file_name,token=project_token) == "8"
+@test import_arms(override=1,data=file_name,token=project_token) == "5"
 
 truncate(file_handle,0)
 write(file_handle, """
