@@ -17,7 +17,7 @@ end
 
 function import_repeating_instruments_and_events(;
 	url::redcap_url_input=get_url(),
-	token::redcap_super_token_input=get_token(),	
+	token::redcap_any_token_input=get_token(),	
 	format::redcap_format_input=nothing,
 	returnFormat::redcap_returnFormat_input=nothing,
 	data::redcap_data_input, #TODO: the docs mention a super API token may be used here...?
