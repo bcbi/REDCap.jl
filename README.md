@@ -8,6 +8,7 @@
 A Julia frontend for the REDCap API
 
 [REDCap](https://en.wikipedia.org/wiki/REDCap) is a data capture system for scientific research, especially clinical trials.
+REDCap.jl is an API wrapper for REDCap v14, written in Julia.
 
 ## Example
 ```julia
