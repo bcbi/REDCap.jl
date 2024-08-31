@@ -79,8 +79,12 @@ function export_project_info(;
 	url::redcap_url_input=get_url(),
 	token::redcap_token_input=get_token(),	
 	format::redcap_returnFormat_input=nothing,
-	#returnFormat::redcap_returnFormat_input=nothing,
+	returnFormat::redcap_returnFormat_input=nothing,
 	)
+
+	if !isnothing(returnFormat)
+		throw(ArgumentError("returnFormat is ignored, so use format instead (possibly this is an issue with REDCap's API"))
+	end
 
 	REDCap.request(;
 		       content=REDCap_content(:project),
@@ -130,7 +134,7 @@ function import_project_info(;
 	)
 
 	if REDCap_format(format) != REDCap_format(:csv)
-		throw(ArgumentError("Possibly a REDCap API issue... please use format=:csv"))
+		throw(ArgumentError("Only format=:csv is supported (possibly this is an issue with REDCap's API"))
 	end
 
 	#import_project_info(data; token=token, url=url, format=format)

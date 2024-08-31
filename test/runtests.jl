@@ -22,7 +22,7 @@ function all_subfiles(dir)
 		all_subfiles(subdirectory)
 	end
 end
-all_subfiles("test_files")
+all_subfiles("code")
 
 @testset verbose=true "Full testset" begin
 	for test_file in list_of_test_files

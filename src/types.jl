@@ -15,6 +15,7 @@ const redcap_format_input = Union{String, Symbol, Nothing}
 const redcap_returnFormat_input = redcap_format_input
 const redcap_timestamp_input = Union{Date, DateTime, String,Nothing}
 
+#TODO: consider removing any restrictions on types passed by users
 const redcap_generic_input = Union{
 	redcap_data_input,
 	redcap_filterLogic_input,
@@ -114,6 +115,9 @@ Base.string(x::REDCap_super_token) = string(x.id)
 Base.convert(String,x::REDCap_super_token) = string(x)
 
 redcap_generic_parameter = Union{
+	REDCap_token,
+	REDCap_super_token,
+	REDCap_content,
 	REDCap_action,
 	REDCap_format,
 	DateTime,

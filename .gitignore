@@ -2,10 +2,7 @@
 *.jl.*.cov
 *.jl.mem
 *.txt
-*.csv
-*.json
 *.swp
-*.xml
 *.pdf
 docs/site/
 docs/build/
