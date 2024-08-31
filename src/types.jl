@@ -15,6 +15,7 @@ const redcap_format_input = Union{String, Symbol, Nothing}
 const redcap_returnFormat_input = redcap_format_input
 const redcap_timestamp_input = Union{Date, DateTime, String,Nothing}
 
+#TODO: consider removing any restrictions on types passed by users
 const redcap_generic_input = Union{
 	redcap_data_input,
 	redcap_filterLogic_input,

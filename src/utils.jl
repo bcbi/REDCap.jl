@@ -70,21 +70,20 @@ function assemble_html_body(;kwargs...)
 	body = Dict{String, String}()
 	if !isempty(kwargs)
 		for (parameter,value) in kwargs
-			value::redcap_generic_parameter
-			if !isnothing(value)
-				#if parameter ∈ [:data, :filterLogic]
-					#body["$parameter"] = IOBuffer(string(value))
-				if isa(value, Array)
-					for (i, item) in enumerate(value)
-						body["$parameter[$(i-1)]"] = string(item)
-					end
-				else
-					body["$parameter"] = "$value"
-				end
-			end
+			append_as_redcap_pair!(body, parameter, value)
 		end
 	end
 	return body
+end
+
+append_as_redcap_pair!(d::Dict, parameter::Symbol, value::Nothing) = nothing
+function append_as_redcap_pair!(parameter::Symbol, value::Array)
+	for (i, item) in enumerate(value)
+		d["$parameter[$(i-1)]"] = string(item)
+	end
+end
+function append_as_redcap_pair!(d::Dict, parameter::Symbol, value::redcap_generic_parameter)
+	d["$parameter"] = "$value"
 end
 
 function get_token()
