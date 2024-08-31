@@ -5,7 +5,7 @@ function request(; url::URI, data=nothing, odm=nothing,	kwargs...)
 
 	html_request_body = generate_request_body(; data, odm, kwargs...)
 
-	@debug(filter(x->(first(x)!="token"), html_request_body))
+	log_redacted_request(html_request_body)
 	response = HTTP.post(
 		URI(url);
 		#get_valid_url();
@@ -15,19 +15,8 @@ function request(; url::URI, data=nothing, odm=nothing,	kwargs...)
 		status_exception=false,
 	)
 	#HTTP.iserror(r)
+	log_status_code(response.status)
 	
-	status_codes_message = Dict(
-		200 => "OK: Success!",
-		400 => "Bad Request: The request was invalid.",
-		401 => "Unauthorized: API token was missing or incorrect.",
-		403 => "Forbidden: You do not have permissions to use the API.",
-		404 => "Not Found: The URI you requested is invalid or the resource does not exist.",
-		406 => "Not Acceptable: The data being imported was formatted incorrectly.",
-		500 => "Internal Server Error: The server encountered an error processing your request.",
-		501 => "Not Implemented: The requested method is not implemented.",
-		)
-	@debug("HTTP response $(response.status), $(get(status_codes_message,response.status,"Unknown"))")
-
 	return response.body|> String 
 end
 
@@ -77,6 +66,27 @@ function as_redcap_data(data::redcap_data_input)
 		return string(data)
 	end
 end
+
+function log_redacted_request(html_request_body)
+	#TODO: is this misleading where there is no token?
+	@debug(merge(filter(x->(first(x)!="token"), html_request_body), Dict("token" => "***")))
+end
+
+function log_status_code(status)
+	status_codes_message = Dict(
+		200 => "OK: Success!",
+		400 => "Bad Request: The request was invalid.",
+		401 => "Unauthorized: API token was missing or incorrect.",
+		403 => "Forbidden: You do not have permissions to use the API.",
+		404 => "Not Found: The URI you requested is invalid or the resource does not exist.",
+		406 => "Not Acceptable: The data being imported was formatted incorrectly.",
+		500 => "Internal Server Error: The server encountered an error processing your request.",
+		501 => "Not Implemented: The requested method is not implemented.",
+		)
+	message = get(status_codes_message,status,"Unknown")
+	@debug("HTTP response $status, $message")
+end
+
 
 function get_token()
 	if !haskey(ENV, "REDCAP_API_TOKEN")
