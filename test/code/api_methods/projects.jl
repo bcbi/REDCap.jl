@@ -99,14 +99,9 @@ display_today_now_button=1,
 bypass_branching_erase_field_prompt=1
 ),format=:xml)
 
-@test export_project_info(format=:json, token=project_token) |> JSON.parse |> x -> x["custom_record_label"] == "Q"
-@test export_project_info(format=:json, token=project_token,format=:csv) |> JSON.parse |> x -> x["custom_record_label"] == "Q"
-@test export_project_info(format=:json, token=project_token,format=:json) |> JSON.parse |> x -> x["custom_record_label"] == "Q"
-@test export_project_info(format=:json, token=project_token,format=:xml) |> JSON.parse |> x -> x["custom_record_label"] == "Q"
+@test "Q" == export_project_info(format=:json, token=project_token) |> JSON.parse |> x -> x["custom_record_label"]
 
-export_project_info(token=project_token) 
-
-
-import_project_info(token=project_token,data=(project_title="NEWNAME"),format=:csv)
-@test export_project_info(token=project_token,format=:json) |> JSON.parse |> x -> x["project_title"] == "NEWNAME"
+#TODO: add a comma by default? or otherwise test for missing comma?
+import_project_info(token=project_token,data=(project_title="NEWNAME",),format=:csv)
+@test "NEWNAME" == export_project_info(token=project_token,format=:json) |> JSON.parse |> x -> x["project_title"]
 
