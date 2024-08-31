@@ -6,6 +6,7 @@ function request(; url::URI, data=nothing, odm=nothing,	kwargs...)
 	html_request_body = generate_request_body(; data, odm, kwargs...)
 
 	log_redacted_request(html_request_body)
+
 	response = HTTP.post(
 		URI(url);
 		#get_valid_url();
