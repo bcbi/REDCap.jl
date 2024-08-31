@@ -1,26 +1,26 @@
 #TODO: add something to automatically break files into < 500kb chunks?
+#There's also a new batchProcess parameter
 
 function request(;
 	url::URI,
-	token::Union{REDCap_token, REDCap_super_token},
-	content::REDCap_content,
 	data=nothing,
 	odm=nothing,
 	kwargs...)
 
-	#TODO: replace interpolation with string()?
-	html_request_body = assemble_html_body(;kwargs...)
-	html_request_body["token"] = token
-	html_request_body["content"] = "$content"
-	#TODO: Can't the data parameter be nothing and still hav an effect in at least 1 function?
-	
-	if !isnothing(odm)
-		html_request_body["odm"] = read(odm,String)
+	html_request_body = Dict{String, String}()
+	if !isempty(kwargs)
+		for (parameter,value) in kwargs
+			append_as_redcap_pair!(html_request_body, parameter, value)
+		end
 	end
+
+	#TODO: replace interpolation with string()?
+	if !isnothing(odm); append_as_redcap_pair!(html_request_body, :odm, read(odm,String)) end
 
 	#TODO: Add chunking (but what is bakgroundProcess=true, new to REDCap 14?)
 	#Also, different formats have to be chunked differently.
 	#Maybe stick to creating an iterator outside REDCap...
+	#TODO: Can't the data parameter be nothing and still hav an effect in at least 1 function?
 	if !isnothing(data)
 		#if endswith.(data,[".csv",".json",".xml"]) |> any
 		#TODO: is there any chance that this causes an issue
@@ -30,11 +30,8 @@ function request(;
 		##TODO: also, there's something unsettling about how a variable could be passed,
 		#and if that variable contains a file name, even by mistake, the contents of that file get sent.
 		#but this is so convenient, and any actual issue it could cause seems far-fetched
-		if !istoolong(data) && isfile(data)
-			html_request_body["data"] = read(data,String)
-		else
-			html_request_body["data"] = "$data"
-		end
+		#TODO: improve this syntax?
+		append_as_redcap_pair!(html_request_body, :data, as_redcap_data(data))
 	end
 
 	@debug(filter(x->(first(x)!="token"), html_request_body))
@@ -66,16 +63,6 @@ function request(;
 	return response.body|> String 
 end
 
-function assemble_html_body(;kwargs...)
-	body = Dict{String, String}()
-	if !isempty(kwargs)
-		for (parameter,value) in kwargs
-			append_as_redcap_pair!(body, parameter, value)
-		end
-	end
-	return body
-end
-
 append_as_redcap_pair!(d::Dict, parameter::Symbol, value::Nothing) = nothing
 function append_as_redcap_pair!(parameter::Symbol, value::Array)
 	for (i, item) in enumerate(value)
@@ -84,6 +71,14 @@ function append_as_redcap_pair!(parameter::Symbol, value::Array)
 end
 function append_as_redcap_pair!(d::Dict, parameter::Symbol, value::redcap_generic_parameter)
 	d["$parameter"] = "$value"
+end
+
+function as_redcap_data(data::redcap_data_input)
+	if !istoolong(data) && isfile(data)
+		return read(data,String)
+	else
+		return string(data)
+	end
 end
 
 function get_token()

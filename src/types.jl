@@ -115,6 +115,9 @@ Base.string(x::REDCap_super_token) = string(x.id)
 Base.convert(String,x::REDCap_super_token) = string(x)
 
 redcap_generic_parameter = Union{
+	REDCap_token,
+	REDCap_super_token,
+	REDCap_content,
 	REDCap_action,
 	REDCap_format,
 	DateTime,
