@@ -6,6 +6,8 @@ using JSON
 using URIs
 
 include("types.jl")
+
+include("request.jl")
 include("utils.jl")
 include("api_methods/arms.jl")
 include("api_methods/data_access_groups.jl")
