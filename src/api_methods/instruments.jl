@@ -9,7 +9,7 @@ function export_instrument_event_mappings(;
 	REDCap.request(;
 		url=REDCap_url(url),
 		token=REDCap_token(token),
-		       content=REDCap_content(:formEventMapping),
+		       content=:formEventMapping,
 		format=REDCap_format(format),
 		arms=arms,
 		returnFormat=REDCap_format(returnFormat),
@@ -26,7 +26,7 @@ function export_instruments(;
 	REDCap.request(;
 		url=REDCap_url(url),
 		token=REDCap_token(token),
-		       content=REDCap_content(:instrument),
+		       content=:instrument,
 		format=REDCap_format(format),
 	)
 end
@@ -45,7 +45,7 @@ function export_PDF(;
 	REDCap.request(;
 		url=REDCap_url(url),
 		token=REDCap_token(token),
-		       content=REDCap_content(:pdf),
+		       content=:pdf,
 		record=record,
 		event=event,
 		instrument=instrument,
@@ -69,7 +69,7 @@ function import_instrument_event_mappings(;
 	REDCap.request(;
 		url=REDCap_url(url),
 		token=REDCap_token(token),
-		       content=REDCap_content(:formEventMapping),
+		       content=:formEventMapping,
 		format=REDCap_format(format),
 		data=REDCap_data(data,REDCap_format(format),xml_tag="items"),
 		returnFormat=REDCap_format(returnFormat),

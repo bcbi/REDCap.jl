@@ -57,7 +57,7 @@ function append_as_redcap_pair!(parameter::Symbol, value::Array)
 		d[string(parameter,'[',i-1,']')] = string(item)
 	end
 end
-function append_as_redcap_pair!(d::Dict, parameter::Symbol, value::redcap_generic_parameter)
+function append_as_redcap_pair!(d::Dict, parameter::Symbol, value)
 	d[string(parameter)] = string(value)
 end
 

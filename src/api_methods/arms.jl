@@ -7,7 +7,7 @@ function delete_arms(;
 	REDCap.request(;
 		url=REDCap_url(url),
 		token=REDCap_token(token),
-	       content=REDCap_content(:arm),
+	       content=:arm,
 	       action=REDCap_action(:import),
 		arms=arms,
 	)
@@ -24,7 +24,7 @@ function export_arms(;
 	REDCap.request(;
 		url=REDCap_url(url),
 		token=REDCap_token(token),
-	       content=REDCap_content(:arm),
+	       content=:arm,
 		format=REDCap_format(format),
 		arms=arms,
 		returnFormat=REDCap_format(returnFormat),
@@ -45,7 +45,7 @@ function import_arms(;
 	REDCap.request(;
 		url=REDCap_url(url),
 		token=REDCap_token(token),
-	       content=REDCap_content(:arm),
+	       content=:arm,
 		override=override,
 		action=REDCap_action(:import),
 		format=REDCap_format(format),

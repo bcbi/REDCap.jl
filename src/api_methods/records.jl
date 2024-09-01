@@ -11,7 +11,7 @@ function delete_records(;
 	REDCap.request(
 		url=REDCap_url(url),
 		token=REDCap_token(token),
-		content=REDCap_content(:record),
+		content=:record,
 		action=REDCap_action(:delete),
 		records=records,
 		arm=arm,
@@ -47,7 +47,7 @@ function export_records(;
 		data=REDCap_data(data,REDCap_format(format),xml_tag="records"),
 		url=REDCap_url(url),
 		token=REDCap_token(token),
-		content=REDCap_content(:record),
+		content=:record,
 		format=REDCap_format(format), #allows odm, unlike most other format args
 		type=type,
 		records=records,
@@ -76,7 +76,7 @@ function generate_next_record_name(;
 	REDCap.request(
 		url=REDCap_url(url),
 		token=REDCap_token(token),
-		content=REDCap_content(:generateNextRecordName),
+		content=:generateNextRecordName,
 		)
 end
 
@@ -100,7 +100,7 @@ function import_records(;
 		data=REDCap_data(data,REDCap_format(format),xml_tag="records"),
 		url=REDCap_url(url),
 		token=REDCap_token(token),
-		content=REDCap_content(:record),
+		content=:record,
 		format=REDCap_format(format), #allows odm, unlike most other format args
 		type=type,
 		overwriteBehavior=overwriteBehavior,
@@ -123,7 +123,7 @@ function rename_record(;
 	REDCap.request(
 		url=REDCap_url(url),
 		token=REDCap_token(token),
-		content=REDCap_content(:record),
+		content=:record,
 		action=REDCap_action(:rename),
 		record=record,
 		new_record_name=new_record_name,

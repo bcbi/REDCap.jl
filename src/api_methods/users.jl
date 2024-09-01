@@ -6,7 +6,7 @@ function delete_users(;
 	REDCap.request(
 	url=REDCap_url(url),
 	token=REDCap_token(token),
-	content=REDCap_content(:user),
+	content=:user,
 	action=REDCap_action(:delete),
 		users=users,
 	)
@@ -22,7 +22,7 @@ function export_users(;
 	REDCap.request(
 		url=REDCap_url(url),
 		token=REDCap_token(token),
-		content=REDCap_content(:user),
+		content=:user,
 		format=REDCap_format(format),
 		returnFormat=REDCap_format(returnFormat),
 	)
@@ -52,7 +52,7 @@ Other attribute values: 0=No Access, 1=Access.
 	REDCap.request(
 	url=REDCap_url(url),
 	token=REDCap_token(token),
-	content=REDCap_content(:user),
+	content=:user,
 		format=REDCap_format(format),
 		data=REDCap_data(data,REDCap_format(format),xml_tag="users"),
 		returnFormat=REDCap_format(returnFormat),

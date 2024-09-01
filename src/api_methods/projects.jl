@@ -11,7 +11,7 @@ function create_project(;
 	#@assert keys(data) ⊆ Set(:project_title, :purpose, :purpose_other, :project_notes, :is_longitudinal, :surveys_enabled, :record_autonumbering_enabled)
 
 	REDCap.request(;
-		       content=REDCap_content(:project),
+		       content=:project,
 		format=REDCap_format(format),
 		returnFormat=REDCap_format(returnFormat),
 		data=REDCap_data(data,REDCap_format(format)),#xml_tag="items")
@@ -44,7 +44,7 @@ function create_project(data::Dict;
 
 	#TODO: better to use xml, since this is the default format for returns?
 	REDCap.request(;
-		       content=REDCap_content(:project),
+		       content=:project,
 		format=REDCap_format(:json),
 		returnFormat=REDCap_format(returnFormat),
 		data="[$(JSON.json(data))]",
@@ -62,7 +62,7 @@ function create_project(data::String;
 	odm=nothing,)
 
 	REDCap.request(;
-		       content=REDCap_content(:project),
+		       content=:project,
 		format=REDCap_format(format),
 		returnFormat=REDCap_format(returnFormat),
 		data=read(data, String),
@@ -85,7 +85,7 @@ function export_project_info(;
 	end
 
 	REDCap.request(;
-		       content=REDCap_content(:project),
+		       content=:project,
 		url=REDCap_url(url),
 		token=REDCap_token(token),
 		format=REDCap_format(format),
@@ -111,7 +111,7 @@ function export_project_XML(;
 	REDCap.request(;
 		url=REDCap_url(url),
 		token=REDCap_token(token),
-		content=REDCap_content(:project_xml),
+		content=:project_xml,
 		returnMetadataOnly=returnMetadataOnly,
 		records=records,
 		fields=fields,
@@ -140,7 +140,7 @@ function import_project_info(;
 	REDCap.request(;
 		url=REDCap_url(url),
 		token=REDCap_token(token),
-		content=REDCap_content(:project_settings),
+		content=:project_settings,
 		format=REDCap_format(format),
 		data=REDCap_data(data,REDCap_format(format), xml_tag="items") #TODO
 	# without this xml tag, the XML is misformatted, but even with it, it isn't parse correctly... only csv works here....
@@ -158,7 +158,7 @@ function import_project_info(data::Dict;
 	REDCap.request(;
 		url=REDCap_url(url),
 		token=REDCap_token(token),
-		content=REDCap_content(:project_settings),
+		content=:project_settings,
 		format=REDCap_format(:json),
 	data="[$(JSON.json(data))]"
 	)
@@ -173,7 +173,7 @@ function import_project_info(data::String;
 	REDCap.request(;
 		url=REDCap_url(url),
 		token=REDCap_token(token),
-		content=REDCap_content(:project_settings),
+		content=:project_settings,
 		format=REDCap_format(format),
 		data=read(data,String)
 	)

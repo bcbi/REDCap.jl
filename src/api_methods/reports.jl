@@ -15,7 +15,7 @@ function export_reports(;
 	REDCap.request(
 		url=REDCap_url(url),
 		token=REDCap_token(token),
-		content=REDCap_content(:report),
+		content=:report,
 		report_id=report_id,
 		format=REDCap_format(format), #TODO: format can include odm
 		returnFormat=REDCap_format(returnFormat),

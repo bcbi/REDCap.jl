@@ -6,14 +6,6 @@ Base.display(x::REDCap_action) = Base.display(x.id)
 Base.string(x::REDCap_action) = Base.string(x.id)
 Base.convert(String,x::REDCap_action) = string(x)
 
-struct REDCap_content 
-	id::Symbol
-	REDCap_content(id) = id ∈ Set([:arm,:dag,:userDagMapping,:event,:exportFieldNames,:fileRepository,:file,:formEventMapping,:instrument,:pdf,:log,:metadata,:project,:project_settings,:project_xml,:record,:generateNextRecordName,:record,:version,:repeatingFormsEvents,:report,:surveyLink,:participantList,:surveyQueueLink,:userRole,:userRoleMapping,:user,]) ? new(id) : throw(ArgumentError("Invalid content parameter"))
-end
-Base.display(x::REDCap_content) = Base.display(x.id)
-Base.string(x::REDCap_content) = Base.string(x.id)
-Base.convert(String,x::REDCap_content) = string(x)
-
 #TODO: help users fix formatting errors - I left out the final slash and had trouble debugging
 # Maybe a function that checks for common mistakes
 REDCap_url(x) = occursin(r"^https:\/\/.*\/api\/$", x) ? URIs.URI(x) : throw(ArgumentError("Invalid REDCap url"))
@@ -75,17 +67,4 @@ end
 Base.display(x::REDCap_super_token) = display(x.id)
 Base.string(x::REDCap_super_token) = string(x.id)
 Base.convert(String,x::REDCap_super_token) = string(x)
-
-redcap_generic_parameter = Union{
-	REDCap_token,
-	REDCap_super_token,
-	REDCap_content,
-	REDCap_action,
-	REDCap_format,
-	DateTime,
-	String,
-	Integer,
-	Vector,
-	Nothing,
-	}
 

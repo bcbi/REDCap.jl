@@ -11,7 +11,7 @@ function export_metadata(;
 	REDCap.request(
 		url=REDCap_url(url),
 		token=REDCap_token(token),
-		content=REDCap_content(:metadata),
+		content=:metadata,
 		format=REDCap_format(format),
 		fields=fields,
 		forms=forms,
@@ -32,7 +32,7 @@ function import_metadata(;
 	REDCap.request(;
 		url=REDCap_url(url),
 		token=REDCap_token(token),
-		content=REDCap_content(:metadata),
+		content=:metadata,
 		format=REDCap_format(format),
 		data=REDCap_data(data,REDCap_format(format)),
 		returnFormat=REDCap_format(returnFormat),
@@ -49,7 +49,7 @@ function import_metadata(data::Dict;
 	REDCap.request(;
 		url=REDCap_url(url),
 		token=REDCap_token(token),
-		content=REDCap_content(:metadata),
+		content=:metadata,
 		format=REDCap_format(:json),
 		data="[$(JSON.json(data))]",
 		returnFormat=REDCap_format(returnFormat),
@@ -65,7 +65,7 @@ function import_metadata(data::String;
 	REDCap.request(;
 		url=REDCap_url(url),
 		token=REDCap_token(token),
-		content=REDCap_content(:metadata),
+		content=:metadata,
 		format=REDCap_format(format),
 		data=read(data, String),
 		returnFormat=REDCap_format(returnFormat),

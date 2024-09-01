@@ -6,7 +6,7 @@ function delete_DAGs(;
 	REDCap.request(;
 		url=REDCap_url(url),
 		token=REDCap_token(token),
-		content=REDCap_content(:dag),
+		content=:dag,
 		action=REDCap_action(:delete),
 		dags=dags,
 	)
@@ -22,7 +22,7 @@ function export_DAGs(;
 	REDCap.request(;
 		url=REDCap_url(url),
 		token=REDCap_token(token),
-		       content=REDCap_content(:dag),
+		       content=:dag,
 		format=REDCap_format(format),
 		#returnFormat=REDCap_format(returnFormat),
 	)
@@ -37,7 +37,7 @@ function export_user_DAG_assignment(;
 	REDCap.request(;
 		url=REDCap_url(url),
 		token=REDCap_token(token),
-	       content=REDCap_content(:userDagMapping),
+	       content=:userDagMapping,
 		format=REDCap_format(format),
 	)
 end
@@ -53,7 +53,7 @@ function import_DAGs(;
 	REDCap.request(;
 		url=REDCap_url(url),
 		token=REDCap_token(token),
-		       content=REDCap_content(:dag),
+		       content=:dag,
 		       action=REDCap_action(:import),
 		format=REDCap_format(format),
 		data=REDCap_data(data,REDCap_format(format),xml_tag="dags"),
@@ -72,7 +72,7 @@ function import_user_DAG_assignment(;
 	REDCap.request(;
 		url=REDCap_url(url),
 		token=REDCap_token(token),
-		       content=REDCap_content(:userDagMapping),
+		       content=:userDagMapping,
 		format=REDCap_format(format),
 		data=REDCap_data(data,REDCap_format(format),xml_tag="items"),
 		returnFormat=REDCap_format(returnFormat),
@@ -86,7 +86,7 @@ function switch_DAG(;
 	REDCap.request(;
 		url=REDCap_url(url),
 		token=REDCap_token(token),
-		       content=REDCap_content(:dag),
+		       content=:dag,
 		       action=REDCap_action(:switch),
 		dag=dag,
 	)
