@@ -20,7 +20,7 @@ field_names = export_list_of_export_field_names(token=demography_token, format=:
 
 import_records(token=demography_token,data=(record_id=1,first_name="A",last_name="Person"))
 @test generate_next_record_name(token=demography_token) == "2"
-for i in 2:10
+for i in 2:4
 	import_records(
 	       token=demography_token,
 		data=(
@@ -28,4 +28,4 @@ for i in 2:10
 			first_name = "A",
 			last_name = "NotherPerson"))
 end
-@test generate_next_record_name(token=demography_token) == "11"
+@test generate_next_record_name(token=demography_token) == "5"

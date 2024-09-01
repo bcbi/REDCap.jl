@@ -1,7 +1,3 @@
-export delete_events,
-	import_events,
-	export_events
-
 function delete_events(;
 	url=get_url(),
 	token=get_token(),	

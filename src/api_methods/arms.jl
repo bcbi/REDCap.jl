@@ -1,7 +1,3 @@
-export delete_arms,
-	export_arms,
-	import_arms
-
 function delete_arms(;
 	url=get_url(),
 	token=get_token(),	

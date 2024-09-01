@@ -1,5 +1,3 @@
-export export_list_of_export_field_names
-
 function export_list_of_export_field_names(;
 	url=get_url(),
 	token=get_token(),	

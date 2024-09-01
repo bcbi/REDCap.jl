@@ -1,8 +1,3 @@
-export export_survey_link,
-export_survey_participants,
-export_survey_queue_link,
-export_survey_return_code
-
 function export_survey_link(;
 	url=get_url(),
 	token=get_token(),	

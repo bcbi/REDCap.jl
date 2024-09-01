@@ -1,6 +1,3 @@
-export export_repeating_instruments_and_events,
-import_repeating_instruments_and_events
-
 function export_repeating_instruments_and_events(;
 	url=get_url(),
 	token=get_token(),	

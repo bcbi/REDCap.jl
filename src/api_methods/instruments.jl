@@ -1,8 +1,3 @@
-export export_instrument_event_mappings,
-	export_instruments,
-	export_PDF,
-	import_instrument_event_mappings
-
 function export_instrument_event_mappings(;
 	url=get_url(),
 	token=get_token(),	

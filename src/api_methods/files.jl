@@ -1,5 +1,3 @@
-export delete_file, export_file, import_file
-
 function delete_file(;
 	url=get_url(),
 	token=get_token(),	

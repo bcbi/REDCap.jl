@@ -1,9 +1,3 @@
-export export_user_roles,
-	import_user_roles,
-	delete_user_roles,
-	export_user_role_assignments,
-	import_user_role_assignments
-
 function delete_user_roles(;
 	url=get_url(),
 	token=get_token(),	

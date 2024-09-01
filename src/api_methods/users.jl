@@ -1,7 +1,3 @@
-export export_users,
-	import_users,
-	delete_users
-
 function delete_users(;
 	url=get_url(),
 	token=get_token(),	

@@ -1,5 +1,3 @@
-export export_logging
-
 #TODO: why does the returnFormat parameter not work?
 #TODO: What permissible values for logtype?
 function export_logging(;

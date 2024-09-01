@@ -1,10 +1,3 @@
-export delete_DAGs,
-	export_DAGs,
-	export_user_DAG_assignment,
-	import_DAGs,
-	import_user_DAG_assignment,
-	switch_DAG
-
 function delete_DAGs(;
 	url=get_url(),
 	token=get_token(),	

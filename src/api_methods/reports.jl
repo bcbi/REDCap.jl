@@ -1,5 +1,3 @@
-export export_reports
-
 function export_reports(;
 	url=get_url(),
 	token=get_token(),	

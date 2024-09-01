@@ -1,9 +1,3 @@
-export 
-	create_project,
-	export_project_info,
-	export_project_XML,
-	import_project_info #TODO: not working, and there's no official API example... are we supposed to just pass this data in create_project?
-
 function create_project(;
 	data,
 	url=get_url(),
@@ -137,6 +131,7 @@ function import_project_info(;
 	token=get_token(),
 	)
 
+#TODO: not working, and there's no official API example... are we supposed to just pass this data in create_project?
 	if REDCap_format(format) != REDCap_format(:csv)
 		throw(ArgumentError("Only format=:csv is supported (possibly this is an issue with REDCap's API"))
 	end

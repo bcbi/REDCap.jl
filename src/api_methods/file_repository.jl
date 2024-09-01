@@ -1,9 +1,3 @@
-export create_folder,
-	delete_file_from_file_repository,
-	export_file_from_file_repository,
-	export_list_of_folders,
-	import_file_from_file_repository
-
 function create_folder(;
 	url=get_url(),
 	token=get_token(),	

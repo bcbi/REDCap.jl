@@ -1,5 +1,3 @@
-export export_version
-
 function export_version(;
 	url=get_url(),
 	token=get_token(),	

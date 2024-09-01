@@ -1,5 +1,3 @@
-export export_metadata,	import_metadata
-
 #TODO: For most export functions, returnFormat seems to have no effect
 function export_metadata(;
 	url=get_url(),
