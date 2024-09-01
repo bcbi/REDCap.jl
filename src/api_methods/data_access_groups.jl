@@ -6,8 +6,8 @@ export delete_DAGs,
 	switch_DAG
 
 function delete_DAGs(;
-	url::redcap_url_input=get_url(),
-	token::redcap_token_input=get_token(),	
+	url=get_url(),
+	token=get_token(),	
 	dags=nothing)
 
 	REDCap.request(;
@@ -20,9 +20,9 @@ function delete_DAGs(;
 end
 
 function export_DAGs(;
-	url::redcap_url_input=get_url(),
-	token::redcap_token_input=get_token(),	
-	format::redcap_format_input=nothing,
+	url=get_url(),
+	token=get_token(),	
+	format=nothing,
 	#TODO: This is one of those ones that only take a format parameter
 	)
 
@@ -36,9 +36,9 @@ function export_DAGs(;
 end
 
 function export_user_DAG_assignment(;
-	url::redcap_url_input=get_url(),
-	token::redcap_token_input=get_token(),	
-	format::redcap_format_input=nothing,
+	url=get_url(),
+	token=get_token(),	
+	format=nothing,
 	)
 
 	REDCap.request(;
@@ -50,11 +50,11 @@ function export_user_DAG_assignment(;
 end
 
 function import_DAGs(;
-	url::redcap_url_input=get_url(),
-	token::redcap_token_input=get_token(),	
-	data::redcap_data_input=nothing, # TODO: required?
-	format::redcap_format_input=nothing,
-	returnFormat::redcap_returnFormat_input=nothing,
+	url=get_url(),
+	token=get_token(),	
+	data=nothing, # TODO: required?
+	format=nothing,
+	returnFormat=nothing,
 	)
 
 	REDCap.request(;
@@ -69,11 +69,11 @@ function import_DAGs(;
 end
 
 function import_user_DAG_assignment(;
-	url::redcap_url_input=get_url(),
-	token::redcap_token_input=get_token(),	
-	data::redcap_data_input=nothing, # TODO: required?
-	format::redcap_format_input=nothing,
-	returnFormat::redcap_returnFormat_input=nothing,
+	url=get_url(),
+	token=get_token(),	
+	data=nothing, # TODO: required?
+	format=nothing,
+	returnFormat=nothing,
 	)
 
 	REDCap.request(;
@@ -87,8 +87,8 @@ function import_user_DAG_assignment(;
 end
 
 function switch_DAG(;
-	data::redcap_data_input,
-	url::redcap_url_input=get_url(),
+	data,
+	url=get_url(),
 		dag=nothing)
 	REDCap.request(;
 		url=REDCap_url(url),

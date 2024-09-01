@@ -60,7 +60,7 @@ function append_as_redcap_pair!(d::Dict, parameter::Symbol, value::redcap_generi
 	d[string(parameter)] = "$value"
 end
 
-function as_redcap_data(data::redcap_data_input)
+function as_redcap_data(data)
 	if !istoolong(data) && isfile(data)
 		return read(data,String)
 	else

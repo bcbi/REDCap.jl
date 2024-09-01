@@ -2,12 +2,12 @@ export export_metadata,	import_metadata
 
 #TODO: For most export functions, returnFormat seems to have no effect
 function export_metadata(;
-	url::redcap_url_input=get_url(),
-	token::redcap_token_input=get_token(),	
-	format::redcap_format_input=nothing,
-	fields::redcap_array_input=nothing,
-	forms::redcap_array_input=nothing,
-	returnFormat::redcap_returnFormat_input=nothing,
+	url=get_url(),
+	token=get_token(),	
+	format=nothing,
+	fields=nothing,
+	forms=nothing,
+	returnFormat=nothing,
 	)
 
 	REDCap.request(
@@ -23,11 +23,11 @@ end
 
 #TODO: there is no guidance on what the metadata should look like... is itbasically like the odm parameter in create_project?
 function import_metadata(;
-	data::redcap_data_input,
-	url::redcap_url_input=get_url(),
-	token::redcap_token_input=get_token(),	
-	format::redcap_format_input=nothing,
-	returnFormat::redcap_returnFormat_input=nothing,
+	data,
+	url=get_url(),
+	token=get_token(),	
+	format=nothing,
+	returnFormat=nothing,
 	)
 
 	#import_metadata(data; url=url, token=token, returnFormat=returnFormat)
@@ -43,10 +43,10 @@ end
 
 #=
 function import_metadata(data::Dict;
-	url::redcap_url_input=get_url(),
-	token::redcap_token_input=get_token(),	
-	format::redcap_format_input=nothing,
-	returnFormat::redcap_returnFormat_input=nothing,
+	url=get_url(),
+	token=get_token(),	
+	format=nothing,
+	returnFormat=nothing,
 	)
 	REDCap.request(;
 		url=REDCap_url(url),
@@ -59,10 +59,10 @@ function import_metadata(data::Dict;
 end
 
 function import_metadata(data::String;
-	url::redcap_url_input=get_url(),
-	token::redcap_token_input=get_token(),	
-	format::redcap_format_input=nothing,
-	returnFormat::redcap_returnFormat_input=nothing,
+	url=get_url(),
+	token=get_token(),	
+	format=nothing,
+	returnFormat=nothing,
 	)
 	REDCap.request(;
 		url=REDCap_url(url),

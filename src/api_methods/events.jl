@@ -3,8 +3,8 @@ export delete_events,
 	export_events
 
 function delete_events(;
-	url::redcap_url_input=get_url(),
-	token::redcap_token_input=get_token(),	
+	url=get_url(),
+	token=get_token(),	
 		events=nothing,
 		)
 
@@ -18,10 +18,10 @@ function delete_events(;
 end
 
 function export_events(;
-	url::redcap_url_input=get_url(),
-	token::redcap_token_input=get_token(),	
-	format::redcap_format_input=nothing,
-	returnFormat::redcap_returnFormat_input=nothing,
+	url=get_url(),
+	token=get_token(),	
+	format=nothing,
+	returnFormat=nothing,
 		arms=nothing,
 		)
 
@@ -36,10 +36,10 @@ function export_events(;
 end
 
 function import_events(;
-	url::redcap_url_input=get_url(),
-	token::redcap_token_input=get_token(),	
-	format::redcap_format_input=nothing,
-	returnFormat::redcap_returnFormat_input=nothing,
+	url=get_url(),
+	token=get_token(),	
+	format=nothing,
+	returnFormat=nothing,
 		data=nothing, #TODO: required?
 		override=0,
 		)

@@ -4,9 +4,9 @@ export_survey_queue_link,
 export_survey_return_code
 
 function export_survey_link(;
-	url::redcap_url_input=get_url(),
-	token::redcap_token_input=get_token(),	
-	returnFormat::redcap_returnFormat_input=nothing,
+	url=get_url(),
+	token=get_token(),	
+	returnFormat=nothing,
 	record=nothing,
 	instrument=nothing,
 	event=nothing,
@@ -26,10 +26,10 @@ function export_survey_link(;
 end
 
 function export_survey_participants(;
-	url::redcap_url_input=get_url(),
-	token::redcap_token_input=get_token(),	
-	format::redcap_format_input=nothing,
-	returnFormat::redcap_returnFormat_input=nothing,
+	url=get_url(),
+	token=get_token(),	
+	format=nothing,
+	returnFormat=nothing,
 	instrument=nothing,
 	event=nothing,
 	repeat_instance=nothing,
@@ -58,9 +58,9 @@ function export_survey_queue_link(;record=nothing,returnFormat=:xml)
 end
 
 function export_survey_return_code(;
-	url::redcap_url_input=get_url(),
-	token::redcap_token_input=get_token(),	
-	returnFormat::redcap_returnFormat_input=nothing,
+	url=get_url(),
+	token=get_token(),	
+	returnFormat=nothing,
 	record=nothing,
 	instrument=nothing,
 	event=nothing,

@@ -3,8 +3,8 @@ export delete_arms,
 	import_arms
 
 function delete_arms(;
-	url::redcap_url_input=get_url(),
-	token::redcap_token_input=get_token(),	
+	url=get_url(),
+	token=get_token(),	
 	arms=nothing,
 	)
 
@@ -18,10 +18,10 @@ function delete_arms(;
 end
 
 function export_arms(;
-	url::redcap_url_input=get_url(),
-	token::redcap_token_input=get_token(),	
-	format::redcap_format_input=nothing,
-	returnFormat::redcap_returnFormat_input=nothing,
+	url=get_url(),
+	token=get_token(),	
+	format=nothing,
+	returnFormat=nothing,
 	arms=nothing,
 	)
 
@@ -38,11 +38,11 @@ end
 #All examples use JSON
 #TODO: what is the proper format for multi-item XML? I can't find this anywhere...
 function import_arms(;
-	url::redcap_url_input=get_url(),
-	token::redcap_token_input=get_token(),	
-	format::redcap_format_input=nothing,
-	data::redcap_data_input=nothing, #TODO: is this required, given the action parameter?
-	returnFormat::redcap_returnFormat_input=nothing,
+	url=get_url(),
+	token=get_token(),	
+	format=nothing,
+	data=nothing, #TODO: is this required, given the action parameter?
+	returnFormat=nothing,
 	override=0,
 	)
 

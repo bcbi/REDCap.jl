@@ -1,10 +1,10 @@
 export export_list_of_export_field_names
 
 function export_list_of_export_field_names(;
-	url::redcap_url_input=get_url(),
-	token::redcap_token_input=get_token(),	
-	format::redcap_format_input=nothing,
-	returnFormat::redcap_returnFormat_input=nothing,
+	url=get_url(),
+	token=get_token(),	
+	format=nothing,
+	returnFormat=nothing,
 	field=nothing
 	)
 

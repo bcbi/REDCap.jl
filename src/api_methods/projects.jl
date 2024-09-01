@@ -5,12 +5,12 @@ export
 	import_project_info #TODO: not working, and there's no official API example... are we supposed to just pass this data in create_project?
 
 function create_project(;
-	data::redcap_data_input,
-	url::redcap_url_input=get_url(),
-	token::redcap_super_token_input=get_token(),	
-	format::redcap_format_input=nothing,
-	returnFormat::redcap_returnFormat_input=nothing,
-	odm::redcap_odm_input=nothing,
+	data,
+	url=get_url(),
+	token=get_token(),	
+	format=nothing,
+	returnFormat=nothing,
+	odm=nothing,
 	)
 
 	#TODO: it might make sense to check these, but no check is done for formatted strings and file contents
@@ -31,11 +31,11 @@ end
 #=
 
 function create_project(data::Dict;
-	url::redcap_url_input=get_url(),
-	token::redcap_super_token_input=get_token(),	
-	format::redcap_format_input=nothing,
-	returnFormat::redcap_returnFormat_input=nothing,
-	odm::redcap_odm_input=nothing,)
+	url=get_url(),
+	token=get_token(),	
+	format=nothing,
+	returnFormat=nothing,
+	odm=nothing,)
 
 	#TODO: what is backgroundProcess=true
 
@@ -61,11 +61,11 @@ function create_project(data::Dict;
 end
 
 function create_project(data::String;
-	url::redcap_url_input=get_url(),
-	token::redcap_super_token_input=get_token(),	
-	format::redcap_format_input=nothing,
-	returnFormat::redcap_returnFormat_input=nothing,
-	odm::redcap_odm_input=nothing,)
+	url=get_url(),
+	token=get_token(),	
+	format=nothing,
+	returnFormat=nothing,
+	odm=nothing,)
 
 	REDCap.request(;
 		       content=REDCap_content(:project),
@@ -80,10 +80,10 @@ end
 =#
 
 function export_project_info(;
-	url::redcap_url_input=get_url(),
-	token::redcap_token_input=get_token(),	
-	format::redcap_returnFormat_input=nothing,
-	returnFormat::redcap_returnFormat_input=nothing,
+	url=get_url(),
+	token=get_token(),	
+	format=nothing,
+	returnFormat=nothing,
 	)
 
 	if !isnothing(returnFormat)
@@ -101,18 +101,18 @@ end
 
 #TODO: should this write to a file?
 function export_project_XML(;
-	url::redcap_url_input=get_url(),
-	token::redcap_token_input=get_token(),	
-	returnFormat::redcap_returnFormat_input=nothing,
+	url=get_url(),
+	token=get_token(),	
+	returnFormat=nothing,
 
-	returnMetadataOnly::redcap_bool_input=nothing,
-	records::redcap_array_input=nothing,
-	fields::redcap_array_input=nothing,
-	events::redcap_array_input=nothing,
-	exportSurveyFields::redcap_bool_input=nothing,
-	exportDataAccessGroups::redcap_bool_input=nothing,
-	filterLogic::redcap_filterLogic_input=nothing,
-	exportFiles::redcap_bool_input=nothing,
+	returnMetadataOnly=nothing,
+	records=nothing,
+	fields=nothing,
+	events=nothing,
+	exportSurveyFields=nothing,
+	exportDataAccessGroups=nothing,
+	filterLogic=nothing,
+	exportFiles=nothing,
 	)
 	REDCap.request(;
 		url=REDCap_url(url),
@@ -132,9 +132,9 @@ end
 
 function import_project_info(;
 		format=nothing,
-		data::redcap_data_input,
-	url::redcap_url_input=get_url(),
-	token::redcap_token_input=get_token(),
+		data,
+	url=get_url(),
+	token=get_token(),
 	)
 
 	if REDCap_format(format) != REDCap_format(:csv)
@@ -156,8 +156,8 @@ end
 #=
 function import_project_info(data::Dict;
 		format=nothing,
-	url::redcap_url_input=get_url(),
-	token::redcap_token_input=get_token(),	)
+	url=get_url(),
+	token=get_token(),	)
 	@assert Symbol.(keys(data)) ⊆ [:project_title, :project_language, :purpose, :purpose_other, :project_notes, :custom_record_label, :secondary_unique_field, :is_longitudinal, :surveys_enabled, :scheduling_enabled, :record_autonumbering_enabled, :randomization_enabled, :project_irb_number, :project_grant_number, :project_pi_firstname, :project_pi_lastname, :display_today_now_button, :bypass_branching_erase_field_prompt]
 
 	REDCap.request(;
@@ -172,8 +172,8 @@ end
 #TODO: only the CSV version works here?
 function import_project_info(data::String;
 		format=nothing,
-	url::redcap_url_input=get_url(),
-	token::redcap_token_input=get_token(),	)
+	url=get_url(),
+	token=get_token(),	)
 
 	REDCap.request(;
 		url=REDCap_url(url),

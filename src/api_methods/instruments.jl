@@ -4,10 +4,10 @@ export export_instrument_event_mappings,
 	import_instrument_event_mappings
 
 function export_instrument_event_mappings(;
-	url::redcap_url_input=get_url(),
-	token::redcap_token_input=get_token(),	
-	format::redcap_format_input=nothing,
-	returnFormat::redcap_returnFormat_input=nothing,
+	url=get_url(),
+	token=get_token(),	
+	format=nothing,
+	returnFormat=nothing,
 	arms=nothing,
 	)
 
@@ -22,9 +22,9 @@ function export_instrument_event_mappings(;
 end
 
 function export_instruments(;
-	url::redcap_url_input=get_url(),
-	token::redcap_token_input=get_token(),	
-	format::redcap_format_input=nothing,
+	url=get_url(),
+	token=get_token(),	
+	format=nothing,
 		)
 
 	#TODO: mention in docs that certain permissions are needed for various commands
@@ -37,9 +37,9 @@ function export_instruments(;
 end
 
 function export_PDF(;
-	url::redcap_url_input=get_url(),
-	token::redcap_token_input=get_token(),	
-	returnFormat::redcap_returnFormat_input=nothing,
+	url=get_url(),
+	token=get_token(),	
+	returnFormat=nothing,
 		record=nothing,
 	event=nothing,
 	instrument=nothing,
@@ -62,11 +62,11 @@ function export_PDF(;
 end
 
 function import_instrument_event_mappings(;
-	url::redcap_url_input=get_url(),
-	token::redcap_token_input=get_token(),	
-	format::redcap_format_input=nothing,
-	returnFormat::redcap_returnFormat_input=nothing,
-	data::redcap_data_input,
+	url=get_url(),
+	token=get_token(),	
+	format=nothing,
+	returnFormat=nothing,
+	data,
 	)
 
 	#TODO: Here and throughout, enforce that this function cannot 

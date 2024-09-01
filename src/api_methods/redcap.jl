@@ -1,8 +1,8 @@
 export export_version
 
 function export_version(;
-	url::redcap_url_input=get_url(),
-	token::redcap_token_input=get_token(),	
+	url=get_url(),
+	token=get_token(),	
 	)
 
 	REDCap.request(;

@@ -1,9 +1,9 @@
 export delete_file, export_file, import_file
 
 function delete_file(;
-	url::redcap_url_input=get_url(),
-	token::redcap_token_input=get_token(),	
-	returnFormat::redcap_returnFormat_input=nothing,
+	url=get_url(),
+	token=get_token(),	
+	returnFormat=nothing,
 	record=nothing,
 	field=nothing,
 	event=nothing,
@@ -24,9 +24,9 @@ function delete_file(;
 end
 
 function export_file(;
-	url::redcap_url_input=get_url(),
-	token::redcap_token_input=get_token(),	
-	returnFormat::redcap_returnFormat_input=nothing,
+	url=get_url(),
+	token=get_token(),	
+	returnFormat=nothing,
 	record=nothing,
 	field=nothing,
 	event=nothing,
@@ -47,9 +47,9 @@ function export_file(;
 end
 
 function import_file(;
-	url::redcap_url_input=get_url(),
-	token::redcap_token_input=get_token(),	
-	returnFormat::redcap_returnFormat_input=nothing,
+	url=get_url(),
+	token=get_token(),	
+	returnFormat=nothing,
 	record=nothing,
 	field=nothing,
 	event=nothing,

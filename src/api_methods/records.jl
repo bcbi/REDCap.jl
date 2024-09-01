@@ -6,13 +6,13 @@ export delete_records,
 
 
 function delete_records(;
-	url::redcap_url_input=get_url(),
-	token::redcap_token_input=get_token(),	
-	records::redcap_array_input, #TODO: required?
-	arm::redcap_generic_input=nothing,
-	instrument::redcap_generic_input=nothing,
-	event::redcap_generic_input=nothing,
-	repeat_instance::redcap_generic_input=nothing,
+	url=get_url(),
+	token=get_token(),	
+	records, #TODO: required?
+	arm=nothing,
+	instrument=nothing,
+	event=nothing,
+	repeat_instance=nothing,
 	)
 
 	REDCap.request(
@@ -29,26 +29,26 @@ function delete_records(;
 end
 
 function export_records(;
-	url::redcap_url_input=get_url(),
-	token::redcap_token_input=get_token(),	
-	format::redcap_format_input=nothing,
-	type::redcap_generic_input=nothing,
-	records::redcap_array_input=nothing,
-	fields::redcap_array_input=nothing,
-	forms::redcap_array_input=nothing,
-	events::redcap_array_input=nothing,
-	rawOrLabel::redcap_generic_input=nothing,
-	rawOrLabelHeaders::redcap_generic_input=nothing,
-	exportCheckboxLabel::redcap_bool_input=false,
-	returnFormat::redcap_generic_input=nothing,
-	exportSurveyFields::redcap_bool_input=false,
-	exportDataAccessGroups::redcap_bool_input=false,
-	filterLogic::redcap_filterLogic_input=nothing,
-	dateRangeBegin::redcap_timestamp_input=nothing,
-	dateRangeEnd::redcap_timestamp_input=nothing,
-	csvDelimiter::redcap_generic_input=nothing,
-	decimalCharacter::redcap_generic_input=nothing,
-	exportBlankForGrayFormStatus::redcap_bool_input=nothing
+	url=get_url(),
+	token=get_token(),	
+	format=nothing,
+	type=nothing,
+	records=nothing,
+	fields=nothing,
+	forms=nothing,
+	events=nothing,
+	rawOrLabel=nothing,
+	rawOrLabelHeaders=nothing,
+	exportCheckboxLabel=false,
+	returnFormat=nothing,
+	exportSurveyFields=false,
+	exportDataAccessGroups=false,
+	filterLogic=nothing,
+	dateRangeBegin=nothing,
+	dateRangeEnd=nothing,
+	csvDelimiter=nothing,
+	decimalCharacter=nothing,
+	exportBlankForGrayFormStatus=nothing
 	)
 	REDCap.request(
 		data=REDCap_data(data,REDCap_format(format),xml_tag="records"),
@@ -76,8 +76,8 @@ function export_records(;
 end
 
 function generate_next_record_name(;
-	url::redcap_url_input=get_url(),
-	token::redcap_token_input=get_token(),	
+	url=get_url(),
+	token=get_token(),	
 	)
 
 	REDCap.request(
@@ -89,17 +89,17 @@ end
 
 #if data == nothing, this is an export request
 function import_records(;
-	url::redcap_url_input=get_url(),
-	token::redcap_token_input=get_token(),	
-	format::redcap_format_input=nothing,
-	returnFormat::redcap_returnFormat_input=nothing,
-	type::redcap_generic_input=nothing,
-	overwriteBehavior::redcap_bool_input=nothing,
+	url=get_url(),
+	token=get_token(),	
+	format=nothing,
+	returnFormat=nothing,
+	type=nothing,
+	overwriteBehavior=nothing,
 	forceAutoNumber=nothing,
-	backgroundProcess::redcap_bool_input=nothing,
-	data::redcap_data_input,
-	dateFormat::redcap_generic_input=nothing,
-	csvDelimiter::redcap_generic_input=nothing,
+	backgroundProcess=nothing,
+	data,
+	dateFormat=nothing,
+	csvDelimiter=nothing,
 	returnContent=nothing,
 )
 
@@ -120,11 +120,11 @@ function import_records(;
 end
 
 function rename_record(;
-	url::redcap_url_input=get_url(),
-	token::redcap_token_input=get_token(),	
-	record::redcap_generic_input,
-	new_record_name::redcap_generic_input,
-	arm::redcap_generic_input=nothing,
+	url=get_url(),
+	token=get_token(),	
+	record,
+	new_record_name,
+	arm=nothing,
 	)
 
 	REDCap.request(

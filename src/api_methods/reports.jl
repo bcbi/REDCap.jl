@@ -1,11 +1,11 @@
 export export_reports
 
 function export_reports(;
-	url::redcap_url_input=get_url(),
-	token::redcap_token_input=get_token(),	
-	format::redcap_format_input=nothing,
-	returnFormat::redcap_format_input=nothing,
-	fields::redcap_array_input=nothing,
+	url=get_url(),
+	token=get_token(),	
+	format=nothing,
+	returnFormat=nothing,
+	fields=nothing,
 	report_id=nothing,
 	rawOrLabel=nothing,
 	rawOrLabelHeaders=nothing,

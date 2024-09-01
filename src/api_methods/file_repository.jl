@@ -5,10 +5,10 @@ export create_folder,
 	import_file_from_file_repository
 
 function create_folder(;
-	url::redcap_url_input=get_url(),
-	token::redcap_token_input=get_token(),	
-	format::redcap_format_input=nothing,
-	returnFormat::redcap_returnFormat_input=nothing,
+	url=get_url(),
+	token=get_token(),	
+	format=nothing,
+	returnFormat=nothing,
 		name=nothing,
 folder_id=nothing,
 dag_id=nothing,
@@ -30,10 +30,10 @@ role_id=nothing,
 end
 
 function delete_file_from_file_repository(;
-	url::redcap_url_input=get_url(),
-	token::redcap_token_input=get_token(),	
-	format::redcap_format_input=nothing,
-	returnFormat::redcap_returnFormat_input=nothing,
+	url=get_url(),
+	token=get_token(),	
+	format=nothing,
+	returnFormat=nothing,
 		name=nothing,
 doc_id=nothing,
 )
@@ -49,10 +49,10 @@ doc_id=nothing,
 end
 
 function export_file_from_file_repository(;
-	url::redcap_url_input=get_url(),
-	token::redcap_token_input=get_token(),	
-	format::redcap_format_input=nothing,
-	returnFormat::redcap_returnFormat_input=nothing,
+	url=get_url(),
+	token=get_token(),	
+	format=nothing,
+	returnFormat=nothing,
 		name=nothing,
 doc_id=nothing,
 )
@@ -69,10 +69,10 @@ doc_id=nothing,
 end
 
 function export_list_of_folders(;
-	url::redcap_url_input=get_url(),
-	token::redcap_token_input=get_token(),	
-	format::redcap_format_input=nothing,
-	returnFormat::redcap_returnFormat_input=nothing,
+	url=get_url(),
+	token=get_token(),	
+	format=nothing,
+	returnFormat=nothing,
 		name=nothing,
 folder_id=nothing,
 )
@@ -90,10 +90,10 @@ folder_id=nothing,
 end
 
 function import_file_from_file_repository(;
-	url::redcap_url_input=get_url(),
-	token::redcap_token_input=get_token(),	
-	format::redcap_format_input=nothing,
-	returnFormat::redcap_returnFormat_input=nothing,
+	url=get_url(),
+	token=get_token(),	
+	format=nothing,
+	returnFormat=nothing,
 		name=nothing,
 file=nothing,
 folder_id=nothing,
