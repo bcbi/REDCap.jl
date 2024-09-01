@@ -10,6 +10,7 @@ function delete_records(;
 
 	REDCap.request(
 		url=REDCap_url(url),
+		kwargs = (;
 		token=REDCap_token(token),
 		content=:record,
 		action=REDCap_action(:delete),
@@ -18,6 +19,7 @@ function delete_records(;
 		instrument=instrument,
 		event=event,
 		repeat_instance=repeat_instance,
+		),
 		)
 end
 
@@ -46,6 +48,7 @@ function export_records(;
 	REDCap.request(
 		data=REDCap_data(data,REDCap_format(format),xml_tag="records"),
 		url=REDCap_url(url),
+		kwargs = (;
 		token=REDCap_token(token),
 		content=:record,
 		format=REDCap_format(format), #allows odm, unlike most other format args
@@ -65,6 +68,7 @@ function export_records(;
 		csvDelimiter=csvDelimiter,
 		decimalCharacter=decimalCharacter,
 		exportBlankForGrayFormStatus=exportBlankForGrayFormStatus,
+		),
 		)
 end
 
@@ -75,8 +79,10 @@ function generate_next_record_name(;
 
 	REDCap.request(
 		url=REDCap_url(url),
+		kwargs = (;
 		token=REDCap_token(token),
 		content=:generateNextRecordName,
+		),
 		)
 end
 
@@ -99,6 +105,7 @@ function import_records(;
 	REDCap.request(
 		data=REDCap_data(data,REDCap_format(format),xml_tag="records"),
 		url=REDCap_url(url),
+		kwargs = (;
 		token=REDCap_token(token),
 		content=:record,
 		format=REDCap_format(format), #allows odm, unlike most other format args
@@ -109,6 +116,7 @@ function import_records(;
 		csvDelimiter=csvDelimiter,
 		returnContent=returnContent,
 		returnFormat=REDCap_format(returnFormat),
+		),
 		)
 end
 
@@ -122,12 +130,14 @@ function rename_record(;
 
 	REDCap.request(
 		url=REDCap_url(url),
+		kwargs = (;
 		token=REDCap_token(token),
 		content=:record,
 		action=REDCap_action(:rename),
 		record=record,
 		new_record_name=new_record_name,
 		arm=arm,
+		),
 		)
 end
 

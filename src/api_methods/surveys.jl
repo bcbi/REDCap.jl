@@ -10,6 +10,7 @@ function export_survey_link(;
 
 	REDCap.request(
 		url=REDCap_url(url),
+		kwargs = (;
 		token=REDCap_token(token),
 		       content=:surveyLink,
 		record=record,
@@ -17,6 +18,7 @@ function export_survey_link(;
 		event=event,
 		repeat_instance=repeat_instance,
 		returnFormat=REDCap_format(returnFormat),
+		),
 	)
 end
 
@@ -32,6 +34,7 @@ function export_survey_participants(;
 
 	REDCap.request(
 		url=REDCap_url(url),
+		kwargs = (;
 		token=REDCap_token(token),
 		       content=:participantList,
 		instrument=instrument,
@@ -39,16 +42,19 @@ function export_survey_participants(;
 		repeat_instance=repeat_instance,
 		format=REDCap_format(format),
 		returnFormat=REDCap_format(returnFormat),
+		),
 	)
 end
 
 function export_survey_queue_link(;record=nothing,returnFormat=:xml)
 	REDCap.request(
 		url=REDCap_url(url),
+		kwargs = (;
 		token=REDCap_token(token),
 	       content=:surveyQueueLink,
 		record=record,
 		returnFormat=REDCap_format(returnFormat),
+		),
 	)
 end
 
@@ -63,6 +69,7 @@ function export_survey_return_code(;
 )
 	REDCap.request(
 		url=REDCap_url(url),
+		kwargs = (;
 		token=REDCap_token(token),
 		       content=:surveyLink,
 		record=record,
@@ -70,6 +77,7 @@ function export_survey_return_code(;
 		event=event,
 		repeat_instance=repeat_instance,
 		returnFormat=REDCap_format(returnFormat),
+		),
 	)
 end
 

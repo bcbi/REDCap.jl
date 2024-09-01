@@ -6,9 +6,11 @@ function export_repeating_instruments_and_events(;
 
 	REDCap.request(
 		url=REDCap_url(url),
+		kwargs = (;
 		token=REDCap_token(token),
 		content=:repeatingFormsEvents,
 		format=REDCap_format(format),
+		),
 	)
 end
 
@@ -21,11 +23,13 @@ function import_repeating_instruments_and_events(;
 	)
 
 	REDCap.request(
-		content=:repeatingFormsEvents,
 		url=REDCap_url(url),
+		kwargs = (;
+		content=:repeatingFormsEvents,
 		token=REDCap_token(token),
 		format=REDCap_format(format),
 		returnFormat=REDCap_format(returnFormat),
+		),
 	)
 end
 

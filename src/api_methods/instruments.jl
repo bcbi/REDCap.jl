@@ -8,11 +8,13 @@ function export_instrument_event_mappings(;
 
 	REDCap.request(;
 		url=REDCap_url(url),
+		kwargs = (;
 		token=REDCap_token(token),
 		       content=:formEventMapping,
 		format=REDCap_format(format),
 		arms=arms,
 		returnFormat=REDCap_format(returnFormat),
+		),
 	)
 end
 
@@ -25,9 +27,11 @@ function export_instruments(;
 	#TODO: mention in docs that certain permissions are needed for various commands
 	REDCap.request(;
 		url=REDCap_url(url),
+		kwargs = (;
 		token=REDCap_token(token),
 		       content=:instrument,
 		format=REDCap_format(format),
+		),
 	)
 end
 
@@ -44,6 +48,7 @@ function export_PDF(;
 )
 	REDCap.request(;
 		url=REDCap_url(url),
+		kwargs = (;
 		token=REDCap_token(token),
 		       content=:pdf,
 		record=record,
@@ -53,6 +58,7 @@ function export_PDF(;
 		allRecords=allRecords, #passed vs. value #TODO
 		compactDisplay=compactDisplay,
 		returnFormat=REDCap_format(returnFormat),
+		),
 	)
 end
 
@@ -68,10 +74,12 @@ function import_instrument_event_mappings(;
 	#behave like an export, since the API calls are similar
 	REDCap.request(;
 		url=REDCap_url(url),
+		kwargs = (;
 		token=REDCap_token(token),
 		       content=:formEventMapping,
 		format=REDCap_format(format),
 		data=REDCap_data(data,REDCap_format(format),xml_tag="items"),
 		returnFormat=REDCap_format(returnFormat),
+		),
 	)
 end

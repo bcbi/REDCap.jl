@@ -6,10 +6,10 @@ function delete_arms(;
 
 	REDCap.request(;
 		url=REDCap_url(url),
-		token=REDCap_token(token),
+	kwargs = (;token=REDCap_token(token),
 	       content=:arm,
 	       action=REDCap_action(:import),
-		arms=arms,
+	       arms,),
 	)
 end
 
@@ -23,11 +23,13 @@ function export_arms(;
 
 	REDCap.request(;
 		url=REDCap_url(url),
+		kwargs = (;
 		token=REDCap_token(token),
 	       content=:arm,
 		format=REDCap_format(format),
 		arms=arms,
 		returnFormat=REDCap_format(returnFormat),
+		),
 	)
 end
 
@@ -44,42 +46,14 @@ function import_arms(;
 
 	REDCap.request(;
 		url=REDCap_url(url),
+		data=REDCap_data(data,REDCap_format(format),xml_tag="arms"),
+		kwargs = (;
 		token=REDCap_token(token),
 	       content=:arm,
 		override=override,
 		action=REDCap_action(:import),
 		format=REDCap_format(format),
-		data=REDCap_data(data,REDCap_format(format),xml_tag="arms"),
 		returnFormat=REDCap_format(returnFormat),
+		),
 	)
 end
-
-#=
-julia> arms = export_arms()
-POSTing
-POSTd
-1-element Array{Any,1}:
-Dict{String,Any}(Pair{String,Any}("name", "Arm 1"),Pair{String,Any}("arm_num", 1))
-
-julia> newarm
-Dict{String,Any} with 2 entries:
-"name" => "Arm 1"
-"arm_num" => 1
-
-julia> push!(arms, newarm)
-2-element Array{Any,1}:
-Dict{String,Any}(Pair{String,Any}("name", "Arm 1"),Pair{String,Any}("arm_num", "1"))
-Dict{String,Any}(Pair{String,Any}("name", "Arm 2"),Pair{String,Any}("arm_num", "2"))
-
-julia> import_arms(arms)
-POSTing
-POSTd
-2	<- this should indicate 2 arms added.
-
-julia> export_arms()
-POSTing
-POSTd
-1-element Array{Any,1}:
-Dict{String,Any}(Pair{String,Any}("name", "Arm 1"),Pair{String,Any}("arm_num", 1))
-
-=#

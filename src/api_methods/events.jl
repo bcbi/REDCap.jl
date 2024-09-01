@@ -6,10 +6,12 @@ function delete_events(;
 
 	REDCap.request(;
 		url=REDCap_url(url),
+		kwargs = (;
 		token=REDCap_token(token),
 		       content=:event,
 		       action=REDCap_action(:import),
 		events=events,
+		),
 	)
 end
 
@@ -23,11 +25,13 @@ function export_events(;
 
 	REDCap.request(;
 		url=REDCap_url(url),
+		kwargs = (;
 		token=REDCap_token(token),
 		format=REDCap_format(format),
 		returnFormat=REDCap_format(returnFormat),
 		       content=:event,
 		arms=arms,
+		),
 	)
 end
 
@@ -42,13 +46,15 @@ function import_events(;
 
 	REDCap.request(;
 		url=REDCap_url(url),
+		data=REDCap_data(data,REDCap_format(format),xml_tag="events"),
+		kwargs = (;
 		token=REDCap_token(token),
 		format=REDCap_format(format),
 		returnFormat=REDCap_format(returnFormat),
 		       content=:event,
 		       action=REDCap_action(:import),
 		override=override,
-		data=REDCap_data(data,REDCap_format(format),xml_tag="events"),
+		),
 	)
 end
 

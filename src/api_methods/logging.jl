@@ -14,6 +14,7 @@ function export_logging(;
 	)
 	REDCap.request(;
 	url=REDCap_url(url),
+	kwargs = (;
 	token=REDCap_token(token),
 	content=:log,
 		format=REDCap_format(format),
@@ -24,5 +25,6 @@ function export_logging(;
 		dag=dag,
 		beginTime=REDCap_datetime(beginTime),
 		endTime=REDCap_datetime(endTime),
+	),
 	)
 end

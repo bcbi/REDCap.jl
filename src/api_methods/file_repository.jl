@@ -11,6 +11,7 @@ role_id=nothing,
 
 	REDCap.request(;
 		url=REDCap_url(url),
+		kwargs = (;
 		token=REDCap_token(token),
 		       content=:fileRepository,
 		       action=REDCap_action(:createFolder),
@@ -20,6 +21,7 @@ role_id=nothing,
 		dag_id=dag_id,
 		role_id=role_id,
 		returnFormat=REDCap_format(returnFormat),
+		),
 	)
 end
 
@@ -34,11 +36,13 @@ doc_id=nothing,
 
 	REDCap.request(;
 		url=REDCap_url(url),
+		kwargs = (;
 		token=REDCap_token(token),
 		       content=:fileRepository,
 		       action=REDCap_action(:delete),
 		doc_id=doc_id,
 		returnFormat=REDCap_format(returnFormat),
+		),
 	)
 end
 
@@ -53,12 +57,14 @@ doc_id=nothing,
 
 	REDCap.request(;
 		url=REDCap_url(url),
+		kwargs = (;
 		token=REDCap_token(token),
 		       content=:fileRepository,
 		       action=REDCap_action(:export),
 		doc_id=doc_id,
 		format=REDCap_format(format),
 		returnFormat=REDCap_format(returnFormat),
+		),
 	)
 end
 
@@ -73,6 +79,7 @@ folder_id=nothing,
 
 	REDCap.request(;
 		url=REDCap_url(url),
+		kwargs = (;
 		token=REDCap_token(token),
 		       content=:fileRepository,
 		       action=REDCap_action(:list),
@@ -80,6 +87,7 @@ folder_id=nothing,
 		format=REDCap_format(format),
 		folder_id=folder_id,
 		returnFormat=REDCap_format(returnFormat),
+		),
 	)
 end
 
@@ -95,11 +103,13 @@ folder_id=nothing,
 
 	REDCap.request(;
 		url=REDCap_url(url),
+		kwargs = (;
 		token=REDCap_token(token),
 		       content=:fileRepository,
 		       action=REDCap_action(:import),
 		file=file,
 		folder_id=folder_id,
 		returnFormat=REDCap_format(returnFormat),
+		),
 	)
 end

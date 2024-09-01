@@ -2,9 +2,9 @@
 #There's also a new batchProcess parameter
 
 #TODO: could enforce types here
-function request(; url::URI, data=nothing, odm=nothing, kwargs...)
+function request(; url::URI, data=nothing, odm=nothing, kwargs)
 
-	html_request_body = generate_request_body(; data, odm, kwargs...)
+	html_request_body = generate_request_body(; data, odm, kwargs)
 
 	log_redacted_request(html_request_body)
 
@@ -22,10 +22,10 @@ function request(; url::URI, data=nothing, odm=nothing, kwargs...)
 	return response.body|> String 
 end
 
-function generate_request_body(; data=nothing, odm=nothing, kwargs...)
+function generate_request_body(; data=nothing, odm=nothing, kwargs)
 	html_request_body = Dict{String, String}()
 	if !isempty(kwargs)
-		for (parameter,value) in kwargs
+		for (parameter,value) in pairs(kwargs)
 			append_as_redcap_pair!(html_request_body, parameter, value)
 		end
 	end
@@ -86,7 +86,7 @@ function log_status_code(status)
 		501 => "Not Implemented: The requested method is not implemented.",
 		)
 	message = get(status_codes_message,status,"Unknown")
-	@debug(string("HTTP response", status, message))
+	@debug(string("HTTP response ", status, ", ", message))
 end
 
 #https://github.com/JuliaLang/julia/issues/39774#issuecomment-786797712

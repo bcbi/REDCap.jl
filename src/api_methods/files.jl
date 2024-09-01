@@ -10,6 +10,7 @@ function delete_file(;
 
 	REDCap.request(;
 		url=REDCap_url(url),
+		kwargs = (;
 		token=REDCap_token(token),
 	       content=:file,
 	       action=REDCap_action(:delete),
@@ -18,6 +19,7 @@ function delete_file(;
 		event=event,
 		repeat_instance=repeat_instance,
 		returnFormat=REDCap_format(returnFormat),
+		),
 	)
 end
 
@@ -33,6 +35,7 @@ function export_file(;
 
 	REDCap.request(;
 		url=REDCap_url(url),
+		kwargs = (;
 		token=REDCap_token(token),
 	       content=:file,
 	       action=REDCap_action(:export),
@@ -41,6 +44,7 @@ function export_file(;
 		event=event,
 		repeat_instance=repeat_instance,
 		returnFormat=REDCap_format(returnFormat),
+		),
 	)
 end
 
@@ -57,6 +61,7 @@ function import_file(;
 
 	REDCap.request(;
 		url=REDCap_url(url),
+		kwargs = (;
 		token=REDCap_token(token),
 	       content=:file,
 	       action=REDCap_action(:import),
@@ -66,5 +71,6 @@ function import_file(;
 		repeat_instance=repeat_instance,
 		file=file,
 		returnFormat=REDCap_format(returnFormat),
+		),
 	)
 end

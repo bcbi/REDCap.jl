@@ -14,6 +14,7 @@ function export_reports(;
 
 	REDCap.request(
 		url=REDCap_url(url),
+		kwargs = (;
 		token=REDCap_token(token),
 		content=:report,
 		report_id=report_id,
@@ -24,5 +25,6 @@ function export_reports(;
 		exportCheckboxLabel=exportCheckboxLabel,
 		csvDelimiter=csvDelimiter,
 		decimalCharacter=decimalCharacter,
+		),
 	)
 end
