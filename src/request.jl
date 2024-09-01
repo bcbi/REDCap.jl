@@ -1,7 +1,8 @@
 #TODO: add something to automatically break files into < 500kb chunks?
 #There's also a new batchProcess parameter
 
-function request(; url::URI, data=nothing, odm=nothing,	kwargs...)
+#TODO: could enforce types here
+function request(; url::URI, data=nothing, odm=nothing, kwargs...)
 
 	html_request_body = generate_request_body(; data, odm, kwargs...)
 
@@ -53,11 +54,11 @@ end
 append_as_redcap_pair!(d::Dict, parameter::Symbol, value::Nothing) = nothing
 function append_as_redcap_pair!(parameter::Symbol, value::Array)
 	for (i, item) in enumerate(value)
-		d["$parameter[$(i-1)]"] = string(item)
+		d[string(parameter,'[',i-1,']')] = string(item)
 	end
 end
 function append_as_redcap_pair!(d::Dict, parameter::Symbol, value::redcap_generic_parameter)
-	d[string(parameter)] = "$value"
+	d[string(parameter)] = string(value)
 end
 
 function as_redcap_data(data)
@@ -85,7 +86,7 @@ function log_status_code(status)
 		501 => "Not Implemented: The requested method is not implemented.",
 		)
 	message = get(status_codes_message,status,"Unknown")
-	@debug("HTTP response $status, $message")
+	@debug(string("HTTP response", status, message))
 end
 
 #https://github.com/JuliaLang/julia/issues/39774#issuecomment-786797712

@@ -8,7 +8,7 @@ Base.convert(String,x::REDCap_action) = string(x)
 
 struct REDCap_content 
 	id::Symbol
-	REDCap_content(id) = id ∈ [:arm,:dag,:userDagMapping,:event,:exportFieldNames,:fileRepository,:file,:formEventMapping,:instrument,:pdf,:log,:metadata,:project,:project_settings,:project_xml,:record,:generateNextRecordName,:record,:version,:repeatingFormsEvents,:report,:surveyLink,:participantList,:surveyQueueLink,:userRole,:userRoleMapping,:user,] ? new(id) : throw(ArgumentError("Invalid content parameter"))
+	REDCap_content(id) = id ∈ Set([:arm,:dag,:userDagMapping,:event,:exportFieldNames,:fileRepository,:file,:formEventMapping,:instrument,:pdf,:log,:metadata,:project,:project_settings,:project_xml,:record,:generateNextRecordName,:record,:version,:repeatingFormsEvents,:report,:surveyLink,:participantList,:surveyQueueLink,:userRole,:userRoleMapping,:user,]) ? new(id) : throw(ArgumentError("Invalid content parameter"))
 end
 Base.display(x::REDCap_content) = Base.display(x.id)
 Base.string(x::REDCap_content) = Base.string(x.id)
@@ -26,7 +26,7 @@ REDCap_datetime(x::Nothing) = nothing
 struct REDCap_format
 	id
 	REDCap_format(id::Symbol) = REDCap_format(string(id))
-	REDCap_format(id::String) = lowercase(id) ∈ ["csv","json","xml"] ? new(Symbol(id)) : throw(ArgumentError("Invalid format parameter"))
+	REDCap_format(id::String) = lowercase(id) ∈ Set(["csv","json","xml"]) ? new(Symbol(id)) : throw(ArgumentError("Invalid format parameter"))
 	REDCap_format(id::Nothing) = nothing
 end
 Base.display(x::REDCap_format) = Base.display(x.id)
@@ -36,18 +36,18 @@ Base.convert(String,x::REDCap_format) = string(x)
 #TODO: multiple methods with Val here?
 function REDCap_data(x::Dict, format::Union{Nothing,REDCap_format}; xml_tag=nothing)
 	return if format == REDCap_format(:json)
-		"[$(JSON.json(x))]"
+		string('[',JSON.json(x),']')
 	elseif format == REDCap_format(:csv)
 		join(keys(x),',') * "\n" * join(values(x),',')
 	else # default, assume XML
 		#TODO: this looks ugly and isn't tested. test every data paramater that take an xml_tag
-		attribute = isnothing(xml_tag) ? "" : "<$xml_tag>"
-		close_attribute = isnothing(xml_tag) ? "" : "</$xml_tag>"
+		attribute = isnothing(xml_tag) ? "" : string('<',xml_tag,'>')
+		close_attribute = isnothing(xml_tag) ? "" : string("</",xml_tag,'>')
 
 		"<?xml version=\"1.0\" encoding=\"UTF-8\" ?>" *
 		attribute *
 		"<item>" * 
-		join(["<$k>$v</$k>" for (k,v) in x]) *
+		join([string('<',k,'>',v,"</",k,'>') for (k,v) in x]) *
 		"</item>" *
 		close_attribute
 	end
