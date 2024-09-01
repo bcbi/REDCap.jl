@@ -110,6 +110,7 @@ Instead, they're fixed for each function.
 ### Troubleshooting
 
 If a function call doesn't produce the expected results, try making debug messages visible for this package by running `ENV["JULIA_DEBUG"] = REDCap`.
+The data parameter is converted to a formatted string, so you might try different format parameters (`:csv`, `:json`, or `:xml`).
 Feel free to create an issue for any unexpected errors, or for feature requests.
 
 ## Acknowledgments
