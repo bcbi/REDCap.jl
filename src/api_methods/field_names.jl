@@ -12,7 +12,7 @@ function export_list_of_export_field_names(;
 		token=REDCap_token(token),
 		content=:exportFieldNames,
 		format=REDCap_format(format),
-		field=field, #TODO: This could be a single entry or an array
+		field, #TODO: This could be a single entry or an array
 		returnFormat=REDCap_format(returnFormat),
 		),
 	)

@@ -9,7 +9,7 @@ function delete_users(;
 	token=REDCap_token(token),
 	content=:user,
 	action=:delete,
-		users=users,
+		users,
 		),
 	)
 end

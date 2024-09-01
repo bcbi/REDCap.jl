@@ -9,7 +9,7 @@ function delete_DAGs(;
 		token=REDCap_token(token),
 		content=:dag,
 		action=:delete,
-		dags=dags,
+		dags,
 		),
 	)
 end
@@ -99,7 +99,7 @@ function switch_DAG(;
 		token=REDCap_token(token),
 		       content=:dag,
 		       action=:switch,
-		dag=dag,
+		dag,
 		),
 	)
 end

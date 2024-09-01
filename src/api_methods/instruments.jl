@@ -12,7 +12,7 @@ function export_instrument_event_mappings(;
 		token=REDCap_token(token),
 		       content=:formEventMapping,
 		format=REDCap_format(format),
-		arms=arms,
+		arms,
 		returnFormat=REDCap_format(returnFormat),
 		),
 	)
@@ -51,12 +51,12 @@ function export_PDF(;
 		kwargs = (;
 		token=REDCap_token(token),
 		       content=:pdf,
-		record=record,
-		event=event,
-		instrument=instrument,
-		repeat_instance=repeat_instance,
-		allRecords=allRecords, #passed vs. value #TODO
-		compactDisplay=compactDisplay,
+		record,
+		event,
+		instrument,
+		repeat_instance,
+		allRecords, #passed vs. value #TODO
+		compactDisplay,
 		returnFormat=REDCap_format(returnFormat),
 		),
 	)

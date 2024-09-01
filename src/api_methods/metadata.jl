@@ -14,8 +14,8 @@ function export_metadata(;
 		token=REDCap_token(token),
 		content=:metadata,
 		format=REDCap_format(format),
-		fields=fields,
-		forms=forms,
+		fields,
+		forms,
 		returnFormat=REDCap_format(returnFormat),
 		),
 	)

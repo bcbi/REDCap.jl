@@ -10,7 +10,7 @@ function delete_events(;
 		token=REDCap_token(token),
 		       content=:event,
 		       action=:import,
-		events=events,
+		events,
 		),
 	)
 end
@@ -30,7 +30,7 @@ function export_events(;
 		format=REDCap_format(format),
 		returnFormat=REDCap_format(returnFormat),
 		       content=:event,
-		arms=arms,
+		arms,
 		),
 	)
 end
@@ -53,7 +53,7 @@ function import_events(;
 		returnFormat=REDCap_format(returnFormat),
 		       content=:event,
 		       action=:import,
-		override=override,
+		override,
 		),
 	)
 end

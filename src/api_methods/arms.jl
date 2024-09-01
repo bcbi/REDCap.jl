@@ -27,7 +27,7 @@ function export_arms(;
 		token=REDCap_token(token),
 	       content=:arm,
 		format=REDCap_format(format),
-		arms=arms,
+		arms,
 		returnFormat=REDCap_format(returnFormat),
 		),
 	)
@@ -50,7 +50,7 @@ function import_arms(;
 		kwargs = (;
 		token=REDCap_token(token),
 	       content=:arm,
-		override=override,
+		override,
 		action=:import,
 		format=REDCap_format(format),
 		returnFormat=REDCap_format(returnFormat),

@@ -17,14 +17,14 @@ function export_reports(;
 		kwargs = (;
 		token=REDCap_token(token),
 		content=:report,
-		report_id=report_id,
+		report_id,
 		format=REDCap_format(format), #TODO: format can include odm
 		returnFormat=REDCap_format(returnFormat),
-		rawOrLabel=rawOrLabel,
-		rawOrLabelHeaders=rawOrLabelHeaders,
-		exportCheckboxLabel=exportCheckboxLabel,
-		csvDelimiter=csvDelimiter,
-		decimalCharacter=decimalCharacter,
+		rawOrLabel,
+		rawOrLabelHeaders,
+		exportCheckboxLabel,
+		csvDelimiter,
+		decimalCharacter,
 		),
 	)
 end

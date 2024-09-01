@@ -13,14 +13,14 @@ function create_project(;
 	REDCap.request(;
 		url=REDCap_url(url),
 		data=REDCap_data(data,REDCap_format(format)),#xml_tag="items")
-		odm=odm,
+		odm,
 	kwargs = (;content=:project,
 		format=REDCap_format(format),
 		returnFormat=REDCap_format(returnFormat),
 		token=REDCap_super_token(token),)
 	)
 	#TODO: should format be inferred?
-	#create_project(data;token=token,url=url,format=format,returnFormat=returnFormat,odm=odm)
+	#create_project(data;token=token,url=url,format=format,returnFormat=returnFormat,odm)
 end	
 
 function export_project_info(;
@@ -65,14 +65,14 @@ function export_project_XML(;
 		kwargs = (;
 		token=REDCap_token(token),
 		content=:project_xml,
-		returnMetadataOnly=returnMetadataOnly,
-		records=records,
-		fields=fields,
-		events=events,
-		exportSurveyFields=exportSurveyFields,
-		exportDataAccessGroups=exportDataAccessGroups,
-		filterLogic=filterLogic,
-		exportFiles=exportFiles,
+		returnMetadataOnly,
+		records,
+		fields,
+		events,
+		exportSurveyFields,
+		exportDataAccessGroups,
+		filterLogic,
+		exportFiles,
 		returnFormat=REDCap_format(returnFormat),
 		),
 	)
