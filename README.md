@@ -102,7 +102,7 @@ Generally, the `format` parameter designates user input and the `returnFormat` p
 However, this is not consistent within REDCap.
 REDCap.jl functions are designed to not accept any parameters that have no effect on the result.
 
-## `content` and `action`
+### `content` and `action`
 The `content` and `action` parameters are what define each REDCap method, for the most part.
 In REDCap.jl, these are passed internally and don't need to be supplied by the user.
 Instead, they're fixed for each function.
