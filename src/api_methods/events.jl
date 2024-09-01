@@ -9,7 +9,7 @@ function delete_events(;
 		kwargs = (;
 		token=REDCap_token(token),
 		       content=:event,
-		       action=REDCap_action(:import),
+		       action=:import,
 		events=events,
 		),
 	)
@@ -52,7 +52,7 @@ function import_events(;
 		format=REDCap_format(format),
 		returnFormat=REDCap_format(returnFormat),
 		       content=:event,
-		       action=REDCap_action(:import),
+		       action=:import,
 		override=override,
 		),
 	)

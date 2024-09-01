@@ -8,7 +8,7 @@ function delete_users(;
 	kwargs = (;
 	token=REDCap_token(token),
 	content=:user,
-	action=REDCap_action(:delete),
+	action=:delete,
 		users=users,
 		),
 	)

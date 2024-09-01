@@ -13,7 +13,7 @@ function delete_file(;
 		kwargs = (;
 		token=REDCap_token(token),
 	       content=:file,
-	       action=REDCap_action(:delete),
+	       action=:delete,
 		record=record,
 		field=field,
 		event=event,
@@ -38,7 +38,7 @@ function export_file(;
 		kwargs = (;
 		token=REDCap_token(token),
 	       content=:file,
-	       action=REDCap_action(:export),
+	       action=:export,
 		record=record,
 		field=field,
 		event=event,
@@ -64,7 +64,7 @@ function import_file(;
 		kwargs = (;
 		token=REDCap_token(token),
 	       content=:file,
-	       action=REDCap_action(:import),
+	       action=:import,
 		record=record,
 		field=field,
 		event=event,

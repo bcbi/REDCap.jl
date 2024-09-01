@@ -1,11 +1,3 @@
-struct REDCap_action 
-	id::Symbol
-	REDCap_action(id) = id ∈ [:createFolder,:delete,:export,:import,:list,:rename,:switch] ? new(id) : throw(ArgumentError("Invalid action parameter"))
-end
-Base.display(x::REDCap_action) = Base.display(x.id)
-Base.string(x::REDCap_action) = Base.string(x.id)
-Base.convert(String,x::REDCap_action) = string(x)
-
 #TODO: help users fix formatting errors - I left out the final slash and had trouble debugging
 # Maybe a function that checks for common mistakes
 REDCap_url(x) = occursin(r"^https:\/\/.*\/api\/$", x) ? URIs.URI(x) : throw(ArgumentError("Invalid REDCap url"))

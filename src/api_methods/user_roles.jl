@@ -9,7 +9,7 @@ function delete_user_roles(;
 		kwargs = (;
 		token=REDCap_token(token),
 		content=:userRole,
-		action=REDCap_action(:delete),
+		action=:delete,
 		roles=roles,
 		),
 	)

@@ -13,7 +13,7 @@ function delete_records(;
 		kwargs = (;
 		token=REDCap_token(token),
 		content=:record,
-		action=REDCap_action(:delete),
+		action=:delete,
 		records=records,
 		arm=arm,
 		instrument=instrument,
@@ -133,7 +133,7 @@ function rename_record(;
 		kwargs = (;
 		token=REDCap_token(token),
 		content=:record,
-		action=REDCap_action(:rename),
+		action=:rename,
 		record=record,
 		new_record_name=new_record_name,
 		arm=arm,

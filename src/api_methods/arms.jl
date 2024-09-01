@@ -8,7 +8,7 @@ function delete_arms(;
 		url=REDCap_url(url),
 	kwargs = (;token=REDCap_token(token),
 	       content=:arm,
-	       action=REDCap_action(:import),
+	       action=:import,
 	       arms,),
 	)
 end
@@ -51,7 +51,7 @@ function import_arms(;
 		token=REDCap_token(token),
 	       content=:arm,
 		override=override,
-		action=REDCap_action(:import),
+		action=:import,
 		format=REDCap_format(format),
 		returnFormat=REDCap_format(returnFormat),
 		),

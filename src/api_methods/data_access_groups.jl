@@ -8,7 +8,7 @@ function delete_DAGs(;
 		kwargs = (;
 		token=REDCap_token(token),
 		content=:dag,
-		action=REDCap_action(:delete),
+		action=:delete,
 		dags=dags,
 		),
 	)
@@ -62,7 +62,7 @@ function import_DAGs(;
 		kwargs = (;
 		token=REDCap_token(token),
 		       content=:dag,
-		       action=REDCap_action(:import),
+		       action=:import,
 		format=REDCap_format(format),
 		returnFormat=REDCap_format(returnFormat),
 		),
@@ -98,7 +98,7 @@ function switch_DAG(;
 		kwargs = (;
 		token=REDCap_token(token),
 		       content=:dag,
-		       action=REDCap_action(:switch),
+		       action=:switch,
 		dag=dag,
 		),
 	)
