@@ -6,7 +6,7 @@
 const redcap_token_input = String
 const redcap_super_token_input = redcap_token_input 
 const redcap_any_token_input = Union{redcap_token_input, redcap_super_token_input}
-const redcap_data_input = Union{String, Tuple, NamedTuple, Dict} #TODO: there might be 1 REDCap method where Dict can be nothing, but passing it as an argument has an effect
+const redcap_data_input = Any #Union{String, Tuple, NamedTuple, Dict} #TODO: there might be 1 REDCap method where Dict can be nothing, but passing it as an argument has an effect
 const redcap_filterLogic_input = Union{String, Nothing}
 const redcap_odm_input = Union{String, Nothing}
 const redcap_array_input = Union{Array, Nothing}
@@ -97,6 +97,8 @@ end
 REDCap_data(x::NamedTuple, format::Union{REDCap_format,Nothing}; xml_tag=nothing) = REDCap_data(x |> pairs |> Dict, format, xml_tag=xml_tag)
 #TODO: Add file checking
 REDCap_data(x::String, format::Union{REDCap_format, Nothing}; xml_tag=nothing) = x
+#TODO: handle large files?
+REDCap_data(x::IOStream, format::Union{REDCap_format, Nothing}; xml_tag=nothing) = read(x,String)
 
 struct REDCap_token
 	id::redcap_token_input

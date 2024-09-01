@@ -12,6 +12,10 @@ function create_project(;
 	returnFormat::redcap_returnFormat_input=nothing,
 	odm::redcap_odm_input=nothing,
 	)
+
+	#TODO: it might make sense to check these, but no check is done for formatted strings and file contents
+	#@assert keys(data) ⊆ Set(:project_title, :purpose, :purpose_other, :project_notes, :is_longitudinal, :surveys_enabled, :record_autonumbering_enabled)
+
 	REDCap.request(;
 		       content=REDCap_content(:project),
 		format=REDCap_format(format),
