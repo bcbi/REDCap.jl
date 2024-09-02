@@ -1,5 +1,5 @@
 # REDCap.jl
-[![](https://img.shields.io/badge/docs-latest-blue.svg)](https://bcbi.github.io/REDCap.jl/latest)
+[![](https://img.shields.io/badge/docs-latest-blue.svg)](https://bcbi.github.io/REDCap.jl/)
 
 [REDCap](https://en.wikipedia.org/wiki/REDCap) is a data capture system for scientific research, especially clinical trials.
 REDCap.jl is an API wrapper for REDCap v14, written in Julia.
