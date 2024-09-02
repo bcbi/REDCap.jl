@@ -22,19 +22,17 @@ export_logging(token=project_token)
 
 ## Syntax
 Each REDCap method accepts a number of parameters that follow a shared naming convention.
-Generally, a parameter of a given name shares a similar role in all methods where it can be used.
-Parameters can hold various datatypes and might even be composed of multiple named attributes.
-
 REDCap.jl is designed to closely follow the design and syntax patterns of REDCap.
 Every REDCap API method is available as a function that supplies certain required parameters and checks user inputs for validity.
+
 Return values and REDCap messages are returned as Strings directly, but the documentation shows how these can be parsed in useful ways.
 
 Function arguments are named after REDCap method parameters.
-These are passed as named arguments and take values with intuitive types, with a few exceptions to note:
+These are passed as named arguments and take values with intuitive types.
 
-### Token and URL
-Almost all REDCap methods accept a token that is unique to the project and user.
-A super token can be used to generate a project and project-level token.
+### `token` and `url`
+Nearly all REDCap methods accept a token that is unique to the project and user.
+
 The URL must exactly match this example:
 ```https://example.example/redcap/api/```
 
@@ -44,13 +42,15 @@ You can make them avaiable to REDCap.jl by putting the following lines in [your 
 ENV["REDCAP_API_TOKEN"] = "C0FFEEC0AC0AC0DEC0FFEEC0AC0AC0DE"
 ENV["REDCAP_API_URL"] = "http://example.com/redcap/api/"
 ```
-They can also be passed as ordinary arguments.
+They can also be passed as ordinary named arguments.
+
+A few methods accept a super token, including `create_project`, which can be used to generate a project and project-level token.
 If you have a super token, you might wish to keep that in your startup file, generating and saving project-level tokens as needed.
 
 ### `data`
-The `data` parameter accepts a collection (Dict, NamedTuple, etc.) or a String.
-If you use a a collection, it will be translated internally into whatever `format` you use (xml by default).
-A NamedTuple is the most elegant format:
+The `data` parameter contains a list of attributes.
+In REDCap.jl, this can be a NamedTuple (or any derived type), a file handle, or a String.
+If you use a NamedTuple, it will be translated internally into whatever `format` you use (xml by default).
 ```julia
 import_project_info(
     data=(
@@ -60,7 +60,7 @@ import_project_info(
     returnFormat=:csv,
 )
 ```
-But please keep in mind that a NamedTuple must contain at least one comma:
+But please keep in mind that a NamedTuple with one value must contain a comma:
 ```julia
 import_project_info(
     data=(
@@ -73,7 +73,7 @@ A `Dict` value is fine as well.
 ```julia
 import_project_info(data=Dict(:project_title=>"New name"), returnFormat=:csv)
 ```
-String values are accepted. If the string is a file name, the contents of the file are sent; otherwise, it is sent directly as part of the API request.
+String values are accepted. If the string is a file name, the contents of the file are sent; otherwise, the value is sent directly as part of the API request.
 ```julia
 data_string = """
     [{"data_access_group_name":"CA Site","unique_group_name":"ca_site"},
@@ -107,8 +107,7 @@ The `content` and `action` parameters are what define each REDCap method, for th
 In REDCap.jl, these are passed internally and don't need to be supplied by the user.
 Instead, they're fixed for each function.
 
-### Troubleshooting
-
+## Troubleshooting
 If a function call doesn't produce the expected results, try making debug messages visible for this package by running `ENV["JULIA_DEBUG"] = REDCap`.
 The data parameter is converted to a formatted string, so you might try different format parameters (`:csv`, `:json`, or `:xml`).
 Feel free to create an issue for any unexpected errors, or for feature requests.
