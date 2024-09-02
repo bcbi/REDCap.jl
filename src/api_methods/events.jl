@@ -1,58 +1,25 @@
-export delete_events,
-	import_events,
-	export_events
-
-function delete_events(;
-	url::redcap_url_input=get_url(),
-	token::redcap_token_input=get_token(),	
-		events=nothing,
-		)
-
+function delete_events(; url=get_url(), token=get_token(), events=nothing,)
 	REDCap.request(;
 		url=REDCap_url(url),
-		token=REDCap_token(token),
-		       content=REDCap_content(:event),
-		       action=REDCap_action(:import),
-		events=events,
+		kwargs = (; token=REDCap_token(token), content=:event, action=:import, events,),
 	)
 end
 
-function export_events(;
-	url::redcap_url_input=get_url(),
-	token::redcap_token_input=get_token(),	
-	format::redcap_format_input=nothing,
-	returnFormat::redcap_returnFormat_input=nothing,
-		arms=nothing,
-		)
+function export_events(; url=get_url(), token=get_token(), format=nothing, returnFormat=nothing, arms=nothing,)
 
 	REDCap.request(;
 		url=REDCap_url(url),
-		token=REDCap_token(token),
-		format=REDCap_format(format),
-		returnFormat=REDCap_format(returnFormat),
-		       content=REDCap_content(:event),
-		arms=arms,
+		kwargs = (; token=REDCap_token(token), format=REDCap_format(format), returnFormat=REDCap_format(returnFormat), content=:event, arms,),
 	)
 end
 
-function import_events(;
-	url::redcap_url_input=get_url(),
-	token::redcap_token_input=get_token(),	
-	format::redcap_format_input=nothing,
-	returnFormat::redcap_returnFormat_input=nothing,
-		data=nothing, #TODO: required?
-		override=0,
-		)
+#TODO: data parameter required?
+function import_events(; url=get_url(), token=get_token(), format=nothing, returnFormat=nothing, data=nothing, override=0,)
 
 	REDCap.request(;
 		url=REDCap_url(url),
-		token=REDCap_token(token),
-		format=REDCap_format(format),
-		returnFormat=REDCap_format(returnFormat),
-		       content=REDCap_content(:event),
-		       action=REDCap_action(:import),
-		override=override,
 		data=REDCap_data(data,REDCap_format(format),xml_tag="events"),
+		kwargs = (; token=REDCap_token(token), format=REDCap_format(format), returnFormat=REDCap_format(returnFormat), content=:event, action=:import, override,),
 	)
 end
 

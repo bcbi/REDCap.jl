@@ -1,13 +1,6 @@
-export export_version
-
-function export_version(;
-	url::redcap_url_input=get_url(),
-	token::redcap_token_input=get_token(),	
-	)
-
+function export_version(; url=get_url(), token=get_token(),)
 	REDCap.request(;
 		url=REDCap_url(url),
-		token=REDCap_token(token),
-		content=REDCap_content(:version),
+		kwargs = (; token=REDCap_token(token), content=:version,),
 	)
 end

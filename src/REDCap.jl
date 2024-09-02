@@ -7,6 +7,7 @@ using URIs
 
 include("types.jl")
 
+include("export.jl")
 include("request.jl")
 include("utils.jl")
 include("api_methods/arms.jl")

@@ -4,6 +4,7 @@ using Test
 using Dates
 using DataFrames
 
+#TODO: test file handle data parameter
 #TODO: I have to rewrite these tests...
 # I can't just use a tempname, since the file handle gets parsed...
 # Maybe just add a method definition for file handles?
