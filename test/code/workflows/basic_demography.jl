@@ -19,7 +19,7 @@ field_names = export_list_of_export_field_names(token=demography_token, format=:
        ]
 
 import_records(token=demography_token,data=(record_id=1,first_name="A",last_name="Person"))
-@test generate_next_record_name(token=demography_token) == "2"
+@test "2" == generate_next_record_name(token=demography_token)
 for i in 2:4
 	import_records(
 	       token=demography_token,
@@ -28,4 +28,6 @@ for i in 2:4
 			first_name = "A",
 			last_name = "NotherPerson"))
 end
-@test generate_next_record_name(token=demography_token) == "5"
+@test "5" == generate_next_record_name(token=demography_token)
+@test ["A","A","A","A"] == DataFrame(export_records(fields=[:age, :bmi, :first_name],token=demography_token,format=:json) |> JSON.parse).first_name
+

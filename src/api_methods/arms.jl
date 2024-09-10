@@ -1,3 +1,10 @@
+#TODO: consider changing all functions to the following form:
+#=
+function delete_arms(;kwargs...)
+    REDCap.request(;kwargs...)
+end
+=#
+
 function delete_arms(; url=get_url(), token=get_token(), arms=nothing,)
 	REDCap.request(;
 		url=REDCap_url(url),
