@@ -9,7 +9,6 @@ end
 #TODO: this format parameter allows odm, unlike most other format args
 function export_records(; url=get_url(), token=get_token(), format=nothing, type=nothing, records=nothing, fields=nothing, forms=nothing, events=nothing, rawOrLabel=nothing, rawOrLabelHeaders=nothing, exportCheckboxLabel=false, returnFormat=nothing, exportSurveyFields=false, exportDataAccessGroups=false, filterLogic=nothing, dateRangeBegin=nothing, dateRangeEnd=nothing, csvDelimiter=nothing, decimalCharacter=nothing, exportBlankForGrayFormStatus=nothing)
 	REDCap.request(
-		data=REDCap_data(data,REDCap_format(format),xml_tag="records"),
 		url=REDCap_url(url),
 		kwargs = (; token=REDCap_token(token), content=:record, format=REDCap_format(format), type, records, forms, events, rawOrLabel, rawOrLabelHeaders, exportCheckboxLabel, returnFormat=REDCap_format(returnFormat), exportSurveyFields, exportDataAccessGroups, filterLogic, dateRangeBegin, dateRangeEnd, csvDelimiter, decimalCharacter, exportBlankForGrayFormStatus,),
 		)
