@@ -58,15 +58,3 @@ REDCap_data(x::NamedTuple, format::Union{REDCap_format,Nothing}; xml_tag=nothing
 REDCap_data(x::String, format::Union{REDCap_format, Nothing}; xml_tag=nothing) = x
 #TODO: handle large files?
 REDCap_data(x::IOStream, format::Union{REDCap_format, Nothing}; xml_tag=nothing) = read(x,String)
-
-
-struct REDCap_listlike
-	id
-	REDCap_listlike(id::Vector) = join(id, ',')
-	REDCap_listlike(id::String) = id
-	REDCap_listlike(id::Nothing) = nothing
-end
-Base.display(x::REDCap_listlike) = Base.display(x.id)
-Base.string(x::REDCap_listlike) = Base.string(x.id)
-Base.convert(String,x::REDCap_listlike) = string(x)
-
