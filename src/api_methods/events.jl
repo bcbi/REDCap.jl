@@ -14,7 +14,7 @@ function export_events(; url=get_url(), token=get_token(), format=nothing, retur
 end
 
 #TODO: data parameter required?
-function import_events(; url=get_url(), token=get_token(), format=nothing, returnFormat=nothing, data=nothing, override=0,)
+function import_events(; url=get_url(), token=get_token(), format=nothing, returnFormat=nothing, data=nothing, override=nothing,)
 
 	REDCap.request(;
 		url=REDCap_url(url),

@@ -15,7 +15,7 @@ end
 #All examples use JSON
 #TODO: what is the proper format for multi-item XML? I can't find this anywhere...
 # #TODO: is this ata paratamet required, given the action parameter?
-function import_arms(; url=get_url(), token=get_token(), format=nothing, data=nothing, returnFormat=nothing, override=0,)
+function import_arms(; url=get_url(), token=get_token(), format=nothing, data=nothing, returnFormat=nothing, override=nothing,)
 	REDCap.request(;
 		url=REDCap_url(url),
 		data=REDCap_data(data,REDCap_format(format),xml_tag="arms"),
