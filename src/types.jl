@@ -1,3 +1,4 @@
+#TODO: It might make sense to deprecate all internal types, instead checking values based on argument name
 REDCap_url(x) = occursin(r"^https:\/\/.*\/api\/$", x) ? URIs.URI(x) : throw(ArgumentError("Invalid REDCap url (must be \"https:// ... /api/\")"))
 
 REDCap_datetime(x::String) = DateTime(x,"yyyy-m-dd H:M")
