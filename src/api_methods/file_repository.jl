@@ -26,6 +26,7 @@ function export_list_of_folders(; url=get_url(), token=get_token(), format=nothi
 		kwargs = (; token=REDCap_token(token), content=:fileRepository, action=:list, name, format=REDCap_format(format), folder_id, returnFormat=REDCap_format(returnFormat),),
 	)
 end
+export_folders = export_list_of_folders
 
 function import_file_from_file_repository(; url=get_url(), token=get_token(), format=nothing, returnFormat=nothing, name=nothing, file=nothing, folder_id=nothing,)
 	REDCap.request(;

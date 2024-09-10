@@ -52,9 +52,11 @@ function generate_request_body(; data=nothing, odm=nothing, kwargs)
 end
 
 append_as_redcap_pair!(d::Dict, parameter::Symbol, value::Nothing) = nothing
-function append_as_redcap_pair!(parameter::Symbol, value::Array)
+function append_as_redcap_pair!(d::Dict, parameter::Symbol, value::Vector)
 	for (i, item) in enumerate(value)
-		d[string(parameter,'[',i-1,']')] = string(item)
+		# I believe either method should work:
+		d[string(parameter)] = join(value, ',')
+		#d[string(parameter,'[',i-1,']')] = string(item)
 	end
 end
 function append_as_redcap_pair!(d::Dict, parameter::Symbol, value)
