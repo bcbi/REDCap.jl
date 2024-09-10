@@ -10,7 +10,7 @@ end
 function export_records(; url=get_url(), token=get_token(), format=nothing, type=nothing, records=nothing, fields=nothing, forms=nothing, events=nothing, rawOrLabel=nothing, rawOrLabelHeaders=nothing, exportCheckboxLabel=nothing, returnFormat=nothing, exportSurveyFields=nothing, exportDataAccessGroups=nothing, filterLogic=nothing, dateRangeBegin=nothing, dateRangeEnd=nothing, csvDelimiter=nothing, decimalCharacter=nothing, exportBlankForGrayFormStatus=nothing)
 	REDCap.request(
 		url=REDCap_url(url),
-		kwargs = (; token=REDCap_token(token), content=:record, format=REDCap_format(format), type, records, forms, events, rawOrLabel, rawOrLabelHeaders, exportCheckboxLabel, returnFormat=REDCap_format(returnFormat), exportSurveyFields, exportDataAccessGroups, filterLogic, dateRangeBegin, dateRangeEnd, csvDelimiter, decimalCharacter, exportBlankForGrayFormStatus,),
+		kwargs = (; token=REDCap_token(token), content=:record, format=REDCap_format(format), type, records, fields, forms, events, rawOrLabel, rawOrLabelHeaders, exportCheckboxLabel, returnFormat=REDCap_format(returnFormat), exportSurveyFields, exportDataAccessGroups, filterLogic, dateRangeBegin, dateRangeEnd, csvDelimiter, decimalCharacter, exportBlankForGrayFormStatus,),
 		)
 end
 
