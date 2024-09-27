@@ -6,6 +6,8 @@ function delete_records(; url=get_url(), token=get_token(), records, arm=nothing
 		)
 end
 
+#TODO: There's some sort of field that just holds text, or ther fields, or something like that
+#TODO: if you try to pull it, there will be no error, but it wn't exist in the output
 #TODO: this format parameter allows odm, unlike most other format args
 # The REDCap_listlike turns an input like [:a, :b, :c] into "a, b, c"
 # TODO: what other parameters need this sort of treatment?
