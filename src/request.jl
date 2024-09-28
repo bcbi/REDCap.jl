@@ -1,8 +1,7 @@
 #TODO: add something to automatically break files into < 500kb chunks?
 #There's also a new batchProcess parameter
 
-#TODO: could enforce types here
-function request(; url::URI, data=nothing, odm=nothing, kwargs)
+function request(; url, data=nothing, odm=nothing, kwargs)
 
 	html_request_body = generate_request_body(; data, odm, kwargs)
 
