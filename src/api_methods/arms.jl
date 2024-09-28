@@ -1,12 +1,7 @@
 """
 	function delete_arms(; url=get_url(), token=get_token(), arms,)
 
-# Description
 Delete study arms from a REDCap project
-
-# Requirements
-Requires API Import/Update and Project Design/Setup priveleges.
-Project must be in "Development" status.
 
 # Notes
 If no value is provided for `arms`, all study arms are returned.
@@ -28,11 +23,7 @@ end
 """
 	function export_arms(; url=get_url(), token=get_token(), format=nothing, returnFormat=nothing, arms=nothing,)
 
-# Description
 Export a REDCap project's study arms
-
-# Requirements
-Requires API Export priveleges
 
 # Notes
 If no value is provided for `arms`, all study arms are returned.
@@ -52,14 +43,9 @@ function export_arms(; url=get_url(), token=get_token(), format=nothing, arms=no
 end
 
 """
-	function import_arms(; url=get_url(), token=get_token(), format=nothing, data=nothing, returnFormat=nothing, override=nothing,)
+	function import_arms(; url=get_url(), token=get_token(), format=nothing, data, returnFormat=nothing, override=nothing,)
 
-# Description
 Import new study arms to a REDCap project, or rename existing arms
-
-# Requirements
-Requires API Import/Update and Project Design/Setup priveleges.
-Project must be in "Development" status.
 
 # Notes
 Deleting a study arm deletes any included records and data.
@@ -69,10 +55,12 @@ Deleting a study arm deletes any included records and data.
 - `token`: an API token specific to the REDCap project and username (read from `ENV["REDCAP_API_TOKEN"]` by default)
 - `arms`: names of study arms (can be scalar or vector)
 - `override`: if true, all existing arms are erased; if false (default), existing arms can only be renamed
-- `data`: Contains attributes `arm_num` and `name`
+- `data`: May be a String, a file name, or a data type such as NamedTuple or Dict
+- `format`: the format of the `data` input parameter: `:csv`, `:json`, or `:xml` (default). If `data` is a String or a file name, this value must indicate the correct format. If `data` is a NamedTuple, Dict, or similar type, this value will determine what format will be used internally to pass on the data.
+- `returnFormat`: the desired output format: `:csv`, `:json`, or `:xml` (default)
 
 """
-function import_arms(; url=get_url(), token=get_token(), format=nothing, data=nothing, returnFormat=nothing, override=nothing,)
+function import_arms(; url=get_url(), token=get_token(), format=nothing, data, returnFormat=nothing, override=nothing,)
 	REDCap.request(;
 		url=REDCap_url(url),
 		data=REDCap_data(data,REDCap_format(format),xml_tag="arms"),
