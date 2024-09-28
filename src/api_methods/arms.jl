@@ -5,7 +5,27 @@ function delete_arms(;kwargs...)
 end
 =#
 
-function delete_arms(; url=get_url(), token=get_token(), arms=nothing,)
+"""
+	function delete_arms(; url=get_url(), token=get_token(), arms,)
+
+# Description
+Delete study arms from a REDCap project
+
+# Requirements
+Requires API Import/Update and Project Design/Setup priveleges.
+Project must be in "Development" status.
+
+# Notes
+If no value is provided for `arms`, all study arms are returned.
+Deleting a study arm deletes any included records and data.
+
+# Named arguments
+- `url`: (read from `ENV["REDCap_url"]` by default)
+- `token`: an API token specific to the REDCap project and username (read from `ENV["REDCap_token"]` by default)
+- `arms`: names of study arms (can be scalar or vector)
+
+"""
+function delete_arms(; url=get_url(), token=get_token(), arms,)
 	REDCap.request(;
 		url=REDCap_url(url),
 		kwargs = (;token=REDCap_token(token), content=:arm, action=:import, arms,),
@@ -15,19 +35,26 @@ end
 """
 	function export_arms(; url=get_url(), token=get_token(), format=nothing, returnFormat=nothing, arms=nothing,)
 
-Export a REDCap project's study arms (requires API Export priveleges)
+# Description
+Export a REDCap project's study arms
 
-Named arguments:
+# Requirements
+Requires API Export priveleges
+
+# Notes
+If no value is provided for `arms`, all study arms are returned.
+
+Named arguments
 - `url`: (read from `ENV["REDCap_url"]` by default)
 - `token`: an API token specific to the REDCap project and username (read from `ENV["REDCap_token"]` by default)
-- `format`:
-- `arms`:
+- `format`: the desired output format: `:csv`, `:json`, or `:xml` (default)
+- `arms`: names of study arms (can be scalar or vector)
 
 """
 function export_arms(; url=get_url(), token=get_token(), format=nothing, arms=nothing,)
 	REDCap.request(;
 		url=REDCap_url(url),
-		kwargs = (; token=REDCap_token(token), content=:arm, format=REDCap_format(format), arms, returnFormat=REDCap_format(returnFormat),),
+		kwargs = (; token=REDCap_token(token), content=:arm, format=REDCap_format(format), arms,),
 	)
 end
 
