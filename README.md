@@ -21,7 +21,7 @@ delete_records(token=project_token, records=[2,3])
 export_logging(token=project_token)
 ```
 
-For more details, see the internal documentation (`?REDCap`).
+For more details, see the internal documentation (`help?> REDCap`).
 
 ## Acknowledgments
 The contributors are grateful for the support of Mary McGrath, Paul Stey, Fernando Gelin, the Brown Data Science Institute, the Brown Center for Biomedical Informatics, and the Tufts CTSI Informatics team.
