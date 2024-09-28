@@ -13,8 +13,8 @@ If no value is provided for `arms`, all study arms are returned.
 Deleting a study arm deletes any included records and data.
 
 # Named arguments
-- `url`: (read from `ENV["REDCap_url"]` by default)
-- `token`: an API token specific to the REDCap project and username (read from `ENV["REDCap_token"]` by default)
+- `url`: (read from `ENV["REDCAP_API_URL"]` by default)
+- `token`: an API token specific to the REDCap project and username (read from `ENV["REDCAP_API_TOKEN"]` by default)
 - `arms`: names of study arms (can be scalar or vector)
 
 """
@@ -38,8 +38,8 @@ Requires API Export priveleges
 If no value is provided for `arms`, all study arms are returned.
 
 # Named arguments
-- `url`: (read from `ENV["REDCap_url"]` by default)
-- `token`: an API token specific to the REDCap project and username (read from `ENV["REDCap_token"]` by default)
+- `url`: (read from `ENV["REDCAP_API_URL"]` by default)
+- `token`: an API token specific to the REDCap project and username (read from `ENV["REDCAP_API_TOKEN"]` by default)
 - `format`: the desired output format: `:csv`, `:json`, or `:xml` (default)
 - `arms`: names of study arms (can be scalar or vector)
 
@@ -65,8 +65,8 @@ Project must be in "Development" status.
 Deleting a study arm deletes any included records and data.
 
 # Named arguments
-- `url`: (read from `ENV["REDCap_url"]` by default)
-- `token`: an API token specific to the REDCap project and username (read from `ENV["REDCap_token"]` by default)
+- `url`: (read from `ENV["REDCAP_API_URL"]` by default)
+- `token`: an API token specific to the REDCap project and username (read from `ENV["REDCAP_API_TOKEN"]` by default)
 - `arms`: names of study arms (can be scalar or vector)
 - `override`: if true, all existing arms are erased; if false (default), existing arms can only be renamed
 - `data`: Contains attributes `arm_num` and `name`
