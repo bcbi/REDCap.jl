@@ -1,3 +1,7 @@
+"""
+REDCap API methods are defined as named Julia functions.
+The `content` and `action` parameters are managed internally.
+"""
 module REDCap
 
 using Dates
