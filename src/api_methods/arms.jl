@@ -1,10 +1,3 @@
-#TODO: consider changing all functions to the following form:
-#=
-function delete_arms(;kwargs...)
-    REDCap.request(;kwargs...)
-end
-=#
-
 """
 	function delete_arms(; url=get_url(), token=get_token(), arms,)
 
@@ -44,7 +37,7 @@ Requires API Export priveleges
 # Notes
 If no value is provided for `arms`, all study arms are returned.
 
-Named arguments
+# Named arguments
 - `url`: (read from `ENV["REDCap_url"]` by default)
 - `token`: an API token specific to the REDCap project and username (read from `ENV["REDCap_token"]` by default)
 - `format`: the desired output format: `:csv`, `:json`, or `:xml` (default)
@@ -58,9 +51,27 @@ function export_arms(; url=get_url(), token=get_token(), format=nothing, arms=no
 	)
 end
 
-#All examples use JSON
-#TODO: what is the proper format for multi-item XML? I can't find this anywhere...
-# #TODO: is this ata paratamet required, given the action parameter?
+"""
+	function import_arms(; url=get_url(), token=get_token(), format=nothing, data=nothing, returnFormat=nothing, override=nothing,)
+
+# Description
+Import new study arms to a REDCap project, or rename existing arms
+
+# Requirements
+Requires API Import/Update and Project Design/Setup priveleges.
+Project must be in "Development" status.
+
+# Notes
+Deleting a study arm deletes any included records and data.
+
+# Named arguments
+- `url`: (read from `ENV["REDCap_url"]` by default)
+- `token`: an API token specific to the REDCap project and username (read from `ENV["REDCap_token"]` by default)
+- `arms`: names of study arms (can be scalar or vector)
+- `override`: if true, all existing arms are erased; if false (default), existing arms can only be renamed
+- `data`: Contains attributes `arm_num` and `name`
+
+"""
 function import_arms(; url=get_url(), token=get_token(), format=nothing, data=nothing, returnFormat=nothing, override=nothing,)
 	REDCap.request(;
 		url=REDCap_url(url),
