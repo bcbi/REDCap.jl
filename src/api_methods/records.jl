@@ -1,3 +1,5 @@
+#TODO: add functino to delete all records
+
 #TODO: is records required
 function delete_records(; url=get_url(), token=get_token(), records, arm=nothing, instrument=nothing, event=nothing, repeat_instance=nothing,)
 	REDCap.request(

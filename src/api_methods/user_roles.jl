@@ -1,3 +1,4 @@
+#TODO: You have to clear the unique_role_name column to import the roles you've exported from another project
 function delete_user_roles(; url=get_url(), token=get_token(), users=nothing,)
 	REDCap.request(
 		url=REDCap_url(url),
