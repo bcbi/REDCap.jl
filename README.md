@@ -109,9 +109,11 @@ In REDCap.jl, these are passed internally and don't need to be supplied by the u
 Instead, they're fixed for each function.
 
 ## Troubleshooting
-If a function call doesn't produce the expected results, try making debug messages visible for this package by running `ENV["JULIA_DEBUG"] = REDCap`.
-The data parameter is converted to a formatted string, so you might try different format parameters (`:csv`, `:json`, or `:xml`).
-Feel free to create an issue for any unexpected errors, or for feature requests.
+- If a function call doesn't produce the expected results, try making debug messages visible for this package by running `ENV["JULIA_DEBUG"] = REDCap`.
+- The `data` parameter is converted to a formatted string, so you might try different format parameters (`:csv`, `:json`, or `:xml`).
+If you're uncertain about the format for an input data parameter, try setting up an example in the browser and exporting the data.
+You may have to remove the values for certain generated columns before importing.
+- Feel free to create an issue for any unexpected errors, or for feature requests.
 
 ## Acknowledgments
 The contributors are grateful for the support of Mary McGrath, Paul Stey, Fernando Gelin, the Brown Data Science Institute, the Brown Center for Biomedical Informatics, and the Tufts CTSI Informatics team.
