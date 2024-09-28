@@ -52,14 +52,19 @@ function generate_request_body(; data=nothing, odm=nothing, kwargs)
 end
 
 append_as_redcap_pair!(d::Dict, parameter::Symbol, value::Nothing) = nothing
+#TODO: deprecate this method, since we can filter by parameter name
 function append_as_redcap_pair!(d::Dict, parameter::Symbol, value::Vector)
-			println("$parameter: $value")
 	for (i, item) in enumerate(value)
 		d[string(parameter,'[',i-1,']')] = string(item)
 	end
 end
 function append_as_redcap_pair!(d::Dict, parameter::Symbol, value)
-	d[string(parameter)] = string(value)
+	#TODO: add all parameter names that take vector values
+	if parameter ∈ Set([:arms, :records])
+		d[string(parameter,"[0]")] = string(value)
+	else
+		d[string(parameter)] = string(value)
+	end
 end
 
 function as_redcap_data(data)
