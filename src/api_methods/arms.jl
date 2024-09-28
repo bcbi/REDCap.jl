@@ -21,11 +21,10 @@ Named arguments:
 - `url`: (read from `ENV["REDCap_url"]` by default)
 - `token`: an API token specific to the REDCap project and username (read from `ENV["REDCap_token"]` by default)
 - `format`:
-- `returnFormat`:
 - `arms`:
 
 """
-function export_arms(; url=get_url(), token=get_token(), format=nothing, returnFormat=nothing, arms=nothing,)
+function export_arms(; url=get_url(), token=get_token(), format=nothing, arms=nothing,)
 	REDCap.request(;
 		url=REDCap_url(url),
 		kwargs = (; token=REDCap_token(token), content=:arm, format=REDCap_format(format), arms, returnFormat=REDCap_format(returnFormat),),
