@@ -1,6 +1,12 @@
+#TODO: some import methods can be used to delete entries
+# Should this behavior be migrated to delete_* functions?
+
 """
 REDCap API methods are defined as named Julia functions.
 The `content` and `action` parameters are managed internally.
+
+Function docstrings indicate how to use the Julia functions.
+Refer to the official documentation for detailed specifications on the corresponding REDCap methods.
 """
 module REDCap
 
