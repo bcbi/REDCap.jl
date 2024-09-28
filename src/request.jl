@@ -53,10 +53,9 @@ end
 
 append_as_redcap_pair!(d::Dict, parameter::Symbol, value::Nothing) = nothing
 function append_as_redcap_pair!(d::Dict, parameter::Symbol, value::Vector)
+			println("$parameter: $value")
 	for (i, item) in enumerate(value)
-		# I believe either method should work:
-		d[string(parameter)] = join(value, ',')
-		#d[string(parameter,'[',i-1,']')] = string(item)
+		d[string(parameter,'[',i-1,']')] = string(item)
 	end
 end
 function append_as_redcap_pair!(d::Dict, parameter::Symbol, value)
