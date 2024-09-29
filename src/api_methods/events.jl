@@ -12,7 +12,7 @@ Delete Events from a longitudinal REDCap project
 function delete_events(; url=get_url(), token=get_token(), events=nothing,)
 	REDCap.request(;
 		url=REDCap_url(url),
-		kwargs = (; token=REDCap_token(token), content=:event, action=:import, events,),
+		kwargs = (; token=REDCap_token(token), content=:event, action=:delete, events,),
 	)
 end
 
