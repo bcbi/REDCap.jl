@@ -86,9 +86,8 @@ In REDCap.jl, it would be considered a bug for `import_project_data` to ever act
 Supported options are `:csv`, `:json`, `:xml` (the default value), and sometimes `:odm`.
 These values can be passed as Strings or Symbols.
 
-Generally, the `format` parameter designates user input and the `returnFormat` parameter applies to REDCap messages and return values.
-However, this is not consistent within REDCap.
-REDCap.jl functions are designed to not accept any parameters that have no effect on the result.
+For import methods, the `format` parameter designates user input and the `returnFormat` parameter applies to REDCap messages and return values.
+Otherwise, there is only a single `format` parameter that applied to REDCap messages and return values.
 
 ### `content` and `action`
 The `content` and `action` parameters are what define each REDCap method, for the most part.

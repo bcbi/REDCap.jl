@@ -1,5 +1,5 @@
 """
-	function export_instrument_event_mappings(; url=get_url(), token=get_token(), format=nothing, , arms=nothing,)
+	function export_instrument_event_mappings(; url=get_url(), token=get_token(), format=nothing, arms=nothing,)
 
 Export mappings of data collection instruments onto designated Events for a longitudinal REDCap project
 
@@ -10,7 +10,7 @@ Export mappings of data collection instruments onto designated Events for a long
 - `arms`: study arms from which to pull events (all are inclued by default)
 
 """
-function export_instrument_event_mappings(; url=get_url(), token=get_token(), format=nothing, , arms=nothing,)
+function export_instrument_event_mappings(; url=get_url(), token=get_token(), format=nothing, arms=nothing,)
 	REDCap.request(;
 		url=REDCap_url(url),
 		kwargs = (; token=REDCap_token(token), content=:formEventMapping, format=REDCap_format(format), arms, returnFormat=REDCap_format(returnFormat),),
