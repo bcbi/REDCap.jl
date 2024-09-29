@@ -1,5 +1,6 @@
 #TODO: What permissible values for logtype?
 """
+	function export_logging(; url=get_url(), token=get_token(), format=nothing, logtype=nothing, user=nothing, record=nothing, dag=nothing, beginTime=nothing, endTime=nothing,)
 
 Export mappings of data collection instruments onto designated Events for a longitudinal REDCap project
 
