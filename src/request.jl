@@ -59,7 +59,7 @@ function append_as_redcap_pair!(d::Dict, parameter::Symbol, value::Vector)
 end
 function append_as_redcap_pair!(d::Dict, parameter::Symbol, value)
 	#TODO: add all parameter names that take vector values
-	if parameter ∈ Set([:arms, :dags, :events, :field, :fields, :forms, :records, :users])
+	if parameter ∈ Set([:arms, :dags, :events, :field, :fields, :forms, :records, :roles, :users])
 		d[string(parameter,"[0]")] = string(value)
 	else
 		d[string(parameter)] = string(value)
