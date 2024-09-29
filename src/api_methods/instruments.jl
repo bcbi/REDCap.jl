@@ -13,7 +13,7 @@ Export mappings of data collection instruments onto designated Events for a long
 function export_instrument_event_mappings(; url=get_url(), token=get_token(), format=nothing, arms=nothing,)
 	REDCap.request(;
 		url=REDCap_url(url),
-		kwargs = (; token=REDCap_token(token), content=:formEventMapping, format=REDCap_format(format), arms, returnFormat=REDCap_format(returnFormat),),
+		kwargs = (; token=REDCap_token(token), content=:formEventMapping, format=REDCap_format(format), arms,),
 	)
 end
 

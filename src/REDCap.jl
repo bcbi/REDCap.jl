@@ -36,7 +36,8 @@ A few methods accept a super token, including `create_project`, which can be use
 If you have a super token, you might wish to keep that in your startup file, generating and saving project-level tokens as needed.
 
 ### `data`
-The `data` parameter contains a list of attributes.
+The `data` parameter contains a list of attributes, which varies between REDCap methods.
+For definitive attribute lists, see the official REDCap documentation.
 In REDCap.jl, this can be a NamedTuple (or any derived type), a file handle, or a String.
 If you use a NamedTuple, it will be translated internally into whatever `format` you use (xml by default).
 ```julia
@@ -87,7 +88,7 @@ Supported options are `:csv`, `:json`, `:xml` (the default value), and sometimes
 These values can be passed as Strings or Symbols.
 
 For import methods, the `format` parameter designates user input and the `returnFormat` parameter applies to REDCap messages and return values.
-Otherwise, there is only a single `format` parameter that applied to REDCap messages and return values.
+Otherwise, there is generally only a single `format` parameter that applies to REDCap messages and return values.
 
 ### `content` and `action`
 The `content` and `action` parameters are what define each REDCap method, for the most part.

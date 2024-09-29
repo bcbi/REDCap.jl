@@ -1,3 +1,4 @@
+#TODO: test handlind parameters with scalar and vector inputs
 using REDCap
 using JSON
 using Test
