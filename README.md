@@ -6,19 +6,20 @@ REDCap.jl is an API wrapper for REDCap v14, written in Julia.
 
 ## Examples
 ```julia
-using REDCap
+pkg> activate --temp; add REDCap
+julia> using REDCap
 
-export_version()
+julia> export_version()
 
-project_token = create_project(
+julia> project_token = create_project(
   data = (project_title = "Test Project", purpose = 0),
   odm = "Data_Dictionary.xml")
 
-import_records(token=project_token, data="example.csv", format=:csv)
+julia> import_records(token=project_token, data="example.csv", format=:csv)
 
-delete_records(token=project_token, records=[2,3])
+julia> delete_records(token=project_token, records=[2,3])
 
-export_logging(token=project_token)
+julia> export_logging(token=project_token)
 ```
 
 For more details, see the internal documentation (`help?> REDCap`).
