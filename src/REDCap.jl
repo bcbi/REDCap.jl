@@ -64,11 +64,11 @@ import_project_info(data=Dict(:project_title=>"New name"), returnFormat=:csv)
 ```
 String values are accepted. If the string is a file name, the contents of the file are sent; otherwise, the value is sent directly as part of the API request.
 ```julia
-data_string = """
+data_string = \"\"\"
     [{"data_access_group_name":"CA Site","unique_group_name":"ca_site"},
     {"data_access_group_name":"FL Site","unique_group_name":"fl_site"},
     {"data_access_group_name":"New Site","unique_group_name":""}]
-"""
+\"\"\"
 out = open("data_file.json","w"); write(out, data_string); close(out)
 
 import_DAGs(token=t,data=data_string, format=:json) # string is passed to the API

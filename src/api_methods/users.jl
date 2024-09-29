@@ -30,7 +30,7 @@ Export users and user privileges for a REDCap project
 function export_users(; url=get_url(), token=get_token(), format=nothing,)
 	REDCap.request(
 		url=REDCap_url(url),
-		kwargs = (; token=REDCap_token(token), content=:user, format=REDCap_format(format), returnFormat=REDCap_format(returnFormat),),
+		kwargs = (; token=REDCap_token(token), content=:user, format=REDCap_format(format), ),
 	)
 end
 

@@ -14,7 +14,7 @@ Create a New Folder in the File Repository
 - `role_id`: optionally restrict folder access to a User Role
 
 """
-function create_folder(; url=get_url(), token=get_token(), name, folder_id=nothing, dag_id=nothing, role_id=nothing, format=nothing, returnFormat=nothing, name=nothing, folder_id=nothing, dag_id=nothing, role_id=nothing,)
+function create_folder(; url=get_url(), token=get_token(), name, folder_id=nothing, dag_id=nothing, role_id=nothing, format=nothing, returnFormat=nothing, )
 	REDCap.request(;
 		url=REDCap_url(url),
 		kwargs = (; token=REDCap_token(token), content=:fileRepository, action=:createFolder, name, format=REDCap_format(format), folder_id, dag_id, role_id, returnFormat=REDCap_format(returnFormat),),
