@@ -1,8 +1,7 @@
 #TODO: add something to automatically break files into < 500kb chunks?
 #There's also a new batchProcess parameter
 
-#TODO: could enforce types here
-function request(; url::URI, data=nothing, odm=nothing, kwargs)
+function request(; url, data=nothing, odm=nothing, kwargs)
 
 	html_request_body = generate_request_body(; data, odm, kwargs)
 
@@ -52,15 +51,19 @@ function generate_request_body(; data=nothing, odm=nothing, kwargs)
 end
 
 append_as_redcap_pair!(d::Dict, parameter::Symbol, value::Nothing) = nothing
+#TODO: deprecate this method, since we can filter by parameter name
 function append_as_redcap_pair!(d::Dict, parameter::Symbol, value::Vector)
 	for (i, item) in enumerate(value)
-		# I believe either method should work:
-		d[string(parameter)] = join(value, ',')
-		#d[string(parameter,'[',i-1,']')] = string(item)
+		d[string(parameter,'[',i-1,']')] = string(item)
 	end
 end
 function append_as_redcap_pair!(d::Dict, parameter::Symbol, value)
-	d[string(parameter)] = string(value)
+	#TODO: add all parameter names that take vector values
+	if parameter ∈ Set([:arms, :dags, :events, :field, :fields, :forms, :records, :roles, :users])
+		d[string(parameter,"[0]")] = string(value)
+	else
+		d[string(parameter)] = string(value)
+	end
 end
 
 function as_redcap_data(data)
