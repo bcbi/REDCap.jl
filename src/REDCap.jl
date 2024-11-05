@@ -1,3 +1,8 @@
+#TODO: are paramaters always camel case, and attributes always snake case?
+#TODO: documents this
+#TODO: change function names based on this?
+#
+# use DataFrames style arguments in 3.0 (unroll data parameter)
 #TODO: some import methods can be used to delete entries
 # Should this behavior be migrated to delete_* functions?
 
