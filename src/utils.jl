@@ -1,4 +1,3 @@
-#TODO: Add conversion functions (maybe functinos can accept a sink 
 function get_token()
 	if !haskey(ENV, "REDCAP_API_TOKEN")
 		@error("No REDCap API token found")

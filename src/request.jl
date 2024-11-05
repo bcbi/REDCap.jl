@@ -1,5 +1,5 @@
 #TODO: add something to automatically break files into < 500kb chunks?
-#There's also a new batchProcess parameter
+#Wasn't there a new batchProcess parameter? I can't find any documentation
 
 function request(; url, data=nothing, odm=nothing, kwargs)
 
@@ -46,7 +46,7 @@ function generate_request_body(; data=nothing, odm=nothing, kwargs)
 		#and if that variable contains a file name, even by mistake, the contents of that file get sent.
 		#but this is so convenient, and any actual issue it could cause seems far-fetched
 		#TODO: improve this syntax?
-		append_as_redcap_pair!(html_request_body, :data, as_redcap_data(data))
+		append_as_redcap_pair!(html_request_body, :data, read_file_or_string(data))
 	end
 	return html_request_body
 end
@@ -67,7 +67,8 @@ function append_as_redcap_pair!(d::Dict, parameter::Symbol, value)
 	end
 end
 
-function as_redcap_data(data)
+# For convenience, certain string arguments can be either file names and direct values
+function read_file_or_string(data)
 	if !istoolong(data) && isfile(data)
 		return read(data,String)
 	else
