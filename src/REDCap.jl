@@ -1,9 +1,21 @@
+#TODO: are paramaters always camel case, and attributes always snake case?
+#TODO: documents this
+#TODO: change function names based on this?
+#
+# use DataFrames style arguments in 3.0 (unroll data parameter)
 #TODO: some import methods can be used to delete entries
 # Should this behavior be migrated to delete_* functions?
 
 """
 REDCap API methods are defined as named Julia functions.
-The `content` and `action` parameters are managed internally.
+
+REDCap API calls generally include a `content` and `action` parameter.
+
+In REDCap.jl, these are managed internally and don't need to be passed as an argument, since the function names generally correspond to a combination of these (e.g., `delete_records()` passes `content=record` and `action=delete`).
+
+There's generally no REDCap action parameter for import or export.
+Instead, API calls without an action parameter are interpreted as import requests if there is a data parameter, and an export request if there is none.
+To preserve the expected behaviour of named functions, REDCap.jl import functions require a `data` argument, and export functions do not accept one.
 
 Function docstrings indicate how to use the Julia functions.
 Refer to the official documentation for detailed specifications on the corresponding REDCap methods.

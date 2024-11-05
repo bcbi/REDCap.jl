@@ -1,24 +1,25 @@
 #TODO: add something to automatically break files into < 500kb chunks?
-#There's also a new batchProcess parameter
+#Wasn't there a new batchProcess parameter? I can't find any documentation
 
 function request(; url, data=nothing, odm=nothing, kwargs)
 
 	html_request_body = generate_request_body(; data, odm, kwargs)
 
-	log_redacted_request(html_request_body)
+	log_request(html_request_body)
 
 	response = HTTP.post(
 		URI(url);
-		#get_valid_url();
 		body=html_request_body,
 		require_ssl_verification=true,
+		#TODO: add verbose flag
 		#verbose = 3,
 		status_exception=false,
 	)
+	#TODO: handle HTML errors
 	#HTTP.iserror(r)
 	log_status_code(response.status)
 	
-	return response.body|> String 
+	return response.body |> String 
 end
 
 function generate_request_body(; data=nothing, odm=nothing, kwargs)
@@ -45,7 +46,7 @@ function generate_request_body(; data=nothing, odm=nothing, kwargs)
 		#and if that variable contains a file name, even by mistake, the contents of that file get sent.
 		#but this is so convenient, and any actual issue it could cause seems far-fetched
 		#TODO: improve this syntax?
-		append_as_redcap_pair!(html_request_body, :data, as_redcap_data(data))
+		append_as_redcap_pair!(html_request_body, :data, read_file_or_string(data))
 	end
 	return html_request_body
 end
@@ -66,7 +67,8 @@ function append_as_redcap_pair!(d::Dict, parameter::Symbol, value)
 	end
 end
 
-function as_redcap_data(data)
+# For convenience, certain string arguments can be either file names and direct values
+function read_file_or_string(data)
 	if !istoolong(data) && isfile(data)
 		return read(data,String)
 	else
@@ -74,9 +76,13 @@ function as_redcap_data(data)
 	end
 end
 
-function log_redacted_request(html_request_body)
-	#TODO: is this misleading where there is no token?
-	@debug(merge(filter(x->(first(x)!="token"), html_request_body), Dict("token" => "***")))
+# Show the contents of the HTML request for debugging, but don't expose the REDCap API token
+function log_request(request_dict)
+	censored_dict = filter(x -> (first(x) != "token"), request_dict)
+	if haskey(request_dict, "token")
+		censored_dict["token"] = "***"
+	end
+	@debug(censored_dict)
 end
 
 function log_status_code(status)
