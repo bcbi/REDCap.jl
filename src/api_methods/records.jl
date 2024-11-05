@@ -30,7 +30,7 @@ end
 # The REDCap_listlike turns an input like [:a, :b, :c] into "a, b, c"
 # TODO: what other parameters need this sort of treatment?
 """
-	function export_records(; url=get_url(), token=get_token(), format=nothing, type=nothing, records=nothing, fields=nothing, forms=nothing, events=nothing, rawOrLabel=nothing, rawOrLabelHeaders=nothing, exportCheckboxLabel=nothing, returnFormat=nothing, exportSurveyFields=nothing, exportDataAccessGroups=nothing, filterLogic=nothing, dateRangeBegin=nothing, dateRangeEnd=nothing, csvDelimiter=nothing, decimalCharacter=nothing, exportBlankForGrayFormStatus=nothing)
+	function export_records(; url=get_url(), token=get_token(), format=nothing, type=nothing, records=nothing, fields=nothing, forms=nothing, events=nothing, rawOrLabel=nothing, rawOrLabelHeaders=nothing, exportCheckboxLabel=nothing, exportSurveyFields=nothing, exportDataAccessGroups=nothing, filterLogic=nothing, dateRangeBegin=nothing, dateRangeEnd=nothing, csvDelimiter=nothing, decimalCharacter=nothing, exportBlankForGrayFormStatus=nothing)
 
 Export records from a REDCap project
 
@@ -56,11 +56,11 @@ Export records from a REDCap project
 - `exportBlankForGrayFormStatus`: optionally export blank values for instrument complete status fields with a gray status icon
 
 """
-function export_records(; url=get_url(), token=get_token(), format=nothing, type=nothing, records=nothing, fields=nothing, forms=nothing, events=nothing, rawOrLabel=nothing, rawOrLabelHeaders=nothing, exportCheckboxLabel=nothing, returnFormat=nothing, exportSurveyFields=nothing, exportDataAccessGroups=nothing, filterLogic=nothing, dateRangeBegin=nothing, dateRangeEnd=nothing, csvDelimiter=nothing, decimalCharacter=nothing, exportBlankForGrayFormStatus=nothing)
+function export_records(; url=get_url(), token=get_token(), format=nothing, type=nothing, records=nothing, fields=nothing, forms=nothing, events=nothing, rawOrLabel=nothing, rawOrLabelHeaders=nothing, exportCheckboxLabel=nothing, exportSurveyFields=nothing, exportDataAccessGroups=nothing, filterLogic=nothing, dateRangeBegin=nothing, dateRangeEnd=nothing, csvDelimiter=nothing, decimalCharacter=nothing, exportBlankForGrayFormStatus=nothing)
 	#TODO: is returnFormat accepted? either remove, or add to docstring
 	REDCap.request(
 		url=REDCap_url(url),
-		kwargs = (; token=REDCap_token(token), content=:record, format=REDCap_format(format), type, records, fields, forms, events, rawOrLabel, rawOrLabelHeaders, exportCheckboxLabel, returnFormat=REDCap_format(returnFormat), exportSurveyFields, exportDataAccessGroups, filterLogic, dateRangeBegin, dateRangeEnd, csvDelimiter, decimalCharacter, exportBlankForGrayFormStatus,),
+		kwargs = (; token=REDCap_token(token), content=:record, format=REDCap_format(format), type, records, fields, forms, events, rawOrLabel, rawOrLabelHeaders, exportCheckboxLabel, exportSurveyFields, exportDataAccessGroups, filterLogic, dateRangeBegin, dateRangeEnd, csvDelimiter, decimalCharacter, exportBlankForGrayFormStatus,),
 		)
 end
 
