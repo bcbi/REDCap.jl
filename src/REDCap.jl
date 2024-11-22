@@ -1,13 +1,10 @@
-#TODO: are paramaters always camel case, and attributes always snake case?
-#TODO: documents this
-#TODO: change function names based on this?
-#
-# use DataFrames style arguments in 3.0 (unroll data parameter)
 #TODO: some import methods can be used to delete entries
 # Should this behavior be migrated to delete_* functions?
 
 """
 REDCap API methods are defined as named Julia functions.
+The named arguments of the Julia functions each correspond to the API parameters.
+REDCap API parameters seem to always have camelCase names, and parameters that share a name generally have the same behavior and accepted values.
 
 REDCap API calls generally include a `content` and `action` parameter.
 
@@ -50,7 +47,10 @@ If you have a super token, you might wish to keep that in your startup file, gen
 ### `data`
 The `data` parameter contains a list of attributes, which varies between REDCap methods.
 For definitive attribute lists, see the official REDCap documentation.
-In REDCap.jl, this can be a NamedTuple (or any derived type), a file handle, or a String.
+These attributes generally have camel_case names.
+
+In REDCap.jl, the corresponding `data` argument is implemented as a Collection.
+This can be a NamedTuple or a Dict, as well as a file handle or String.
 If you use a NamedTuple, it will be translated internally into whatever `format` you use (xml by default).
 ```julia
 import_project_info(
