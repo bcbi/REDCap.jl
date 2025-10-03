@@ -55,7 +55,6 @@ end
 #TODO: someway to throw an error if there's no comma to make the args a NamedTupe? unfold to pairs::Pairs..., as in DataFrames
 #TODO: consider converting all collections to NamedTuples, then to string?
 REDCap_data(x::NamedTuple, format::Union{REDCap_format,Nothing}; xml_tag=nothing) = REDCap_data(x |> pairs |> Dict, format, xml_tag=xml_tag)
-#TODO: Remove this for 3.0.0 (On the other hand, it's very convenient)
 REDCap_data(x::String, format::Union{REDCap_format, Nothing}; xml_tag=nothing) = x
 #TODO: handle large files?
 REDCap_data(x::IOStream, format::Union{REDCap_format, Nothing}; xml_tag=nothing) = read(x,String)
