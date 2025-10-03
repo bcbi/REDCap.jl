@@ -1,12 +1,21 @@
+#TODO: ensure user has delete records privilege (way to automate this?)
+#TODO: shouldn't it be users=users?
 """
-	function delete_users(; url=get_url(), token=get_token(), users)
+	function delete_users(; url=get_url(), token=get_token(), users=users)
 
-Delete users from a REDCap project
+Delete users from a REDCap project (must have delete records privilege)
 
 # Named arguments
 - `url`: (read from `ENV["REDCAP_API_URL"]` by default)
 - `token`: an API token specific to the REDCap project and username (read from `ENV["REDCAP_API_TOKEN"]` by default)
 - `users`: user names (can be scalar or vector)
+
+# Example
+
+```
+julia > delete_users(users = [:user1,  :user2])
+```
+
 
 """
 function delete_users(; url=get_url(), token=get_token(), users)
