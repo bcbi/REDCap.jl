@@ -6,7 +6,7 @@ Create a new REDCap project
 # Named arguments
 - `url`: (read from `ENV["REDCAP_API_URL"]` by default)
 - `token`: an API token specific to the REDCap project and username (read from `ENV["REDCAP_API_TOKEN"]` by default)
-- `data`: May be a String, a file name, or a data type such as NamedTuple or Dict. Availabel attributes are project_title, purpose, purpose_other, project_notes, is_longitudinal, surveys_enabled, and record_autonumbering_enabled.
+- `data`: May be a String, a file name, or a data type such as NamedTuple or Dict. Availabel attributes are `project_title`, `purpose`, `purpose_other`, `project_notes`, `is_longitudinal`, `surveys_enabled`, and `record_autonumbering_enabled`.
 - `format`: the format of the `data` input parameter: `:csv`, `:json`, or `:xml` (default). If `data` is a String or a file name, this value must indicate the correct format. If `data` is a NamedTuple, Dict, or similar type, this value will determine what format will be used internally to pass on the data.
 - `returnFormat`: the desired output format: `:csv`, `:json`, or `:xml` (default)
 
@@ -75,7 +75,7 @@ Import basic attributes of a REDCap project
 # Named arguments
 - `url`: (read from `ENV["REDCAP_API_URL"]` by default)
 - `token`: an API token specific to the REDCap project and username (read from `ENV["REDCAP_API_TOKEN"]` by default)
-- `data`: May be a String, a file name, or a data type such as NamedTuple or Dict. Availabel attributes are project_title, project_language, purpose, purpose_other, project_notes, custom_record_label, secondary_unique_field, is_longitudinal, surveys_enabled, scheduling_enabled, record_autonumbering_enabled, randomization_enabled, project_irb_number, project_grant_number, project_pi_firstname, project_pi_lastname, display_today_now_button, iand bypass_branching_erase_field_prompt.
+- `data`: May be a String`, `a file name`, `or a data type such as NamedTuple or Dict. Available attributes are `project_title`, `project_language`, `purpose`, `purpose_other`, `project_notes`, `custom_record_label`, `secondary_unique_field`, `is_longitudinal`, `surveys_enabled`, `scheduling_enabled`, `record_autonumbering_enabled`, `randomization_enabled`, `project_irb_number`, `project_grant_number`, `project_pi_firstname`, `project_pi_lastname`, `display_today_now_button`, and bypass_branching_erase_field_prompt`.
 - `format`: the format of the `data` input parameter: `:csv`, `:json`, or `:xml` (default). If `data` is a String or a file name, this value must indicate the correct format. If `data` is a NamedTuple, Dict, or similar type, this value will determine what format will be used internally to pass on the data.
 
 """
