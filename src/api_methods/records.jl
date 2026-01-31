@@ -47,7 +47,7 @@ Export records from a REDCap project
 - `rawOrLabelHeaders`: (for `:flat` type, `:csv` format only) raw or label CSV headers
 - `exportCheckboxLabel`: toggle format of checkbox field values (false by default)
 - `exportSurveyFields`: optionally export survey identifier and timestamp fields (false by default)
-- `exportDataAccessGroups`: optionally export the "redcap_data_access_group" field (false by default)
+- `exportDataAccessGroups`: optionally export the `redcap_data_access_group` field (false by default)
 - `filterLogic` : optionally filter records based on a logic string
 - `dateRangeBegin`: optionally limit output to records created or modified after a given datetime
 - `dateRangeEnd`: optionally limit output to records created or modified before a given datetime

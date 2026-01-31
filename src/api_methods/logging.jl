@@ -8,7 +8,7 @@ Export mappings of data collection instruments onto designated Events for a long
 - `url`: (read from `ENV["REDCAP_API_URL"]` by default)
 - `token`: an API token specific to the REDCap project and username (read from `ENV["REDCAP_API_TOKEN"]` by default)
 - `format`: the desired output format: `:csv`, `:json`, or `:xml` (default)
-- `logtype`: optionally limit output to an event type (export, manage, user, record, record_add, record_edit, record_delete, lock_record, page_view)
+- `logtype`: optionally limit output to an event type (`export`, `manage`, `user`, `record`, `record_add`, `record_edit`, `record_delete`, `lock_record`, `page_view`)
 - `user`: optionally limit output to a specific user
 - `record`: optionally limit output to a specific record
 - `dag`: optionally limit output to a specific Data Access Group (DAG)
