@@ -9,7 +9,7 @@ REDCap_datetime(x::Nothing) = nothing
 struct REDCap_format
 	id
 	REDCap_format(id::Symbol) = REDCap_format(string(id))
-	REDCap_format(id::String) = lowercase(id) ∈ Set(["csv","json","xml"]) ? new(Symbol(id)) : throw(ArgumentError("Invalid format parameter"))
+	REDCap_format(id::String) = id ∈ Set(["csv","json","xml"]) ? new(Symbol(id)) : throw(ArgumentError("Invalid format parameter (must be :csv, :json, or :xml"))
 	REDCap_format(id::Nothing) = nothing
 end
 Base.display(x::REDCap_format) = Base.display(x.id)
