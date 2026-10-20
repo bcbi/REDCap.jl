@@ -1,0 +1,30 @@
+{
+  "method": "generate_next_record_name",
+  "source": "handwritten from the REDCap API documentation's response formats; not recorded from a server",
+  "request": {
+    "fields": [
+      [
+        "content",
+        "generateNextRecordName"
+      ],
+      [
+        "returnFormat",
+        "json"
+      ]
+    ]
+  },
+  "response": {
+    "status": 200,
+    "headers": [
+      [
+        "Content-Type",
+        "text/html; charset=utf-8"
+      ]
+    ],
+    "body": "5"
+  },
+  "expect": {
+    "type": "string",
+    "value": "5"
+  }
+}

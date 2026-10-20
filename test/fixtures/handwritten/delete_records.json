@@ -1,0 +1,42 @@
+{
+  "method": "delete_records",
+  "source": "handwritten from the REDCap API documentation's response formats; not recorded from a server",
+  "request": {
+    "fields": [
+      [
+        "content",
+        "record"
+      ],
+      [
+        "action",
+        "delete"
+      ],
+      [
+        "returnFormat",
+        "json"
+      ],
+      [
+        "records[0]",
+        "3"
+      ],
+      [
+        "records[1]",
+        "4"
+      ]
+    ]
+  },
+  "response": {
+    "status": 200,
+    "headers": [
+      [
+        "Content-Type",
+        "text/html; charset=utf-8"
+      ]
+    ],
+    "body": "2"
+  },
+  "expect": {
+    "type": "int",
+    "value": 2
+  }
+}

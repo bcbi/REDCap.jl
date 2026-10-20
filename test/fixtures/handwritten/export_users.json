@@ -1,0 +1,39 @@
+{
+  "method": "export_users",
+  "source": "handwritten from the REDCap API documentation's response formats; not recorded from a server",
+  "request": {
+    "fields": [
+      [
+        "content",
+        "user"
+      ],
+      [
+        "returnFormat",
+        "json"
+      ],
+      [
+        "format",
+        "json"
+      ]
+    ]
+  },
+  "response": {
+    "status": 200,
+    "headers": [
+      [
+        "Content-Type",
+        "application/json; charset=utf-8"
+      ]
+    ],
+    "body": "[{\"username\": \"jdoe\", \"email\": \"jdoe@example.test\", \"firstname\": \"Jane\", \"lastname\": \"Doe\", \"expiration\": \"\", \"data_access_group\": \"\", \"data_access_group_id\": \"\", \"design\": 1, \"user_rights\": 1, \"data_access_groups\": 1, \"reports\": 1, \"api_export\": 1, \"api_import\": 1, \"record_create\": 1, \"record_delete\": 0, \"forms\": {\"demographics\": 1, \"visits\": 1}, \"forms_export\": {\"demographics\": 1, \"visits\": 0}}]"
+  },
+  "expect": {
+    "type": "table",
+    "nrows": 1,
+    "dict_cell": [
+      "forms",
+      1,
+      "demographics"
+    ]
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "method": "export_survey_link",
+  "source": "handwritten from the REDCap API documentation's response formats; not recorded from a server",
+  "request": {
+    "fields": [
+      [
+        "content",
+        "surveyLink"
+      ],
+      [
+        "returnFormat",
+        "json"
+      ],
+      [
+        "record",
+        "1"
+      ],
+      [
+        "instrument",
+        "survey_form"
+      ]
+    ]
+  },
+  "response": {
+    "status": 200,
+    "headers": [
+      [
+        "Content-Type",
+        "text/html; charset=utf-8"
+      ]
+    ],
+    "body": "https://redcap.example.test/surveys/?s=ABCD1234"
+  },
+  "expect": {
+    "type": "string",
+    "value": "https://redcap.example.test/surveys/?s=ABCD1234"
+  }
+}

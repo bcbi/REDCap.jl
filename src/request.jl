@@ -1,117 +1,114 @@
-#TODO: add something to automatically break files into < 500kb chunks?
-#Wasn't there a new batchProcess parameter? I can't find any documentation
+"""
+    REDCapUpload(field, filename, content, mime)
 
-function request(; url, data=nothing, odm=nothing, kwargs)
-
-	html_request_body = generate_request_body(; data, odm, kwargs)
-
-	log_request(html_request_body)
-
-	response = HTTP.post(
-		URI(url);
-		body=html_request_body,
-		require_ssl_verification=true,
-		#TODO: add verbose flag
-		#verbose = 3,
-		status_exception=false,
-	)
-	#TODO: handle HTML errors
-	#HTTP.iserror(r)
-	log_status_code(response.status)
-	
-	return response.body |> String 
+A file sent as a multipart form part, as used by the file upload methods.
+"""
+struct REDCapUpload
+    field::String
+    filename::String
+    content::Vector{UInt8}
+    mime::String
 end
 
-function generate_request_body(; data=nothing, odm=nothing, kwargs)
-	html_request_body = Dict{String, String}()
-	if !isempty(kwargs)
-		for (parameter,value) in pairs(kwargs)
-			append_as_redcap_pair!(html_request_body, parameter, value)
-		end
-	end
+"""
+    REDCapRequest
 
-	if !isnothing(odm); append_as_redcap_pair!(html_request_body, :odm, read(odm,String)) end
-
-	#TODO: Add chunking (but what is bakgroundProcess=true, new to REDCap 14?)
-	#Also, different formats have to be chunked differently.
-	#Maybe stick to creating an iterator outside REDCap...
-	#TODO: Can't the data parameter be nothing and still hav an effect in at least 1 function?
-	if !isnothing(data)
-		#if endswith.(data,[".csv",".json",".xml"]) |> any
-		#TODO: is there any chance that this causes an issue
-		#I would hate for a file to be sent against the user's intentions.
-		#Example: someone puts in a value just for testing and doesn't realize they have that file present?
-		#Maybe it is better to have no ambiguity - string gets sent, files are passed as file handles or something
-		##TODO: also, there's something unsettling about how a variable could be passed,
-		#and if that variable contains a file name, even by mistake, the contents of that file get sent.
-		#but this is so convenient, and any actual issue it could cause seems far-fetched
-		#TODO: improve this syntax?
-		append_as_redcap_pair!(html_request_body, :data, read_file_or_string(data))
-	end
-	return html_request_body
+A fully built, validated API request: the target URL, the form fields in the order they
+are sent (including `token`), and an optional multipart file. Building one does no I/O.
+`show` never prints the token.
+"""
+struct REDCapRequest
+    method::Symbol
+    url::URI
+    fields::Vector{Pair{String, String}}
+    file::Union{Nothing, REDCapUpload}
 end
 
-append_as_redcap_pair!(d::Dict, parameter::Symbol, value::Nothing) = nothing
-#TODO: deprecate this method, since we can filter by parameter name
-function append_as_redcap_pair!(d::Dict, parameter::Symbol, value::Vector)
-	for (i, item) in enumerate(value)
-		d[string(parameter,'[',i-1,']')] = string(item)
-	end
-end
-function append_as_redcap_pair!(d::Dict, parameter::Symbol, value)
-	#TODO: add all parameter names that take vector values
-	if parameter ∈ Set([:arms, :dags, :events, :field, :fields, :forms, :records, :roles, :users])
-		d[string(parameter,"[0]")] = string(value)
-	else
-		d[string(parameter)] = string(value)
-	end
+"""
+    REDCapResponse(status, headers, body)
+
+A transport's answer to a `REDCapRequest`.
+"""
+struct REDCapResponse
+    status::Int
+    headers::Vector{Pair{String, String}}
+    body::Vector{UInt8}
 end
 
-# For convenience, certain string arguments can be either file names and direct values
-function read_file_or_string(data)
-	if !istoolong(data) && isfile(data)
-		return read(data,String)
-	else
-		return string(data)
-	end
+REDCapResponse(status::Integer, body::AbstractString; headers = Pair{String, String}[]) =
+    REDCapResponse(Int(status), headers, Vector{UInt8}(codeunits(body)))
+
+"""
+    field_value(req::REDCapRequest, name) -> Union{String,Nothing}
+
+The value of the form field `name`, or `nothing` if the request doesn't contain it.
+"""
+function field_value(req::REDCapRequest, name::AbstractString)
+    i = findfirst(p -> first(p) == name, req.fields)
+    return i === nothing ? nothing : last(req.fields[i])
 end
 
-# Show the contents of the HTML request for debugging, but don't expose the REDCap API token
-function log_request(request_dict)
-	censored_dict = filter(x -> (first(x) != "token"), request_dict)
-	if haskey(request_dict, "token")
-		censored_dict["token"] = "***"
-	end
-	@debug(censored_dict)
+request_token(req::REDCapRequest) = something(field_value(req, "token"), "")
+
+"""
+    redacted_fields(req) -> Vector{Pair{String,String}}
+
+The request's form fields with the token replaced, for logging and display.
+"""
+function redacted_fields(req::REDCapRequest)
+    token = request_token(req)
+    return [k => (k == "token" ? REDACTED : redact_token(v, token)) for (k, v) in req.fields]
 end
 
-function log_status_code(status)
-	status_codes_message = Dict(
-		200 => "OK: Success!",
-		400 => "Bad Request: The request was invalid.",
-		401 => "Unauthorized: API token was missing or incorrect.",
-		403 => "Forbidden: You do not have permissions to use the API.",
-		404 => "Not Found: The URI you requested is invalid or the resource does not exist.",
-		406 => "Not Acceptable: The data being imported was formatted incorrectly.",
-		500 => "Internal Server Error: The server encountered an error processing your request.",
-		501 => "Not Implemented: The requested method is not implemented.",
-		)
-	message = get(status_codes_message,status,"Unknown")
-	@debug(string("HTTP response ", status, ", ", message))
+function Base.show(io::IO, req::REDCapRequest)
+    print(io, "REDCapRequest(", req.method, ", ", req.url, ", ")
+    show(io, redacted_fields(req))
+    req.file === nothing || print(io, ", file=", req.file.filename)
+    return print(io, ")")
 end
 
-#https://github.com/JuliaLang/julia/issues/39774#issuecomment-786797712
-function istoolong(filename)
-	try
-		stat(filename)
-		false
-	catch e
-		if isa(e, Base.IOError)
-			e.code == -36
-		else
-			rethrow()
-		end
-	end
+"""
+    encode_body(req; boundary) -> (content_type, body::Vector{UInt8})
+
+Encode the request as `application/x-www-form-urlencoded`, or as `multipart/form-data`
+when it carries a file. Pure; `boundary` is a parameter so the output can be tested.
+"""
+function encode_body(req::REDCapRequest; boundary::AbstractString = multipart_boundary())
+    if req.file === nothing
+        body = join((escapeuri(k) * "=" * escapeuri(v) for (k, v) in req.fields), "&")
+        return "application/x-www-form-urlencoded", Vector{UInt8}(codeunits(body))
+    end
+    buf = IOBuffer()
+    for (k, v) in req.fields
+        print(buf, "--", boundary, "\r\n")
+        print(buf, "Content-Disposition: form-data; name=\"", k, "\"\r\n\r\n")
+        print(buf, v, "\r\n")
+    end
+    f = req.file
+    print(buf, "--", boundary, "\r\n")
+    print(buf, "Content-Disposition: form-data; name=\"", f.field, "\"; filename=\"", escape_quotes(f.filename), "\"\r\n")
+    print(buf, "Content-Type: ", f.mime, "\r\n\r\n")
+    write(buf, f.content)
+    print(buf, "\r\n--", boundary, "--\r\n")
+    return "multipart/form-data; boundary=" * boundary, take!(buf)
 end
 
+multipart_boundary() = "REDCapjl" * join(rand(['0':'9'; 'a':'z'], 24))
 
+escape_quotes(s::AbstractString) = replace(s, "\"" => "%22", "\r" => "", "\n" => "")
+
+"""
+    REDCapDownload
+
+A file exported from REDCap: `filename` (from the response headers; may be empty),
+`mime` type, and the file's bytes in `data`. Save it with `write(path, d.data)`.
+"""
+struct REDCapDownload
+    filename::String
+    mime::String
+    data::Vector{UInt8}
+end
+
+function Base.show(io::IO, d::REDCapDownload)
+    return print(io, "REDCapDownload(", repr(d.filename), ", ", d.mime, ", ", length(d.data), " bytes)")
+end

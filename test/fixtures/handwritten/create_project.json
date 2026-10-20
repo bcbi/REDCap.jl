@@ -1,0 +1,37 @@
+{
+  "method": "create_project",
+  "source": "handwritten from the REDCap API documentation's response formats; not recorded from a server",
+  "request": {
+    "fields": [
+      [
+        "content",
+        "project"
+      ],
+      [
+        "returnFormat",
+        "json"
+      ],
+      [
+        "format",
+        "json"
+      ],
+      [
+        "data",
+        "[{\"project_title\":\"New\",\"purpose\":\"0\"}]"
+      ]
+    ]
+  },
+  "response": {
+    "status": 200,
+    "headers": [
+      [
+        "Content-Type",
+        "text/html; charset=utf-8"
+      ]
+    ],
+    "body": "00000000000000000000000000000000"
+  },
+  "expect": {
+    "type": "client"
+  }
+}

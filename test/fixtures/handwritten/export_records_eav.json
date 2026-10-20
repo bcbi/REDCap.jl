@@ -1,0 +1,44 @@
+{
+  "method": "export_records_eav",
+  "source": "handwritten from the REDCap API documentation's response formats; not recorded from a server",
+  "request": {
+    "fields": [
+      [
+        "content",
+        "record"
+      ],
+      [
+        "returnFormat",
+        "json"
+      ],
+      [
+        "format",
+        "json"
+      ],
+      [
+        "type",
+        "eav"
+      ]
+    ]
+  },
+  "response": {
+    "status": 200,
+    "headers": [
+      [
+        "Content-Type",
+        "application/json; charset=utf-8"
+      ]
+    ],
+    "body": "[{\"record\": \"1\", \"redcap_event_name\": \"baseline_arm_1\", \"field_name\": \"age\", \"value\": \"34\"}, {\"record\": \"1\", \"redcap_event_name\": \"baseline_arm_1\", \"field_name\": \"sex\", \"value\": \"1\"}]"
+  },
+  "expect": {
+    "type": "table",
+    "columns": [
+      "record",
+      "redcap_event_name",
+      "field_name",
+      "value"
+    ],
+    "nrows": 2
+  }
+}

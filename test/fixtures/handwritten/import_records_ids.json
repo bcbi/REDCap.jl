@@ -1,0 +1,53 @@
+{
+  "method": "import_records_ids",
+  "source": "handwritten from the REDCap API documentation's response formats; not recorded from a server",
+  "request": {
+    "fields": [
+      [
+        "content",
+        "record"
+      ],
+      [
+        "returnFormat",
+        "json"
+      ],
+      [
+        "type",
+        "flat"
+      ],
+      [
+        "overwriteBehavior",
+        "normal"
+      ],
+      [
+        "returnContent",
+        "ids"
+      ],
+      [
+        "format",
+        "json"
+      ],
+      [
+        "data",
+        "[{\"record_id\":\"3\"},{\"record_id\":\"4\"}]"
+      ]
+    ]
+  },
+  "response": {
+    "status": 200,
+    "headers": [
+      [
+        "Content-Type",
+        "application/json; charset=utf-8"
+      ]
+    ],
+    "body": "[\"3\",\"4\"]"
+  },
+  "expect": {
+    "type": "ids",
+    "value": [
+      "3",
+      "4"
+    ]
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "method": "export_version",
+  "source": "handwritten from the REDCap API documentation's response formats; not recorded from a server",
+  "request": {
+    "fields": [
+      [
+        "content",
+        "version"
+      ],
+      [
+        "returnFormat",
+        "json"
+      ]
+    ]
+  },
+  "response": {
+    "status": 200,
+    "headers": [
+      [
+        "Content-Type",
+        "text/html; charset=utf-8"
+      ]
+    ],
+    "body": "15.0.1"
+  },
+  "expect": {
+    "type": "version",
+    "value": "15.0.1"
+  }
+}
