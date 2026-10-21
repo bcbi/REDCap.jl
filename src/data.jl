@@ -112,17 +112,28 @@ function rows_to_json(rows::AbstractVector{Row})
     print(io, '[')
     for (i, row) in enumerate(rows)
         i > 1 && print(io, ',')
-        print(io, '{')
-        for (j, (k, v)) in enumerate(row)
-            j > 1 && print(io, ',')
-            JSON.json(io, k)
-            print(io, ':')
-            write_value(io, k, v)
-        end
-        print(io, '}')
+        write_row(io, row)
     end
     print(io, ']')
     return String(take!(io))
+end
+
+"""
+    row_to_json(row) -> String
+
+Serialize one row as a JSON object, keeping column order.
+"""
+row_to_json(row::Row) = sprint(write_row, row)
+
+function write_row(io::IO, row::Row)
+    print(io, '{')
+    for (j, (k, v)) in enumerate(row)
+        j > 1 && print(io, ',')
+        JSON.json(io, k)
+        print(io, ':')
+        write_value(io, k, v)
+    end
+    return print(io, '}')
 end
 
 # Values are sent as JSON strings, as REDCap itself exports them. Nested dicts and vectors

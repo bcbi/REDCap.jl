@@ -132,8 +132,8 @@ $IMPORT_RECORDS_KWARGS_DOC
 $BATCH_DOC With `forceAutoNumber=true`, the record names in `data` are only used for
 grouping. The batched result is the sum of the batches' counts.
 
-TODO(verify): a single (unbatched) request is believed to import nothing when any row is
-invalid.
+A single (unbatched) request is all-or-nothing: if any row is invalid, nothing is
+imported.
 """
 function import_records(
         project::REDCapProject;

@@ -22,6 +22,8 @@ Describes one public API function.
   only one format (XML, binary files), in which case the IO method has no `format`
 - `data_formats`: allowed `format` values for raw (`IO`/`REDCapFile`) import data
 - `single_row`: `data` must contain exactly one row
+- `json_object`: table data is sent as a single JSON object instead of an array of one
+  (requires `single_row`)
 - `upload`: the function uploads a file (keywords `file` and `filename`)
 - `fixed`: parameters this function always sends, which the user can't set
 - `batchable`: the function accepts `batchsize`
@@ -42,6 +44,7 @@ struct MethodSpec
     io_formats::Vector{Symbol}
     data_formats::Vector{Symbol}
     single_row::Bool
+    json_object::Bool
     upload::Bool
     fixed::Vector{Pair{Symbol, Any}}
     batchable::Bool
@@ -68,6 +71,7 @@ function MethodSpec(
         io_formats::Vector{Symbol} = Symbol[],
         data_formats::Vector{Symbol} = Symbol[],
         single_row::Bool = false,
+        json_object::Bool = false,
         upload::Bool = false,
         fixed::Vector{<:Pair{Symbol}} = Pair{Symbol, Any}[],
         batchable::Bool = false,
@@ -80,6 +84,7 @@ function MethodSpec(
     raw_io || isempty(io_optional) || throw(ArgumentError("$name: io_optional without raw_io"))
     (data == :required) == !isempty(data_formats) || throw(ArgumentError("$name: data and data_formats disagree"))
     !single_row || data == :required || throw(ArgumentError("$name: single_row without data"))
+    !json_object || single_row || throw(ArgumentError("$name: json_object without single_row"))
     !batchable || returns in (:table, :int, :ids) || throw(ArgumentError("$name: unsupported batchable return kind"))
     # Every request asks for JSON responses (and JSON errors). Imports set `format` from
     # the data, so only exports fix it.
@@ -93,7 +98,7 @@ function MethodSpec(
     end
     return MethodSpec(
         name, content, action, client, data, required, optional, returns, destructive, raw_io,
-        io_optional, io_formats, data_formats, single_row, upload, all_fixed, batchable, Dict{Symbol, ParamKind}(overrides),
+        io_optional, io_formats, data_formats, single_row, json_object, upload, all_fixed, batchable, Dict{Symbol, ParamKind}(overrides),
     )
 end
 
@@ -222,8 +227,8 @@ const METHOD_SPECS = MethodSpec[
         data_formats = CSV_JSON_XML, single_row = true, optional = [:odm], returns = :client,
     ),
     MethodSpec(:export_project_info; content = :project, returns = :dict),
-    # TODO(verify): whether REDCap expects a JSON array or a single object for project info.
-    count_import(:import_project_info; content = :project_settings, single_row = true),
+    # REDCap ignores project settings sent as a JSON array (confirmed against a live server).
+    count_import(:import_project_info; content = :project_settings, single_row = true, json_object = true),
     MethodSpec(
         :export_project_XML; content = :project_xml, returns = :xml, raw_io = true,
         optional = [

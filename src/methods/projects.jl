@@ -22,7 +22,8 @@ create_project(superuser::REDCapSuperUser; data, format = nothing, odm = nothing
     export_project_info(project) -> Dict{String,Any}
 
 Export the project's settings, such as `project_id`, `project_title`, `in_production` and
-`is_longitudinal`, as a `Dict` of strings.
+`is_longitudinal`, as a `Dict`. Values are kept as REDCap sends them: some are numbers
+(e.g. `in_production`) rather than strings.
 """
 export_project_info(project::REDCapProject) = api_call(:export_project_info, project)
 

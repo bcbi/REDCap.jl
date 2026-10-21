@@ -49,7 +49,7 @@ function build_request(
             payload = normalized.payload
         else
             push!(fixed, :format => :json)
-            payload = rows_to_json(normalized.rows)
+            payload = spec.json_object ? row_to_json(only(normalized.rows)) : rows_to_json(normalized.rows)
         end
     else
         data isa NoData || throw(ArgumentError("$(spec.name) does not accept `data`"))

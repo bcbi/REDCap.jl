@@ -164,4 +164,8 @@ end
     @test field(only(t.requests), "returnMetadataOnly") == "true"
     @test field(only(t.requests), "format") === nothing
     @test_throws ArgumentError import_project_info(project(); data = [(a = "1",), (a = "2",)])
+    # project settings are sent as a single JSON object, not an array
+    t = always(ok("1"))
+    @test import_project_info(project(t); data = (project_notes = "n",)) == 1
+    @test field(only(t.requests), "data") == "{\"project_notes\":\"n\"}"
 end
