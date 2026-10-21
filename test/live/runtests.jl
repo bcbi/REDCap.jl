@@ -2,6 +2,9 @@
 # run from test/runtests.jl or CI. See test/live/README.md before running:
 #
 #     julia test/live/runtests.jl
+#
+# This tests the REDCap.jl checkout that contains this file (its working tree, including
+# uncommitted changes), in a temporary environment so the checkout isn't modified.
 
 const REQUIRED = ("REDCAP_TEST_URL", "REDCAP_TEST_TOKEN")
 missing_vars = filter(v -> isempty(get(ENV, v, "")), REQUIRED)
@@ -12,9 +15,10 @@ if !isempty(missing_vars)
 end
 
 using Pkg
-Pkg.activate(@__DIR__; io = devnull)
+Pkg.activate(; temp = true, io = devnull)
 Pkg.develop(PackageSpec(path = joinpath(@__DIR__, "..", "..")); io = devnull)
-Pkg.instantiate(; io = devnull)
+# Dates and Test are standard libraries, so only Tables needs adding.
+Pkg.add("Tables"; io = devnull)
 
 using REDCap
 using Dates
@@ -38,7 +42,11 @@ const ARM2 = "baseline_arm_2"
 
 sorted_rows(t) = sort(Tables.rowtable(t); by = r -> Tuple(string.(values(r))))
 
-all_ids() = unique(export_records(P; fields = ID)[Symbol(ID)])
+# With no records, REDCap returns `[]`, which gives a table with no columns.
+function all_ids()
+    t = export_records(P; fields = ID)
+    return isempty(t) ? String[] : unique(t[Symbol(ID)])
+end
 
 function reset_records!()
     ids = all_ids()
@@ -72,9 +80,13 @@ end
 println("REDCap.jl live tests against ", P)
 
 # Safety check before anything destructive: never touch a production project.
-let info = export_project_info(P)
-    if get(info, "in_production", "") != "0"
-        println(stderr, "Refusing to run: project \"", get(info, "project_title", "?"), "\" is not in Development status.")
+# REDCap sends `in_production` as a number, not a string.
+let info = export_project_info(P), status = get(info, "in_production", nothing)
+    if string(status) != "0"
+        println(
+            stderr, "Refusing to run: project \"", get(info, "project_title", "?"),
+            "\" is not in Development status (in_production = ", repr(status), ").",
+        )
         exit(1)
     end
 end
@@ -85,7 +97,7 @@ enabled("REDCAP_TEST_RECORD") && println("Recording fixtures to ", RECORD_DIR)
         @test export_version(P) isa VersionNumber
         info = export_project_info(P)
         @test info isa Dict{String, Any}
-        @test info["is_longitudinal"] == "1"
+        @test string(info["is_longitudinal"]) == "1"
         metadata = export_metadata(P)
         @test metadata[:field_name][1] == ID
         for f in ("age", "sex", "consent_file", "visit_date")
@@ -100,8 +112,7 @@ enabled("REDCAP_TEST_RECORD") && println("Recording fixtures to ", RECORD_DIR)
 
     @testset "structure exports" begin
         @test string.(export_arms(P)[:arm_num]) == ["1", "2"]
-        events = export_events(P)[:unique_event_name]
-        @test all(e -> e in events, (ARM1..., ARM2))
+        @test [ARM1..., ARM2] ⊆ export_events(P)[:unique_event_name]
         @test "visits" in export_instruments(P)[:instrument_name]
         @test "visits" in export_instrument_event_mappings(P)[:form]
         @test "visits" in export_repeating_instruments_and_events(P)[:form_name]
@@ -163,9 +174,7 @@ enabled("REDCAP_TEST_RECORD") && println("Recording fixtures to ", RECORD_DIR)
             Dict(ID => "11", "redcap_event_name" => ARM2, "age" => "not a number"),
         ]
         @test_throws REDCapError import_records(P; data = bad)
-        imported = all_ids()
-        @test isempty(imported)
-        isempty(imported) && println("Confirmed: an import with an invalid row imports nothing.")
+        @test isempty(all_ids())
     end
 
     @testset "batching (batchsize=2)" begin
