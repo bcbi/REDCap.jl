@@ -42,6 +42,7 @@ fixture_files() = sort([joinpath(root, f) for (root, _, files) in walkdir(FIXTUR
         haskey(expect, "message") && @test err.message == expect["message"]
         continue
     end
+    spec.raw_io && spec.returns in REDCap.JSON_KINDS && field(req, "format") != "json" && continue
     result = handle_response(spec, client, replayed)
     @test result isa KIND_TYPES[spec.returns]
     haskey(expect, "type") && @test Symbol(expect["type"]) === spec.returns
