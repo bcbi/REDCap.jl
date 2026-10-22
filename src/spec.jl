@@ -54,7 +54,7 @@ end
 const RETURN_KINDS = (:table, :dict, :string, :version, :int, :ids, :file, :xml, :client, :folder, :nothing)
 
 # Kinds whose response is JSON, so the request asks for `format=json`.
-const JSON_KINDS = (:table, :dict, :ids)
+const JSON_KINDS = (:table, :dict, :ids, :folder)
 
 function MethodSpec(
         name::Symbol;
@@ -291,7 +291,6 @@ const METHOD_SPECS = MethodSpec[
 
     # Surveys
     MethodSpec(:export_survey_link; content = :surveyLink, SURVEY_PARAMS..., returns = :string),
-    MethodSpec(:export_survey_access_code; content = :surveyAccessCode, SURVEY_PARAMS..., returns = :string),
     MethodSpec(:export_survey_return_code; content = :surveyReturnCode, SURVEY_PARAMS..., returns = :string),
     MethodSpec(:export_survey_queue_link; content = :surveyQueueLink, required = [:record], returns = :string),
     table_export(:export_survey_participants; content = :participantList, required = [:instrument], optional = [:event]),

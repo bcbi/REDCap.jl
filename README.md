@@ -70,7 +70,7 @@ Every function returns one fixed type, stated in its docstring:
 | Table | records, metadata, arms, events, users, logging, reports | `REDCapTable` (Tables.jl; use `DataFrame(t)`) |
 | Object | `export_project_info` | `Dict{String,Any}` |
 | Version | `export_version` | `VersionNumber` |
-| String | `generate_next_record_name`, survey links and codes | `String` |
+| String | `generate_next_record_name`, survey links and return codes | `String` |
 | Count | most imports and deletes | `Int`, as reported by REDCap |
 | Record names | `import_records_ids` | `Vector{String}` |
 | File | `export_file`, `export_PDF`, File Repository | `REDCapDownload` (file name, MIME type, bytes) |

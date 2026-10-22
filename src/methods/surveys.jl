@@ -10,17 +10,6 @@ export_survey_link(project::REDCapProject; record, instrument, event = nothing, 
     api_call(:export_survey_link, project; record, instrument, event, repeat_instance)
 
 """
-    export_survey_access_code(project; record, instrument, event, repeat_instance) -> String
-
-A record's survey access code, as a `String`.
-
-# Keyword arguments
-$SURVEY_KWARGS_DOC
-"""
-export_survey_access_code(project::REDCapProject; record, instrument, event = nothing, repeat_instance = nothing) =
-    api_call(:export_survey_access_code, project; record, instrument, event, repeat_instance)
-
-"""
     export_survey_return_code(project; record, instrument, event, repeat_instance) -> String
 
 A record's survey return code (for surveys with "Save & Return Later" enabled), as a

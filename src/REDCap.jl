@@ -50,7 +50,7 @@ Every function returns one fixed type, stated in its docstring:
 | Table | records, metadata, arms, events, users, logging, reports | [`REDCapTable`](@ref) |
 | Object | [`export_project_info`](@ref) | `Dict{String,Any}` |
 | Version | [`export_version`](@ref) | `VersionNumber` |
-| String | next record name, survey links and codes | `String` |
+| String | next record name, survey links and return codes | `String` |
 | Count | most imports and deletes | `Int` (as reported by REDCap) |
 | Record names | [`import_records_ids`](@ref) | `Vector{String}` |
 | File | [`export_file`](@ref), [`export_PDF`](@ref), file repository | [`REDCapDownload`](@ref) |
@@ -181,7 +181,6 @@ export create_file_repository_folder,
     export_records_eav,
     export_repeating_instruments_and_events,
     export_reports,
-    export_survey_access_code,
     export_survey_link,
     export_survey_participants,
     export_survey_queue_link,

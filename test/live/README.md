@@ -60,8 +60,15 @@ unique names.
 **Other**
 - At least one Data Access Group (e.g. "Site A"). Your API user should *not* be assigned
   to a DAG, so it can see all records.
-- Optional: enable the survey queue (for `export_survey_queue_link`).
-- Optional: a report, whose ID you pass as `REDCAP_TEST_REPORT_ID`.
+
+**For the optional tests** (see [Optional parts](#optional-parts))
+- Surveys: enable the survey queue (*Online Designer → Survey Queue*) and activate
+  `survey_form` in it. For "Display survey in the Survey Queue when…", choose the logic
+  option with `[record_id] <> ""`, so the survey is always in the queue.
+- Reports: create any report (*Data Exports, Reports, and Stats → Create New Report*;
+  "All fields" is fine). Its ID is shown in the report list, and in the report's URL as
+  `report_id=`.
+- Users: the User Rights right (below).
 
 **Your user rights** in the sandbox: API Export and API Import, Create Records, Rename
 Records and Delete Records (three separate rights), Data Access Groups, Logging, File
@@ -104,8 +111,8 @@ it doesn't modify the checkout (except for fixtures recorded with `REDCAP_TEST_R
 
 | Variable | Enables |
 |---|---|
-| `REDCAP_TEST_SURVEYS=1` | survey links, codes, queue link and participant list (needs the survey setup above) |
-| `REDCAP_TEST_USERS=1` | exports users, creates and deletes a temporary user role |
+| `REDCAP_TEST_SURVEYS=1` | survey link, return code, queue link and participant list (needs the survey and survey queue setup above) |
+| `REDCAP_TEST_USERS=1` | exports users, creates and deletes a temporary user role (needs the User Rights right) |
 | `REDCAP_TEST_FILE_REPOSITORY=1` | uploads, exports and deletes a file in a new folder. **Folders can't be deleted through the API; each run leaves one behind.** |
 | `REDCAP_TEST_REPORT_ID=<id>` | report exports |
 | `REDCAP_TEST_SUPER_TOKEN=<token>` | `create_project`. **Projects can't be deleted through the API; each run leaves one behind.** |

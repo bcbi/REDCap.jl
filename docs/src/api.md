@@ -96,7 +96,6 @@ export_version
 export_reports
 export_logging
 export_survey_link
-export_survey_access_code
 export_survey_return_code
 export_survey_queue_link
 export_survey_participants

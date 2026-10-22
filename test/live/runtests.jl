@@ -237,7 +237,6 @@ enabled("REDCAP_TEST_RECORD") && println("Recording fixtures to ", RECORD_DIR)
             import_records(P; data = [Dict(ID => "1", "redcap_event_name" => ARM1[1], "age" => "30")])
             args = (record = 1, instrument = "survey_form", event = ARM1[1])
             @test startswith(export_survey_link(P; args...), "http")
-            @test export_survey_access_code(P; args...) isa String
             @test export_survey_return_code(P; args...) isa String
             @test startswith(export_survey_queue_link(P; record = 1), "http")
             @test export_survey_participants(P; instrument = "survey_form", event = ARM1[1]) isa REDCapTable

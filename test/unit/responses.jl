@@ -148,6 +148,9 @@ end
     @test create_file_repository_folder(project(always(ok("""[{"folder_id":"12"}]"""))); name = "x") === 12
     @test create_file_repository_folder(project(always(ok("""[{"folder_id":7}]"""))); name = "x") === 7
     @test_throws REDCapError create_file_repository_folder(project(always(ok("[]"))); name = "x")
+    t = always(ok("""[{"folder_id":"3"}]"""))
+    create_file_repository_folder(project(t); name = "x")
+    @test field(only(t.requests), "format") == "json"
 end
 
 @testset "project info and XML" begin
