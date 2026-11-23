@@ -31,8 +31,8 @@ instrument and `record_id` its first field.
 | Instrument | Field type | Field name | Validation | Notes |
 |---|---|---|---|---|
 | `demographics` | Text Box | `record_id` | | Must be the **first** field (the record ID field) |
-|  `demographics` | Text Box | `age` | Integer | |
-|  `demographics` | Radio Buttons | `sex` | | Choices: `1, Female` and `2, Male` |
+| `demographics` | Text Box | `age` | Integer | |
+| `demographics` | Radio Buttons | `contact_method` | | Choices: `1, Phone` and `2, Email` |
 | `demographics`  | File Upload | `consent_file` | | |
 | `visits` | Text Box | `visit_date` | Date (Y-M-D) | |
 | `visits`  | Text Box | `visit_note` | | |

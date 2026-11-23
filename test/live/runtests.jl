@@ -61,7 +61,7 @@ function sample_rows(n; offset = 0)
     for i in (1:n) .+ offset
         id = string(i)
         if isodd(i)
-            push!(rows, Dict(ID => id, "redcap_event_name" => ARM1[1], "age" => string(20 + i), "sex" => "1"))
+            push!(rows, Dict(ID => id, "redcap_event_name" => ARM1[1], "age" => string(20 + i), "contact_method" => "1"))
             for instance in 1:2
                 push!(
                     rows, Dict(
@@ -71,7 +71,7 @@ function sample_rows(n; offset = 0)
                 )
             end
         else
-            push!(rows, Dict(ID => id, "redcap_event_name" => ARM2, "age" => string(20 + i), "sex" => "2"))
+            push!(rows, Dict(ID => id, "redcap_event_name" => ARM2, "age" => string(20 + i), "contact_method" => "2"))
         end
     end
     return rows
@@ -100,7 +100,7 @@ enabled("REDCAP_TEST_RECORD") && println("Recording fixtures to ", RECORD_DIR)
         @test string(info["is_longitudinal"]) == "1"
         metadata = export_metadata(P)
         @test metadata[:field_name][1] == ID
-        for f in ("age", "sex", "consent_file", "visit_date")
+        for f in ("age", "contact_method", "consent_file", "visit_date")
             @test f in metadata[:field_name]
         end
         io = IOBuffer()
@@ -116,7 +116,7 @@ enabled("REDCAP_TEST_RECORD") && println("Recording fixtures to ", RECORD_DIR)
         @test "visits" in export_instruments(P)[:instrument_name]
         @test "visits" in export_instrument_event_mappings(P)[:form]
         @test "visits" in export_repeating_instruments_and_events(P)[:form_name]
-        @test export_field_names(P; field = "sex")[:export_field_name] == ["sex"]
+        @test export_field_names(P; field = "contact_method")[:export_field_name] == ["contact_method"]
         @test export_DAGs(P) isa REDCapTable
         @test export_user_DAG_assignment(P) isa REDCapTable
         @test export_logging(P; beginTime = now() - Hour(1)) isa REDCapTable

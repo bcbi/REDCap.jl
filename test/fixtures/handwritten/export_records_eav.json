@@ -29,7 +29,7 @@
         "application/json; charset=utf-8"
       ]
     ],
-    "body": "[{\"record\": \"1\", \"redcap_event_name\": \"baseline_arm_1\", \"field_name\": \"age\", \"value\": \"34\"}, {\"record\": \"1\", \"redcap_event_name\": \"baseline_arm_1\", \"field_name\": \"sex\", \"value\": \"1\"}]"
+    "body": "[{\"record\": \"1\", \"redcap_event_name\": \"baseline_arm_1\", \"field_name\": \"age\", \"value\": \"34\"}, {\"record\": \"1\", \"redcap_event_name\": \"baseline_arm_1\", \"field_name\": \"contact_method\", \"value\": \"1\"}]"
   },
   "expect": {
     "type": "table",

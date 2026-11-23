@@ -29,7 +29,7 @@
         "application/json; charset=utf-8"
       ]
     ],
-    "body": "[{\"record_id\": \"1\", \"redcap_event_name\": \"baseline_arm_1\", \"redcap_repeat_instrument\": \"\", \"redcap_repeat_instance\": \"\", \"age\": \"34\", \"sex\": \"1\", \"demographics_complete\": \"2\"}, {\"record_id\": \"1\", \"redcap_event_name\": \"followup_arm_1\", \"redcap_repeat_instrument\": \"visits\", \"redcap_repeat_instance\": \"1\", \"age\": \"\", \"sex\": \"\", \"demographics_complete\": \"\"}, {\"record_id\": \"2\", \"redcap_event_name\": \"baseline_arm_1\", \"redcap_repeat_instrument\": \"\", \"redcap_repeat_instance\": \"\", \"age\": \"\", \"sex\": \"2\", \"demographics_complete\": \"0\"}]"
+    "body": "[{\"record_id\": \"1\", \"redcap_event_name\": \"baseline_arm_1\", \"redcap_repeat_instrument\": \"\", \"redcap_repeat_instance\": \"\", \"age\": \"34\", \"contact_method\": \"1\", \"demographics_complete\": \"2\"}, {\"record_id\": \"1\", \"redcap_event_name\": \"followup_arm_1\", \"redcap_repeat_instrument\": \"visits\", \"redcap_repeat_instance\": \"1\", \"age\": \"\", \"contact_method\": \"\", \"demographics_complete\": \"\"}, {\"record_id\": \"2\", \"redcap_event_name\": \"baseline_arm_1\", \"redcap_repeat_instrument\": \"\", \"redcap_repeat_instance\": \"\", \"age\": \"\", \"contact_method\": \"2\", \"demographics_complete\": \"0\"}]"
   },
   "expect": {
     "type": "table",
@@ -39,7 +39,7 @@
       "redcap_repeat_instrument",
       "redcap_repeat_instance",
       "age",
-      "sex",
+      "contact_method",
       "demographics_complete"
     ],
     "nrows": 3,
