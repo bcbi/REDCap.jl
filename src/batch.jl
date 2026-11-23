@@ -212,7 +212,7 @@ mutable struct JSONMerger
     io::IO
     count::Int
 end
-JSONMerger(io::IO) = (print(io, '['); JSONMerger(io, 0))
+JSONMerger(io::IO) = JSONMerger(io, 0)
 
 function add_part!(m::JSONMerger, body::Vector{UInt8})
     text = strip(String(body))
@@ -220,9 +220,14 @@ function add_part!(m::JSONMerger, body::Vector{UInt8})
         throw(REDCapError(200, "unexpected response in batched JSON export (expected a JSON array)", :export_records))
     inner = strip(text[2:prevind(text, lastindex(text))])
     isempty(inner) && return nothing
-    m.count > 0 && print(m.io, ',')
+    print(m.io, m.count == 0 ? '[' : ',')
     print(m.io, inner)
     m.count += 1
     return nothing
 end
-finish!(m::JSONMerger) = (print(m.io, ']'); nothing)
+
+function finish!(m::JSONMerger)
+    m.count == 0 && print(m.io, '[')
+    print(m.io, ']')
+    return nothing
+end

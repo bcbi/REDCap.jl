@@ -275,3 +275,28 @@ end
     end
     @test e isa REDCapBatchError && e.processed_records == ["1", "2"] && e.failed_records == ["3", "4"]
 end
+
+@testset "export: IO untouched when the first batches fail or are empty" begin
+    for format in (:csv, :json)
+        fake = fake_project_data(5)
+        fake.fail_at = 2  # the first record batch (after the ID lookup)
+        p, _ = fake_client(fake)
+        buf = IOBuffer()
+        @test_throws REDCapBatchError export_records(p, buf; format, batchsize = 2)
+        @test isempty(take!(buf))
+    end
+
+    # The first batch has no records (unknown IDs), the second fails.
+    fake = fake_project_data(5)
+    fake.fail_at = 2
+    p, _ = fake_client(fake)
+    buf = IOBuffer()
+    @test_throws REDCapBatchError export_records(p, buf; format = :json, records = [98, 99, 1, 2], batchsize = 2)
+    @test isempty(take!(buf))
+
+    # Unknown IDs only: still a valid, empty JSON array.
+    p, _ = fake_client(fake_project_data(5))
+    buf = IOBuffer()
+    export_records(p, buf; format = :json, records = [98, 99, 100], batchsize = 2)
+    @test String(take!(buf)) == "[]"
+end
