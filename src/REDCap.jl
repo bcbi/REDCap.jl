@@ -30,7 +30,10 @@ records = export_records(project; fields=[:record_id, :age])
 Imports take `data` as any Tables.jl table (e.g. a `DataFrame`), a single row (a
 `NamedTuple` or `Dict`), or a vector of rows. It is sent as JSON. Values are sent as
 strings; `missing` and `nothing` become blanks, `Bool`s become `1`/`0`, and nested `Dict`s
-(e.g. per-instrument user rights) become JSON objects.
+(e.g. per-instrument user rights) become JSON objects. Floating-point numbers are written in
+plain decimal notation with the shortest digits that round-trip, without an exponent or a
+trailing `.0` (`1e-5` as `0.00001`, `30.0` as `30`). For fields validated to a fixed number
+of decimal places (e.g. `number_2dp`), pass the values as formatted strings.
 
 To send data that is already formatted, pass an `IO` or a [`REDCapFile`](@ref), together
 with `format` (`:csv`, `:json`, `:xml`, or `:odm` for records):

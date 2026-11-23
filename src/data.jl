@@ -143,7 +143,7 @@ write_value(io, k, v::Symbol) = JSON.json(io, String(v))
 write_value(io, k, v::Bool) = JSON.json(io, v ? "1" : "0")
 write_value(io, k, v::Integer) = JSON.json(io, string(v))
 write_value(io, k, v::AbstractFloat) =
-    isfinite(v) ? JSON.json(io, string(v)) : throw(ArgumentError("value of `$k` is not finite: $v"))
+    isfinite(v) ? JSON.json(io, decimal_string(v)) : throw(ArgumentError("value of `$k` is not finite: $v"))
 write_value(io, k, ::Union{Missing, Nothing}) = JSON.json(io, "")
 write_value(io, k, v::Date) = JSON.json(io, Dates.format(v, dateformat"yyyy-mm-dd"))
 
@@ -165,6 +165,34 @@ function write_value(io, k, v::AbstractVector)
         write_value(io, k, vv)
     end
     return print(io, ']')
+end
+
+"""
+    decimal_string(x::AbstractFloat) -> String
+
+Format a finite `x` in plain decimal notation, as REDCap's number validation expects: the
+shortest digits that round-trip, with no exponent and no trailing `.0` (`1e-5` becomes
+`"0.00001"`, `30.0` becomes `"30"`, and `-0.0` becomes `"0"`).
+"""
+function decimal_string(x::AbstractFloat)
+    s = string(x)
+    m = match(r"^(-?)(\d+)(?:\.(\d*))?(?:[eEf]([+-]?\d+))?$", s)
+    m === nothing && throw(ArgumentError("cannot write $(repr(x)) ($(typeof(x))) in decimal notation"))
+    intpart, fracpart = m[2], something(m[3], "")
+    mantissa = intpart * fracpart
+    point = length(intpart) + (m[4] === nothing ? 0 : parse(Int, m[4]))  # digits before the point
+    first_nonzero = findfirst(!=('0'), mantissa)
+    first_nonzero === nothing && return "0"
+    mantissa = rstrip(mantissa[first_nonzero:end], '0')
+    point -= first_nonzero - 1
+    body = if point <= 0
+        "0." * "0"^(-point) * mantissa
+    elseif point >= length(mantissa)
+        mantissa * "0"^(point - length(mantissa))
+    else
+        mantissa[1:point] * "." * mantissa[(point + 1):end]
+    end
+    return m[1] * body
 end
 
 write_value(io, k, v) = throw(

@@ -50,6 +50,31 @@ end
     @test_throws ArgumentError sent_json((a = 1 + 2im,))
 end
 
+@testset "float serialization" begin
+    sent(x) = JSON.parse(sent_json((a = x,)))[1]["a"]
+    @test sent(1.0e-5) == "0.00001"
+    @test sent(-2.5e-7) == "-0.00000025"
+    @test sent(30.0) == "30"
+    @test sent(-30.0) == "-30"
+    @test sent(0.0) == "0"
+    @test sent(-0.0) == "0"
+    @test sent(0.1) == "0.1"
+    @test sent(1.5) == "1.5"
+    @test sent(123.456) == "123.456"
+    @test sent(1.5e10) == "15000000000"
+    @test sent(1.0e16) == "10000000000000000"
+    @test sent(1.0f-5) == "0.00001"
+    @test sent(Float32(0.1)) == "0.1"
+    @test sent(Float16(2.5)) == "2.5"
+    @test sent(big"1.5e20") == "150000000000000000000"
+    for x in (1.0e-5, 0.1, 1 / 3, 123.456, 1.5e10, 5.0e-324, 1.7976931348623157e308)
+        @test parse(Float64, sent(x)) === x
+        @test !occursin('e', sent(x))
+    end
+    @test_throws ArgumentError sent_json((a = Inf,))
+    @test_throws ArgumentError sent_json((a = -Inf32,))
+end
+
 @testset "rejected inputs" begin
     err = try
         normalize_data("record_id\n1", nothing, FORMATS)
