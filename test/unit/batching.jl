@@ -1,4 +1,5 @@
 using REDCap: chunk, group_rows, plan_import_batches, run_batches, Row, REDCapBatchError
+using REDCap: CSVMerger, add_part!, finish!, csv_header_end
 
 include(joinpath(@__DIR__, "..", "fake_redcap.jl"))
 
@@ -128,6 +129,30 @@ end
         @test_throws ArgumentError export_records(project(t), IOBuffer(); format = fmt, batchsize = 2)
         @test isempty(t.requests)
     end
+end
+
+@testset "export: CSV headers with multi-line labels" begin
+    # A label header with a line break inside a quoted cell and an escaped quote.
+    header = "\"Record ID\",\"Age\n(years)\",\"Say \"\"hi\"\"\"\n"
+    @test csv_header_end(Vector{UInt8}(header)) == ncodeunits(header)
+    @test csv_header_end(Vector{UInt8}("record_id,age\r\n1,63\r\n")) == 15
+    @test csv_header_end(Vector{UInt8}("\"unterminated\nlabel")) === nothing
+    @test csv_header_end(UInt8[]) === nothing
+
+    buf = IOBuffer()
+    m = CSVMerger(buf)
+    add_part!(m, Vector{UInt8}(header * "1,63,x\n"))
+    add_part!(m, Vector{UInt8}(header * "2,70,\"multi\nline\"\n"))
+    add_part!(m, Vector{UInt8}(header))
+    finish!(m)
+    @test String(take!(buf)) == header * "1,63,x\n" * "2,70,\"multi\nline\"\n"
+
+    t = mock(ok(header * "1,63,x\n"), ok(header * "2,70,y\n"))
+    buf = IOBuffer()
+    @test export_records(project(t), buf; format = :csv, records = [1, 2], rawOrLabelHeaders = :label, batchsize = 1) === nothing
+    @test String(take!(buf)) == header * "1,63,x\n" * "2,70,y\n"
+    @test length(t.requests) == 2
+    @test all(r -> field(r, "rawOrLabelHeaders") == "label", t.requests)
 end
 
 @testset "import: records stay whole" begin

@@ -176,13 +176,32 @@ mutable struct CSVMerger
 end
 CSVMerger(io::IO) = CSVMerger(io, true)
 
-# Field names never contain newlines, so the header is exactly the first line.
+"""
+    csv_header_end(body) -> Union{Int, Nothing}
+
+Index of the newline that ends the header record of a CSV body, or `nothing` if the body
+has no complete header. Newlines inside quoted cells do not end the record: with
+`rawOrLabelHeaders=:label`, the header holds field labels, which may span several lines.
+"""
+function csv_header_end(body::AbstractVector{UInt8})
+    quoted = false
+    for (i, b) in enumerate(body)
+        if b == UInt8('"')
+            quoted = !quoted  # an escaped quote ("") toggles twice
+        elseif b == UInt8('\n') && !quoted
+            return i
+        end
+    end
+    return nothing
+end
+
+# Every batch repeats the header; keep it from the first batch only.
 function add_part!(m::CSVMerger, body::Vector{UInt8})
     if m.first
         write(m.io, body)
         m.first = false
     else
-        i = findfirst(==(UInt8('\n')), body)
+        i = csv_header_end(body)
         i === nothing || write(m.io, @view body[(i + 1):end])
     end
     return nothing
