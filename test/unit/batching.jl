@@ -48,8 +48,17 @@ end
     @test e.failed_records == ["3"]
     @test e.error === err
     @test occursin("not", sprint(showerror, e)) || occursin("remain applied", sprint(showerror, e))
-    # other exceptions propagate unchanged
-    @test_throws ErrorException run_batches(k -> error("x"), [["1"]])
+    # other exceptions are wrapped too
+    e = try
+        run_batches(k -> k == 2 ? error("x") : k, [["1"], ["2"]])
+    catch e
+        e
+    end
+    @test e isa REDCapBatchError
+    @test e.completed_batches == 1 && e.failed_records == ["2"]
+    @test e.error isa ErrorException && e.error.msg == "x"
+    # except an interrupt
+    @test_throws InterruptException run_batches(k -> throw(InterruptException()), [["1"]])
 end
 
 @testset "export: record ID lookup" begin
@@ -274,6 +283,56 @@ end
         e
     end
     @test e isa REDCapBatchError && e.processed_records == ["1", "2"] && e.failed_records == ["3", "4"]
+end
+
+"""
+A project client backed by `fake`, whose transport throws `err` instead of answering the
+`n`-th record request, as a timeout or connection error from HTTP.jl would.
+"""
+function failing_client(fake, n, err)
+    count = 0
+    t = MockTransport() do req
+        if field(req, "content") == "record"
+            count += 1
+            count == n && throw(err)
+        end
+        return fake(req)
+    end
+    return project(t), t
+end
+
+@testset "transport error in batch k" begin
+    err = Base.IOError("connection reset by peer", -104)
+
+    fake = fake_project_data(0)
+    p, t = failing_client(fake, 2, err)
+    data = [(record_id = string(i), age = "1") for i in 1:5]
+    e = try
+        import_records(p; data, batchsize = 2, recordIdField = :record_id)
+    catch e
+        e
+    end
+    @test e isa REDCapBatchError
+    @test e.completed_batches == 1
+    @test e.processed_records == ["1", "2"]
+    @test e.failed_records == ["3", "4"]
+    @test e.error === err
+    @test occursin("connection reset by peer", sprint(showerror, e))
+    @test length(t.requests) == 2  # nothing after the failure
+    @test sort(unique(r["record_id"] for r in fake.rows)) == ["1", "2"]  # not atomic
+
+    # The ID lookup is the first record request, so the second batch is the third.
+    p, _ = failing_client(fake_project_data(5), 3, err)
+    e = try
+        export_records(p; batchsize = 2)
+    catch e
+        e
+    end
+    @test e isa REDCapBatchError
+    @test e.completed_batches == 1
+    @test e.processed_records == ["1", "2"]
+    @test e.failed_records == ["3", "4"]
+    @test e.error === err
 end
 
 @testset "export: IO untouched when the first batches fail or are empty" begin

@@ -92,14 +92,17 @@ Functions that erase or replace existing data have docstrings that open with a w
 [`overwrite_records`](@ref) and [`delete_records`](@ref) accept `batchsize`, to split
 large requests (which can time out, or exceed PHP's `max_input_vars`) into requests of at
 most that many records, sent one at a time. All rows of one record stay together.
-Batching is opt-in, and batched calls are **not atomic**: if a batch fails, a
-[`REDCapBatchError`](@ref) reports the progress, and earlier batches stay applied.
+Batching is opt-in, and batched calls are **not atomic**: if a batch fails (with an error
+from REDCap, or a timeout or connection error), a [`REDCapBatchError`](@ref) reports the
+progress and wraps the original error, and earlier batches stay applied.
 
 # Errors
 
 - Any non-2xx response throws a [`REDCapError`](@ref) with the HTTP status, REDCap's error
   message and the function name. There are no automatic retries, since writes are not
   safe to repeat.
+- In a batched call, any failure of a batch, including a timeout or connection error,
+  throws a [`REDCapBatchError`](@ref) that wraps it.
 - Invalid arguments throw `ArgumentError` (or `MethodError`/`UndefKeywordError` for
   missing or unsupported keywords) before any request is sent.
 - Tokens never appear in errors or in the `@debug` request logs

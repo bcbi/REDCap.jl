@@ -26,7 +26,8 @@ const BATCH_DOC = """
 # Batching
 With `batchsize=n`, the call is split into requests of at most `n` records each, sent one
 at a time. All rows of one record stay in the same batch. Batched calls are **not
-atomic**: if a batch fails, a [`REDCapBatchError`](@ref) reports the progress and the
+atomic**: if a batch fails (with an error from REDCap, or a timeout or connection error),
+a [`REDCapBatchError`](@ref) reports the progress and wraps the original error, and the
 earlier batches stay applied."""
 
 const SURVEY_KWARGS_DOC = """

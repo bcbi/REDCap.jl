@@ -25,20 +25,23 @@ end
 """
     REDCapBatchError <: Exception
 
-Thrown when one batch of a batched call (`batchsize=...`) fails. Batched calls are **not
-atomic**: the batches before the failed one stay applied.
+Thrown when one batch of a batched call (`batchsize=...`) fails, whether REDCap answered
+with an error or the request itself failed (for example, a timeout or connection error).
+Batched calls are **not atomic**: the batches before the failed one stay applied. An
+`InterruptException` is not wrapped.
 
 # Fields
 - `completed_batches::Int`: the number of batches that succeeded
 - `processed_records::Vector{String}`: the record names in those batches
 - `failed_records::Vector{String}`: the record names in the batch that failed
-- `error::REDCapError`: the failed batch's error
+- `error::Exception`: the failed batch's error: a [`REDCapError`](@ref), or the exception
+  thrown while sending the request
 """
 struct REDCapBatchError <: Exception
     completed_batches::Int
     processed_records::Vector{String}
     failed_records::Vector{String}
-    error::REDCapError
+    error::Exception
 end
 
 function Base.showerror(io::IO, e::REDCapBatchError)

@@ -53,8 +53,10 @@ end
 """
     run_batches(f, id_batches) -> Vector
 
-Call `f(k)` for each batch `k` in turn. If a batch throws a `REDCapError`, stop and throw a
-`REDCapBatchError` describing the progress so far.
+Call `f(k)` for each batch `k` in turn. If a batch throws, stop and throw a
+`REDCapBatchError` describing the progress so far. This covers any exception (a
+`REDCapError`, or a timeout or connection error from the transport), except an
+`InterruptException`, which is rethrown as is.
 """
 function run_batches(f, id_batches::AbstractVector{<:AbstractVector{String}})
     results = Any[]
@@ -63,7 +65,7 @@ function run_batches(f, id_batches::AbstractVector{<:AbstractVector{String}})
         result = try
             f(k)
         catch e
-            e isa REDCapError || rethrow()
+            e isa InterruptException && rethrow()
             throw(REDCapBatchError(k - 1, copy(done), collect(String, ids), e))
         end
         push!(results, result)
