@@ -33,7 +33,10 @@ strings; `missing` and `nothing` become blanks, `Bool`s become `1`/`0`, and nest
 (e.g. per-instrument user rights) become JSON objects. Floating-point numbers are written in
 plain decimal notation with the shortest digits that round-trip, without an exponent or a
 trailing `.0` (`1e-5` as `0.00001`, `30.0` as `30`). For fields validated to a fixed number
-of decimal places (e.g. `number_2dp`), pass the values as formatted strings.
+of decimal places (e.g. `number_2dp`), pass the values as formatted strings. `Date`s are
+written as `yyyy-mm-dd`, or as `mm/dd/yyyy` or `dd/mm/yyyy` when a record import is given
+`dateFormat=:MDY` or `:DMY`; other date and time values (e.g. `DateTime`) must be passed as
+formatted strings.
 
 To send data that is already formatted, pass an `IO` or a [`REDCapFile`](@ref), together
 with `format` (`:csv`, `:json`, `:xml`, or `:odm` for records):

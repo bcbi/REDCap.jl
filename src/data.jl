@@ -103,66 +103,80 @@ function table_rows(table)
 end
 
 """
-    rows_to_json(rows) -> String
-
-Serialize rows as a JSON array of objects, keeping column order.
+Layouts of `Date` values for each `dateFormat`. REDCap expects dashes with the default
+`YMD`, and forward slashes with `MDY` and `DMY`.
 """
-function rows_to_json(rows::AbstractVector{Row})
+const DATE_LAYOUTS = Dict(
+    "YMD" => dateformat"yyyy-mm-dd",
+    "MDY" => dateformat"mm/dd/yyyy",
+    "DMY" => dateformat"dd/mm/yyyy",
+)
+
+const DEFAULT_DATE_LAYOUT = DATE_LAYOUTS["YMD"]
+
+"""
+    rows_to_json(rows, dates=DEFAULT_DATE_LAYOUT) -> String
+
+Serialize rows as a JSON array of objects, keeping column order. `Date` values are
+written with the layout `dates` (see `DATE_LAYOUTS`).
+"""
+function rows_to_json(rows::AbstractVector{Row}, dates::DateFormat = DEFAULT_DATE_LAYOUT)
     io = IOBuffer()
     print(io, '[')
     for (i, row) in enumerate(rows)
         i > 1 && print(io, ',')
-        write_row(io, row)
+        write_row(io, row, dates)
     end
     print(io, ']')
     return String(take!(io))
 end
 
 """
-    row_to_json(row) -> String
+    row_to_json(row, dates=DEFAULT_DATE_LAYOUT) -> String
 
-Serialize one row as a JSON object, keeping column order.
+Serialize one row as a JSON object, keeping column order. `Date` values are written with
+the layout `dates`.
 """
-row_to_json(row::Row) = sprint(write_row, row)
+row_to_json(row::Row, dates::DateFormat = DEFAULT_DATE_LAYOUT) = sprint(write_row, row, dates)
 
-function write_row(io::IO, row::Row)
+function write_row(io::IO, row::Row, dates::DateFormat)
     print(io, '{')
     for (j, (k, v)) in enumerate(row)
         j > 1 && print(io, ',')
         JSON.json(io, k)
         print(io, ':')
-        write_value(io, k, v)
+        write_value(io, k, v, dates)
     end
     return print(io, '}')
 end
 
 # Values are sent as JSON strings, as REDCap itself exports them. Nested dicts and vectors
 # (e.g. user rights `forms`) are written as JSON objects and arrays.
-write_value(io, k, v::AbstractString) = JSON.json(io, String(v))
-write_value(io, k, v::Symbol) = JSON.json(io, String(v))
-write_value(io, k, v::Bool) = JSON.json(io, v ? "1" : "0")
-write_value(io, k, v::Integer) = JSON.json(io, string(v))
-write_value(io, k, v::AbstractFloat) =
+write_value(io, k, v::AbstractString, dates) = JSON.json(io, String(v))
+write_value(io, k, v::Symbol, dates) = JSON.json(io, String(v))
+write_value(io, k, v::Bool, dates) = JSON.json(io, v ? "1" : "0")
+write_value(io, k, v::Integer, dates) = JSON.json(io, string(v))
+write_value(io, k, v::AbstractFloat, dates) =
     isfinite(v) ? JSON.json(io, decimal_string(v)) : throw(ArgumentError("value of `$k` is not finite: $v"))
-write_value(io, k, ::Union{Missing, Nothing}) = JSON.json(io, "")
-write_value(io, k, v::Date) = JSON.json(io, Dates.format(v, dateformat"yyyy-mm-dd"))
+write_value(io, k, ::Union{Missing, Nothing}, dates) = JSON.json(io, "")
+write_value(io, k, v::Date, dates) = JSON.json(io, Dates.format(v, dates))
 
-function write_value(io, k, v::AbstractDict)
+function write_value(io, k, v::AbstractDict, dates)
     print(io, '{')
     for (j, (kk, vv)) in enumerate(pairs(v))
         j > 1 && print(io, ',')
         JSON.json(io, string(kk))
         print(io, ':')
-        write_value(io, kk, vv)
+        write_value(io, kk, vv, dates)
     end
     return print(io, '}')
 end
 
-function write_value(io, k, v::AbstractVector)
+function write_value(io, k, v::AbstractVector, dates)
     print(io, '[')
     for (j, vv) in enumerate(v)
         j > 1 && print(io, ',')
-        write_value(io, k, vv)
+        write_value(io, k, vv, dates)
     end
     return print(io, ']')
 end
@@ -195,7 +209,7 @@ function decimal_string(x::AbstractFloat)
     return m[1] * body
 end
 
-write_value(io, k, v) = throw(
+write_value(io, k, v, dates) = throw(
     ArgumentError(
         "unsupported value for `$k`: $(repr(v)) ($(typeof(v))). " *
             "Convert it to a String in the format REDCap expects (e.g. DateTime values)",

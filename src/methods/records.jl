@@ -109,7 +109,9 @@ const IMPORT_RECORDS_KWARGS_DOC = """
 $IMPORT_DATA_DOC: `:csv`, `:json`, `:xml` or `:odm`
 - `forceAutoNumber`: let REDCap assign record names; the names in `data` are only used to
   group rows (`Bool`)
-- `dateFormat`: format of date values in `data`: `:YMD` (default), `:MDY` or `:DMY`
+- `dateFormat`: format of date values in `data`: `:YMD` (default), `:MDY` or `:DMY`. With
+  table data, `Date` values are written in this format (`yyyy-mm-dd`, `mm/dd/yyyy` or
+  `dd/mm/yyyy`)
 - `csvDelimiter`: delimiter of CSV `data`: `","` (default), `"tab"`, `";"`, `"|"` or `"^"`
 - `batchsize`: import in batches of this many records (table data only)
 - `recordIdField`: the record ID column used to group rows into batches; by default the

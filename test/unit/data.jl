@@ -75,6 +75,28 @@ end
     @test_throws ArgumentError sent_json((a = -Inf32,))
 end
 
+@testset "Date values follow dateFormat" begin
+    spec = method_spec(:import_records)
+    data = [(record_id = "1", dob = Date(2024, 3, 5), visit = "2024-12-31", dates = [Date(2024, 11, 2)])]
+    function sent_row(dateFormat)
+        req = REDCap.build_request(project(), spec, (; dateFormat); data)
+        return only(JSON.parse(field(req, "data")))
+    end
+    @test sent_row(nothing)["dob"] == "2024-03-05"
+    @test sent_row(:YMD)["dob"] == "2024-03-05"
+    @test sent_row(:MDY)["dob"] == "03/05/2024"
+    @test sent_row(:DMY)["dob"] == "05/03/2024"
+    @test sent_row("DMY")["dob"] == "05/03/2024"
+    # nested values use the same layout
+    @test sent_row(:DMY)["dates"] == ["02/11/2024"]
+    # strings are sent unchanged
+    for dateFormat in (nothing, :YMD, :MDY, :DMY)
+        @test sent_row(dateFormat)["visit"] == "2024-12-31"
+    end
+    @test_throws ArgumentError sent_row(:YDM)
+    @test_throws ArgumentError sent_row(:dmy)
+end
+
 @testset "rejected inputs" begin
     err = try
         normalize_data("record_id\n1", nothing, FORMATS)

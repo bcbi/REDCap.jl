@@ -49,7 +49,9 @@ function build_request(
             payload = normalized.payload
         else
             push!(fixed, :format => :json)
-            payload = spec.json_object ? row_to_json(only(normalized.rows)) : rows_to_json(normalized.rows)
+            dates = date_layout(spec, given)
+            payload = spec.json_object ? row_to_json(only(normalized.rows), dates) :
+                rows_to_json(normalized.rows, dates)
         end
     else
         data isa NoData || throw(ArgumentError("$(spec.name) does not accept `data`"))
@@ -81,6 +83,20 @@ function build_request(
     end
     payload === nothing || push!(fields, "data" => payload)
     return REDCapRequest(spec.name, client.url, fields, upload)
+end
+
+"""
+    date_layout(spec, given) -> DateFormat
+
+The layout of `Date` values in table data: the one `dateFormat` asks for, if given, or
+`yyyy-mm-dd`. The value is validated as it is when sent, so an invalid `dateFormat` throws
+the same `ArgumentError`.
+"""
+function date_layout(spec::MethodSpec, given::Vector{Pair{Symbol, Any}})
+    i = findfirst(p -> first(p) == :dateFormat, given)
+    i === nothing && return DEFAULT_DATE_LAYOUT
+    encoded = only(encode_param(param_kind(spec.overrides, :dateFormat), :dateFormat, last(given[i])))
+    return DATE_LAYOUTS[last(encoded)]
 end
 
 function build_upload(spec::MethodSpec, file, filename)
