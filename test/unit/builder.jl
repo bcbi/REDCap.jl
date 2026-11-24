@@ -47,6 +47,59 @@ end
     @test field(req, "returnFormat") == "json"
 end
 
+@testset "CSV-only parameters" begin
+    p = project()
+    # imports: csvDelimiter only with CSV data
+    for name in (:import_records, :import_records_ids, :overwrite_records)
+        spec = method_spec(name)
+        @test_throws ArgumentError build_request(p, spec, (csvDelimiter = :tab,); data = [EXAMPLE_ROW])
+        for fmt in (:json, :xml, :odm)
+            @test_throws ArgumentError build_request(p, spec, (csvDelimiter = :tab,); data = IOBuffer("x"), format = fmt)
+        end
+        req = build_request(p, spec, (csvDelimiter = :tab,); data = IOBuffer("record_id\tage\n1\t63"), format = :csv)
+        @test field(req, "csvDelimiter") == "tab"
+        @test field(req, "format") == "csv"
+    end
+    # IO exports: csvDelimiter and rawOrLabelHeaders only with CSV output
+    for (name, params) in (
+            :export_records => (:csvDelimiter => :tab, :rawOrLabelHeaders => :label),
+            :export_records_eav => (:csvDelimiter => :tab,),
+            :export_reports => (:csvDelimiter => :tab, :rawOrLabelHeaders => :label),
+        )
+        spec = method_spec(name)
+        required = minimal_kwargs(spec)
+        for (k, v) in params
+            given = merge(required, NamedTuple{(k,)}((v,)))
+            for fmt in filter(!=(:csv), spec.io_formats)
+                @test_throws ArgumentError build_request(p, spec, given; format = fmt, io = true)
+            end
+            req = build_request(p, spec, given; format = :csv, io = true)
+            @test field(req, String(k)) == String(v)
+        end
+    end
+    # the message names the parameter and the format
+    err = try
+        build_request(p, method_spec(:export_records), (rawOrLabelHeaders = :label,); format = :json, io = true)
+    catch e
+        e
+    end
+    @test occursin("rawOrLabelHeaders", err.msg) && occursin(":json", err.msg)
+    err = try
+        build_request(p, method_spec(:import_records), (csvDelimiter = :tab,); data = [EXAMPLE_ROW])
+    catch e
+        e
+    end
+    @test occursin("csvDelimiter", err.msg) && occursin("table data", err.msg)
+    # nothing is sent, including for batched calls
+    t = always(ok("1"))
+    p = project(t)
+    @test_throws ArgumentError import_records(p; data = [EXAMPLE_ROW], csvDelimiter = :tab)
+    @test_throws ArgumentError import_records(p; data = [EXAMPLE_ROW], csvDelimiter = :tab, batchsize = 1)
+    @test_throws ArgumentError export_records(p, IOBuffer(); format = :json, rawOrLabelHeaders = :label)
+    @test_throws ArgumentError export_records(p, IOBuffer(); format = :json, records = [1, 2], rawOrLabelHeaders = :label, batchsize = 1)
+    @test isempty(t.requests)
+end
+
 @testset "body encoding" begin
     req = REDCapRequest(:x, REDCap.URI(URL), ["token" => "T", "fields[0]" => "a b&c", "data" => "[{\"x\":\"é\"}]"], nothing)
     ctype, body = encode_body(req)

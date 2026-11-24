@@ -25,7 +25,8 @@ to `io` instead, in `format` `:csv`, `:json`, `:xml` or `:odm`. For the EAV form
 - `exportBlankForGrayFormStatus`: export blank instead of `0` for gray (never edited) form status (`Bool`)
 - `batchsize`: export in batches of this many records (see below)
 - IO method only: `format` (required), `rawOrLabelHeaders` (`:raw` or `:label`, CSV only),
-  `csvDelimiter` (`","`, `"tab"`, `";"`, `"|"` or `"^"`)
+  `csvDelimiter` (`","`, `"tab"`, `";"`, `"|"` or `"^"`; CSV only). A CSV-only keyword
+  with another `format` throws an `ArgumentError`, as REDCap would ignore it.
 
 $BATCH_DOC
 
@@ -112,7 +113,9 @@ $IMPORT_DATA_DOC: `:csv`, `:json`, `:xml` or `:odm`
 - `dateFormat`: format of date values in `data`: `:YMD` (default), `:MDY` or `:DMY`. With
   table data, `Date` values are written in this format (`yyyy-mm-dd`, `mm/dd/yyyy` or
   `dd/mm/yyyy`)
-- `csvDelimiter`: delimiter of CSV `data`: `","` (default), `"tab"`, `";"`, `"|"` or `"^"`
+- `csvDelimiter`: delimiter of CSV `data`: `","` (default), `"tab"`, `";"`, `"|"` or `"^"`.
+  Only accepted with `format = :csv`; with table data (sent as JSON) or another `format`
+  it throws an `ArgumentError`, as REDCap would ignore it
 - `batchsize`: import in batches of this many records (table data only)
 - `recordIdField`: the record ID column used to group rows into batches; by default the
   first field of the data dictionary (with `batchsize` only)

@@ -12,6 +12,8 @@ $IO_METHOD_DOC
 - `exportCheckboxLabel`: export checkbox values as labels (`Bool`)
 - `decimalCharacter`: `","` or `"."`
 - IO method only: `rawOrLabelHeaders` (`:raw` or `:label`, CSV only), `csvDelimiter`
+  (`","`, `"tab"`, `";"`, `"|"` or `"^"`; CSV only). A CSV-only keyword with another
+  `format` throws an `ArgumentError`, as REDCap would ignore it.
 
 TODO(verify): whether reports can also be exported as ODM.
 """
