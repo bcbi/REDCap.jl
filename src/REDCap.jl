@@ -28,7 +28,10 @@ records = export_records(project; fields=[:record_id, :age])
 # Import data
 
 Imports take `data` as any Tables.jl table (e.g. a `DataFrame`), a single row (a
-`NamedTuple` or `Dict`), or a vector of rows. It is sent as JSON. Values are sent as
+`NamedTuple` or `Dict`), or a vector of rows. A `NamedTuple` or `Dict` whose values are all
+vectors is a column table, e.g. `Dict("record_id" => ["1", "2"], "age" => [63, 70])`; the
+vectors must have the same length. To import a single row whose values are all vectors,
+wrap it in a vector. The data is sent as JSON. Values are sent as
 strings; `missing` and `nothing` become blanks, `Bool`s become `1`/`0`, and nested `Dict`s
 (e.g. per-instrument user rights) become JSON objects. Floating-point numbers are written in
 plain decimal notation with the shortest digits that round-trip, without an exponent or a

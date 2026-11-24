@@ -71,13 +71,28 @@ function normalize_data(data, format, allowed_formats::Vector{Symbol})
 end
 
 normalize_rows(::AbstractString) = throw(ArgumentError(STRING_DATA_ERROR))
-normalize_rows(row::AbstractDict) = [as_row(row)]
+# A NamedTuple or Dict whose values are all vectors is a column table; otherwise it is a row.
+function normalize_rows(x::Union{NamedTuple, AbstractDict})
+    is_column_table(x) && return column_rows(x)
+    return [as_row(x)]
+end
 
-function normalize_rows(nt::NamedTuple)
-    if !isempty(nt) && all(v -> v isa AbstractVector, values(nt))
-        return table_rows(nt)  # a NamedTuple of vectors is a column table
-    end
-    return [as_row(nt)]
+is_column_table(x) = !isempty(x) && all(v -> v isa AbstractVector, values(x))
+
+"""
+    column_rows(columns) -> Vector{Row}
+
+Split `columns`, a `NamedTuple` or `AbstractDict` of equal-length vectors, into rows.
+Unlike `Tables.rows`, this accepts any key and value types, e.g. a `Dict{String,Any}`.
+"""
+function column_rows(columns)
+    names = [string(k) for k in keys(columns)]
+    cols = collect(values(columns))
+    n = length(first(cols))
+    all(c -> length(c) == n, cols) || throw(ArgumentError(
+        "the column vectors in `data` must all have the same length; got lengths " *
+        join((string(name, " => ", length(c)) for (name, c) in zip(names, cols)), ", ")))
+    return Row[Row([name => v for (name, v) in zip(names, vals)]) for vals in zip(cols...)]
 end
 
 function normalize_rows(v::AbstractVector)

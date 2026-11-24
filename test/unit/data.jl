@@ -27,6 +27,17 @@ const EXPECTED = """[{"record_id":"1","age":"63"},{"record_id":"2","age":""}]"""
     @test sent_json(rows) == """[{"record_id":"1"},{"record_id":"2"}]"""
     # NamedTuple of vectors (column table)
     @test sent_json((record_id = ["1", "2"], age = ["63", ""])) == EXPECTED
+    # Dict of vectors (column table); compared as parsed rows, since a Dict's key order is not fixed
+    sent_rows(data) = [Dict(r) for r in JSON.parse(sent_json(data))]
+    expected_rows = [Dict("record_id" => "1", "age" => "63"), Dict("record_id" => "2", "age" => "")]
+    @test sent_rows(Dict("record_id" => ["1", "2"], "age" => ["63", ""])) == expected_rows
+    @test sent_rows(Dict{String, Any}("record_id" => ["1", "2"], "age" => Any[63, missing])) == expected_rows
+    @test sent_rows(Dict(:record_id => ["1", "2"], "age" => ["63", nothing])) == expected_rows
+    # a Dict with some vector values is a single row
+    @test sent_rows(Dict("record_id" => "1", "list" => ["a", "b"])) == [Dict("record_id" => "1", "list" => ["a", "b"])]
+    # column vectors of different lengths
+    @test_throws ArgumentError sent_json(Dict("record_id" => ["1", "2"], "age" => ["63"]))
+    @test_throws ArgumentError sent_json((record_id = ["1", "2"], age = ["63"]))
     # any Tables.jl table
     @test sent_json(TestTable([:record_id, :age], [Any["1", "2"], Any["63", missing]])) == EXPECTED
     # a REDCapTable round-trips

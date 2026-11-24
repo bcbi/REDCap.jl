@@ -2,7 +2,8 @@
 
 const IMPORT_DATA_DOC = """
 - `data` (required): a Tables.jl table, a single row (`NamedTuple` or `AbstractDict`), or a
-  vector of rows, sent as JSON; or pre-formatted data as an `IO` or [`REDCapFile`](@ref),
+  vector of rows, sent as JSON (a `NamedTuple` or `AbstractDict` whose values are all
+  vectors is a column table); or pre-formatted data as an `IO` or [`REDCapFile`](@ref),
   together with `format`. A plain `String` is not accepted.
 - `format`: required with `IO`/`REDCapFile` data, not allowed otherwise"""
 
