@@ -260,6 +260,15 @@ enabled("REDCAP_TEST_RECORD") && println("Recording fixtures to ", RECORD_DIR)
         @test sorted_rows(export_records(P)) == sorted_rows(unbatched)
         batched_csv = sprint(io -> export_records(P, io; format = :csv, batchsize = 2))
         @test sort(split(batched_csv, '\n')) == sort(split(unbatched_csv, '\n'))
+        # A batch with no rows may come without a header. If the first batch is empty, the
+        # merged CSV must still start with exactly one header line.
+        empty_csv = sprint(io -> export_records(P, io; format = :csv, records = "nonexistent"))
+        @info "CSV export of a nonexistent record" body = empty_csv
+        header = first(split(unbatched_csv, '\n'))
+        merged = sprint(io -> export_records(P, io; format = :csv, records = ["nonexistent", "1", "2"], batchsize = 1))
+        @test startswith(merged, header * '\n')
+        @test count(==(header), split(merged, '\n')) == 1
+        @test sort(split(merged, '\n')) == sort(split(sprint(io -> export_records(P, io; format = :csv, records = ["1", "2"])), '\n'))
         @test sorted_rows(export_records(P; batchsize = 2, filterLogic = "[age] > 24")) ==
             sorted_rows(export_records(P; filterLogic = "[age] > 24"))
         @test import_records_ids(P; data = rows, batchsize = 2) == string.(1:7)
