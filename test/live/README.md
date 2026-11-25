@@ -15,65 +15,47 @@ long-lived sandbox project that you build once in the REDCap web interface. Crea
 project (purpose "Practice / Just for fun", **left in Development status**) with:
 
 **Project setup**
-- Longitudinal data collection: **enabled**
-- Surveys: **enabled**
-- Record auto-numbering: **disabled**
 
-**Instruments.** Create the three instruments first (*Designer → Online Designer*), then
-add their fields. The unique instrument names must be exactly `demographics`, `visits` and
-`survey_form`; REDCap derives them from the name you give each instrument ("Demographics",
-"Visits", "Survey Form"), and the Codebook shows them. A new project starts with one
-instrument holding `record_id`: in the finished project, `demographics` must be the first
-instrument and `record_id` its first field.
+Request an API token for the project and ensure that you have the following privileges: API Export, API Import, Create Records, Rename
+Records, Delete Records, Data Access Groups, Logging, File
+Repository, Project Design and Setup, and User Rights.
 
-**Fields** (field names must match exactly)
+**Enable** the following settings under **Main project settings**:
 
-| Instrument | Field type | Field name | Validation | Notes |
+- "Use surveys in this project?"
+- "Use longitudinal data collected with defined events?"
+
+**Disable** the following setting under **Enable optional modules and customizations**:
+
+- "Auto-numbering for records"
+
+**Instruments.** Under **Design your data collection instruments & enable your surveys**, go to the Online Designer. Create the following instruments in order, then delete the default instrument that was already present. Afterwards, populate the instruments with the following field names:
+
+| Instrument | Field type | Variable name | Validation | Notes |
 |---|---|---|---|---|
-| `demographics` | Text Box | `record_id` | | Must be the **first** field (the record ID field) |
+| `demographics` | Text Box | `record_id` | | Should already exist |
 | `demographics` | Text Box | `age` | Integer | |
-| `demographics` | Radio Buttons | `contact_method` | | Choices: `1, Phone` and `2, Email` |
+| `demographics` | Multiple Choice (Radio Buttons) | `contact_method` | | Choices: `1, Phone` and `2, Email` |
 | `demographics`  | File Upload | `consent_file` | | |
 | `visits` | Text Box | `visit_date` | Date (Y-M-D) | |
 | `visits`  | Text Box | `visit_note` | | |
 | `survey_form` | Text Box | `rating` | Integer | |
 
-Enable `survey_form` as a survey, with "Save & Return Later" on.
+Enable `survey_form` as a survey, with "Allow 'Save & Return Later; option for respondents?" set to "Yes", and save changes.
 
-**Arms, events and instrument designations**
+Under **Design your data collection instruments & enable your surveys**, define the events `baseline` and `followup`, and delete any default event that already existed.
+Add a new arm named "Arm 2" (Arm 1 will already exist), and create only a `baseline` event for this arm.
 
-Label the events exactly `baseline` and `followup`. REDCap generates each unique event
-name from the label by appending the arm (`_arm_1`, `_arm_2`), and the tests use these
-unique names.
+Under the **Designate Instrument for My Events** tab, for Arm 1, check `demographics` and `survey_form` under `baseline` and `visits` under `followup` and save. For Arm 2, check only `demographics`.
 
-| Arm | Event label | Unique event name | Instruments |
-|---|---|---|---|
-| Arm 1 | `baseline` | `baseline_arm_1` | `demographics`, `survey_form` |
-| Arm 1 | `followup` | `followup_arm_1` | `visits` |
-| Arm 2 | `baseline` | `baseline_arm_2` | `demographics` |
+Back in the Project Setup tab, enable **Repeating instruments and events**
+- In `followup_arm_1`, choose *Repeat Instruments (repeat independently of each other)*, and select `visits` for the Instrument name.
 
-**Repeating instruments and events**
-- In `followup_arm_1`, choose *Repeat Instruments* and select `visits`. Don't choose
-  *Repeat Entire Event*: the tests check that `visits` is listed as a repeating
-  instrument, and import its rows with `redcap_repeat_instrument = "visits"`.
-
-**Other**
-- At least one Data Access Group (e.g. "Site A"). Your API user should *not* be assigned
-  to a DAG, so it can see all records.
+Finally, on the sidebar, click DAG (under Applications). Create a new group (any name), but do not assign yourself to it.
 
 **For the optional tests** (see [Optional parts](#optional-parts))
-- Surveys: enable the survey queue (*Online Designer → Survey Queue*) and activate
-  `survey_form` in it. For "Display survey in the Survey Queue when…", choose the logic
-  option with `[record_id] <> ""`, so the survey is always in the queue.
-- Reports: create any report (*Data Exports, Reports, and Stats → Create New Report*;
-  "All fields" is fine). Its ID is shown in the report list, and in the report's URL as
-  `report_id=`.
-- Users: the User Rights right (below).
-
-**Your user rights** in the sandbox: API Export and API Import, Create Records, Rename
-Records and Delete Records (three separate rights), Data Access Groups, Logging, File
-Repository, Project Design and Setup, and (only for `REDCAP_TEST_USERS`) User Rights.
-Then request an API token for the project.
+- In the Online Designer, under Survey Options, activate `survey_form`. For "Display survey in the Survey Queue when...", check "When the following logic becomes true:" and use the logic `[record_id] <> ""`.
+- Under **Data Exports, Reports, and Stats** in the sidebar, click "Create New Report". Create a new report with any name and the default options. Its ID is shown in the report list, and in the report's URL as `report_id=`.
 
 Once the project works with the tests, export it (*Other Functionality → Download
 metadata only (XML)*) and commit the file as `test/live/sandbox.REDCap.xml`, so the sandbox
