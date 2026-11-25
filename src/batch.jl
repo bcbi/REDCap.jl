@@ -175,8 +175,9 @@ end
 mutable struct CSVMerger
     io::IO
     first::Bool
+    held::Vector{UInt8}
 end
-CSVMerger(io::IO) = CSVMerger(io, true)
+CSVMerger(io::IO) = CSVMerger(io, true, UInt8[])
 
 """
     csv_header_end(body) -> Union{Int, Nothing}
@@ -197,9 +198,16 @@ function csv_header_end(body::AbstractVector{UInt8})
     return nothing
 end
 
-# Every batch repeats the header; keep it from the first batch only.
+is_blank(body::AbstractVector{UInt8}) = all(b -> b in (UInt8(' '), UInt8('\t'), UInt8('\r'), UInt8('\n')), body)
+
+# Every batch repeats the header; keep it from the first batch only. REDCap answers a
+# batch that matches no records with a bare newline, without a header, so such a batch is
+# held back until a batch with a header arrives. If none does, `finish!` writes it, as an
+# unbatched export would have returned it.
 function add_part!(m::CSVMerger, body::Vector{UInt8})
-    if m.first
+    if m.first && is_blank(body)
+        m.held = body
+    elseif m.first
         write(m.io, body)
         m.first = false
     else
@@ -208,7 +216,11 @@ function add_part!(m::CSVMerger, body::Vector{UInt8})
     end
     return nothing
 end
-finish!(::CSVMerger) = nothing
+
+function finish!(m::CSVMerger)
+    m.first && write(m.io, m.held)
+    return nothing
+end
 
 mutable struct JSONMerger
     io::IO

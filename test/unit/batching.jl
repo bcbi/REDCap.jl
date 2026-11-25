@@ -164,6 +164,21 @@ end
     @test all(r -> field(r, "rawOrLabelHeaders") == "label", t.requests)
 end
 
+@testset "export: CSV batches that match no records" begin
+    # REDCap answers a batch that matches no records with a bare newline, without a header.
+    header = "record_id,age\n"
+    t = mock(ok("\n"), ok(header * "1,63\n"), ok("\n"), ok(header * "2,70\n"))
+    buf = IOBuffer()
+    @test export_records(project(t), buf; format = :csv, records = ["x", "1", "y", "2"], batchsize = 1) === nothing
+    @test String(take!(buf)) == header * "1,63\n" * "2,70\n"
+    @test length(t.requests) == 4
+    # when no batch matches, the output is what an unbatched export returns
+    t = mock(ok("\n"), ok("\n"))
+    buf = IOBuffer()
+    @test export_records(project(t), buf; format = :csv, records = ["x", "y"], batchsize = 1) === nothing
+    @test String(take!(buf)) == "\n"
+end
+
 @testset "import: records stay whole" begin
     fake = fake_project_data(0)
     p, t = fake_client(fake)
