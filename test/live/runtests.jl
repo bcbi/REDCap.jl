@@ -42,6 +42,17 @@ const ARM2 = "baseline_arm_2"
 
 sorted_rows(t) = sort(Tables.rowtable(t); by = r -> Tuple(string.(values(r))))
 
+"""
+Send a request with exactly these form fields (plus the token), bypassing the method
+specs, to try parameter values that the package doesn't send. Returns the `REDCapResponse`.
+"""
+function raw_request(method::Symbol, fields::Pair...)
+    sent = Pair{String, String}["token" => P.token; [string(k) => string(v) for (k, v) in fields]]
+    return REDCap.send_request(P.transport, REDCap.REDCapRequest(method, P.url, sent, nothing))
+end
+
+is_pdf(resp) = resp.status == 200 && length(resp.body) >= 4 && resp.body[1:4] == codeunits("%PDF")
+
 # With no records, REDCap returns `[]`, which gives a table with no columns.
 function all_ids()
     t = export_records(P; fields = ID)
@@ -141,6 +152,51 @@ enabled("REDCAP_TEST_RECORD") && println("Recording fixtures to ", RECORD_DIR)
         @test export_project_info(P)["project_notes"] == notes
     end
 
+    @testset "structure imports: add or replace" begin
+        # Each check imports a temporary extra entry, then restores the original.
+
+        # Instrument-event mappings. Expected: an import replaces the mappings of the arms
+        # in `data`, and leaves the other arms alone.
+        mapping_keys(t) = Set((string(r.arm_num), string(r.unique_event_name), string(r.form)) for r in Tables.rowtable(t))
+        mapping_rows(keys) = [(arm_num = a, unique_event_name = e, form = f) for (a, e, f) in keys]
+        original = mapping_keys(export_instrument_event_mappings(P))
+        extra1 = ("1", ARM1[2], "survey_form")
+        extra2 = ("2", ARM2, "visits")
+        try
+            import_instrument_event_mappings(P; data = mapping_rows(union(original, [extra1, extra2])))
+            @test [extra1, extra2] ⊆ mapping_keys(export_instrument_event_mappings(P))
+            arm2 = filter(k -> k[1] == "2", union(original, [extra2]))
+            import_instrument_event_mappings(P; data = mapping_rows(filter(k -> k[1] == "1", original)))
+            after = mapping_keys(export_instrument_event_mappings(P))
+            @info "Mappings after importing only arm 1's original mappings" arm1_extra_kept = extra1 in after arm2_kept = arm2 ⊆ after
+            @test !(extra1 in after)
+            @test arm2 ⊆ after
+        finally
+            import_instrument_event_mappings(P; data = mapping_rows(original))
+        end
+        restored = mapping_keys(export_instrument_event_mappings(P))
+        restored == original || @warn "Could not restore the sandbox's instrument-event mappings; fix them by hand." added = setdiff(restored, original) removed = setdiff(original, restored)
+        @test restored == original
+
+        # Repeating instruments and events. Expected: an import replaces the whole setup.
+        repeating_rows(t) = Set(
+            (event_name = string(r.event_name), form_name = string(r.form_name), custom_form_label = string(r.custom_form_label))
+                for r in Tables.rowtable(t)
+        )
+        repeating = repeating_rows(export_repeating_instruments_and_events(P))
+        extra = (event_name = ARM1[1], form_name = "survey_form", custom_form_label = "")
+        try
+            import_repeating_instruments_and_events(P; data = collect(union(repeating, [extra])))
+            @test extra in repeating_rows(export_repeating_instruments_and_events(P))
+        finally
+            import_repeating_instruments_and_events(P; data = collect(repeating))
+        end
+        restored = repeating_rows(export_repeating_instruments_and_events(P))
+        @info "Repeating setup after re-importing the original" extra_removed = !(extra in restored)
+        restored == repeating || @warn "Could not restore the sandbox's repeating setup; fix it by hand (Project Setup → Repeating instruments and events)." added = setdiff(restored, repeating) removed = setdiff(repeating, restored)
+        @test restored == repeating
+    end
+
     @testset "records" begin
         rows = sample_rows(6)
         @test import_records(P; data = rows) == 6
@@ -151,6 +207,15 @@ enabled("REDCAP_TEST_RECORD") && println("Recording fixtures to ", RECORD_DIR)
         @test export_records(P; filterLogic = "[age] > 24", fields = ID)[Symbol(ID)] |> unique |> sort == ["5", "6"]
         @test export_records_eav(P; records = 2) isa REDCapTable
         @test import_records_ids(P; data = [Dict(ID => "7", "redcap_event_name" => ARM2, "age" => "30")]) == ["7"]
+        before = all_ids()
+        returned = import_records_ids(
+            P; data = [Dict(ID => "999", "redcap_event_name" => ARM2, "age" => "31")], forceAutoNumber = true,
+        )
+        created = setdiff(all_ids(), before)
+        @info "import_records_ids with forceAutoNumber = true" returned created
+        @test created != ["999"]  # otherwise REDCap ignored forceAutoNumber
+        @test returned == created
+        isempty(created) || delete_records(P; records = created)
         # blanks are ignored by import_records, and erase with overwrite_records
         import_records(P; data = [Dict(ID => "7", "redcap_event_name" => ARM2, "age" => "")])
         @test export_records(P; records = 7, fields = [ID, "age"])[:age] == ["30"]
@@ -211,7 +276,61 @@ enabled("REDCAP_TEST_RECORD") && println("Recording fixtures to ", RECORD_DIR)
         pdf = export_PDF(P; record = 1, event = ARM1[1], instrument = "demographics")
         @test startswith(String(pdf.data[1:4]), "%PDF")
         @test startswith(String(export_PDF_all_records(P; compactDisplay = true).data[1:4]), "%PDF")
+        # The package sends compactDisplay as true/false. Check that REDCap honours that
+        # encoding (a compact PDF of this mostly empty record is smaller), and whether 1/0
+        # work too. Sizes are compared because PDFs embed a timestamp.
+        pdfs = Dict(v => raw_request(:export_PDF, "content" => "pdf", "record" => 1, "compactDisplay" => v) for v in ("true", "false", "1", "0"))
+        @test all(is_pdf, values(pdfs))
+        sizes = Dict(v => length(r.body) for (v, r) in pdfs)
+        @info "PDF sizes in bytes for each compactDisplay value" sizes
+        @test sizes["true"] < sizes["false"]
         @test startswith(export_project_XML(P; returnMetadataOnly = true), "<?xml")
+    end
+
+    @testset "EAV export options (temporary checkbox field)" begin
+        reset_records!()
+        metadata = export_metadata(P)
+        rows = [Dict{String, Any}(String(k) => v for (k, v) in pairs(r)) for r in Tables.rowtable(metadata)]
+        checkbox = Dict{String, Any}(k => "" for k in keys(first(rows)))
+        checkbox["field_name"] = "contact_times"
+        checkbox["form_name"] = "demographics"
+        checkbox["field_type"] = "checkbox"
+        checkbox["field_label"] = "Contact times"
+        checkbox["select_choices_or_calculations"] = "1, Morning | 2, Evening"
+        insert!(rows, findlast(r -> r["form_name"] == "demographics", rows) + 1, checkbox)
+        try
+            @test import_metadata(P; data = rows) == length(rows)
+            import_records(P; data = [Dict(ID => "1", "redcap_event_name" => ARM1[1], "contact_times___1" => "1")])
+
+            # Expected: honoured, as `export_records_eav` accepts exportCheckboxLabel.
+            function checkbox_values(exportCheckboxLabel)
+                t = export_records_eav(P; records = 1, fields = "contact_times", rawOrLabel = :label, exportCheckboxLabel)
+                return t[:value][startswith.(t[:field_name], "contact_times")]
+            end
+            plain, labelled = checkbox_values(false), checkbox_values(true)
+            @info "EAV checkbox values with rawOrLabel = :label" exportCheckboxLabel_false = plain exportCheckboxLabel_true = labelled
+            @test !isempty(plain)
+            @test plain != labelled
+
+            # Expected: no effect, as the EAV IO method doesn't offer rawOrLabelHeaders.
+            header(v) = first(
+                eachline(
+                    IOBuffer(
+                        raw_request(
+                            :export_records_eav, "content" => "record", "type" => "eav", "format" => "csv",
+                            "records[0]" => 1, "rawOrLabelHeaders" => v,
+                        ).body,
+                    ),
+                ),
+            )
+            raw_header, label_header = header("raw"), header("label")
+            @info "EAV CSV header for each rawOrLabelHeaders value" raw_header label_header
+            @test raw_header == label_header
+        finally
+            reset_records!()
+            import_metadata(P; data = metadata)
+        end
+        @test export_metadata(P) == metadata
     end
 
     @testset "Data Access Groups" begin
@@ -229,6 +348,10 @@ enabled("REDCAP_TEST_RECORD") && println("Recording fixtures to ", RECORD_DIR)
             id = parse(Int, ENV["REDCAP_TEST_REPORT_ID"])
             @test export_reports(P; report_id = id) isa REDCapTable
             @test !isempty(sprint(io -> export_reports(P, io; report_id = id, format = :csv)))
+            resp = raw_request(:export_reports, "content" => "report", "report_id" => id, "format" => "odm")
+            odm = 200 <= resp.status < 300 && occursin("<ODM", String(copy(resp.body)))
+            @info "Report export with format=odm" status = resp.status odm
+            @test !odm
         end
     end
 
