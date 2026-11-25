@@ -16,8 +16,8 @@ entries whose value is `nothing` are treated as not given. For imports, `data` a
 format. For uploads, `file` (an `IO` or `REDCapFile`) and `filename` describe the file.
 
 Throws `ArgumentError` for a wrong client type, unknown, missing or invalid parameters,
-CSV-only parameters without CSV data or output (see `check_csv_only`), or `data` that the
-method doesn't take or requires.
+CSV-only parameters without CSV data or output (see `check_csv_only`), `data` that the
+method doesn't take or requires, or table data with a column outside `spec.column_order`.
 """
 function build_request(
         client::AbstractREDCapClient, spec::MethodSpec, params::NamedTuple;
@@ -42,6 +42,9 @@ function build_request(
     if spec.data == :required
         data isa NoData && throw(ArgumentError("$(spec.name) requires `data`"))
         normalized = normalize_data(data, format, spec.data_formats)
+        if normalized isa TableData && !isempty(spec.column_order)
+            normalized = TableData(order_columns(normalized.rows, spec.column_order))
+        end
         if spec.single_row && normalized isa TableData && length(normalized.rows) != 1
             throw(ArgumentError("$(spec.name) requires `data` with exactly one row, got $(length(normalized.rows))"))
         end

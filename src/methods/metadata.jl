@@ -28,6 +28,13 @@ import_metadata(project; data, format) -> Int
 
 Import a data dictionary. Returns the number of fields imported, as reported by REDCap.
 
+REDCap reads each row of a data dictionary by column position, not by column name, even
+in JSON. Table data is therefore sent with the columns in REDCap's order (`field_name`,
+`form_name`, `section_header`, `field_type`, …, `field_annotation`, as `export_metadata`
+returns them), whatever their order in `data`; missing columns are sent empty, and a column
+REDCap doesn't define throws an `ArgumentError`. Pre-formatted `IO` or `REDCapFile` data is
+sent unchanged, so its columns must already be in REDCap's order.
+
 # Keyword arguments
 $IMPORT_DATA_DOC: `:csv`, `:json` or `:xml`
 """

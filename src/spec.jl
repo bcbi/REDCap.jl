@@ -24,6 +24,8 @@ Describes one public API function.
 - `single_row`: `data` must contain exactly one row
 - `json_object`: table data is sent as a single JSON object instead of an array of one
   (requires `single_row`)
+- `column_order`: when not empty, REDCap reads table data by column position, not by
+  name, so each row is sent with exactly these columns in this order (see `order_columns`)
 - `upload`: the function uploads a file (keywords `file` and `filename`)
 - `fixed`: parameters this function always sends, which the user can't set
 - `batchable`: the function accepts `batchsize`
@@ -45,6 +47,7 @@ struct MethodSpec
     data_formats::Vector{Symbol}
     single_row::Bool
     json_object::Bool
+    column_order::Vector{String}
     upload::Bool
     fixed::Vector{Pair{Symbol, Any}}
     batchable::Bool
@@ -72,6 +75,7 @@ function MethodSpec(
         data_formats::Vector{Symbol} = Symbol[],
         single_row::Bool = false,
         json_object::Bool = false,
+        column_order::Vector{String} = String[],
         upload::Bool = false,
         fixed::Vector{<:Pair{Symbol}} = Pair{Symbol, Any}[],
         batchable::Bool = false,
@@ -85,6 +89,8 @@ function MethodSpec(
     (data == :required) == !isempty(data_formats) || throw(ArgumentError("$name: data and data_formats disagree"))
     !single_row || data == :required || throw(ArgumentError("$name: single_row without data"))
     !json_object || single_row || throw(ArgumentError("$name: json_object without single_row"))
+    isempty(column_order) || data == :required || throw(ArgumentError("$name: column_order without data"))
+    allunique(column_order) || throw(ArgumentError("$name: a column is listed twice in column_order"))
     !batchable || returns in (:table, :int, :ids) || throw(ArgumentError("$name: unsupported batchable return kind"))
     # Every request asks for JSON responses (and JSON errors). Imports set `format` from
     # the data, so only exports fix it.
@@ -98,7 +104,7 @@ function MethodSpec(
     end
     return MethodSpec(
         name, content, action, client, data, required, optional, returns, destructive, raw_io,
-        io_optional, io_formats, data_formats, single_row, json_object, upload, all_fixed, batchable, Dict{Symbol, ParamKind}(overrides),
+        io_optional, io_formats, data_formats, single_row, json_object, column_order, upload, all_fixed, batchable, Dict{Symbol, ParamKind}(overrides),
     )
 end
 
@@ -122,6 +128,14 @@ end
 
 const RECORD_FORMATS = [:csv, :json, :xml, :odm]
 const CSV_JSON_XML = [:csv, :json, :xml]
+
+"The columns of a data dictionary, in the order REDCap reads them."
+const DATA_DICTIONARY_COLUMNS = [
+    "field_name", "form_name", "section_header", "field_type", "field_label",
+    "select_choices_or_calculations", "field_note", "text_validation_type_or_show_slider_number",
+    "text_validation_min", "text_validation_max", "identifier", "branching_logic", "required_field",
+    "custom_alignment", "question_number", "matrix_group_name", "matrix_ranking", "field_annotation",
+]
 
 const EXPORT_RECORDS_PARAMS = [
     :records, :fields, :forms, :events, :rawOrLabel, :exportCheckboxLabel, :exportSurveyFields,
@@ -219,7 +233,8 @@ const METHOD_SPECS = MethodSpec[
 
     # Metadata
     table_export(:export_metadata; content = :metadata, optional = [:fields, :forms]),
-    count_import(:import_metadata; content = :metadata, destructive = true),
+    # REDCap reads data dictionary rows by column position, even as JSON.
+    count_import(:import_metadata; content = :metadata, destructive = true, column_order = DATA_DICTIONARY_COLUMNS),
 
     # Projects
     MethodSpec(

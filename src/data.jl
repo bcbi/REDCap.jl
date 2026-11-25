@@ -118,6 +118,24 @@ function table_rows(table)
 end
 
 """
+    order_columns(rows, columns) -> Vector{Row}
+
+Rewrite each row with exactly `columns`, in that order, for imports that REDCap reads by
+column position rather than by name. A column missing from a row is sent as `""`. A column
+not in `columns` throws an `ArgumentError`, since REDCap would read it as another column.
+"""
+function order_columns(rows::Vector{Row}, columns::Vector{String})
+    return map(rows) do row
+        for (name, _) in row
+            name in columns || throw(ArgumentError(
+                "`data` has the unknown column `$name`; expected columns from: $(join(columns, ", "))"))
+        end
+        values = Dict{String, Any}(row)
+        Row([name => get(values, name, "") for name in columns])
+    end
+end
+
+"""
 Layouts of `Date` values for each `dateFormat`. REDCap expects dashes with the default
 `YMD`, and forward slashes with `MDY` and `DMY`.
 """

@@ -100,6 +100,33 @@ end
     @test isempty(t.requests)
 end
 
+@testset "data dictionary column order" begin
+    # REDCap reads data dictionary rows by column position, so every row is sent with all
+    # of its columns in REDCap's order, whatever the order in `data`.
+    spec = method_spec(:import_metadata)
+    sent(data) = field(build_request(project(), spec, NamedTuple(); data), "data")
+    columns = REDCap.DATA_DICTIONARY_COLUMNS
+    given = Dict("field_name" => "age", "form_name" => "demographics", "field_type" => "text", "field_label" => "Age")
+    expected = "[{" * join(("\"$c\":\"$(get(given, c, ""))\"" for c in columns), ",") * "}]"
+    # all columns in a Dict, whose key order is not REDCap's
+    @test sent([Dict{String, Any}(c => get(given, c, "") for c in columns)]) == expected
+    # all columns in reverse order
+    reversed = reverse(columns)
+    @test sent([NamedTuple{Tuple(Symbol.(reversed))}(Tuple(get(given, c, "") for c in reversed))]) == expected
+    # only some columns, as a row, a column table and a Tables.jl table
+    @test sent((field_type = "text", field_label = "Age", form_name = "demographics", field_name = "age")) == expected
+    @test sent((field_label = ["Age"], field_type = ["text"], field_name = ["age"], form_name = ["demographics"])) == expected
+    @test sent(TestTable([:field_type, :field_name, :form_name, :field_label], [Any["text"], Any["age"], Any["demographics"], Any["Age"]])) == expected
+    # a column REDCap doesn't define
+    @test_throws ArgumentError sent((field_name = "age", form_name = "demographics", nonsense = "x"))
+    # pre-formatted data is sent unchanged
+    csv = "field_type,field_name\ntext,age"
+    @test field(build_request(project(), spec, NamedTuple(); data = IOBuffer(csv), format = :csv), "data") == csv
+    # other imports keep the column order of `data`
+    req = build_request(project(), method_spec(:import_records), NamedTuple(); data = (age = "63", record_id = "1"))
+    @test field(req, "data") == """[{"age":"63","record_id":"1"}]"""
+end
+
 @testset "body encoding" begin
     req = REDCapRequest(:x, REDCap.URI(URL), ["token" => "T", "fields[0]" => "a b&c", "data" => "[{\"x\":\"é\"}]"], nothing)
     ctype, body = encode_body(req)
