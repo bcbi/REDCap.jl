@@ -4,7 +4,8 @@
 
 Export the data of a report defined in the project.
 
-$IO_METHOD_DOC
+The `IO` method writes REDCap's raw response to `io` instead and returns `nothing`; it
+requires `format` (`:csv`, `:json`, `:xml` or `:odm`).
 
 # Keyword arguments
 - `report_id` (required): the report's ID number
@@ -14,8 +15,6 @@ $IO_METHOD_DOC
 - IO method only: `rawOrLabelHeaders` (`:raw` or `:label`, CSV only), `csvDelimiter`
   (`","`, `"tab"`, `";"`, `"|"` or `"^"`; CSV only). A CSV-only keyword with another
   `format` throws an `ArgumentError`, as REDCap would ignore it.
-
-TODO(verify): whether reports can also be exported as ODM.
 """
 function export_reports(
         project::REDCapProject;

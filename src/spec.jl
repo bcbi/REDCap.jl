@@ -298,7 +298,7 @@ const METHOD_SPECS = MethodSpec[
     MethodSpec(
         :export_reports; content = :report, required = [:report_id],
         optional = [:rawOrLabel, :exportCheckboxLabel, :decimalCharacter], returns = :table,
-        raw_io = true, io_formats = CSV_JSON_XML, io_optional = [:rawOrLabelHeaders, :csvDelimiter],
+        raw_io = true, io_formats = RECORD_FORMATS, io_optional = [:rawOrLabelHeaders, :csvDelimiter],
     ),
 
     # REDCap

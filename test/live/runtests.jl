@@ -362,10 +362,7 @@ enabled("REDCAP_TEST_RECORD") && println("Recording fixtures to ", RECORD_DIR)
             id = parse(Int, ENV["REDCAP_TEST_REPORT_ID"])
             @test export_reports(P; report_id = id) isa REDCapTable
             @test !isempty(sprint(io -> export_reports(P, io; report_id = id, format = :csv)))
-            resp = raw_request(:export_reports, "content" => "report", "report_id" => id, "format" => "odm")
-            odm = 200 <= resp.status < 300 && occursin("<ODM", String(copy(resp.body)))
-            @info "Report export with format=odm" status = resp.status odm
-            @test !odm
+            @test occursin("<ODM", sprint(io -> export_reports(P, io; report_id = id, format = :odm)))
         end
     end
 

@@ -45,6 +45,9 @@ end
     @test count(p -> first(p) == "format", req.fields) == 1
     @test field(req, "format") == "csv"
     @test field(req, "returnFormat") == "json"
+    # reports can be exported as ODM, like records
+    req = build_request(project(), method_spec(:export_reports), (report_id = 1,); format = :odm, io = true)
+    @test field(req, "format") == "odm"
 end
 
 @testset "CSV-only parameters" begin
