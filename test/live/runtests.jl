@@ -161,8 +161,8 @@ enabled("REDCAP_TEST_RECORD") && println("Recording fixtures to ", RECORD_DIR)
     @testset "structure imports: add or replace" begin
         # Each check imports a temporary extra entry, then restores the original.
 
-        # Instrument-event mappings. Expected: an import replaces the mappings of the arms
-        # in `data`, and leaves the other arms alone.
+        # Instrument-event mappings. Expected: an import replaces all of the project's
+        # mappings, including those of arms not in `data`.
         mapping_keys(t) = Set((string(r.arm_num), string(r.unique_event_name), string(r.form)) for r in Tables.rowtable(t))
         mapping_rows(keys) = [(arm_num = a, unique_event_name = e, form = f) for (a, e, f) in keys]
         original = mapping_keys(export_instrument_event_mappings(P))
@@ -171,12 +171,11 @@ enabled("REDCAP_TEST_RECORD") && println("Recording fixtures to ", RECORD_DIR)
         try
             import_instrument_event_mappings(P; data = mapping_rows(union(original, [extra1, extra2])))
             @test [extra1, extra2] ⊆ mapping_keys(export_instrument_event_mappings(P))
-            arm2 = filter(k -> k[1] == "2", union(original, [extra2]))
-            import_instrument_event_mappings(P; data = mapping_rows(filter(k -> k[1] == "1", original)))
+            arm1 = filter(k -> k[1] == "1", original)
+            import_instrument_event_mappings(P; data = mapping_rows(arm1))
             after = mapping_keys(export_instrument_event_mappings(P))
-            @info "Mappings after importing only arm 1's original mappings" arm1_extra_kept = extra1 in after arm2_kept = arm2 ⊆ after
-            @test !(extra1 in after)
-            @test arm2 ⊆ after
+            @info "Mappings after importing only arm 1's original mappings" arm1_extra_kept = extra1 in after arm2_kept = any(k -> k[1] == "2", after)
+            @test after == arm1
         finally
             import_instrument_event_mappings(P; data = mapping_rows(original))
         end
