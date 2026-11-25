@@ -1,0 +1,50 @@
+{
+  "method": "import_records",
+  "source": "handwritten from the REDCap API documentation's response formats; not recorded from a server",
+  "request": {
+    "fields": [
+      [
+        "content",
+        "record"
+      ],
+      [
+        "returnFormat",
+        "json"
+      ],
+      [
+        "type",
+        "flat"
+      ],
+      [
+        "overwriteBehavior",
+        "normal"
+      ],
+      [
+        "returnContent",
+        "count"
+      ],
+      [
+        "format",
+        "json"
+      ],
+      [
+        "data",
+        "[{\"record_id\":\"3\",\"age\":\"40\"}]"
+      ]
+    ]
+  },
+  "response": {
+    "status": 400,
+    "headers": [
+      [
+        "Content-Type",
+        "application/json; charset=utf-8"
+      ]
+    ],
+    "body": "{\"error\":\"There were data validation errors\\n(\\\"3\\\",\\\"age\\\",\\\"abc\\\",\\\"The value you provided could not be validated because it does not follow the expected format.\\\")\"}"
+  },
+  "expect": {
+    "type": "error",
+    "status": 400
+  }
+}

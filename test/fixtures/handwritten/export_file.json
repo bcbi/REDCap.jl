@@ -1,0 +1,44 @@
+{
+  "method": "export_file",
+  "source": "handwritten from the REDCap API documentation's response formats; not recorded from a server",
+  "request": {
+    "fields": [
+      [
+        "content",
+        "file"
+      ],
+      [
+        "action",
+        "export"
+      ],
+      [
+        "returnFormat",
+        "json"
+      ],
+      [
+        "record",
+        "1"
+      ],
+      [
+        "field",
+        "consent_file"
+      ]
+    ]
+  },
+  "response": {
+    "status": 200,
+    "headers": [
+      [
+        "Content-Type",
+        "application/pdf; name=\"consent.pdf\""
+      ]
+    ],
+    "body_hex": "255044462d312e00"
+  },
+  "expect": {
+    "type": "file",
+    "filename": "consent.pdf",
+    "mime": "application/pdf",
+    "nbytes": 8
+  }
+}

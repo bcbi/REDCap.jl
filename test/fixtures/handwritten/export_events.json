@@ -1,0 +1,41 @@
+{
+  "method": "export_events",
+  "source": "handwritten from the REDCap API documentation's response formats; not recorded from a server",
+  "request": {
+    "fields": [
+      [
+        "content",
+        "event"
+      ],
+      [
+        "returnFormat",
+        "json"
+      ],
+      [
+        "format",
+        "json"
+      ]
+    ]
+  },
+  "response": {
+    "status": 200,
+    "headers": [
+      [
+        "Content-Type",
+        "application/json; charset=utf-8"
+      ]
+    ],
+    "body": "[{\"event_name\": \"Baseline\", \"arm_num\": 1, \"unique_event_name\": \"baseline_arm_1\", \"custom_event_label\": \"\", \"event_id\": 41}, {\"event_name\": \"Follow-up\", \"arm_num\": 1, \"unique_event_name\": \"followup_arm_1\", \"custom_event_label\": \"\", \"event_id\": 42}]"
+  },
+  "expect": {
+    "type": "table",
+    "columns": [
+      "event_name",
+      "arm_num",
+      "unique_event_name",
+      "custom_event_label",
+      "event_id"
+    ],
+    "nrows": 2
+  }
+}

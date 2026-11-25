@@ -1,16 +1,13 @@
 using Documenter
-using Literate
 using REDCap
 
 makedocs(
-	sitename = "REDCap",
-	format = Documenter.HTML(),
-	modules = [REDCap]
+    sitename = "REDCap.jl",
+    format = Documenter.HTML(),
+    modules = [REDCap],
+    pages = ["Home" => "index.md", "API reference" => "api.md", "Internals" => "internals.md"],
 )
 
 deploydocs(
-	#deps = Deps.pip("mkdocs==0.17.5", "mkdocs-material==2.9.4"),
-	repo = "github.com/bcbi/REDCap.jl.git",
-	#julia = "1.0",
-	#osname = "linux"
+    repo = "github.com/bcbi/REDCap.jl.git",
 )

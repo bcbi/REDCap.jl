@@ -1,0 +1,38 @@
+{
+  "method": "export_arms",
+  "source": "handwritten from the REDCap API documentation's response formats; not recorded from a server",
+  "request": {
+    "fields": [
+      [
+        "content",
+        "arm"
+      ],
+      [
+        "returnFormat",
+        "json"
+      ],
+      [
+        "format",
+        "json"
+      ]
+    ]
+  },
+  "response": {
+    "status": 200,
+    "headers": [
+      [
+        "Content-Type",
+        "application/json; charset=utf-8"
+      ]
+    ],
+    "body": "[{\"arm_num\": 1, \"name\": \"Arm 1\"}, {\"arm_num\": 2, \"name\": \"Arm 2\"}]"
+  },
+  "expect": {
+    "type": "table",
+    "columns": [
+      "arm_num",
+      "name"
+    ],
+    "nrows": 2
+  }
+}

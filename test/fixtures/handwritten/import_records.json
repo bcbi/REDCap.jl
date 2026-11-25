@@ -1,0 +1,50 @@
+{
+  "method": "import_records",
+  "source": "handwritten from the REDCap API documentation's response formats; not recorded from a server",
+  "request": {
+    "fields": [
+      [
+        "content",
+        "record"
+      ],
+      [
+        "returnFormat",
+        "json"
+      ],
+      [
+        "type",
+        "flat"
+      ],
+      [
+        "overwriteBehavior",
+        "normal"
+      ],
+      [
+        "returnContent",
+        "count"
+      ],
+      [
+        "format",
+        "json"
+      ],
+      [
+        "data",
+        "[{\"record_id\":\"3\",\"age\":\"40\"}]"
+      ]
+    ]
+  },
+  "response": {
+    "status": 200,
+    "headers": [
+      [
+        "Content-Type",
+        "application/json; charset=utf-8"
+      ]
+    ],
+    "body": "{\"count\": 1}"
+  },
+  "expect": {
+    "type": "int",
+    "value": 1
+  }
+}

@@ -1,0 +1,197 @@
+using REDCap: build_request, encode_body, NoData
+
+@testset "fields come from the spec" begin
+    spec = method_spec(:export_records)
+    req = build_request(project(), spec, (fields = [:age], rawOrLabel = :label, records = nothing))
+    @test req.method === :export_records
+    @test req.url == REDCap.URI(URL)
+    @test req.file === nothing
+    @test req.fields == [
+        "token" => TOKEN, "content" => "record", "returnFormat" => "json", "format" => "json",
+        "type" => "flat", "fields[0]" => "age", "rawOrLabel" => "label",
+    ]
+    req = build_request(project(), method_spec(:delete_records), (records = [1, 2],))
+    @test field(req, "action") == "delete"
+end
+
+@testset "validation" begin
+    p = project()
+    spec = method_spec(:export_records)
+    @test_throws ArgumentError build_request(p, spec, (nonsense = 1,))
+    # fixed parameters can't be set by the user
+    @test_throws ArgumentError build_request(p, spec, (type = :eav,))
+    @test_throws ArgumentError build_request(p, spec, (format = :csv,))
+    # IO-only parameters
+    @test_throws ArgumentError build_request(p, spec, (csvDelimiter = :tab,))
+    @test build_request(p, spec, (csvDelimiter = :tab,); format = :csv, io = true) isa REDCapRequest
+    # REDCap ignores exportCheckboxLabel in EAV exports
+    @test build_request(p, spec, (exportCheckboxLabel = true,)) isa REDCapRequest
+    @test_throws ArgumentError build_request(p, method_spec(:export_records_eav), (exportCheckboxLabel = true,))
+    @test_throws MethodError export_records_eav(p; exportCheckboxLabel = true)
+    # required parameters
+    @test_throws ArgumentError build_request(p, method_spec(:delete_records), NamedTuple())
+    @test_throws ArgumentError build_request(p, method_spec(:delete_records), (records = nothing,))
+    # data
+    @test_throws ArgumentError build_request(p, spec, NamedTuple(); data = [EXAMPLE_ROW])
+    @test_throws ArgumentError build_request(p, method_spec(:import_records), NamedTuple())
+    # format outside IO methods
+    @test_throws ArgumentError build_request(p, spec, NamedTuple(); format = :csv)
+    @test_throws ArgumentError build_request(p, spec, NamedTuple(); io = true)
+    @test_throws ArgumentError build_request(p, spec, NamedTuple(); format = :yaml, io = true)
+    @test_throws ArgumentError build_request(p, method_spec(:generate_next_record_name), NamedTuple(); format = :csv, io = true)
+    # client type
+    @test_throws ArgumentError build_request(superuser(), spec, NamedTuple())
+    @test build_request(superuser(), method_spec(:export_version), NamedTuple()) isa REDCapRequest
+end
+
+@testset "IO format replaces the fixed json format" begin
+    req = build_request(project(), method_spec(:export_records), NamedTuple(); format = :csv, io = true)
+    @test count(p -> first(p) == "format", req.fields) == 1
+    @test field(req, "format") == "csv"
+    @test field(req, "returnFormat") == "json"
+    # reports can be exported as ODM, like records
+    req = build_request(project(), method_spec(:export_reports), (report_id = 1,); format = :odm, io = true)
+    @test field(req, "format") == "odm"
+end
+
+@testset "CSV-only parameters" begin
+    p = project()
+    # imports: csvDelimiter only with CSV data
+    for name in (:import_records, :import_records_ids, :overwrite_records)
+        spec = method_spec(name)
+        @test_throws ArgumentError build_request(p, spec, (csvDelimiter = :tab,); data = [EXAMPLE_ROW])
+        for fmt in (:json, :xml, :odm)
+            @test_throws ArgumentError build_request(p, spec, (csvDelimiter = :tab,); data = IOBuffer("x"), format = fmt)
+        end
+        req = build_request(p, spec, (csvDelimiter = :tab,); data = IOBuffer("record_id\tage\n1\t63"), format = :csv)
+        @test field(req, "csvDelimiter") == "tab"
+        @test field(req, "format") == "csv"
+    end
+    # IO exports: csvDelimiter and rawOrLabelHeaders only with CSV output
+    for (name, params) in (
+            :export_records => (:csvDelimiter => :tab, :rawOrLabelHeaders => :label),
+            :export_records_eav => (:csvDelimiter => :tab,),
+            :export_reports => (:csvDelimiter => :tab, :rawOrLabelHeaders => :label),
+        )
+        spec = method_spec(name)
+        required = minimal_kwargs(spec)
+        for (k, v) in params
+            given = merge(required, NamedTuple{(k,)}((v,)))
+            for fmt in filter(!=(:csv), spec.io_formats)
+                @test_throws ArgumentError build_request(p, spec, given; format = fmt, io = true)
+            end
+            req = build_request(p, spec, given; format = :csv, io = true)
+            @test field(req, String(k)) == String(v)
+        end
+    end
+    # the message names the parameter and the format
+    err = try
+        build_request(p, method_spec(:export_records), (rawOrLabelHeaders = :label,); format = :json, io = true)
+    catch e
+        e
+    end
+    @test occursin("rawOrLabelHeaders", err.msg) && occursin(":json", err.msg)
+    err = try
+        build_request(p, method_spec(:import_records), (csvDelimiter = :tab,); data = [EXAMPLE_ROW])
+    catch e
+        e
+    end
+    @test occursin("csvDelimiter", err.msg) && occursin("table data", err.msg)
+    # nothing is sent, including for batched calls
+    t = always(ok("1"))
+    p = project(t)
+    @test_throws ArgumentError import_records(p; data = [EXAMPLE_ROW], csvDelimiter = :tab)
+    @test_throws ArgumentError import_records(p; data = [EXAMPLE_ROW], csvDelimiter = :tab, batchsize = 1)
+    @test_throws ArgumentError export_records(p, IOBuffer(); format = :json, rawOrLabelHeaders = :label)
+    @test_throws ArgumentError export_records(p, IOBuffer(); format = :json, records = [1, 2], rawOrLabelHeaders = :label, batchsize = 1)
+    @test isempty(t.requests)
+end
+
+@testset "data dictionary column order" begin
+    # REDCap reads data dictionary rows by column position, so every row is sent with all
+    # of its columns in REDCap's order, whatever the order in `data`.
+    spec = method_spec(:import_metadata)
+    sent(data) = field(build_request(project(), spec, NamedTuple(); data), "data")
+    columns = REDCap.DATA_DICTIONARY_COLUMNS
+    given = Dict("field_name" => "age", "form_name" => "demographics", "field_type" => "text", "field_label" => "Age")
+    expected = "[{" * join(("\"$c\":\"$(get(given, c, ""))\"" for c in columns), ",") * "}]"
+    # all columns in a Dict, whose key order is not REDCap's
+    @test sent([Dict{String, Any}(c => get(given, c, "") for c in columns)]) == expected
+    # all columns in reverse order
+    reversed = reverse(columns)
+    @test sent([NamedTuple{Tuple(Symbol.(reversed))}(Tuple(get(given, c, "") for c in reversed))]) == expected
+    # only some columns, as a row, a column table and a Tables.jl table
+    @test sent((field_type = "text", field_label = "Age", form_name = "demographics", field_name = "age")) == expected
+    @test sent((field_label = ["Age"], field_type = ["text"], field_name = ["age"], form_name = ["demographics"])) == expected
+    @test sent(TestTable([:field_type, :field_name, :form_name, :field_label], [Any["text"], Any["age"], Any["demographics"], Any["Age"]])) == expected
+    # a column REDCap doesn't define
+    @test_throws ArgumentError sent((field_name = "age", form_name = "demographics", nonsense = "x"))
+    # pre-formatted data is sent unchanged
+    csv = "field_type,field_name\ntext,age"
+    @test field(build_request(project(), spec, NamedTuple(); data = IOBuffer(csv), format = :csv), "data") == csv
+    # other imports keep the column order of `data`
+    req = build_request(project(), method_spec(:import_records), NamedTuple(); data = (age = "63", record_id = "1"))
+    @test field(req, "data") == """[{"age":"63","record_id":"1"}]"""
+end
+
+@testset "body encoding" begin
+    req = REDCapRequest(:x, REDCap.URI(URL), ["token" => "T", "fields[0]" => "a b&c", "data" => "[{\"x\":\"é\"}]"], nothing)
+    ctype, body = encode_body(req)
+    @test ctype == "application/x-www-form-urlencoded"
+    @test String(body) == "token=T&fields%5B0%5D=a%20b%26c&data=%5B%7B%22x%22%3A%22%C3%A9%22%7D%5D"
+
+    upload = REDCap.REDCapUpload("file", "scan \"1\".pdf", UInt8[0x25, 0x50, 0x00, 0xff], "application/pdf")
+    req = REDCapRequest(:x, REDCap.URI(URL), ["token" => "T", "record" => "1"], upload)
+    ctype, body = encode_body(req; boundary = "BOUNDARY")
+    @test ctype == "multipart/form-data; boundary=BOUNDARY"
+    expected = Vector{UInt8}(
+        codeunits(
+            "--BOUNDARY\r\nContent-Disposition: form-data; name=\"token\"\r\n\r\nT\r\n" *
+                "--BOUNDARY\r\nContent-Disposition: form-data; name=\"record\"\r\n\r\n1\r\n" *
+                "--BOUNDARY\r\nContent-Disposition: form-data; name=\"file\"; filename=\"scan %221%22.pdf\"\r\n" *
+                "Content-Type: application/pdf\r\n\r\n",
+        ),
+    )
+    append!(expected, UInt8[0x25, 0x50, 0x00, 0xff])
+    append!(expected, codeunits("\r\n--BOUNDARY--\r\n"))
+    @test body == expected
+end
+
+@testset "requests are shown without the token" begin
+    req = build_request(project(; token = MARKED_TOKEN), method_spec(:export_version), NamedTuple())
+    @test !occursin(MARKED_TOKEN, sprint(show, req))
+    @test occursin("<redacted>", sprint(show, req))
+end
+
+@testset "uploads" begin
+    t = always(ok(""))
+    p = project(t)
+    @test import_file(p; record = 1, field = :consent, file = IOBuffer("abc"), filename = "c.txt") === nothing
+    req = only(t.requests)
+    @test req.file.field == "file"
+    @test req.file.filename == "c.txt"
+    @test req.file.content == Vector{UInt8}("abc")
+    @test field(req, "file") === nothing
+    mktempdir() do dir
+        path = joinpath(dir, "scan.pdf")
+        write(path, "PDF")
+        import_file_into_file_repository(p; file = REDCapFile(path), folder_id = 2)
+        @test last(t.requests).file.filename == "scan.pdf"
+        @test last(t.requests).file.content == Vector{UInt8}("PDF")
+        import_file_into_file_repository(p; file = REDCapFile(path), filename = "renamed.pdf")
+        @test last(t.requests).file.filename == "renamed.pdf"
+    end
+    n = length(t.requests)
+    @test_throws ArgumentError import_file(p; record = 1, field = :f, file = IOBuffer("abc"))
+    @test_throws ArgumentError import_file(p; record = 1, field = :f, file = "/some/file")
+    @test_throws ArgumentError import_file(p; record = 1, field = :f, file = IOBuffer("x"), filename = "")
+    @test_throws ArgumentError import_file(p; record = 1, field = :f, file = 123, filename = "x")
+    @test length(t.requests) == n
+    @test_throws ArgumentError build_request(p, method_spec(:export_version), NamedTuple(); file = IOBuffer("x"))
+end
+
+@testset "IO methods without format" begin
+    @test_throws ArgumentError build_request(project(), method_spec(:export_project_XML), NamedTuple(); format = :csv, io = true)
+    req = build_request(project(), method_spec(:export_file), (record = 1, field = :f); io = true)
+    @test field(req, "format") === nothing
+end

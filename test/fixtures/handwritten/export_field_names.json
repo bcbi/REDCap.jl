@@ -1,0 +1,39 @@
+{
+  "method": "export_field_names",
+  "source": "handwritten from the REDCap API documentation's response formats; not recorded from a server",
+  "request": {
+    "fields": [
+      [
+        "content",
+        "exportFieldNames"
+      ],
+      [
+        "returnFormat",
+        "json"
+      ],
+      [
+        "format",
+        "json"
+      ]
+    ]
+  },
+  "response": {
+    "status": 200,
+    "headers": [
+      [
+        "Content-Type",
+        "application/json; charset=utf-8"
+      ]
+    ],
+    "body": "[{\"original_field_name\": \"record_id\", \"choice_value\": \"\", \"export_field_name\": \"record_id\"}, {\"original_field_name\": \"symptoms\", \"choice_value\": \"1\", \"export_field_name\": \"symptoms___1\"}]"
+  },
+  "expect": {
+    "type": "table",
+    "columns": [
+      "original_field_name",
+      "choice_value",
+      "export_field_name"
+    ],
+    "nrows": 2
+  }
+}

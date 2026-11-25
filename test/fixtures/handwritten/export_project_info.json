@@ -1,0 +1,37 @@
+{
+  "method": "export_project_info",
+  "source": "handwritten from the REDCap API documentation's response formats; not recorded from a server",
+  "request": {
+    "fields": [
+      [
+        "content",
+        "project"
+      ],
+      [
+        "returnFormat",
+        "json"
+      ],
+      [
+        "format",
+        "json"
+      ]
+    ]
+  },
+  "response": {
+    "status": 200,
+    "headers": [
+      [
+        "Content-Type",
+        "application/json; charset=utf-8"
+      ]
+    ],
+    "body": "{\"project_id\": \"15\", \"project_title\": \"Sandbox\", \"creation_time\": \"2026-01-02 03:04:05\", \"production_time\": \"\", \"in_production\": \"0\", \"project_language\": \"English\", \"purpose\": \"0\", \"purpose_other\": \"\", \"project_notes\": \"\", \"custom_record_label\": \"\", \"secondary_unique_field\": \"\", \"is_longitudinal\": \"1\", \"has_repeating_instruments_or_events\": \"1\", \"surveys_enabled\": \"1\", \"scheduling_enabled\": \"0\", \"record_autonumbering_enabled\": \"0\", \"randomization_enabled\": \"0\", \"ddp_enabled\": \"0\", \"project_irb_number\": \"\", \"project_grant_number\": \"\", \"project_pi_firstname\": \"\", \"project_pi_lastname\": \"\", \"display_today_now_button\": \"1\", \"missing_data_codes\": \"\", \"external_modules\": \"\", \"bypass_branching_erase_field_prompt\": \"0\"}"
+  },
+  "expect": {
+    "type": "dict",
+    "key": [
+      "is_longitudinal",
+      "1"
+    ]
+  }
+}
