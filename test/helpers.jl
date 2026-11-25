@@ -71,6 +71,12 @@ io_kwargs(spec) = isempty(spec.io_formats) ? minimal_kwargs(spec) : merge(minima
 
 const EXAMPLE_ROW = (record_id = "1", age = "63")
 
+# Methods with a `column_order` only accept rows with those columns.
+const EXAMPLE_METADATA_ROW = (field_name = "record_id", form_name = "demographics", field_type = "text", field_label = "Record ID")
+
+"Example table data for a spec's function."
+example_data(spec) = isempty(spec.column_order) ? EXAMPLE_ROW : EXAMPLE_METADATA_ROW
+
 api_function(spec) = getfield(REDCap, spec.name)
 
 function capture_debug_logs(f)

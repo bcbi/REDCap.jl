@@ -25,7 +25,7 @@ end
     @test call_with(ok("""{"count": 4}"""), import_records; data = EXAMPLE_ROW) === 4
     @test call_with(ok("""{"count": "5"}"""), import_records; data = EXAMPLE_ROW) === 5
     @test_throws REDCapError call_with(ok("""{"count": "x"}"""), import_records; data = EXAMPLE_ROW)
-    @test_throws REDCapError call_with(ok("ok"), import_metadata; data = EXAMPLE_ROW)
+    @test_throws REDCapError call_with(ok("ok"), import_metadata; data = EXAMPLE_METADATA_ROW)
 end
 
 @testset "ids" begin

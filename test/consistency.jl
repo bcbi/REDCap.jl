@@ -54,7 +54,7 @@ end
         t = always(ok(fake_body(spec.returns)))
         client = client_for(spec, t)
         kwargs = minimal_kwargs(spec)
-        spec.data == :required ? f(client; kwargs..., data = EXAMPLE_ROW) : f(client; kwargs...)
+        spec.data == :required ? f(client; kwargs..., data = example_data(spec)) : f(client; kwargs...)
         req = only(t.requests)
         @test req.method === spec.name
         @test field(req, "token") == client.token
@@ -123,7 +123,7 @@ end
     @testset "required parameters have no defaults" begin
         for k in spec.required
             partial = NamedTuple(kk => v for (kk, v) in pairs(minimal_kwargs(spec)) if kk !== k)
-            spec.data == :required && (partial = merge(partial, (data = EXAMPLE_ROW,)))
+            spec.data == :required && (partial = merge(partial, (data = example_data(spec),)))
             t = always(ok(fake_body(spec.returns)))
             @test_throws UndefKeywordError f(client_for(spec, t); partial...)
             @test isempty(t.requests)
