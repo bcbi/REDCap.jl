@@ -131,6 +131,12 @@ enabled("REDCAP_TEST_RECORD") && println("Recording fixtures to ", RECORD_DIR)
         @test export_DAGs(P) isa REDCapTable
         @test export_user_DAG_assignment(P) isa REDCapTable
         @test export_logging(P; beginTime = now() - Hour(1)) isa REDCapTable
+        # REDCap documents logging times as `YYYY-MM-DD HH:MM`, but the package also sends
+        # seconds. A filter that REDCap ignores would return the whole log. Two days ahead
+        # allows for a time zone difference between this machine and the server.
+        future = export_logging(P; beginTime = now() + Day(2))
+        @info "Logging with beginTime two days ahead" rows = size(future, 1)
+        @test isempty(future)
     end
 
     @testset "round-trip structure imports" begin
