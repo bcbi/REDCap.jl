@@ -14,6 +14,7 @@ if !isempty(missing_vars)
     exit(1)
 end
 
+println("Setting up a temporary environment with this REDCap.jl checkout...")
 using Pkg
 Pkg.activate(; temp = true, io = devnull)
 Pkg.develop(PackageSpec(path = joinpath(@__DIR__, "..", "..")); io = devnull)
@@ -27,8 +28,71 @@ using Test
 
 enabled(var) = get(ENV, var, "") in ("1", "true", "yes")
 
+# Progress output: a long run shows each testset as it starts and ends, and with
+# REDCAP_TEST_VERBOSE, each request.
+
+indent() = "  "^Test.get_testset_depth()
+seconds(started) = string(round(time() - started; digits = 1), " s")
+
+"""
+A testset that prints its name when it starts, and its time and number of failures and
+errors (its own and its nested testsets') when it ends. Nested testsets inherit the type,
+and the results and final summary are those of the wrapped `DefaultTestSet`.
+"""
+mutable struct ProgressTestSet <: Test.AbstractTestSet
+    inner::Test.DefaultTestSet
+    started::Float64
+    problems::Int
+end
+
+function ProgressTestSet(desc::AbstractString; kwargs...)
+    println(indent(), "▶ ", desc)
+    flush(stdout)
+    return ProgressTestSet(Test.DefaultTestSet(desc; kwargs...), time(), 0)
+end
+
+Test.record(ts::ProgressTestSet, result) = Test.record(ts.inner, result)
+function Test.record(ts::ProgressTestSet, result::Union{Test.Fail, Test.Error})
+    ts.problems += 1
+    return Test.record(ts.inner, result)
+end
+
+function Test.finish(ts::ProgressTestSet)
+    summary = ts.problems == 0 ? "" : string(", ", ts.problems, " failed or errored")
+    println(indent(), ts.problems == 0 ? "✔ " : "✘ ", ts.inner.description, " (", seconds(ts.started), summary, ")")
+    flush(stdout)
+    if Test.get_testset_depth() > 0
+        parent = Test.get_testset()
+        parent isa ProgressTestSet && (parent.problems += ts.problems)
+    end
+    return Test.finish(ts.inner)
+end
+
+"Prints each request's method, HTTP status, response size and time."
+struct VerboseTransport <: REDCap.AbstractTransport
+    inner::REDCap.AbstractTransport
+end
+
+function REDCap.send_request(t::VerboseTransport, req::REDCap.REDCapRequest)
+    started = time()
+    resp = try
+        REDCap.send_request(t.inner, req)
+    catch
+        println(indent(), "  ", req.method, ": no response (", seconds(started), ")")
+        rethrow()
+    end
+    println(indent(), "  ", req.method, ": HTTP ", resp.status, ", ", length(resp.body), " bytes (", seconds(started), ")")
+    flush(stdout)
+    return resp
+end
+
 const RECORD_DIR = joinpath(@__DIR__, "..", "fixtures", "recorded", Dates.format(now(), "yyyymmdd-HHMMSS"))
-transport() = enabled("REDCAP_TEST_RECORD") ? RecordingTransport(HTTPTransport(), RECORD_DIR) : HTTPTransport()
+
+function transport()
+    t = HTTPTransport()
+    enabled("REDCAP_TEST_RECORD") && (t = RecordingTransport(t, RECORD_DIR))
+    return enabled("REDCAP_TEST_VERBOSE") ? VerboseTransport(t) : t
+end
 
 const P = REDCapProject(;
     url = ENV["REDCAP_TEST_URL"], token = ENV["REDCAP_TEST_TOKEN"], transport = transport(),
@@ -103,7 +167,7 @@ let info = export_project_info(P), status = get(info, "in_production", nothing)
 end
 enabled("REDCAP_TEST_RECORD") && println("Recording fixtures to ", RECORD_DIR)
 
-@testset verbose = true "REDCap.jl live" begin
+@testset ProgressTestSet verbose = true "REDCap.jl live" begin
     @testset "server and project" begin
         @test export_version(P) isa VersionNumber
         info = export_project_info(P)

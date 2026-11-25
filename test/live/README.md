@@ -89,6 +89,11 @@ working tree, so uncommitted changes are included. To test another copy of REDCa
 run that copy's `test/live/runtests.jl`. The script works in a temporary environment, so
 it doesn't modify the checkout (except for fixtures recorded with `REDCAP_TEST_RECORD=1`).
 
+The script prints each testset as it starts (`▶ records`) and ends, with its time and any
+failures and errors (`✔ records (12.3 s)` or `✘ records (12.3 s, 1 failed or errored)`),
+followed by the usual test summary. With `REDCAP_TEST_VERBOSE=1`, it also prints one line
+per request, with the method, HTTP status, response size and time.
+
 ### Optional parts
 
 | Variable | Enables |
@@ -100,6 +105,7 @@ it doesn't modify the checkout (except for fixtures recorded with `REDCAP_TEST_R
 | `REDCAP_TEST_SUPER_TOKEN=<token>` | `create_project`. **Projects can't be deleted through the API; each run leaves one behind.** |
 | `REDCAP_TEST_ALLOW_INSECURE=1` | a plain `http://` URL, e.g. a local development server |
 | `REDCAP_TEST_RECORD=1` | records fixtures (see below) |
+| `REDCAP_TEST_VERBOSE=1` | prints a line for each request (method, HTTP status, response size, time) |
 
 ## 3. Record fixtures
 
