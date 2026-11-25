@@ -225,7 +225,7 @@ const METHOD_SPECS = MethodSpec[
         returns = :file, raw_io = true,
     ),
     table_export(:export_instrument_event_mappings; content = :formEventMapping, optional = [:arms]),
-    # TODO(verify): whether importing mappings replaces all existing mappings of the arms in `data`.
+    # An import replaces all of the project's mappings, in every arm.
     count_import(:import_instrument_event_mappings; content = :formEventMapping, action = :import, destructive = true),
 
     # Logging

@@ -96,8 +96,10 @@ export_instrument_event_mappings(project::REDCapProject, io::IO; format, arms = 
 
 """
 $DESTRUCTIVE_WARNING
-    May replace the existing instrument-event mappings; data in instruments that are no
-    longer mapped to an event becomes inaccessible. TODO(verify) the exact behavior.
+    Replaces **all** of the project's instrument-event mappings, in every arm, including
+    arms that don't appear in `data`. Mappings missing from `data` are removed, and data
+    in instruments that are no longer mapped to an event becomes inaccessible. To change
+    some mappings, export them all, edit them, and import the full set.
 
 ```julia
 import_instrument_event_mappings(project; data, format) -> Int
