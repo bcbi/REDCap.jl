@@ -10,4 +10,5 @@ makedocs(
 
 deploydocs(
     repo = "github.com/bcbi/REDCap.jl.git",
+    devbranch = "main",
 )
