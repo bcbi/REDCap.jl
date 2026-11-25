@@ -15,8 +15,9 @@ export_repeating_instruments_and_events(project::REDCapProject, io::IO; format) 
 
 """
 $DESTRUCTIVE_WARNING
-    May replace the project's whole repeating setup: instruments and events not in `data`
-    may stop repeating. TODO(verify) the exact behavior.
+    Replaces the project's **whole** repeating setup: instruments and events not in
+    `data` stop repeating. To change part of the setup, export it, edit it, and import the
+    full set.
 
 ```julia
 import_repeating_instruments_and_events(project; data, format) -> Int

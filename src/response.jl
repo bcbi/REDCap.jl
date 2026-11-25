@@ -107,8 +107,8 @@ function convert_response(::Val{:version}, spec, client, resp)
     return v
 end
 
-# REDCap answers some calls with "1" and others with an empty body or `{}`.
-# TODO(verify): the exact success body of each `:nothing` method; any 2xx body is accepted.
+# REDCap answers some calls with "1" and others with an empty body or `{}`. Rather than
+# depend on the exact body of each method, any 2xx body is accepted.
 convert_response(::Val{:nothing}, spec, client, resp) = nothing
 
 function convert_response(::Val{:file}, spec, client, resp)

@@ -3,8 +3,6 @@
 
 Create a folder in the File Repository. Returns the new folder's `folder_id`.
 
-TODO(verify): the response format (`[{"folder_id": n}]`).
-
 # Keyword arguments
 - `name` (required): the folder name (at most 150 characters)
 - `folder_id`: the parent folder (default: the top level)

@@ -125,11 +125,17 @@ appears, and the token returned by `create_project` is replaced with zeros.
 ## What the tests confirm
 
 Besides checking each method against a real server, the tests check REDCap behaviour that
-the package relies on but REDCap doesn't document, such as:
+the package relies on but might not be documented, such as:
 
 - a single import request containing an invalid row imports nothing (the "import is
   all-or-nothing" test)
 - project settings are only applied when sent as a single JSON object, not an array (the
   `project_notes` round trip)
-
-Behaviour that hasn't been confirmed yet is marked `TODO(verify)` in the code.
+- importing instrument-event mappings replaces all mappings, in every arm, and importing
+  the repeating setup replaces the whole setup ("structure imports: add or replace")
+- data dictionary rows are read by column position, not by name, even as JSON (the EAV
+  check's temporary checkbox field)
+- a CSV export that matches no records is a bare newline, without a header (the batched
+  CSV export with an empty first batch)
+- `type=eav` exports ignore `exportCheckboxLabel` and `rawOrLabelHeaders`
+- with `forceAutoNumber=true`, `import_records_ids` returns the names REDCap created

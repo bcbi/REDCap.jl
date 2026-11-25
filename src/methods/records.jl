@@ -35,8 +35,11 @@ field of the data dictionary), with your `filterLogic`, date range and `events` 
 to find the records to export. Batches are not a consistent snapshot: records edited
 during a long export can produce mixed results. The batches' tables are combined, and must
 have the same columns; rows come back batch by batch, so when `records` is given out of
-order, the row order can differ from an unbatched export. A batched `IO` export supports `format=:csv` (one header) and
-`:json` (one array) only; with no matching records it writes nothing (CSV) or `[]` (JSON).
+order, the row order can differ from an unbatched export. A batched `IO` export supports
+`format=:csv` (one header) and `:json` (one array) only. With no matching records, a JSON
+export writes `[]`. A CSV export writes a bare newline, as an unbatched export does, when
+none of the given `records` exist, and nothing when `records` isn't given and no records
+match.
 """
 function export_records(
         project::REDCapProject;
@@ -158,8 +161,7 @@ end
 Import records like [`import_records`](@ref), but return the names of the records
 imported instead of their count.
 
-TODO(verify): with `forceAutoNumber=true`, whether REDCap returns the new names or the
-names sent.
+With `forceAutoNumber=true`, REDCap returns the names it created, not the names sent.
 
 # Keyword arguments
 $IMPORT_RECORDS_KWARGS_DOC

@@ -98,7 +98,7 @@ const PARAMETERS = Dict{Symbol, ParamKind}(
     :doc_id => IntParam(),
 
     # PDFs. REDCap ignores the value of `allRecords`: any value exports all records.
-    :compactDisplay => TRUE_FALSE,  # TODO(verify): true/false rather than 1/0
+    :compactDisplay => TRUE_FALSE,  # REDCap accepts true/false and 1/0
     :allRecords => ONE_ZERO,
 
     # Logging

@@ -292,7 +292,7 @@ const METHOD_SPECS = MethodSpec[
 
     # Repeating instruments and events
     table_export(:export_repeating_instruments_and_events; content = :repeatingFormsEvents),
-    # TODO(verify): that an import replaces the whole repeating setup.
+    # An import replaces the whole repeating setup.
     count_import(:import_repeating_instruments_and_events; content = :repeatingFormsEvents, destructive = true),
 
     # Reports
