@@ -143,6 +143,9 @@ const EXPORT_RECORDS_PARAMS = [
     :exportBlankForGrayFormStatus,
 ]
 
+# REDCap documents exportCheckboxLabel only for flat exports, and ignores it with type=eav.
+const EXPORT_RECORDS_EAV_PARAMS = filter(!=(:exportCheckboxLabel), EXPORT_RECORDS_PARAMS)
+
 const IMPORT_RECORDS_PARAMS = [:forceAutoNumber, :dateFormat, :csvDelimiter]
 
 const SURVEY_PARAMS = (required = [:record, :instrument], optional = [:event, :repeat_instance])
@@ -154,8 +157,6 @@ table_export(name; kwargs...) =
 "An import of table data that reports a count."
 count_import(name; kwargs...) =
     MethodSpec(name; data = :required, data_formats = CSV_JSON_XML, returns = :int, kwargs...)
-
-# TODO(verify): whether `type=eav` exports honor `exportCheckboxLabel` and `rawOrLabelHeaders`.
 
 const METHOD_SPECS = MethodSpec[
     # Arms
@@ -259,7 +260,7 @@ const METHOD_SPECS = MethodSpec[
         fixed = [:type => :flat], batchable = true,
     ),
     MethodSpec(
-        :export_records_eav; content = :record, optional = EXPORT_RECORDS_PARAMS, returns = :table,
+        :export_records_eav; content = :record, optional = EXPORT_RECORDS_EAV_PARAMS, returns = :table,
         raw_io = true, io_formats = RECORD_FORMATS, io_optional = [:csvDelimiter],
         fixed = [:type => :eav],
     ),

@@ -75,17 +75,19 @@ Export records in REDCap's EAV format: one row per record, field and value (with
 columns such as `record`, `field_name` and `value`).
 
 Returns a [`REDCapTable`](@ref) of strings; the `IO` method writes the raw response to `io`.
-Keywords are as for [`export_records`](@ref), except that EAV exports can't be batched.
+Keywords are as for [`export_records`](@ref), except that EAV exports can't be batched, and
+`exportCheckboxLabel` and `rawOrLabelHeaders` are not accepted, as REDCap ignores them for
+EAV exports.
 """
 function export_records_eav(
         project::REDCapProject;
         records = nothing, fields = nothing, forms = nothing, events = nothing, rawOrLabel = nothing,
-        exportCheckboxLabel = nothing, exportSurveyFields = nothing, exportDataAccessGroups = nothing,
+        exportSurveyFields = nothing, exportDataAccessGroups = nothing,
         filterLogic = nothing, dateRangeBegin = nothing, dateRangeEnd = nothing,
         decimalCharacter = nothing, exportBlankForGrayFormStatus = nothing,
     )
     return api_call(
-        :export_records_eav, project; records, fields, forms, events, rawOrLabel, exportCheckboxLabel,
+        :export_records_eav, project; records, fields, forms, events, rawOrLabel,
         exportSurveyFields, exportDataAccessGroups, filterLogic, dateRangeBegin, dateRangeEnd,
         decimalCharacter, exportBlankForGrayFormStatus,
     )
@@ -95,13 +97,13 @@ function export_records_eav(
         project::REDCapProject, io::IO;
         format, csvDelimiter = nothing,
         records = nothing, fields = nothing, forms = nothing, events = nothing, rawOrLabel = nothing,
-        exportCheckboxLabel = nothing, exportSurveyFields = nothing, exportDataAccessGroups = nothing,
+        exportSurveyFields = nothing, exportDataAccessGroups = nothing,
         filterLogic = nothing, dateRangeBegin = nothing, dateRangeEnd = nothing,
         decimalCharacter = nothing, exportBlankForGrayFormStatus = nothing,
     )
     return api_call_io(
         :export_records_eav, project, io; format, csvDelimiter, records, fields, forms, events,
-        rawOrLabel, exportCheckboxLabel, exportSurveyFields, exportDataAccessGroups, filterLogic,
+        rawOrLabel, exportSurveyFields, exportDataAccessGroups, filterLogic,
         dateRangeBegin, dateRangeEnd, decimalCharacter, exportBlankForGrayFormStatus,
     )
 end

@@ -316,17 +316,20 @@ enabled("REDCAP_TEST_RECORD") && println("Recording fixtures to ", RECORD_DIR)
             @test import_metadata(P; data = rows) == length(rows)
             import_records(P; data = [Dict(ID => "1", "redcap_event_name" => ARM1[1], "contact_times___1" => "1")])
 
-            # Expected: honoured, as `export_records_eav` accepts exportCheckboxLabel.
-            function checkbox_values(exportCheckboxLabel)
-                t = export_records_eav(P; records = 1, fields = "contact_times", rawOrLabel = :label, exportCheckboxLabel)
-                return t[:value][startswith.(t[:field_name], "contact_times")]
-            end
-            plain, labelled = checkbox_values(false), checkbox_values(true)
-            @info "EAV checkbox values with rawOrLabel = :label" exportCheckboxLabel_false = plain exportCheckboxLabel_true = labelled
-            @test !isempty(plain)
-            @test plain != labelled
+            checkbox_body(v) = String(
+                copy(
+                    raw_request(
+                        :export_records_eav, "content" => "record", "type" => "eav", "format" => "json",
+                        "records[0]" => 1, "fields[0]" => "contact_times", "rawOrLabel" => "label",
+                        "exportCheckboxLabel" => v,
+                    ).body,
+                ),
+            )
+            plain, labelled = checkbox_body("false"), checkbox_body("true")
+            @info "EAV checkbox export with rawOrLabel = label" exportCheckboxLabel_false = plain exportCheckboxLabel_true = labelled
+            @test occursin("contact_times", plain)
+            @test plain == labelled
 
-            # Expected: no effect, as the EAV IO method doesn't offer rawOrLabelHeaders.
             header(v) = first(
                 eachline(
                     IOBuffer(

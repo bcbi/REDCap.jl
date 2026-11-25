@@ -24,6 +24,10 @@ end
     # IO-only parameters
     @test_throws ArgumentError build_request(p, spec, (csvDelimiter = :tab,))
     @test build_request(p, spec, (csvDelimiter = :tab,); format = :csv, io = true) isa REDCapRequest
+    # REDCap ignores exportCheckboxLabel in EAV exports
+    @test build_request(p, spec, (exportCheckboxLabel = true,)) isa REDCapRequest
+    @test_throws ArgumentError build_request(p, method_spec(:export_records_eav), (exportCheckboxLabel = true,))
+    @test_throws MethodError export_records_eav(p; exportCheckboxLabel = true)
     # required parameters
     @test_throws ArgumentError build_request(p, method_spec(:delete_records), NamedTuple())
     @test_throws ArgumentError build_request(p, method_spec(:delete_records), (records = nothing,))
